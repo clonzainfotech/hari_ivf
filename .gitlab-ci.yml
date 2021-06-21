@@ -4,3 +4,4 @@ deploy:
   stage: deploy
   script:
     - sudo cp -R dist/* /var/www/candor
+    - php artisan view:clear
