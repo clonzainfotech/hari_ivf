@@ -3,4 +3,4 @@ stages:
 deploy:
   stage: deploy
   script:
-    - composer update
+    - echo "First command line."
