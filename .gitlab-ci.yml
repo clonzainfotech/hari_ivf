@@ -1,0 +1,8 @@
+stages:
+  - deploy
+deploy:
+  stage: deploy
+  script:
+    - php artisan config:clear
+    - php artisan view:clear
+    - cp -R dist/* /var/www/html/candorivf
