@@ -3,5 +3,5 @@ stages:
 deploy:
   stage: deploy
   script:
-    - sudo php artisan config:clear
+    - php artisan config:clear
     - echo "command run"
