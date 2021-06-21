@@ -3,4 +3,4 @@ stages:
 deploy:
   stage: deploy
   script:
-    - php artisan view:clear
+    - composer update
