@@ -3,5 +3,6 @@ stages:
 deploy:
   stage: deploy
   script:
+    - cd /var/www/candor
     - php artisan config:clear
     - echo "command run"
