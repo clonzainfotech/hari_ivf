@@ -3,6 +3,7 @@ stages:
 deploy:
   stage: deploy
   script:
+    - composer install
     - php artisan config:clear
     - php artisan view:clear
     - cp -R dist/* /var/www/app/candorivf
