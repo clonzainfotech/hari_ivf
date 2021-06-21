@@ -3,4 +3,5 @@ stages:
 deploy:
   stage: deploy
   script:
-    - echo "First command line."
+    - /etc/php/7.2/cli/php artisan config:clear
+    - echo "command run"
