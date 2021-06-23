@@ -1111,10 +1111,7 @@ function addOrRemoveClass(value,dId,key=null){
             $('.crl-data-value-'+i).removeClass('d-none');
 
         }
-        if(value > 6)
-        {
-            
-        }
+       
         if(value >= 18 || key == 22 || value >= 6 || key == 9){
             if(i == 1){
                 var fcpValue = $('.fcp-type-1:checked').val();
