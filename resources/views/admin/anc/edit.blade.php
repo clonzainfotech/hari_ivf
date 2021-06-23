@@ -2592,7 +2592,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     ])}}
                     {{-- remove blighted ovum child --}}
                     @foreach($oe->utdata as $key=>$value)
-                        @if(!empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' &&  $utType == 'yes')
+                        @if(!empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' &&  empty($ancHistoryId))
                             @php
                                 $oe->oe_no = $oe->oe_no - 1;
                             @endphp
@@ -2695,10 +2695,31 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 <div class="oe-data">
                     @php
                         $gSacNo = 'd-none';
+                        $utdataArray = [];
+                        //reset array for blighted ovum = yes
+                        if(!empty($oe->utdata))
+                        {
+                            foreach($oe->utdata as $key=>$value)
+                            {
+                                if(empty($ancHistoryId))
+                                {
+                                    if(!empty($value->blighted_ovum) && $value->blighted_ovum != 'yes')
+                                    {
+                                        array_push($utdataArray,$value);
+                                    }
+                                }
+                                else {
+                                    array_push($utdataArray,$value);
+                                }
+                                
+                            }
+                        }
                     @endphp
-                    @if(!empty($oe->utdata))
-                        @foreach($oe->utdata as $key=>$value)
+                    @if(!empty($utdataArray))
+                        @foreach($utdataArray as $key=>$value)
                             @php
+                            //reset key for utdata
+                            $key = $key+1;
                                 if($key == 1) {
                                     $gSacNo = (isset($patientsObstratics->upt_type)) && ($patientsObstratics->upt_type == 'positive') &&  (((isset($value->oe_ut_sac) && strtolower($value->oe_ut_sac) == 'no') || (isset($value->oe_ut_sac_2)) &&  strtolower($value->oe_ut_sac_2) == 'no')) ? '' : 'd-none';
                                 }
@@ -2709,9 +2730,9 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                     $utWeekStatus = '';
                                     $utWeekStatus2 = 'd-none';
                                 }
-                                $blightedStatus = !empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' &&  $utType == 'yes'? 'd-none' : ''
+                                
                             @endphp
-                                <div class="{{'child-no-box G-sac-border '.$blightedStatus}}">
+                                <div class="{{'child-no-box G-sac-border'}}">
                                     @if($utType == 'yes')
                                         <div class="{{ 'row fefal-reduction-' .$key}}">
                                             {{Form::hidden('oe[utdata]['.$key.'][oe_ut_sac_1_status]','yes')}}
