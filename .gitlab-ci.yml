@@ -10,5 +10,6 @@ deploy:
     - cp -r /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/resources/* /var/www/html/resources/
     - cp -r /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/routes/* /var/www/html/routes/
     - cp -r /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/storage/* /var/www/html/storage/
+    - cp -r /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/public/* /var/www/html/public/
     - php artisan config:clear
     - php artisan view:clear
