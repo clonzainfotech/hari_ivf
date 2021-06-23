@@ -4,12 +4,12 @@ deploy:
   stage: deploy
   script:
     - cd /var/www/html
-    - rsync:chown  -av  --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/app/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/app/* /var/www/html/app/
-    - rsync:chown -av --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/assets/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/assets/* /var/www/html/assets/
-    - rsync:chown -av --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/database/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/database/* /var/www/html/database/
-    - rsync:chown -av --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/resources/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/resources/* /var/www/html/resources/
-    - rsync:chown -av --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/routes/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/routes/* /var/www/html/routes/
-    - rsync:chown -av --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/storage/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/storage/* /var/www/html/storage/
+    - rsync -ubuntu --no-o --no-g --no-perms -exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/app/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/app/* /var/www/html/app/
+    - rsync -ubuntu --no-o --no-g --no-perms --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/assets/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/assets/* /var/www/html/assets/
+    - rsync -ubuntu --no-o --no-g --no-perms --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/database/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/database/* /var/www/html/database/
+    - rsync -ubuntu --no-o --no-g --no-perms --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/resources/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/resources/* /var/www/html/resources/
+    - rsync -ubuntu --no-o --no-g --no-perms --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/routes/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/routes/* /var/www/html/routes/
+    - rsync -ubuntu --no-o --no-g --no-perms --exclude=/var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/storage/* /var/www/candor/jamyNeZZ/0/unikwork/candorivf-web/storage/* /var/www/html/storage/
     - php artisan config:clear
     - php artisan config:cache
     - php artisan view:clear
