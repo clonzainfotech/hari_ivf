@@ -128,22 +128,21 @@ class PatientsController extends AdminController
     * @return \Illuminate\Http\Response
     */
     public function update(Request $request,$id=null) {
+        $patient = $this->OpdPatients;
+        $patientId = null;
+        if($id != null){
+            $patientId = decrypt($id);
+            $patient = $this->OpdPatients->find($patientId);
+        }
+        $this->validate($request,[
+            'name' => 'required|min:2',
+            'gender' => 'required',
+            'state' => 'required',
+            'mobile_number' => 'required|numeric|digits:10|unique:patients,mobile_number,'.$patientId,
+            'dob' =>'nullable|before:' . date('Y-m-d')
+        ]);
         try{
-            $patient = $this->OpdPatients;
-            $patientId = null;
-            if($id != null){
-                $patientId = decrypt($id);
-                $patient = $this->OpdPatients->find($patientId);
-            }
-            $this->validate($request,[
-                'name' => 'required|min:2',
-                'gender' => 'required',
-                'state' => 'required',
-                'mobile_number' => 'required|numeric|digits:10|unique:patients,mobile_number,'.$patientId,
-                'dob' =>'nullable|before:' . date('Y-m-d')
-            ]);
-
-            
+           
                 $patient->name=$request->name;
                 $patient->age=$request->age;
                 $patient->months = $request->months;
