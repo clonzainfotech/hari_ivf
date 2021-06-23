@@ -84,7 +84,7 @@ class ReviewController extends ApiController
         // $patientId = $this->OpdPatients->where('token',$token)->pluck('id')->first();
         // if($token && $patientId){
 
-            $userReview = collect($this->UserReview->select('id','patient_id','rate','remark','created_at')->orderBy('created_at','DESC')->get())
+            $userReview = collect($this->UserReview->select('id','patient_id','rate','remark','created_at')->orderBy('rate','DESC')->get())
             ->map(function($q){
                 $q->patient_name = ucfirst($q->getPatientsData['name']);
                 // $q->name = $q->getReviewUser['name'];
