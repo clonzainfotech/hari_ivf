@@ -117,7 +117,7 @@
     $old_dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
     $old_medicine_time = ["1"=>"IV","2"=>"IM","3"=>"SC","4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
     $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
-    
+    $typeOfData = [1=>'Primary',2=>'Secondary'];
 @endphp
 @section('content')
     <div class="row clearfix">
