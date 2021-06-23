@@ -74,6 +74,9 @@
             <div class="row p-2">
                 Remark:- {{$ivfPayment->remark}}
             </div>
+            <div class="row p-2">
+                Payment Condition:- {{$ivfPayment->condition}}
+            </div>
             <br>
             <div class="row p-2">
                 દર્દી ની સહી :- _______________________

@@ -350,6 +350,9 @@
             <div class="row p-2 m-2">
                 Remark:- {{$ivfPayment->remark}}
             </div>
+            <div class="row p-2 m-2">
+                Payment Condition:- {{$ivfPayment->condition}}
+            </div>
            
             <div class="row p-2 m-2">              
                 દર્દી ની સહી :- _______________________
@@ -658,7 +661,9 @@
             <div class="row p-2 m-2">
                 Remark:- {{$ivfPayment->remark}}
             </div>
-       
+            <div class="row p-2 m-2">
+                Payment Condition:- {{$ivfPayment->condition}}
+            </div>
             <div class="row p-2 m-2">              
                 रोगी के हस्ताक्षर :- _______________________
             </div>
@@ -963,7 +968,9 @@
             <div class="row p-2 m-2">
                 Remark:- {{$ivfPayment->remark}}
             </div>
-            
+            <div class="row p-2 m-2">
+                Payment Condition:- {{$ivfPayment->condition}}
+            </div>
             <div class="row p-2 m-2">              
                 Patient's signature :- _______________________
             </div>

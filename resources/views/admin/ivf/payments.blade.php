@@ -193,7 +193,7 @@
                                         <span class="radio is-conceived">No Attempt : &nbsp;</span>
                                         @php
                                             $history_cycle_no = (isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->cycle_no)) ? $ivfPaymentHistory->cycle_no : '';
-                                            $display_multiple_no_cycle = ($history_cycle_no == 1) ? 'd-none' : '';
+                                            $display_multiple_no_cycle = (empty($history_cycle_no) || $history_cycle_no == 1) ? 'd-none' : '';
                                         @endphp
                                     <div class="radio is-conceived">
                                         {{Form::radio('no_cycle','1',(!empty($history_cycle_no) && $history_cycle_no == '1') ? true : false,[
@@ -212,8 +212,8 @@
                                             Multiple
                                         </label>
                                     </div>
-                                        <div class="col-md-4 col-sm-6 radio is-conceived {{$display_multiple_no_cycle}}" id="multiple_no_cycle">
-                                            {{Form::select('no_cycle',[2 =>'2',3=>'3',4=>'4',6 =>'6'],(!empty($history_cycle_no) && $history_cycle_no != '1') ? $history_cycle_no : null,['class'=>'form-control select-padding-0','multiple_no_cycle1' =>'new','placeholder'=>'Select No. Of Cycle',$is_disabled])}}
+                                        <div class="{{'col-md-4 col-sm-6 radio is-conceived '.$display_multiple_no_cycle}}" id="multiple_no_cycle">
+                                            {{Form::select('no_cycle',[2 =>'2',3=>'3',4=>'4',6 =>'6'],(!empty($history_cycle_no) && $history_cycle_no != '1') ? $history_cycle_no : null,['class'=>'form-control select-padding-0 multiple_no_cycle','multiple_no_cycle1' =>'new','placeholder'=>'Select No. Of Cycle',$is_disabled])}}
                                         </div>      
                                 </div>
                             </div>
@@ -775,14 +775,14 @@
                                 <div class="col-md-3">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">Condition : &nbsp;</span>
-                                        {{Form::text('condition','',['class'=>'form-control'])}}
+                                        {{Form::text('condition',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->condition)) ? $ivfPaymentHistory->condition : '',['class'=>'form-control'])}}
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">Remark : &nbsp;</span>
-                                        {{Form::text('remark','',['class'=>'form-control p-remark','autocomplete'=>'off'])}}
+                                        {{Form::text('remark',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->remark)) ? $ivfPaymentHistory->remark : '',['class'=>'form-control p-remark','autocomplete'=>'off'])}}
                                     </div>
                                 </div>
                             </div>
@@ -997,14 +997,14 @@
 
         $(function () {
             $("#Multiple").click(function () {
-                $("#multiple_no_cycle").show();
+                $("#multiple_no_cycle").removeClass('d-none');
             });
         });
             
         $(function () {
             $("#no_cycle").click(function () {
                 $('#multiple_no_cycle option').prop('selected', false)
-                $("#multiple_no_cycle").hide();
+                $("#multiple_no_cycle").addClass('d-none');
             });
         });
 
@@ -1528,6 +1528,11 @@
             $(document).on('click','.ivf-payment-submit',function(e){
                 e.preventDefault();
                 var paymentData = $('#ivf-payment-form').serialize();
+                if('#Multiple:checked')
+                {
+                    var cycle_no = $('select.multiple_no_cycle').val();
+                    paymentData = paymentData + '&multiple_cycle='+cycle_no;
+                }
                 if(this.value == 1) {
                     paymentData = paymentData + '&isprint=1';
                 }

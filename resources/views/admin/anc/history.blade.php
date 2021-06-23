@@ -34,6 +34,10 @@
             border-top: 1px solid black;
             margin-bottom: 25px;
         }
+        .G-sac-border
+        {
+            border: 2px solid #b9afaf !important;
+        }
     </style>
 @stop
 
@@ -219,6 +223,9 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             $('.anc-date').val(ancDate);
             $('.anc-date').selectpicker('refresh');
         }
+        //set childwise data
+        var oeValue = $(this).val();
+        oeNumber(oeValue);
 
         getAncHistoryData(qstring);
 
@@ -285,7 +292,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         checkGynec();
     });
 
-    $(document).on('keyup','.g-sac-1',function(){
+    $(document).on('click','.blighted-ovum',function(){
         checkGynec();
     });
 
@@ -578,12 +585,24 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         var isGynec = 0;
         var fcpValue = $('.fcp-type-1:checked').val();
         var gSacValue = $('.g-sac-1').val();
-        if(gSacValue != '' && typeof gSacValue != 'undefined'){
-            gSacValue = gSacValue.toLowerCase();
-            if(gSacValue == 'bligathed' || gSacValue == 'missed abortion'){
-                isGynec = 1;
-            }
-        }
+       $(".blighted-ovum:checked").each(function() {
+                var isBlighted = $(this).val();
+                
+                if($(this).val() == 'no')
+                {
+                    isGynec = 0;
+                    return false;
+                }
+                if($('select.oe-no').val() == 1 && $(this).val() == 'yes')
+                {
+                    isGynec = 1;
+                    return false;
+                }
+                if($(this).val() == 'yes')
+                {
+                    isGynec = 1;
+                }
+            })
         if(fcpValue == 'absent'){
             isGynec = 1;
         }
@@ -635,6 +654,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
 
     var medicinesValue = @json($medicines);
     var weekData = @json($weekData);
+    
 </script>
 <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
 @stop

@@ -1263,28 +1263,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row blighted-ovum d-none">
-                                            <div class="col-md-1 pr-0">
-                                                <label class="vertical-form-label pr-0">
-                                                    Blighted Ovum :
-                                                </label>
-                                            </div>
-                                            <div class="col-md-10 col-sm-10">
-                                                <div class="radio is-conceived">
-                                                    {{Form::radio("oe[blighted_ovum]",'yes','',['id'=>'blighted-ovum-yes','class'=>'blighted-ovum'])}}
-                                                    <label for="blighted-ovum-yes">
-                                                        Yes
-                                                    </label>
-
-                                                    {{Form::radio("oe[blighted_ovum]",'no','',['id'=>'blighted-ovum-no','class'=>'blighted-ovum'])}}
-                                                    <label for="blighted-ovum-no">
-                                                        No
-                                                    </label>
-
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="no-intrauterine overy-data-1 d-none">
                                             <div class="row">
                                                 <div class="col-md-1 pr-0">
@@ -1509,6 +1488,24 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                 <div class="col-md-1 female-type-data-1 p-1 crl-1 crl-data-value-1 d-none">
                                                     <span class='crl-text-1'></span>
                                                     {{Form::hidden("oe[utdata][1][crl_details]",'',['class'=>'crl-val-1'])}}
+                                                </div>
+                                                <div class="col-md-1 female-type-data-1 pr-0 blighted-ovum-data blighted-ovum-data-1 d-none">
+                                                    <label class="vertical-form-label pr-0">
+                                                        Blighted Ovum :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-3 female-type-data-1 blighted-ovum-data blighted-ovum-data-1 d-none">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("oe[utdata][1][blighted_ovum]",'yes','',['id'=>'blighted-ovum-yes-1','class'=>'blighted-ovum'])}}
+                                                        <label for="blighted-ovum-yes-1">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("oe[utdata][1][blighted_ovum]",'no',true,['id'=>'blighted-ovum-no-1','class'=>'blighted-ovum'])}}
+                                                        <label for="blighted-ovum-no-1">
+                                                            No
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row yalk-sac-1 female-type-data-1 gsac-data-1">
@@ -3502,7 +3499,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 checkGynec();
             });
 
-            $(document).on('keyup','.g-sac-1',function(){
+            $(document).on('click','.blighted-ovum',function(){
                 checkGynec();
             });
         });
@@ -3593,27 +3590,41 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
             }
             return true;
         }
-
+        
         function checkGynec(){
             $('.gynec-plan-tab').addClass('d-none');
             $('.injection-tab').removeClass('d-none');
             var isGynec = 0;
             var fcpValue = $('.fcp-type-1:checked').val();
-            var gSacValue = $('.g-sac-1').val();
-            if(gSacValue != '' && typeof gSacValue != 'undefined'){
-                gSacValue = gSacValue.toLowerCase();
-                if(gSacValue == 'bligathed' || gSacValue == 'missed abortion'){
+           
+            $(".blighted-ovum:checked").each(function() {
+                var isBlighted = $(this).val();
+                
+                if($(this).val() == 'no')
+                {
+                    isGynec = 0;
+                    return false;
+                }
+                if($('select.oe-no').val() == 1 && $(this).val() == 'yes')
+                {
+                    isGynec = 1;
+                    return false;
+                }
+                if($(this).val() == 'yes')
+                {
                     isGynec = 1;
                 }
-            }
+            })
             if(fcpValue == 'absent'){
                 isGynec = 1;
             }
+
             if(isGynec == 1){
                 $('.gynec-plan-tab').removeClass('d-none');
                 $('.injection-tab').addClass('d-none');
             }
             $('.is-gynec').val(isGynec);
+           
         }
         var medicinesValue = @json($medicines);
         var weekData = @json($weekData);

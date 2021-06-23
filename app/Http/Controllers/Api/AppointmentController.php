@@ -49,35 +49,39 @@ class AppointmentController extends ApiController
                 // foreach ($data as $key=>$row) {
                     foreach ($appointmentRequestData as $value) {
                         $lastAppointment = $this->Appointment->where('patients_id', $patientId)->where('date',$value->date)->orderBy('id','DESC')->first();
-                        $value->id = $lastAppointment->id;
-                        $value->date = \Carbon\Carbon::parse($value->date)->format('d-m-Y');
-                        $categoryData = $lastAppointment->category_id;
-                        $value->category = $categoryData ? $lastAppointment['categoryDetails']['name'] : null; 
-                        $value->category_id = $categoryData;
-                        $currentDate = \Carbon\Carbon::now()->format('d-m-Y');
-                        $currentTime = \Carbon\Carbon::now()->format('H:i:s');
-                        $book = $value->is_book;
-                        $status = $book == 0 ? 'Pending' : 'Rejected';
-                        if($value->created_by){
-                            // if (strtotime($value->date) < strtotime($currentDate) && $value->is_done == 0) {
-                            //     $status = "Nsot Visited";
-                            // } elseif ((strtotime($value->date) >= strtotime($currentDate)) && (strtotime($value->arrival_time) > strtotime($currentTime)) && ($value->is_done == 0)) {
-                            //     $status = "Approved";
-                            // } else {
-                            //     $status = "Visited";
-                            // }
-                            if ($value->is_done == 0) {
-                                $status = "Not Visited";
-                                if (((strtotime($value->date.' '.$value->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($value->is_done == 0)) || (!$value->arrival_time && strtotime($value->date) >= strtotime($currentDate))) {
-                                    $status = "Approved";
+                        if($lastAppointment)
+                        {
+                            $value->id = $lastAppointment->id;
+                            $value->date = \Carbon\Carbon::parse($value->date)->format('d-m-Y');
+                            $categoryData = $lastAppointment->category_id;
+                            $value->category = $categoryData ? $lastAppointment['categoryDetails']['name'] : null; 
+                            $value->category_id = $categoryData;
+                            $currentDate = \Carbon\Carbon::now()->format('d-m-Y');
+                            $currentTime = \Carbon\Carbon::now()->format('H:i:s');
+                            $book = $value->is_book;
+                            $status = $book == 0 ? 'Pending' : 'Rejected';
+                            if($value->created_by){
+                                // if (strtotime($value->date) < strtotime($currentDate) && $value->is_done == 0) {
+                                //     $status = "Nsot Visited";
+                                // } elseif ((strtotime($value->date) >= strtotime($currentDate)) && (strtotime($value->arrival_time) > strtotime($currentTime)) && ($value->is_done == 0)) {
+                                //     $status = "Approved";
+                                // } else {
+                                //     $status = "Visited";
+                                // }
+                                if ($value->is_done == 0) {
+                                    $status = "Not Visited";
+                                    if (((strtotime($value->date.' '.$value->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($value->is_done == 0)) || (!$value->arrival_time && strtotime($value->date) >= strtotime($currentDate))) {
+                                        $status = "Approved";
+                                    }
+                                } else {
+                                    $status = "Visited";
                                 }
-                            } else {
-                                $status = "Visited";
                             }
+                            $value->status = $status;
+                            $value->profile_picture = $lastAppointment['getPatientsDetails']['profile_picture'];
+                            unset($value->is_done,$value->yearKey,$value->categoryDetails,$value->getPatientsDetails,$value->appontment_request_id,$value->is_book,$value->arrival_time,$value->created_by);
                         }
-                        $value->status = $status;
-                        $value->profile_picture = $lastAppointment['getPatientsDetails']['profile_picture'];
-                        unset($value->is_done,$value->yearKey,$value->categoryDetails,$value->getPatientsDetails,$value->appontment_request_id,$value->is_book,$value->arrival_time,$value->created_by);
+                        
                     }
                     // $appointmentData[][$key] = $aData;
                 // }

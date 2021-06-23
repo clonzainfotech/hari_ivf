@@ -1504,6 +1504,10 @@ class IVFController extends AdminController
         if($request->no_cycle>1) {
             $no_cycle = $request->no_cycle;
         }
+        if($request->multiple_cycle)
+        {
+            $no_cycle = $request->multiple_cycle;
+        }
         $ivfPaymentData = $this->IvfPayment->wherePatientsId($patientsId)->whereCycleNo($no_cycle)->first();
     
         $ivfPayment = $this->IvfPayment;
@@ -1572,12 +1576,7 @@ class IVFController extends AdminController
         }
 
         $ivfPayment->cycle_type = $request->cycle_type;
-        if ($request->no_cycle == '') {
-            $ivfPayment->cycle_no = 1;
-        }
-        else{   
-            $ivfPayment->cycle_no = $request->no_cycle;
-        }   
+        $ivfPayment->cycle_no = $no_cycle;
         $ivfPayment->time = $request->time;
         $ivfPayment->remark = $request->remark;
         $ivfPayment->visit = 1;

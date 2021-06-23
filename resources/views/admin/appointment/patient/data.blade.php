@@ -8,6 +8,7 @@
             <th>DOB</th>
             <th>Gender</th>
             <th>Mobile Number</th>
+            <th>Other Number</th>
             <th>City, State</th>
             <th>Reference Doctor</th>
         </tr>
@@ -32,6 +33,9 @@
                 <td>{{$row->gender}}</td>
                 <td>
                     {{ $row->mobile_number }}
+                </td>
+                <td>
+                    {{ $row->other_mobile_number }}
                 </td>
                 <td>{{$row->city .', ' . $row->getState['name']}}</td>
                 <td>{{$row->getReferenceDoctor['name']}}</td>

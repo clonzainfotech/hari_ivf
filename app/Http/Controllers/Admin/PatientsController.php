@@ -186,6 +186,7 @@ class PatientsController extends AdminController
             }
                 return redirect('patient');
         }catch(Exception $e){
+            log::Debug($e);
             abort(500);
         }
     }

@@ -2590,6 +2590,14 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     {{Form::hidden('oe[oe_no]',!empty($oe->oe_no) ? $oe->oe_no : 1, [
                         'id' => 'oe_child_number'
                     ])}}
+                    {{-- remove blighted ovum child --}}
+                    @foreach($oe->utdata as $key=>$value)
+                        @if(!empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' &&  $utType == 'yes')
+                            @php
+                                $oe->oe_no = $oe->oe_no - 1;
+                            @endphp
+                        @endif
+                    @endforeach
                     <div class="col-md-3">
                         <div class="form-group">
                             {{Form::select("oe[oe_no]",['1'=>"Single",'2'=>"Twins",'3'=>"Triplets",'4'=>'Quadruple'],!empty($oe->oe_no) ? $oe->oe_no : null,[
@@ -2701,304 +2709,344 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                     $utWeekStatus = '';
                                     $utWeekStatus2 = 'd-none';
                                 }
+                                $blightedStatus = !empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' &&  $utType == 'yes'? 'd-none' : ''
                             @endphp
-                            <div class="child-no-box" style="border: 2px solid #b9afaf !important;">
-                                @if($utType == 'yes')
-                                    <div class="{{ 'row fefal-reduction-' .$key}}">
-                                        {{Form::hidden('oe[utdata]['.$key.'][oe_ut_sac_1_status]','yes')}}
-                                        <div class="{{'col-md-1 pr-0 female-type-data-'.$key.' gsac-data-'.$key.' '. $yalkData.' '.$utWeekStatus2}}">
-                                            <label class="vertical-form-label pr-0">
-                                                G-sac(MM) :
+                                <div class="{{'child-no-box G-sac-border '.$blightedStatus}}">
+                                    @if($utType == 'yes')
+                                        <div class="{{ 'row fefal-reduction-' .$key}}">
+                                            {{Form::hidden('oe[utdata]['.$key.'][oe_ut_sac_1_status]','yes')}}
+                                            <div class="{{'col-md-1 pr-0 female-type-data-'.$key.' gsac-data-'.$key.' '. $yalkData.' '.$utWeekStatus2}}">
+                                                <label class="vertical-form-label pr-0">
+                                                    G-sac(MM) :
+                                                </label>
+                                            </div>
+                                            <div class="{{'col-md-2 female-type-data-'.$key.' g-sac ut-g-sac gsac-data-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
+                                                <div class="form-group">
+                                                    {{Form::text("oe[utdata][".$key."][oe_ut_sac_2]",!empty($value->oe_ut_sac_2) ? $value->oe_ut_sac_2 : null,['class'=>'form-control g-sac-'.$key,'onwheel'=>"this.blur()",'oninput'=>"maxLengthCheck(this)",'data-id'=>'1','data-value'=>'anc-history'])}}
+                                                </div>
+                                            </div>
+                                            <div class="{{'col-md-2 d-none ut-g-sac-details-'.$key}}">
+                                                <div class="form-group">
+                                                    {{Form::text("oe[utdata][".$key."][oe_ut_sac_details]",!empty($value->oe_ut_sac_details) ? $value->oe_ut_sac_details : null,['class'=>'form-control ut-sac-details','placeholder'=>'Details'])}}
+                                                </div>
+                                            </div>
+                                            <div class="{{'col-md-1 female-type-data-'.$key.' pr-0 crl-data-value-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
+                                                <label class='vertical-form-label pr-0'>CRL :</label>
+                                            </div>
+                                            <div class="{{'col-md-2 female-type-data-'.$key.' crl-data-value-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
+                                                <div class="form-group">
+                                                    {{Form::number("oe[utdata][".$key."][crl]",!empty($value->crl) ? $value->crl : null,['class'=>'form-control crl-data','data-id'=>$key])}}
+                                                </div>
+                                            </div>
+                                            <div class="{{'col-md-2 p-1 female-type-data-'.$key.' crl-data-value-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
+                                                <span class="{{'crl-text-'.$key}}">{{!empty($value->crl_details) ? $value->crl_details : null}}</span>
+                                                {{Form::hidden("oe[utdata][".$key."][crl_details]",!empty($value->crl_details) ? $value->crl_details : null,['class'=>'crl-val-'.$key])}}
+                                            </div>
+                                            <div class="{{'col-md-1 female-type-data-'.$key.' blighted-ovum-data pr-0 blighted-ovum-data-'.$key.' d-none'}}">
+                                                <label class="vertical-form-label pr-0">
+                                                    Blighted Ovum :
+                                                </label>
+                                            </div>
+                                            <div class="{{'col-sm-3 female-type-data-'.$key.' blighted-ovum-data blighted-ovum-data-'.$key.' d-none'}}">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("oe[utdata][".$key."][blighted_ovum]",'yes',!empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' ? true : false,['id'=>'blighted-ovum-yes-'.$key,'class'=>'blighted-ovum'])}}
+                                                    <label for="{{'blighted-ovum-yes-'.$key}}">
+                                                        Yes
+                                                    </label>
+
+                                                    {{Form::radio("oe[utdata][".$key."][blighted_ovum]",'no',!empty($value->blighted_ovum) && $value->blighted_ovum == 'no' ? true : false,['id'=>'blighted-ovum-no-'.$key,'class'=>'blighted-ovum'])}}
+                                                    <label for="{{'blighted-ovum-no-'.$key}}">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="{{ 'row fefal-reduction-' . $key}}">
+                                            <div class="col-md-3 ut-g-sac pr-0 mt-2">
+                                                {{Form::hidden("oe[utdata][".$key."][oe_ut_sac_1]",!empty($value->oe_ut_sac_1) ? $value->oe_ut_sac_1 : null,['class'=>'form-control ut-sac'])}}
+                                                {{Form::hidden("oe[utdata][".$key."][oe_ut_sac_2]",!empty($value->oe_ut_sac_2) ? $value->oe_ut_sac_2 : null,['class'=>'form-control ut-sac-2'])}}
+                                                {{strtoupper('ut(wks)')}}:- &nbsp;{{!empty($value->oe_ut_sac_1) ? $weekData[$value->oe_ut_sac_1] : null}}&nbsp;&nbsp;&nbsp;
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>
+                                                    {{strtoupper('g-sac(mm)')}}:-&nbsp;{{!empty($value->oe_ut_sac_2) ? $value->oe_ut_sac_2 : null}}
+                                                </label>
+                                            </div>
+                                            <div class="{{'col-md-2 d-none ut-g-sac-details-'.$key}}">
+                                                <div class="form-group">
+                                                    {{Form::text("oe[utdata][".$key."][oe_ut_sac_details]",!empty($value->oe_ut_sac_details) ? $value->oe_ut_sac_details : null,['class'=>'form-control ut-sac-details','placeholder'=>'Details'])}}
+                                                </div>
+                                                <span class="form-error-msg">
+                                                {{$errors->first('oe_ut_sac')}}
+                                            </span>
+                                            </div>
+                                            <div class="{{'col-md-1 pr-0 crl-data-value-'.$key}}">
+                                                <label class='vertical-form-label pr-0'>CRL :</label>
+                                            </div>
+                                            <div class="{{'col-md-2 crl-data-value-'.$key}}">
+                                                <div class="form-group">
+                                                    {{Form::number("oe[utdata][".$key."][crl]",!empty($value->crl) ? $value->crl : null,['class'=>'form-control crl-data','data-id'=>$key])}}
+                                                </div>
+                                            </div>
+                                            <div class="{{'col-md-1 p-1 crl-data-value-'.$key}}">
+                                                <span class="{{'crl-text-'.$key}}">{{!empty($value->crl_details) ? $value->crl_details : null}}</span>
+                                                {{Form::hidden("oe[utdata][".$key."][crl_details]",!empty($value->crl_details) ? $value->crl_details : null,['class'=>'crl-val-'.$key])}}
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="{{'col-md-1 female-type-data-'.$key.' blighted-ovum-data pr-0 blighted-ovum-data-'.$key.' d-none'}}">
+                                                <label class="vertical-form-label pr-0">
+                                                    Blighted Ovum :
+                                                </label>
+                                            </div>
+                                            <div class="{{'col-sm-3 female-type-data-'.$key.' blighted-ovum-data blighted-ovum-data-'.$key.' d-none'}}">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("oe[utdata][".$key."][blighted_ovum]",'yes',!empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' ? true : false,['id'=>'blighted-ovum-yes-'.$key,'class'=>'blighted-ovum'])}}
+                                                    <label for="{{'blighted-ovum-yes-'.$key}}">
+                                                        Yes
+                                                    </label>
+
+                                                    {{Form::radio("oe[utdata][".$key."][blighted_ovum]",'no',!empty($value->blighted_ovum) && $value->blighted_ovum == 'no' ? true : false,['id'=>'blighted-ovum-no-'.$key,'class'=>'blighted-ovum'])}}
+                                                    <label for="{{'blighted-ovum-no-'.$key}}">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($key == 1 && $utType != 'yes')
+                                        <div class="row">
+                                            <div class="col-md-2 pr-0">
+                                                <label class="vertical-form-label pr-0">
+                                                    Late Conception :
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("oe[late_data][late_concept]",'Yes',!empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'Yes' ? true : false,['id'=>'l-yes','class'=>'late-conception-type'])}}
+                                                    <label for="l-yes">
+                                                        Yes
+                                                    </label>
+
+                                                    {{Form::radio("oe[late_data][late_concept]",'no',!empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'No' ? true : false,['id'=>'l-no','class'=>'late-conception-type'])}}
+                                                    <label for="l-no">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            @php
+                                                $lateClass = !empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'Yes' ? '' : 'd-none';
+                                            @endphp
+                                            <div class="{{'col-md-2 late-concepte-week '.$lateClass}}">
+                                                <div class="form-group">
+                                                    {{Form::text("oe[late_data][late_concept_week]",!empty($oe->late_data->late_concept_week) ? $oe->late_data->late_concept_week : null,['class'=>'form-control late-week','onwheel'=>"this.blur()",'oninput'=>"maxLengthCheck(this)",'placeholder'=>'Enter Week'])}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @php
+                                        $fefalData = !empty($value->oe_ut_sac_1) && ($weekData[$value->oe_ut_sac_1] == 9 || ($value->oe_ut_sac_1 >= 12 || $value->oe_ut_sac_1 <= 14)) ? '' : 'd-none';
+                                        $fcpLiquorData = !empty($value->oe_ut_sac_1) && ($weekData[$value->oe_ut_sac_1] >= 18 || $weekData[$value->oe_ut_sac_1] >= 6 || $value->oe_ut_sac_1 == 22 || $value->oe_ut_sac_1 == 9) ? '' : 'd-none';
+                                        $pData = !empty($value->oe_ut_sac_1) && ($weekData[$value->oe_ut_sac_1] >= 30 || $value->oe_ut_sac_1 == 22) ? '' : 'd-none';
+                                        $liquorSubData = !empty($value->liquor_type) && ($value->liquor_type == 'oligo' || $value->liquor_type == 'poly') ? '' : 'd-none';
+                                    @endphp
+                                    
+                                    <div class="{{'row fcp-data-'.$key.' wks-data-'.$key.' fefal-reduction-' . $key.' '.$fcpLiquorData}}">
+                                        <div class="{{'col-md-1 pr-0 liquor-data-'.$key .' '.$fcpLiquorData}}">
+                                            <label class="vertical-form-label pr-0 green-lable">
+                                                Liquor :
                                             </label>
                                         </div>
-                                        <div class="{{'col-md-2 female-type-data-'.$key.' g-sac ut-g-sac gsac-data-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
-                                            <div class="form-group">
-                                                {{Form::text("oe[utdata][".$key."][oe_ut_sac_2]",!empty($value->oe_ut_sac_2) ? $value->oe_ut_sac_2 : null,['class'=>'form-control g-sac-'.$key,'onwheel'=>"this.blur()",'oninput'=>"maxLengthCheck(this)",'data-id'=>'1','data-value'=>'anc-history'])}}
+                                        <div class="{{'col-sm-3 liquor-data-'.$key .' '.$fcpLiquorData}}">
+                                            <div class="radio is-conceived">
+                                                {{Form::radio("oe[utdata][".$key."][liquor_type]",'normal',!empty($value->liquor_type) && $value->liquor_type == 'normal' ? true : false,['id'=>'liquor_normal_'.$key,'class'=>'liquor','data-id'=>$key])}}
+                                                <label for="{{'liquor_normal_'.$key}}">
+                                                    Normal
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][liquor_type]",'oligo',!empty($value->liquor_type) && $value->liquor_type == 'oligo' ? true : false,['id'=>'liquor_oligo_'.$key,'class'=>'liquor','data-id'=>$key])}}
+                                                <label for="{{'liquor_oligo_'.$key}}">
+                                                    Oligo
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][liquor_type]",'poly',!empty($value->liquor_type) && $value->liquor_type == 'poly' ? true : false,['id'=>'liquor_poly_'.$key,'class'=>'liquor','data-id'=>$key])}}
+                                                <label for="{{'liquor_poly_'.$key}}">
+                                                    Poly
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="{{'col-md-2 d-none ut-g-sac-details-'.$key}}">
-                                            <div class="form-group">
-                                                {{Form::text("oe[utdata][".$key."][oe_ut_sac_details]",!empty($value->oe_ut_sac_details) ? $value->oe_ut_sac_details : null,['class'=>'form-control ut-sac-details','placeholder'=>'Details'])}}
+                                        <div class="{{'col-sm-3 liquor-data-'.$key .' '.$fcpLiquorData}}">
+                                            <div class="{{'radio is-conceived liquor-sub-type-data-'.$key. ' '.$liquorSubData}}">
+                                                {{Form::radio("oe[utdata][".$key."][liquor_sub_type]",'mild',!empty($value->liquor_sub_type) && $value->liquor_sub_type == 'mild' ? true : false,['id'=>'mild_'.$key,'class'=>'mild'])}}
+                                                <label for="{{'mild_'.$key}}">
+                                                    Mild
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][liquor_sub_type]",'moderate',!empty($value->liquor_sub_type) && $value->liquor_sub_type == 'moderate' ? true : false,['id'=>'moderate_'.$key,'class'=>'moderate'])}}
+                                                <label for="{{'moderate_'.$key}}">
+                                                    Moderate
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][liquor_sub_type]",'severe',!empty($value->liquor_sub_type) && $value->liquor_sub_type == 'severe' ? true : false,['id'=>'severe_'.$key,'class'=>'severe'])}}
+                                                <label for="{{'severe_'.$key}}">
+                                                    Severe
+                                                </label>
                                             </div>
-                                        </div>
-                                        <div class="{{'col-md-1 female-type-data-'.$key.' pr-0 crl-data-value-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
-                                            <label class='vertical-form-label pr-0'>CRL :</label>
-                                        </div>
-                                        <div class="{{'col-md-2 female-type-data-'.$key.' crl-data-value-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
-                                            <div class="form-group">
-                                                {{Form::number("oe[utdata][".$key."][crl]",!empty($value->crl) ? $value->crl : null,['class'=>'form-control crl-data','data-id'=>$key])}}
-                                            </div>
-                                        </div>
-                                        <div class="{{'col-md-2 p-1 female-type-data-'.$key.' crl-data-value-'.$key.' '.$yalkData.' '.$utWeekStatus2}}">
-                                            <span class="{{'crl-text-'.$key}}">{{!empty($value->crl_details) ? $value->crl_details : null}}</span>
-                                            {{Form::hidden("oe[utdata][".$key."][crl_details]",!empty($value->crl_details) ? $value->crl_details : null,['class'=>'crl-val-'.$key])}}
                                         </div>
                                     </div>
-                                @else
-                                    <div class="{{ 'row fefal-reduction-' . $key}}">
-                                        <div class="col-md-3 ut-g-sac pr-0 mt-2">
-                                            {{Form::hidden("oe[utdata][".$key."][oe_ut_sac_1]",!empty($value->oe_ut_sac_1) ? $value->oe_ut_sac_1 : null,['class'=>'form-control ut-sac'])}}
-                                            {{Form::hidden("oe[utdata][".$key."][oe_ut_sac_2]",!empty($value->oe_ut_sac_2) ? $value->oe_ut_sac_2 : null,['class'=>'form-control ut-sac-2'])}}
-                                            {{strtoupper('ut(wks)')}}:- &nbsp;{{!empty($value->oe_ut_sac_1) ? $weekData[$value->oe_ut_sac_1] : null}}&nbsp;&nbsp;&nbsp;
+                                    {{-- Position--}}
+                                    <div class="{{'row fcp-data-'.$key.' wks-data-'.$key.' fefal-reduction-' . $key.' '.$fcpLiquorData}}">
+                                        <div class="{{'col-md-1 pr-0 position-data-'.$key.' '.$pData}}">
+                                            <label class="vertical-form-label pr-0 green-lable">
+                                                Position :
+                                            </label>
+                                        </div>
+                                        <div class="{{'col-sm-4 position-data-'.$key.' '.$pData}}">
+                                            <div class="radio is-conceived">
+                                                {{Form::radio("oe[utdata][".$key."][position_type]",'vertex',!empty($value->position_type) && $value->position_type == 'vertex' ? true : false,['id'=>'position_nertex_'.$key,'class'=>'position'])}}
+                                                <label for="{{'position_nertex_'.$key}}">
+                                                    Vertex
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][position_type]",'breech',!empty($value->position_type) && $value->position_type == 'breech' ? true : false,['id'=>'position_breech_'.$key,'class'=>'position'])}}
+                                                <label for="{{'position_breech_'.$key}}">
+                                                    Breech
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][position_type]",'transverse',!empty($value->position_type) && $value->position_type == 'transverse' ? true : false,['id'=>'position_transverse_'.$key,'class'=>'position'])}}
+                                                <label for="{{'position_transverse_'.$key}}">
+                                                    Transverse
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][position_type]",'oblique',!empty($value->position_type) && $value->position_type == 'oblique' ? true : false,['id'=>'position_oblique_'.$key,'class'=>'position'])}}
+                                                <label for="{{'position_oblique_'.$key}}">
+                                                    Oblique
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][position_type]",'none',!empty($value->position_type) && $value->position_type == 'none' ? true : false,['id'=>'none-2-'.$key,'class'=>'position'])}}
+                                                <label for="{{'none-2-'.$key}}">
+                                                    None
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Yalk--}}
+                                    <div class="{{'row female-type-data-'.$key.' yalk-sac-'.$key.' fefal-reduction-' . $key.' '. $yalkData.' gsac-data-'.$key.' '.$utWeekStatus2}}">
+                                        <div class="col-md-1 pr-0">
+                                            <label class="vertical-form-label pr-0">
+                                                Yalk Sac :
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="radio is-conceived">
+                                                {{Form::radio("oe[utdata][".$key."][yalk_sac]",'present',!empty($value->yalk_sac) && $value->yalk_sac == 'present' ? true : false,['id'=>'present_'.$key,'class'=>'yalk_sac'])}}
+                                                <label for="{{'present_'.$key}}">
+                                                    Present
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][yalk_sac]",'absent',!empty($value->yalk_sac) && $value->yalk_sac == 'absent' ? true : false,['id'=>'absent_'.$key,'class'=>'yalk_sac'])}}
+                                                <label for="{{'absent_'.$key}}">
+                                                    Absent
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][yalk_sac]",'none',!empty($value->yalk_sac) && $value->yalk_sac == 'none' ? true : false,['id'=>'none_'.$key,'class'=>'yalk_sac'])}}
+                                                <label for="{{'none_'.$key}}">
+                                                    None
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                {{Form::text("oe[utdata][".$key."][yalk_sac_size]",!empty(@$value->yalk_sac_size) ? @$value->yalk_sac_size: '',['class'=>'form-control','placeholder'=>'Yalk Sac Size'])}}
+                                            </div>
+                                        </div>
+                                        <div class="{{'col-md-1 pr-0 fefal-pole-data-'.$key .' '. $fefalData}}">
+                                            <label class="vertical-form-label pr-0">
+                                                Fefal Pole :
+                                            </label>
+                                        </div>
+                                        <div class="{{'col-sm-3 fefal-pole-data-'.$key .' '. $fefalData}}">
+                                            <div class="radio is-conceived">
+                                                {{Form::radio("oe[utdata][".$key."][fefal_pole]",'seen',!empty($value->fefal_pole) && $value->fefal_pole == 'seen' ? true : false,['id'=>'seen_'.$key,'class'=>'fefal-pole','data-id'=>$key])}}
+                                                <label for="{{'seen_'.$key}}">
+                                                    Seen
+                                                </label>
+
+                                                {{Form::radio("oe[utdata][".$key."][fefal_pole]",'notseen',!empty($value->fefal_pole) && $value->fefal_pole == 'notseen' ? true : false,['id'=>'unseen_'.$key,'class'=>'fefal-pole','data-id'=>$key])}}
+                                                <label for="{{'unseen_'.$key}}">
+                                                    Not Seen
+                                                </label>
+                                                {{Form::radio("oe[utdata][".$key."][fefal_pole]",'none',!empty($value->fefal_pole) && $value->fefal_pole == 'none' ? true : false,['id'=>'none-fefa','class'=>'fefal-pole','data-id'=>$key])}}
+                                                <label for="none-fefa">
+                                                    None
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="{{'row fcp-data-'.$key.' wks-data-'.$key.' fefal-reduction-' . $key.' '.$fcpLiquorData}}">
+                                        <div class="col-md-1 pr-0">
+                                            <label class="vertical-form-label pr-0 green-lable">
+                                                FCA :
+                                            </label>
+                                        </div>
+                                        <div class="{{'col-sm-2 fcp-data-'.$key .' '.$fcpLiquorData}}">
+                                            <div class="radio is-conceived">
+                                                {{Form::radio("oe[utdata][".$key."][fcp]",'present',(!empty($value->fcp) && (!empty($ancHistoryId) || !empty($ancId))) && $value->fcp == 'present' ? true : false,['id'=>'fcp_present_'.$key,'class'=>'fcp_type fcp-type-'.$key])}}
+                                                <label for="{{'fcp_present_'.$key}}">
+                                                    Present
+                                                </label>
+                                                {{Form::radio("oe[utdata][".$key."][fcp]",'absent',(!empty($value->fcp) && (!empty($ancHistoryId) || !empty($ancId))) && $value->fcp == 'absent' ? true : false,['id'=>'fcp_absent_'.$key,'class'=>'fcp_type fcp-type-'.$key])}}
+                                                <label for="{{'fcp_absent_'.$key}}">
+                                                    Absent
+                                                </label>
+                                            </div>
+                                            <span class="fcp-error text-danger"></span>
+                                        </div>
+                                    </div>
+                                    {{-- Placenta--}}
+                                    <div class="{{'row p-data-'.$key. ' fefal-reduction-' . $key.' '.$pData}}">
+                                        <div class="col-md-1">
+                                            <label class="vertical-form-label pr-0 green-lable">
+                                                Placenta:
+                                            </label>
                                         </div>
                                         <div class="col-md-3">
-                                            <label>
-                                                {{strtoupper('g-sac(mm)')}}:-&nbsp;{{!empty($value->oe_ut_sac_2) ? $value->oe_ut_sac_2 : null}}
-                                            </label>
-                                        </div>
-                                        <div class="{{'col-md-2 d-none ut-g-sac-details-'.$key}}">
                                             <div class="form-group">
-                                                {{Form::text("oe[utdata][".$key."][oe_ut_sac_details]",!empty($value->oe_ut_sac_details) ? $value->oe_ut_sac_details : null,['class'=>'form-control ut-sac-details','placeholder'=>'Details'])}}
-                                            </div>
-                                            <span class="form-error-msg">
-                                            {{$errors->first('oe_ut_sac')}}
-                                        </span>
-                                        </div>
-                                        <div class="{{'col-md-1 pr-0 crl-data-value-'.$key}}">
-                                            <label class='vertical-form-label pr-0'>CRL :</label>
-                                        </div>
-                                        <div class="{{'col-md-2 crl-data-value-'.$key}}">
-                                            <div class="form-group">
-                                                {{Form::number("oe[utdata][".$key."][crl]",!empty($value->crl) ? $value->crl : null,['class'=>'form-control crl-data','data-id'=>$key])}}
+                                                {{Form::select("oe[utdata][".$key."][placenta][]", $placenta, !empty($value->placenta) ? $value->placenta : null ,['class'=>'form-control select-padding-0','multiple'=> 'multiple','title'=>'Placenta Details'])}}
                                             </div>
                                         </div>
-                                        <div class="{{'col-md-1 p-1 crl-data-value-'.$key}}">
-                                            <span class="{{'crl-text-'.$key}}">{{!empty($value->crl_details) ? $value->crl_details : null}}</span>
-                                            {{Form::hidden("oe[utdata][".$key."][crl_details]",!empty($value->crl_details) ? $value->crl_details : null,['class'=>'crl-val-'.$key])}}
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Color Dropler : &nbsp;</span>
+                                                {{Form::text("oe[utdata][".$key."][color_dropler]", !empty($value->color_dropler) ? $value->color_dropler : null,[
+                                                    'class'=>'form-control',
+                                                    'placeholder' => 'Color Dropler'
+                                                ])}}
+                                            </div>
                                         </div>
                                     </div>
-                                @endif
-                                @if($key == 1 && $utType != 'yes')
+                                    {{-- Cervical--}}
                                     <div class="row">
-                                        <div class="col-md-2 pr-0">
-                                            <label class="vertical-form-label pr-0">
-                                                Late Conception :
+                                        <div class="col-md-1 pr-0 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
+                                            <label class="vertical-form-label pr-0 green-lable">
+                                                Cervical length :
                                             </label>
                                         </div>
-                                        <div class="col-sm-2">
-                                            <div class="radio is-conceived">
-                                                {{Form::radio("oe[late_data][late_concept]",'Yes',!empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'Yes' ? true : false,['id'=>'l-yes','class'=>'late-conception-type'])}}
-                                                <label for="l-yes">
-                                                    Yes
-                                                </label>
-
-                                                {{Form::radio("oe[late_data][late_concept]",'no',!empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'No' ? true : false,['id'=>'l-no','class'=>'late-conception-type'])}}
-                                                <label for="l-no">
-                                                    No
-                                                </label>
-                                            </div>
+                                        <div class="col-sm-2 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
+                                            {{Form::number("oe[utdata][".$key."][cervical_length]",@$value->cervical_length && !empty($value->cervical_length) ? $value->cervical_length:'',['id'=>'cervical_length','class'=>'form-control cervical_length','data-id'=>1])}}
                                         </div>
-                                        @php
-                                            $lateClass = !empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'Yes' ? '' : 'd-none';
-                                        @endphp
-                                        <div class="{{'col-md-2 late-concepte-week '.$lateClass}}">
-                                            <div class="form-group">
-                                                {{Form::text("oe[late_data][late_concept_week]",!empty($oe->late_data->late_concept_week) ? $oe->late_data->late_concept_week : null,['class'=>'form-control late-week','onwheel'=>"this.blur()",'oninput'=>"maxLengthCheck(this)",'placeholder'=>'Enter Week'])}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                                @php
-                                    $fefalData = !empty($value->oe_ut_sac_1) && ($weekData[$value->oe_ut_sac_1] == 9 || ($value->oe_ut_sac_1 >= 12 || $value->oe_ut_sac_1 <= 14)) ? '' : 'd-none';
-                                    $fcpLiquorData = !empty($value->oe_ut_sac_1) && ($weekData[$value->oe_ut_sac_1] >= 18 || $weekData[$value->oe_ut_sac_1] >= 6 || $value->oe_ut_sac_1 == 22 || $value->oe_ut_sac_1 == 9) ? '' : 'd-none';
-                                    $pData = !empty($value->oe_ut_sac_1) && ($weekData[$value->oe_ut_sac_1] >= 30 || $value->oe_ut_sac_1 == 22) ? '' : 'd-none';
-                                    $liquorSubData = !empty($value->liquor_type) && ($value->liquor_type == 'oligo' || $value->liquor_type == 'poly') ? '' : 'd-none';
-                                @endphp
-                                
-                                <div class="{{'row fcp-data-'.$key.' wks-data-'.$key.' fefal-reduction-' . $key.' '.$fcpLiquorData}}">
-                                    <div class="{{'col-md-1 pr-0 liquor-data-'.$key .' '.$fcpLiquorData}}">
-                                        <label class="vertical-form-label pr-0 green-lable">
-                                            Liquor :
-                                        </label>
-                                    </div>
-                                    <div class="{{'col-sm-3 liquor-data-'.$key .' '.$fcpLiquorData}}">
-                                        <div class="radio is-conceived">
-                                            {{Form::radio("oe[utdata][".$key."][liquor_type]",'normal',!empty($value->liquor_type) && $value->liquor_type == 'normal' ? true : false,['id'=>'liquor_normal_'.$key,'class'=>'liquor','data-id'=>$key])}}
-                                            <label for="{{'liquor_normal_'.$key}}">
-                                                Normal
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][liquor_type]",'oligo',!empty($value->liquor_type) && $value->liquor_type == 'oligo' ? true : false,['id'=>'liquor_oligo_'.$key,'class'=>'liquor','data-id'=>$key])}}
-                                            <label for="{{'liquor_oligo_'.$key}}">
-                                                Oligo
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][liquor_type]",'poly',!empty($value->liquor_type) && $value->liquor_type == 'poly' ? true : false,['id'=>'liquor_poly_'.$key,'class'=>'liquor','data-id'=>$key])}}
-                                            <label for="{{'liquor_poly_'.$key}}">
-                                                Poly
+                                        <div class="col-md-2 pr-0 extra-female-data-{{$key}} expected-data-{{$key}} d-none">
+                                            <label class="vertical-form-label pr-0 green-lable">
+                                                Expected Birth Weight :
                                             </label>
                                         </div>
-                                    </div>
-                                    <div class="{{'col-sm-3 liquor-data-'.$key .' '.$fcpLiquorData}}">
-                                        <div class="{{'radio is-conceived liquor-sub-type-data-'.$key. ' '.$liquorSubData}}">
-                                            {{Form::radio("oe[utdata][".$key."][liquor_sub_type]",'mild',!empty($value->liquor_sub_type) && $value->liquor_sub_type == 'mild' ? true : false,['id'=>'mild_'.$key,'class'=>'mild'])}}
-                                            <label for="{{'mild_'.$key}}">
-                                                Mild
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][liquor_sub_type]",'moderate',!empty($value->liquor_sub_type) && $value->liquor_sub_type == 'moderate' ? true : false,['id'=>'moderate_'.$key,'class'=>'moderate'])}}
-                                            <label for="{{'moderate_'.$key}}">
-                                                Moderate
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][liquor_sub_type]",'severe',!empty($value->liquor_sub_type) && $value->liquor_sub_type == 'severe' ? true : false,['id'=>'severe_'.$key,'class'=>'severe'])}}
-                                            <label for="{{'severe_'.$key}}">
-                                                Severe
-                                            </label>
+                                        <div class="col-sm-2 extra-female-data-{{$key}} expected-data-{{$key}} d-none">
+                                            {{Form::number("oe[utdata][".$key."][expected_birth_weight]",@$value->expected_birth_weight && !empty($value->expected_birth_weight) ? $value->expected_birth_weight:'',['id'=>'expected_birth_weight','class'=>'form-control expected_birth_weight','data-id'=>1])}}
                                         </div>
                                     </div>
                                 </div>
-                                {{-- Position--}}
-                                <div class="{{'row fcp-data-'.$key.' wks-data-'.$key.' fefal-reduction-' . $key.' '.$fcpLiquorData}}">
-                                    <div class="{{'col-md-1 pr-0 position-data-'.$key.' '.$pData}}">
-                                        <label class="vertical-form-label pr-0 green-lable">
-                                            Position :
-                                        </label>
-                                    </div>
-                                    <div class="{{'col-sm-4 position-data-'.$key.' '.$pData}}">
-                                        <div class="radio is-conceived">
-                                            {{Form::radio("oe[utdata][".$key."][position_type]",'vertex',!empty($value->position_type) && $value->position_type == 'vertex' ? true : false,['id'=>'position_nertex_'.$key,'class'=>'position'])}}
-                                            <label for="{{'position_nertex_'.$key}}">
-                                                Vertex
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][position_type]",'breech',!empty($value->position_type) && $value->position_type == 'breech' ? true : false,['id'=>'position_breech_'.$key,'class'=>'position'])}}
-                                            <label for="{{'position_breech_'.$key}}">
-                                                Breech
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][position_type]",'transverse',!empty($value->position_type) && $value->position_type == 'transverse' ? true : false,['id'=>'position_transverse_'.$key,'class'=>'position'])}}
-                                            <label for="{{'position_transverse_'.$key}}">
-                                                Transverse
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][position_type]",'oblique',!empty($value->position_type) && $value->position_type == 'oblique' ? true : false,['id'=>'position_oblique_'.$key,'class'=>'position'])}}
-                                            <label for="{{'position_oblique_'.$key}}">
-                                                Oblique
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][position_type]",'none',!empty($value->position_type) && $value->position_type == 'none' ? true : false,['id'=>'none-2-'.$key,'class'=>'position'])}}
-                                            <label for="{{'none-2-'.$key}}">
-                                                None
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- Yalk--}}
-                                <div class="{{'row female-type-data-'.$key.' yalk-sac-'.$key.' fefal-reduction-' . $key.' '. $yalkData.' gsac-data-'.$key.' '.$utWeekStatus2}}">
-                                    <div class="col-md-1 pr-0">
-                                        <label class="vertical-form-label pr-0">
-                                            Yalk Sac :
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="radio is-conceived">
-                                            {{Form::radio("oe[utdata][".$key."][yalk_sac]",'present',!empty($value->yalk_sac) && $value->yalk_sac == 'present' ? true : false,['id'=>'present_'.$key,'class'=>'yalk_sac'])}}
-                                            <label for="{{'present_'.$key}}">
-                                                Present
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][yalk_sac]",'absent',!empty($value->yalk_sac) && $value->yalk_sac == 'absent' ? true : false,['id'=>'absent_'.$key,'class'=>'yalk_sac'])}}
-                                            <label for="{{'absent_'.$key}}">
-                                                Absent
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][yalk_sac]",'none',!empty($value->yalk_sac) && $value->yalk_sac == 'none' ? true : false,['id'=>'none_'.$key,'class'=>'yalk_sac'])}}
-                                            <label for="{{'none_'.$key}}">
-                                                None
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            {{Form::text("oe[utdata][".$key."][yalk_sac_size]",!empty(@$value->yalk_sac_size) ? @$value->yalk_sac_size: '',['class'=>'form-control','placeholder'=>'Yalk Sac Size'])}}
-                                        </div>
-                                    </div>
-                                    <div class="{{'col-md-1 pr-0 fefal-pole-data-'.$key .' '. $fefalData}}">
-                                        <label class="vertical-form-label pr-0">
-                                            Fefal Pole :
-                                        </label>
-                                    </div>
-                                    <div class="{{'col-sm-3 fefal-pole-data-'.$key .' '. $fefalData}}">
-                                        <div class="radio is-conceived">
-                                            {{Form::radio("oe[utdata][".$key."][fefal_pole]",'seen',!empty($value->fefal_pole) && $value->fefal_pole == 'seen' ? true : false,['id'=>'seen_'.$key,'class'=>'fefal-pole','data-id'=>$key])}}
-                                            <label for="{{'seen_'.$key}}">
-                                                Seen
-                                            </label>
-
-                                            {{Form::radio("oe[utdata][".$key."][fefal_pole]",'notseen',!empty($value->fefal_pole) && $value->fefal_pole == 'notseen' ? true : false,['id'=>'unseen_'.$key,'class'=>'fefal-pole','data-id'=>$key])}}
-                                            <label for="{{'unseen_'.$key}}">
-                                                Not Seen
-                                            </label>
-                                            {{Form::radio("oe[utdata][".$key."][fefal_pole]",'none',!empty($value->fefal_pole) && $value->fefal_pole == 'none' ? true : false,['id'=>'none-fefa','class'=>'fefal-pole','data-id'=>$key])}}
-                                            <label for="none-fefa">
-                                                None
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="{{'row fcp-data-'.$key.' wks-data-'.$key.' fefal-reduction-' . $key.' '.$fcpLiquorData}}">
-                                    <div class="col-md-1 pr-0">
-                                        <label class="vertical-form-label pr-0 green-lable">
-                                            FCA :
-                                        </label>
-                                    </div>
-                                    <div class="{{'col-sm-2 fcp-data-'.$key .' '.$fcpLiquorData}}">
-                                        <div class="radio is-conceived">
-                                            {{Form::radio("oe[utdata][".$key."][fcp]",'present',(!empty($value->fcp) && (!empty($ancHistoryId) || !empty($ancId))) && $value->fcp == 'present' ? true : false,['id'=>'fcp_present_'.$key,'class'=>'fcp_type fcp-type-'.$key])}}
-                                            <label for="{{'fcp_present_'.$key}}">
-                                                Present
-                                            </label>
-                                            {{Form::radio("oe[utdata][".$key."][fcp]",'absent',(!empty($value->fcp) && (!empty($ancHistoryId) || !empty($ancId))) && $value->fcp == 'absent' ? true : false,['id'=>'fcp_absent_'.$key,'class'=>'fcp_type fcp-type-'.$key])}}
-                                            <label for="{{'fcp_absent_'.$key}}">
-                                                Absent
-                                            </label>
-                                        </div>
-                                        <span class="fcp-error text-danger"></span>
-                                    </div>
-                                </div>
-                                {{-- Placenta--}}
-                                <div class="{{'row p-data-'.$key. ' fefal-reduction-' . $key.' '.$pData}}">
-                                    <div class="col-md-1">
-                                        <label class="vertical-form-label pr-0 green-lable">
-                                            Placenta:
-                                        </label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            {{Form::select("oe[utdata][".$key."][placenta][]", $placenta, !empty($value->placenta) ? $value->placenta : null ,['class'=>'form-control select-padding-0','multiple'=> 'multiple','title'=>'Placenta Details'])}}
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">Color Dropler : &nbsp;</span>
-                                            {{Form::text("oe[utdata][".$key."][color_dropler]", !empty($value->color_dropler) ? $value->color_dropler : null,[
-                                                'class'=>'form-control',
-                                                'placeholder' => 'Color Dropler'
-                                            ])}}
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- Cervical--}}
-                                <div class="row">
-                                    <div class="col-md-1 pr-0 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
-                                        <label class="vertical-form-label pr-0 green-lable">
-                                            Cervical length :
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-2 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
-                                        {{Form::number("oe[utdata][".$key."][cervical_length]",@$value->cervical_length && !empty($value->cervical_length) ? $value->cervical_length:'',['id'=>'cervical_length','class'=>'form-control cervical_length','data-id'=>1])}}
-                                    </div>
-                                    <div class="col-md-2 pr-0 extra-female-data-{{$key}} expected-data-{{$key}} d-none">
-                                        <label class="vertical-form-label pr-0 green-lable">
-                                            Expected Birth Weight :
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-2 extra-female-data-{{$key}} expected-data-{{$key}} d-none">
-                                        {{Form::number("oe[utdata][".$key."][expected_birth_weight]",@$value->expected_birth_weight && !empty($value->expected_birth_weight) ? $value->expected_birth_weight:'',['id'=>'expected_birth_weight','class'=>'form-control expected_birth_weight','data-id'=>1])}}
-                                    </div>
-                                </div>
-                            </div>
                         @endforeach
                     @endif
                 </div>

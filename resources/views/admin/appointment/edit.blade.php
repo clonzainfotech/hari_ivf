@@ -438,7 +438,7 @@
                                                 <div class="col-md-4 col-sm-4">
                                                     <div class="input-group">
                                                         <span class="input-group-addon unik-lbl-spn">Birth Date : &nbsp;</span>
-                                                        {{Form::text('dob',$appointment->getPatientsDetails['dob'] ? \Carbon\Carbon::parse($appointment->getPatientsDetails['dob'])->format('d-m-y') : null,[
+                                                        {{Form::text('dob',$appointment->getPatientsDetails['dob'] ? \Carbon\Carbon::parse($appointment->getPatientsDetails['dob'])->format('d-m-Y') : null,[
                                                             'id' =>'birthdate',
                                                             'class'=>'dob border-color border-1',
                                                             'placeholder'=>'BirthDate',
@@ -474,7 +474,7 @@
         $(function () {
         //Datetimepicker plugin
             $("#birthdate").datepicker({
-                dateFormat: 'd-m-y',
+                dateFormat: 'dd-mm-yy',
                 changeMonth: true,
                 changeYear: true,
                 yearRange: "-100:+0"

@@ -538,6 +538,33 @@ $(document).ready(function(){
     $(document).on('change','select.oe-no',function(){
         var oeValue = $(this).val();
         oeNumber(oeValue);
+        $('.gynec-plan-tab').addClass('d-none');
+            $('.injection-tab').removeClass('d-none');
+            var isGynec = 0;
+        $(".blighted-ovum:checked").each(function() {
+            var isBlighted = $(this).val();
+            
+            if($(this).val() == 'no')
+            {
+                isGynec = 0;
+                return false;
+            }
+            if($('select.oe-no').val() == 1 && $(this).val() == 'yes')
+            {
+                isGynec = 1;
+                return false;
+            }
+            if($(this).val() == 'yes')
+            {
+                isGynec = 1;
+            }
+        })
+        if(isGynec == 1){
+            $('.gynec-plan-tab').removeClass('d-none');
+            $('.injection-tab').addClass('d-none');
+        }
+        $('.is-gynec').val(isGynec);
+        
     });
 
     $(document).on('click','.anc-profile-type',function(){
@@ -791,8 +818,14 @@ function femaleteType(value,dId){
             //     result = 1;
             //     return false;
             // }
+            console.log(this.value);
+            if(this.value == "Intrauterine") {
+                $('.blighted-ovum-data').removeClass('d-none');
+            }
             if(this.value == "Ectopic" || this.value == "Molar Pregnancy" || this.value == "No intrauterine or extrauterine G- Sac seen at present") {
                 $('.overy-data-1').removeClass('d-none');
+                $('.blighted-ovum-data').addClass('d-none');
+
             }
         });
         if(result == 1){
@@ -1062,7 +1095,6 @@ function addOrRemoveClass(value,dId,key=null){
         if(utSac == ''){
             utSac = 0;
         }
-
         $('.fcp-data-'+i).addClass('d-none');
         $('.liquor-data-'+i).addClass('d-none');
         $('.cervical-data-'+i).addClass('d-none');
@@ -1073,8 +1105,15 @@ function addOrRemoveClass(value,dId,key=null){
         $('.fefal-reduction-data').addClass('d-none');
         $('.fefal-pole-data-'+i).addClass('d-none');
         $('.crl-data-value-'+i).addClass('d-none');
+        $('.blighted-ovum-data').removeClass('d-none');
+
         if(value >=3 || key == 22 || key == 9){
             $('.crl-data-value-'+i).removeClass('d-none');
+
+        }
+        if(value > 6)
+        {
+            
         }
         if(value >= 18 || key == 22 || value >= 6 || key == 9){
             if(i == 1){
@@ -1083,6 +1122,7 @@ function addOrRemoveClass(value,dId,key=null){
                     $('.is-gynec').val(1);
                 }
             }
+            $('.blighted-ovum-data').addClass('d-none');
             $('.fcp-data-'+i).removeClass('d-none');
             $('.cervical-data-'+i).removeClass('d-none');
             $('.expected-data-'+i).removeClass('d-none');
@@ -1784,6 +1824,7 @@ function oeNumber(oeValue){
     }
     $('.oe-data').empty();
     var type = $('select.oe-no').data('type');
+    var female_type = $(".female-type:checked").val();
     var j = 2;
     if(typeof type != 'undefined'){
         j = 1;
@@ -1794,15 +1835,24 @@ function oeNumber(oeValue){
         oeValueData +=    "<div class='child-no-box'><div class='row'>";
         oeValueData += "<div class='col-md-1 pr-0 female-type-data-"+i+" gsac-data-"+i+"'><label class='vertical-form-label pr-0'>G-sac(MM)</label></div>";
         oeValueData +=  "<div class='col-md-1 g-sac female-type-data-"+i+" ut-g-sac gsac-data-"+i+"'><div class='form-group'>"+
-            "<input type='text' name='oe[utdata]["+i+"][oe_ut_sac_2]' class='form-control'>"+
+            "<input type='text' name='oe[utdata]["+i+"][oe_ut_sac_2]' class='form-control g-sac-1'>"+
             "</div></div>";
         oeValueData += "<div class='col-md-1 pr-0 female-type-data-"+i+" crl-data-value-"+i+"'><label class='vertical-form-label pr-0'>CRL :</label></div>"+
             "<div class='col-md-2 crl-"+i+" female-type-data-"+i+" crl-data-value-"+i+"'><div class='form-group'>"+
             "<input type='text' name='oe[utdata]["+i+"][crl]' class='form-control crl-data' data-id="+i+">"+
             "</div></div>"+
-            "<div class='col-md-1 female-type-data-"+i+"  p-1 crl-data-value-"+i+"'><span class='crl-text-"+i+"'></span><input type='hidden' name='oe[utdata]["+i+"][crl_details]' class='crl-val-"+i+"'></div>"+
-            "</div>";
-
+            "<div class='col-md-1 female-type-data-"+i+"  p-1 crl-data-value-"+i+"'><span class='crl-text-"+i+"'></span><input type='hidden' name='oe[utdata]["+i+"][crl_details]' class='crl-val-"+i+"'></div>";
+        // if(female_type == 'Intrauterine') 
+        // {
+            oeValueData += '<div class="col-md-1 female-type-data-'+i+' pr-0 blighted-ovum-data blighted-ovum-data-'+i+'"><label class="vertical-form-label pr-0">Blighted Ovum :</label></div>'+
+            '<div class="col-sm-3 female-type-data-'+i+' blighted-ovum-data blighted-ovum-data-'+i+'">'+
+            '<div class="radio is-conceived">'+
+            "<input type='radio' name='oe[utdata]["+i+"][blighted_ovum]' value='yes' id='blighted-ovum-yes-"+i+"' class='blighted-ovum'><label for='blighted-ovum-yes-"+i+"'>Yes</label>"+
+            "<input type='radio' name='oe[utdata]["+i+"][blighted_ovum]' value='no' id='blighted-ovum-no-"+i+"' class='blighted-ovum' checked><label for='blighted-ovum-no-"+i+"'>No</label>"+
+            '</div></div>';
+        // }   
+                                                
+        oeValueData +="</div>";
         // if(utType == 'ut'){
         oeValueData +=   "<div class='row wks-data-"+i+"'>"+
             "<div class='col-md-1 pr-0 extra-female-data-"+i+" fcp-data-"+i+" d-none green-lable'><label class='vertical-form-label pr-0'>FCP :</label></div>"+

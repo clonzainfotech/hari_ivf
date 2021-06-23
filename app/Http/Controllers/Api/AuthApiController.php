@@ -71,7 +71,7 @@ class AuthApiController extends ApiController
             return $this->sendResponse('Send otp for verification.',$success);
         }
         else{
-            return $this->sendResponse('Please contact to Radha Candor IVF Hospital');
+            return $this->sendError('Please contact to Radha Candor IVF Hospital');
         }
        return $this->sendError(__('auth.failed'), 401);
     }

@@ -121,7 +121,7 @@
                             </div>
                         </div> --}}
 
-                        <div class="row ivf-data">
+                        {{-- <div class="row ivf-data">
                             <div class="form-group col-md-6">
                                 {{Form::text('h_name','',[
                                     'class'=>'form-control col-md-12',
@@ -220,7 +220,7 @@
                                     'min' => 0
                                 ])}}
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row hormon-row reference-doctor">
                             <div class="col-md-6">
