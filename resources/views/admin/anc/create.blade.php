@@ -408,17 +408,17 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_type]",'normal',true,['id'=>'normal'])}}
+                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_type_value]",'normal',true,['id'=>'normal'])}}
                                                     <label for="normal">
                                                         Normal
                                                     </label>
 
-                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_type]",'cesarean','',['id'=>'cesarean'])}}
+                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_type_value]",'cesarean','',['id'=>'cesarean'])}}
                                                     <label for="cesarean">
                                                         Cesarean
                                                     </label>
 
-                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_type]",'instrumental','',['id'=>'instrumental'])}}
+                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_type_value]",'instrumental','',['id'=>'instrumental'])}}
                                                     <label for="instrumental">
                                                         Instrumental
                                                     </label>
@@ -712,17 +712,17 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_type]",'normal',true,['id'=>'second_normal'])}}
+                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_type_value]",'normal',true,['id'=>'second_normal'])}}
                                                     <label for="second_normal">
                                                         Normal
                                                     </label>
 
-                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_type]",'cesarean','',['id'=>'second_cesarean'])}}
+                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_type_value]",'cesarean','',['id'=>'second_cesarean'])}}
                                                     <label for="second_cesarean">
                                                         Cesarean
                                                     </label>
 
-                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_type]",'instrumental','',['id'=>'second_instrumental'])}}
+                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_type_value]",'instrumental','',['id'=>'second_instrumental'])}}
                                                     <label for="second_instrumental">
                                                         Instrumental
                                                     </label>

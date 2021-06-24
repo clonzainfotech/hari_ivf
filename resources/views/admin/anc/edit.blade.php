@@ -108,19 +108,19 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
         @php
             $investigationDetails = !empty($previousAncinvestigation->investigation_details) ? (array)$previousAncinvestigation->investigation_details : null;
         @endphp
-        @if($investigationDetails && isset($investigationDetails['12'])  && (substr ($investigationDetails['12'], -3) == '-VE' || $investigationDetails['12'] == 'negative' || strpos($investigationDetails['12'], 'negative') !== false))
+        @if($investigationDetails && isset($investigationDetails['12'])  && (substr (strtolower($investigationDetails['12']), -3) == '-ve' || strtolower($investigationDetails['12']) == 'negative' || strpos(strtolower($investigationDetails['12']), 'negative') !== false))
             &nbsp;Blood Group:
             <small>
                 {{$investigationDetails['12']}}
             </small>
         @endif
-        @if($investigationDetails && isset($investigationDetails['8']) && (substr ($investigationDetails['8'], -3) == '+VE' || $investigationDetails['8'] == 'positive' || strpos($investigationDetails['8'], 'positive') !== false))
+        @if($investigationDetails && isset($investigationDetails['8']) && (substr (strtolower($investigationDetails['8']), -3) == '+ve' || strtolower($investigationDetails['8']) == 'positive' || strpos(strtolower($investigationDetails['8']), 'positive') !== false))
             &nbsp;HBSAG:
             <small>
                 {{$investigationDetails['8']}}
             </small>
         @endif
-        @if($investigationDetails && isset($investigationDetails['10']) && (substr ($investigationDetails['10'], -3) == '+VE' || $investigationDetails['10'] == 'positive' || strpos($investigationDetails['10'], 'positive') !== false))
+        @if($investigationDetails && isset($investigationDetails['10']) && (substr (strtolower($investigationDetails['10']), -3) == '+ve' || strtolower($investigationDetails['10']) == 'positive' || strpos(strtolower($investigationDetails['10']), 'positive') !== false))
             &nbsp;HIV:
             <small>
                 {{$investigationDetails['10']}}
@@ -144,6 +144,51 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 {{$previousAncinvestigation->investigation_growth_pp2bs}}
             </small>
         @endif
+        @php
+            $previousUTData = !empty($previousAncOe->utdata) ? $previousAncOe->utdata : [];
+            $previousPatientObs = !empty($previousAncPatientObs->child->child_data) ? $previousAncPatientObs->child->child_data : [];
+        @endphp
+        @foreach($previousPatientObs as $key => $value)
+            @if($value->ho_type_value == 'cesarean')
+            @php
+                $totalCesarean = $key;
+            @endphp
+            @endif
+        @endforeach
+        @if(!empty($totalCesarean))
+        <small>
+            &nbsp;Previous:
+            {{$totalCesarean.' LSCS'}}
+        </small>
+        @endif
+        @foreach($previousUTData as $key => $value)
+            @if(!empty($value->position_type) && ($value->position_type == 'breech' || $value->position_type == 'transverse' || $value->position_type == 'oblique'))
+                &nbsp;Presentation:
+                <small>
+                    {{$value->position_type}}
+                </small>
+            @endif
+            @if(!empty($value->liquor_type) && ($value->liquor_type == 'oligo' || $value->liquor_type == 'poly'))
+                &nbsp;Liquor:
+                <small>
+                    {{$value->liquor_type}}
+                </small>
+            @endif
+            @if(!empty($value->placenta))
+            @php
+                $placentaValue = '';
+            @endphp
+                &nbsp;Placenta:
+                <small>
+                    @foreach($value->placenta as $value)
+                    @php 
+                        $placentaValue = !empty($placentaValue) ? ', '.$placenta[$value] : $placenta[$value];
+                    @endphp
+                    {{$placentaValue}}
+                    @endforeach
+                </small>
+            @endif
+        @endforeach
     </h5>
 </span>
 @if ($isGsac == true && empty($ancId))
@@ -1375,17 +1420,17 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="radio is-conceived">
-                                        {{Form::radio("p_obstratics[child][child_data][".$key."][ho_type]",'normal',!empty($row->ho_type) && $row->ho_type == 'normal' ? true : false,['id'=>'normal_'.$key])}}
+                                        {{Form::radio("p_obstratics[child][child_data][".$key."][ho_type_value]",'normal',!empty($row->ho_type_value) && $row->ho_type_value == 'normal' ? true : false,['id'=>'normal_'.$key])}}
                                         <label for={{'normal_'.$key}}>
                                             Normal
                                         </label>
 
-                                        {{Form::radio("p_obstratics[child][child_data][".$key."][ho_type]",'cesarean',!empty($row->ho_type) && $row->ho_type == 'cesarean' ? true : false,['id'=>'cesarean_'.$key])}}
+                                        {{Form::radio("p_obstratics[child][child_data][".$key."][ho_type_value]",'cesarean',!empty($row->ho_type_value) && $row->ho_type_value == 'cesarean' ? true : false,['id'=>'cesarean_'.$key])}}
                                         <label for={{'cesarean_'.$key}}>
                                             Cesarean
                                         </label>
 
-                                        {{Form::radio("p_obstratics[child][child_data][".$key."][ho_type]",'instrumental',!empty($row->ho_type) && $row->ho_type == 'instrumental' ? true : false,['id'=>'instrumental_'.$key])}}
+                                        {{Form::radio("p_obstratics[child][child_data][".$key."][ho_type_value]",'instrumental',!empty($row->ho_type_value) && $row->ho_type_value == 'instrumental' ? true : false,['id'=>'instrumental_'.$key])}}
                                         <label for="{{'instrumental_'.$key}}">
                                             Instrumental
                                         </label>
@@ -1767,17 +1812,17 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="radio is-conceived">
-                                        {{Form::radio("p_obstratics[second_marriage][child][child_data][".$key."][ho_type]",'normal',!empty($row->ho_type) && $row->ho_type == 'normal' ? true : false,['id'=>'second_normal_'.$key])}}
+                                        {{Form::radio("p_obstratics[second_marriage][child][child_data][".$key."][ho_type_value]",'normal',!empty($row->ho_type_value) && $row->ho_type_value == 'normal' ? true : false,['id'=>'second_normal_'.$key])}}
                                         <label for={{'second_normal_'.$key}}>
                                             Normal
                                         </label>
 
-                                        {{Form::radio("p_obstratics[second_marriage][child][child_data][".$key."][ho_type]",'cesarean',!empty($row->ho_type) && $row->ho_type == 'cesarean' ? true : false,['id'=>'second_cesarean_'.$key])}}
+                                        {{Form::radio("p_obstratics[second_marriage][child][child_data][".$key."][ho_type_value]",'cesarean',!empty($row->ho_type_value) && $row->ho_type_value == 'cesarean' ? true : false,['id'=>'second_cesarean_'.$key])}}
                                         <label for={{'second_cesarean_'.$key}}>
                                             Cesarean
                                         </label>
 
-                                        {{Form::radio("p_obstratics[second_marriage][child][child_data][".$key."][ho_type]",'instrumental',!empty($row->ho_type) && $row->ho_type == 'instrumental' ? true : false,['id'=>'second_instrumental_'.$key])}}
+                                        {{Form::radio("p_obstratics[second_marriage][child][child_data][".$key."][ho_type_value]",'instrumental',!empty($row->ho_type_value) && $row->ho_type_value == 'instrumental' ? true : false,['id'=>'second_instrumental_'.$key])}}
                                         <label for="{{'second_instrumental_'.$key}}">
                                             Instrumental
                                         </label>

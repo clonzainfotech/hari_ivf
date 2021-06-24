@@ -1056,6 +1056,7 @@ class ANCController extends AdminController
             // $previousAnc = (!empty($previousAnc)) ? json_decode($previousAnc) : null;
             $previousAncOe = (!empty($previousAnc->o_e)) ? json_decode($previousAnc->o_e) : null;
             $previousAncinvestigation = (!empty($previousAnc->investigation)) ? json_decode($previousAnc->investigation) : null;
+            $previousAncPatientObs = (!empty($previousAnc->patients_obstratics)) ? json_decode($previousAnc->patients_obstratics) : null;
             $patientsDetails = json_decode($ancData->patients_details_ho);
             $patientsInvestigation = json_decode($ancData->investigation);
             $patientsInjection = json_decode($ancData->injection);
@@ -1168,6 +1169,7 @@ class ANCController extends AdminController
                 // $data['previousAncRemark'] = $previousAnc;
                 $data['previousAnc'] = $previousAnc;
                 $data['previousAncOe'] = $previousAncOe;
+                $data['previousAncPatientObs'] = $previousAncPatientObs;
                 $data['previousAncinvestigation'] =$previousAncinvestigation;
                 // dd($data['previousAncRemark']);
                 $data['usg'] = $usg;

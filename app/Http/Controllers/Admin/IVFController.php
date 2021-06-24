@@ -615,7 +615,9 @@ class IVFController extends AdminController
                         $ivf_mh_data->edd = !empty($ivfSecondVisitData->lmp->date) ? Carbon::parse($ivfSecondVisitData->lmp->date)->addMonths(9)->addDays(7)->format('Y-m-d') : '';
                         $ivfFirstVisitData->m_h = json_encode($ivf_mh_data);
 
+                        $autoRemark = [];
                         $ancData = $this->ANC;
+                        $autoRemark['remark'] = "Consive from IVF";
                         $ancData->patients_id = $patientsId;
                         $ancData->patients_info = $ivfFirstVisitData->patients_info;
                         $ancData->patients_details_ho = $ivfFirstVisitData->patients_details_ho;
@@ -624,6 +626,7 @@ class IVFController extends AdminController
                         $ancData->m_h = $ivfFirstVisitData->m_h;
                         $ancData->h_o = $ivfFirstVisitData->h_o;
                         $ancData->c_o = $ivfFirstVisitData->c_o;
+                        $ancData->o_e = json_encode($autoRemark);
                         $ancData->treatment = $ivfFirstVisitData->treatment;
                         $ancData->save();
                         $isAnc = true;

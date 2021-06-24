@@ -414,6 +414,7 @@ class IUIController extends AdminController
                 }
                 if(!empty($request->data['result']) && $request->data['result'] == 'consive' && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'positive')){
                     $ancData = $this->ANC;
+                    $autoRemark = [];
                     //set EDD date and lmpdate from second visit
                     $iuiSecondVisit = $this->IuiHistory->where('patients_id',$patientsId)->whereCycleNo($request->cycle_no)->where('visit',2)->first();
                     $iuiSecondVisitData = json_decode($iuiSecondVisit->description);
@@ -422,7 +423,7 @@ class IUIController extends AdminController
                     $iui_mh_data->lmd_date_diff = !empty($iuiSecondVisitData->lmp->lmp_date_diff) ? $iuiSecondVisitData->lmp->lmp_date_diff : '';
                     $iui_mh_data->edd = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->addMonths(9)->addDays(7)->format('Y-m-d') : '';
                     $iuiPatientsData->m_h = json_encode($iui_mh_data);
-
+                    $autoRemark['remark'] = "Consive from IUI";
                     $ancData->patients_id = $patientsId;
                     $ancData->patients_info = $iuiPatientsData->patients_info;
                     $ancData->patients_details_ho = $iuiPatientsData->patients_details_ho;
@@ -431,6 +432,7 @@ class IUIController extends AdminController
                     $ancData->m_h = $iuiPatientsData->m_h;
                     $ancData->h_o = $iuiPatientsData->h_o;
                     $ancData->c_o = $iuiPatientsData->c_o;
+                    $ancData->o_e = json_encode($autoRemark);
                     $ancData->treatment = $iuiPatientsData->treatment;
                     $ancData->save();
                     $isAnc = true;

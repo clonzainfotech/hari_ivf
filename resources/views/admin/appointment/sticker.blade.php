@@ -18,11 +18,11 @@ td{
  font-weight: 900;
 }
 .sticker-sub-header{
-    width: 40%;
-    text-align: right;
+    /* width: 40%;
+    text-align: right; */
 }
 .sticker-sub-span{
-    width: 75%;
+    /* width: 50%; */
     display: inline-block;
     text-align: left;
 }
@@ -32,9 +32,16 @@ td{
     height: auto;
     vertical-align: initial;
 }
-left-border
+.left-border
 {
     border-left: 1px solid black;
+}
+.float-right
+{
+    float: right;
+}
+.w-12{
+    width: 11rem;
 }
 /* width: 50%;
     height: auto;
@@ -45,7 +52,7 @@ left-border
     <tbody>
         <tr>
             <td style="width: 50%" class="sticket-data">
-                <table id="sticker-table" class="sticker-table">
+                <table id="sticker-table" class="sticker-table float-right">
                     <tbody>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Name</span></td>
@@ -57,7 +64,7 @@ left-border
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Address</span></td>
-                            <td>: {{$appointment->getPatientsDetails['residence'].', '. $appointment->getPatientsDetails['main_area'].', '. $appointment->getPatientsDetails['city']}}</td>
+                            <td class="w-12">: {{$appointment->getPatientsDetails['residence'].', '. $appointment->getPatientsDetails['main_area'].', '. $appointment->getPatientsDetails['city']}}</td>
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Dr. Name</span></td>
@@ -84,7 +91,7 @@ left-border
             </td>
             @if($is_indoor == 1)
             <td style="width: 50%" class="sticket-data">
-                <table id="sticker-table" class="sticker-table">
+                <table id="sticker-table" class="sticker-table float-right">
                     <tbody>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Name</span></td>
@@ -96,7 +103,7 @@ left-border
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Address</span></td>
-                            <td>: {{$appointment->getPatientsDetails['residence'].', '. $appointment->getPatientsDetails['main_area'].', '. $appointment->getPatientsDetails['city']}}</td>
+                            <td class="w-12">: {{$appointment->getPatientsDetails['residence'].', '. $appointment->getPatientsDetails['main_area'].', '. $appointment->getPatientsDetails['city']}}</td>
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Dr. Name</span></td>
