@@ -147,6 +147,7 @@ td{
                     $code=$appointment->code;
                     $date=date(" D, d M Y", strtotime($appointment->date));
                     $arrData = [
+                        'id' => $appointment->getPatientsDetails['id'],
                         'name'  => $firstline,
                         'age'=>$age,
                         'gender'=>$gen,
