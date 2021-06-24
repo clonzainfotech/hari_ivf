@@ -1148,7 +1148,20 @@
                                                     </span>
                                                 </div>
                                             </div>
-
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <div class="form-group">
+                                                        {{Form::text("mh[age_of_manopause]",'',['class'=>'form-control','placeholder'=>'Age Of Manopause'])}}
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Since Year : &nbsp;</span>
+                                                        {{Form::text("mh[manopause_since_year]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-1">
                                                     <label class="vertical-form-label">
@@ -2402,7 +2415,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        {{Form::textarea("h_factor[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

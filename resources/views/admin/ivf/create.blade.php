@@ -630,17 +630,17 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <div class="radio is-conceived">
-                                                        {{Form::radio("oh[child][child_data][1][ho_type]",'normal',true,['id'=>'normal'])}}
+                                                        {{Form::radio("oh[child][child_data][1][ho_type_type]",'normal',true,['id'=>'normal'])}}
                                                         <label for="normal">
                                                             Normal
                                                         </label>
 
-                                                        {{Form::radio("oh[child][child_data][1][ho_type]",'cesarean','',['id'=>'cesarean'])}}
+                                                        {{Form::radio("oh[child][child_data][1][ho_type_type]",'cesarean','',['id'=>'cesarean'])}}
                                                         <label for="cesarean">
                                                             Cesarean
                                                         </label>
 
-                                                        {{Form::radio("oh[child][child_data][1][ho_type]",'instrumental','',['id'=>'instrumental'])}}
+                                                        {{Form::radio("oh[child][child_data][1][ho_type_type]",'instrumental','',['id'=>'instrumental'])}}
                                                         <label for="instrumental">
                                                             Instrumental
                                                         </label>
@@ -988,17 +988,17 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <div class="radio is-conceived">
-                                                        {{Form::radio("oh[second_marriage][child][child_data][1][ho_type]",'normal',true,['id'=>'second_normal'])}}
+                                                        {{Form::radio("oh[second_marriage][child][child_data][1][ho_type_type]",'normal',true,['id'=>'second_normal'])}}
                                                         <label for="second_normal">
                                                             Normal
                                                         </label>
 
-                                                        {{Form::radio("oh[second_marriage][child][child_data][1][ho_type]",'cesarean','',['id'=>'second_cesarean'])}}
+                                                        {{Form::radio("oh[second_marriage][child][child_data][1][ho_type_type]",'cesarean','',['id'=>'second_cesarean'])}}
                                                         <label for="second_cesarean">
                                                             Cesarean
                                                         </label>
 
-                                                        {{Form::radio("oh[second_marriage][child][child_data][1][ho_type]",'instrumental','',['id'=>'second_instrumental'])}}
+                                                        {{Form::radio("oh[second_marriage][child][child_data][1][ho_type_type]",'instrumental','',['id'=>'second_instrumental'])}}
                                                         <label for="second_instrumental">
                                                             Instrumental
                                                         </label>
@@ -1330,7 +1330,20 @@
                                                     </span>
                                                 </div>
                                             </div>
-
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <div class="form-group">
+                                                        {{Form::text("mh[age_of_manopause]",'',['class'=>'form-control','placeholder'=>'Age Of Manopause'])}}
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Since Year : &nbsp;</span>
+                                                        {{Form::text("mh[manopause_since_year]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-1">
                                                     <label class="vertical-form-label">
@@ -1851,60 +1864,6 @@
                                             </div>
                                             {{-- end hcg  --}}
                                             <br>
-                                            {{-- <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            CBC : &nbsp;
-                                                        </span>
-                                                        {{Form::text("investigation[cbc]",'',['class'=>'form-control'])}}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            Urine : &nbsp;
-                                                        </span>
-                                                        {{Form::text("investigation[urine]",'',['class'=>'form-control'])}}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            RBS : &nbsp;
-                                                        </span>
-                                                        {{Form::text("investigation[rbs]",'',['class'=>'form-control'])}}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            HIV : &nbsp;
-                                                        </span>
-                                                        {{Form::text("investigation[hiv]",'',['class'=>'form-control'])}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            Hbs Ag : &nbsp;
-                                                        </span>
-                                                        {{Form::text("investigation[hbs_ag]",'',['class'=>'form-control'])}}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            Date : &nbsp;
-                                                        </span>
-                                                        {{Form::text("investigation[date_1]",'',['class'=>'form-control datetimepicker date'])}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br> --}}
-
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="input-group">
@@ -2918,7 +2877,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        {{Form::textarea("h_factor[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

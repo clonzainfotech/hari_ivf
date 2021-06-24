@@ -641,17 +641,17 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <div class="radio is-conceived">
-                                                                {{Form::radio("oh[child][child_data][".$key."][ho_type]",'normal',!empty($row->ho_type) && $row->ho_type == 'normal' ? true : false,['id'=>'normal_'.$key])}}
+                                                                {{Form::radio("oh[child][child_data][".$key."][ho_type_type]",'normal',!empty($row->ho_type) && $row->ho_type == 'normal' ? true : false,['id'=>'normal_'.$key])}}
                                                                 <label for={{'normal_'.$key}}>
                                                                     Normal
                                                                 </label>
 
-                                                                {{Form::radio("oh[child][child_data][".$key."][ho_type]",'cesarean',!empty($row->ho_type) && $row->ho_type == 'cesarean' ? true : false,['id'=>'cesarean_'.$key])}}
+                                                                {{Form::radio("oh[child][child_data][".$key."][ho_type_type]",'cesarean',!empty($row->ho_type) && $row->ho_type == 'cesarean' ? true : false,['id'=>'cesarean_'.$key])}}
                                                                 <label for={{'cesarean_'.$key}}>
                                                                     Cesarean
                                                                 </label>
 
-                                                                {{Form::radio("oh[child][child_data][".$key."][ho_type]",'instrumental',!empty($row->ho_type) && $row->ho_type == 'instrumental' ? true : false,['id'=>'instrumental_'.$key])}}
+                                                                {{Form::radio("oh[child][child_data][".$key."][ho_type_type]",'instrumental',!empty($row->ho_type) && $row->ho_type == 'instrumental' ? true : false,['id'=>'instrumental_'.$key])}}
                                                                 <label for="{{'instrumental_'.$key}}">
                                                                     Instrumental
                                                                 </label>
@@ -1090,17 +1090,17 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <div class="radio is-conceived">
-                                                                {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type]",'normal',!empty($row->ho_type) && $row->ho_type == 'normal' ? true : false,['id'=>'second_normal_'.$key])}}
+                                                                {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type_type]",'normal',!empty($row->ho_type) && $row->ho_type == 'normal' ? true : false,['id'=>'second_normal_'.$key])}}
                                                                 <label for={{'second_normal_'.$key}}>
                                                                     Normal
                                                                 </label>
 
-                                                                {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type]",'cesarean',!empty($row->ho_type) && $row->ho_type == 'cesarean' ? true : false,['id'=>'second_cesarean_'.$key])}}
+                                                                {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type_type]",'cesarean',!empty($row->ho_type) && $row->ho_type == 'cesarean' ? true : false,['id'=>'second_cesarean_'.$key])}}
                                                                 <label for={{'second_cesarean_'.$key}}>
                                                                     Cesarean
                                                                 </label>
 
-                                                                {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type]",'instrumental',!empty($row->ho_type) && $row->ho_type == 'instrumental' ? true : false,['id'=>'second_instrumental_'.$key])}}
+                                                                {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type_type]",'instrumental',!empty($row->ho_type) && $row->ho_type == 'instrumental' ? true : false,['id'=>'second_instrumental_'.$key])}}
                                                                 <label for="{{'second_instrumental_'.$key}}">
                                                                     Instrumental
                                                                 </label>
@@ -1499,7 +1499,20 @@
                                                 </span>
                                             </div>
                                         </div>
-
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <div class="form-group">
+                                                    {{Form::text("mh[age_of_manopause]",!empty($mh->age_of_manopause) ? $mh->age_of_manopause : null,['class'=>'form-control','placeholder'=>'Age Of Manopause'])}}
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Since Year : &nbsp;</span>
+                                                    {{Form::text("mh[manopause_since_year]",!empty($mh->manopause_since_year) ? $mh->manopause_since_year : null,['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-1">
                                                 <label class="vertical-form-label">
@@ -2870,7 +2883,13 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    {{Form::textarea("h_factor[remark]",!empty($husbandFactor->remark) ? $husbandFactor->remark : null,['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

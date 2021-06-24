@@ -229,15 +229,15 @@
                                         @php
                                             $hoValue = null;
                                             if(!empty($row->ho_term)){
-                                                $hoValue.= $row->ho_term  == 'full' ? 'FTND' : 'PT';
+                                                $hoValue.= $row->ho_term  == 'full' ? 'FT' : 'PT';
                                             }
                                             if(!empty($row->ho_type)){
-                                                if($row->ho_type == 'normal'){
+                                                if($row->ho_type_type == 'normal'){
                                                     $hoValue.= 'ND';
-                                                }elseif($row->ho_type == 'cesarean'){
-                                                    $hoValue.= 'LSCS';
-                                                }elseif ($row->ho_type == 'instrumental'){
-                                                    $hoValue.= 'Instrumental Delivery';
+                                                }elseif($row->ho_type_type == 'cesarean'){
+                                                    $hoValue.= ' LSCS';
+                                                }elseif ($row->ho_type_type == 'instrumental'){
+                                                    $hoValue.= ' Instrumental Delivery';
                                                 }
                                             }
                                             if(!empty($row->ho_gender)){
@@ -443,13 +443,13 @@
                                             if(!empty($row->ho_term)){
                                                 $secondHoValue.= $row->ho_term  == 'full' ? 'FT' : 'PT';
                                             }
-                                            if(!empty($row->ho_type)){
-                                                if($row->ho_type == 'normal'){
+                                            if(!empty($row->ho_type_type)){
+                                                if($row->ho_type_type == 'normal'){
                                                     $secondHoValue.= 'ND';
-                                                }elseif($row->ho_type == 'cesarean'){
-                                                    $secondHoValue.= 'LSCS';
-                                                }elseif ($row->ho_type == 'instrumental'){
-                                                    $secondHoValue.= 'Instrumental Delivery';
+                                                }elseif($row->ho_type_type == 'cesarean'){
+                                                    $secondHoValue.= ' LSCS';
+                                                }elseif ($row->ho_type_type == 'instrumental'){
+                                                    $secondHoValue.= ' Instrumental Delivery';
                                                 }
                                             }
                                             if(!empty($row->ho_gender)){
@@ -674,6 +674,23 @@
                                     <th>
                                         <span class="ivf-label">Since Year :</span>
                                         {{ $mh->since_year }}
+                                    </th>
+                                @endif
+                            </tr>
+                        @endif
+                        @if (!empty($mh->age_of_manopause) || !empty($mh->manopause_since_year))
+                            <tr>
+                                @if (!empty($mh->age_of_manopause))
+                                    <th>
+                                        <span class="ivf-label">Age Of Manopause : </span>
+                                        {{ $mh->age_of_manopause }}
+                                    </th>
+                                @endif
+
+                                @if (!empty($mh->manopause_since_year))
+                                    <th>
+                                        <span class="ivf-label">Since Year :</span>
+                                        {{ $mh->manopause_since_year }}
                                     </th>
                                 @endif
                             </tr>
@@ -937,7 +954,7 @@
                     </tbody>
                 </table>
             @endif
-            @if($husbandFactor && !empty($husbandFactor->occupation) || !empty($husbandFactor->seman_analysis) || !empty($husbandFactor->habbit) || !empty($husbandFactor->sperm_count) || !empty($husbandFactor->personal_history_date))
+            @if($husbandFactor && !empty($husbandFactor->occupation) || !empty($husbandFactor->seman_analysis) || !empty($husbandFactor->habbit) || !empty($husbandFactor->sperm_count) || !empty($husbandFactor->personal_history_date) || !empty($husbandFactor->remark))
                 <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
                     <tbody>
                         <tr>
@@ -1029,6 +1046,12 @@
                                 @endif
                             </tr>
                         @endif
+                        <tr>
+                            <th>
+                                <span class="ivf-label">Husband Factor Remark : </span>
+                                {{ !empty($husbandFactor->remark) ? $husbandFactor->remark : '-' }}
+                            </th>
+                        </tr>
                     </tbody>
                 </table>
             @endif

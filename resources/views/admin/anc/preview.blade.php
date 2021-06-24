@@ -1211,6 +1211,23 @@
                                 @endif
                             </tr>
                         @endif
+                        @if (!empty($mh->age_of_manopause) || !empty($mh->manopause_since_year))
+                            <tr>
+                                @if (!empty($mh->age_of_manopause))
+                                    <th>
+                                        <span class="ivf-label">Age Of Manopause : </span>
+                                        {{ $mh->age_of_manopause }}
+                                    </th>
+                                @endif
+
+                                @if (!empty($mh->manopause_since_year))
+                                    <th>
+                                        <span class="ivf-label">Since Year :</span>
+                                        {{ $mh->manopause_since_year }}
+                                    </th>
+                                @endif
+                            </tr>
+                        @endif
                         <tr>
                             <th>
                                 <span class="anc-label">

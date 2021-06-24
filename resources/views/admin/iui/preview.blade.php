@@ -885,6 +885,23 @@
                                         @endif
                                     </tr>
                                 @endif
+                                @if (!empty($mh->age_of_manopause) || !empty($mh->manopause_since_year))
+                                    <tr>
+                                        @if (!empty($mh->age_of_manopause))
+                                            <th>
+                                                <span class="ivf-label">Age Of Manopause : </span>
+                                                {{ $mh->age_of_manopause }}
+                                            </th>
+                                        @endif
+
+                                        @if (!empty($mh->manopause_since_year))
+                                            <th>
+                                                <span class="ivf-label">Since Year :</span>
+                                                {{ $mh->manopause_since_year }}
+                                            </th>
+                                        @endif
+                                    </tr>
+                                @endif
                                 <tr>
                                     <th>
                                         @if(!empty($mh->same_past) && $mh->same_past == 'same')
@@ -1138,7 +1155,7 @@
                         </table>
                     @endif
 
-                    @if($husbandFactor && !empty($husbandFactor->occupation) || !empty($husbandFactor->seman_analysis) || !empty($husbandFactor->habbit) || !empty($husbandFactor->sperm_count) || !empty($husbandFactor->personal_history_date))
+                    @if($husbandFactor && !empty($husbandFactor->occupation) || !empty($husbandFactor->seman_analysis) || !empty($husbandFactor->habbit) || !empty($husbandFactor->sperm_count) || !empty($husbandFactor->personal_history_date) || !empty($husbandFactor->remark))
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                             <tbody>
                                 <tr>
@@ -1228,6 +1245,12 @@
                                         @endif
                                     </tr>
                                 @endif
+                                <tr>
+                                    <th>
+                                        <span class="ivf-label">Husband Factor Remark : </span>
+                                        {{ !empty($husbandFactor->remark) ? $husbandFactor->remark : '-' }}
+                                    </th>
+                                </tr>
                             </tbody>
                         </table>
                     @endif

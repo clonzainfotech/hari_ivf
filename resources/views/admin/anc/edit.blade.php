@@ -149,7 +149,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
             $previousPatientObs = !empty($previousAncPatientObs->child->child_data) ? $previousAncPatientObs->child->child_data : [];
         @endphp
         @foreach($previousPatientObs as $key => $value)
-            @if($value->ho_type_value == 'cesarean')
+            @if(isset($value->ho_type_value) && $value->ho_type_value == 'cesarean')
             @php
                 $totalCesarean = $key;
             @endphp
@@ -2162,7 +2162,20 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         </span>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            {{Form::text("mh[age_of_manopause]",!empty($mh->age_of_manopause) ? $mh->age_of_manopause : null,['class'=>'form-control','placeholder'=>'Age Of Manopause'])}}
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Since Year : &nbsp;</span>
+                            {{Form::text("mh[manopause_since_year]",!empty($mh->manopause_since_year) ? $mh->manopause_since_year : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-1">
                         <label class="vertical-form-label">
@@ -2636,13 +2649,15 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         'id' => 'oe_child_number'
                     ])}}
                     {{-- remove blighted ovum child --}}
-                    @foreach($oe->utdata as $key=>$value)
-                        @if(!empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' &&  empty($ancHistoryId))
-                            @php
-                                $oe->oe_no = $oe->oe_no - 1;
-                            @endphp
-                        @endif
-                    @endforeach
+                    @if(!empty($oe->utdata))
+                        @foreach($oe->utdata as $key=>$value)
+                            @if(!empty($value->blighted_ovum) && $value->blighted_ovum == 'yes' &&  empty($ancHistoryId))
+                                @php
+                                    $oe->oe_no = $oe->oe_no - 1;
+                                @endphp
+                            @endif
+                        @endforeach
+                    @endif
                     <div class="col-md-3">
                         <div class="form-group">
                             {{Form::select("oe[oe_no]",['1'=>"Single",'2'=>"Twins",'3'=>"Triplets",'4'=>'Quadruple'],!empty($oe->oe_no) ? $oe->oe_no : null,[
