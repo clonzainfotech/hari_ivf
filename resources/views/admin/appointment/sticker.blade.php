@@ -72,7 +72,7 @@ td{
 @if(isset($is_label) && $is_label == 1)
 <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}">
 <div class="label-table">
-    <div><span class="font-7">{{ucwords(strtolower($label_name))}}</span><span class="pro_name">({{$procedure_name}})</span></div>
+    <div class="row"><span class="font-7">{{ucwords(strtolower($label_name))}}<sub class="pro_name">({{$procedure_name}})</sub></span></div>
 </div>
 @else
 
