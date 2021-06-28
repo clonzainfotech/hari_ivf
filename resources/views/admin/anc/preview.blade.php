@@ -702,11 +702,11 @@
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Previous:</span>
                                             {{$ancAutoRemark['cesarean']. ' - LSCS'}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['position']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['position']) && ($ancAutoRemark['position'] == 'breech' || $ancAutoRemark['position'] == 'transverse' || $ancAutoRemark['position'] == 'oblique'))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Position:</span>
                                             {{$ancAutoRemark['position']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['liquor']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly'))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Liquor:</span>
                                             {{$ancAutoRemark['liquor']}}
                                     @endif

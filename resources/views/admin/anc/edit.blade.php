@@ -127,13 +127,13 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 {{$ancAutoRemark['cesarean']. ' - LSCS'}}
             </small>
         @endif
-        @if($ancAutoRemark && !empty($ancAutoRemark['position']))
+        @if($ancAutoRemark && !empty($ancAutoRemark['position']) && ($ancAutoRemark['position'] == 'breech' || $ancAutoRemark['position'] == 'transverse' || $ancAutoRemark['position'] == 'oblique'))
             &nbsp;&nbsp;&nbsp;*Position:
             <small>
                 {{$ancAutoRemark['position']}}
             </small>
         @endif
-        @if($ancAutoRemark && !empty($ancAutoRemark['liquor']))
+        @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly'))
             &nbsp;&nbsp;&nbsp;*Liquor:
             <small>
                 {{$ancAutoRemark['liquor']}}

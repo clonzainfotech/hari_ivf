@@ -1624,14 +1624,6 @@ class ANCController extends AdminController
                     $ancAutoRemark['cesarean'] = $key;
                 }
             }
-            foreach($historyUTData as $key => $value)
-            {
-                if(!empty($value->position_type) && ($value->position_type == 'breech' || $value->position_type == 'transverse' || $value->position_type == 'oblique'))
-                {
-                    $ancAutoRemark['position'] = $key;
-                }
-           
-            }
         }
         if($ancHistoryVisit)
         {
@@ -1671,22 +1663,26 @@ class ANCController extends AdminController
                 }
                 foreach($historyUTData as $key => $value)
                 {
-                    if(!empty($value->position_type) && ($value->position_type == 'breech' || $value->position_type == 'transverse' || $value->position_type == 'oblique'))
+                    if((!empty($value->position_type) && ($value->position_type == 'breech' || $value->position_type == 'transverse' || $value->position_type == 'oblique')) || (isset($ancAutoRemark['position']) && !empty($value->position_type)))
                     {
                         $ancAutoRemark['position'] = $value->position_type;
                     }
-                    if(!empty($value->liquor_type) && ($value->liquor_type == 'oligo' || $value->liquor_type == 'poly'))
+                    if((!empty($value->liquor_type) && ($value->liquor_type == 'oligo' || $value->liquor_type == 'poly')) || (isset($ancAutoRemark['liquor']) && !empty($value->liquor_type)))
                     {
                         $ancAutoRemark['liquor'] = $value->liquor_type;
                     }
-                    if(!empty($value->placenta)){
-                    
+                    if(!empty($value->placenta))
+                    {
                         $placentaValue = '';
                         foreach($value->placenta as $value1)
                         {
                             $placentaValue = !empty($placentaValue) ? $placentaValue.', '.$placenta[$value1] : $placenta[$value1];
                         }
                         $ancAutoRemark['placenta'] =  $placentaValue;
+                    }
+                    else
+                    {
+                        $ancAutoRemark['placenta'] = '';
                     }     
                 }
             }
