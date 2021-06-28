@@ -7,6 +7,7 @@
         <th>Name</th>
         <th>Mobile</th>
         <th>UHID </th>
+        <th>Seen By</th>
         <th>Category</th>
         <th>Remark</th>
         <th>Action</th>
@@ -44,6 +45,7 @@
             <td>{{ $name }}</td>
             <td>{{$row->getPatientsDetails['mobile_number']}}</td>
             <td>{{$row->getPatientsDetails['code'] }}</td>
+            <td>{{$row->getSeenBy['name']}}</td>
             <td>{{$row->categoryDetails['name']}}</td>
             <td><div class="text-wrraping">{{$row->remark}}</div></td>
             <td>

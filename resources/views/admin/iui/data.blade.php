@@ -7,6 +7,7 @@
         <th>Name</th>
         <th>Mobile</th>
         <th>UHID </th>
+        <th>Seen By</th>
         <th>Category</th>
         <th>Remark</th>
         <th>Report</th>
@@ -43,6 +44,7 @@
             <td>{{$name}}</td>
             <td>{{$row->getPatientsDetails['mobile_number']}}</td>
             <td>{{$row->getPatientsDetails['code'] }}</td>
+            <td>{{$row->getSeenBy['name']}}</td>
             <td>{{$row->categoryDetails['name']}}</td>
             <td><div class="text-wrraping">{{$row->remark}}</div></td>
             <td><a href="{{URL::to('report/'.encrypt(1).'/'.encrypt($row->patients_id))}}" class="btn btn-primary btn-sm">Report</a>

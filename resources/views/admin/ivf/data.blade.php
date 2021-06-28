@@ -11,6 +11,7 @@
         <th>Mobile</th>
         <th>UHID </th>
         <th>Plan</th>
+        <th>Seen By</th>
         <th>Remark</th>
         <th>Action</th>
     </tr>
@@ -50,6 +51,7 @@
             <td>{{$row->getPatientsDetails['mobile_number']}}</td>
             <td>{{$row->getPatientsDetails['code'] }}</td>
             <td>{{!empty($row->getIVFPLan()['plan']) ? $planData[$row->getIVFPLan()['plan']] : null}}</td>
+            <td>{{$row->getSeenBy['name']}}</td>
             <td><div class="text-wrraping">{{$row->remark}}</div></td>
             <td><a href="{{$paymentUrl}}"   class="btn btn-primary btn-sm ivf-payment-font">Payment</a><a href="{{$viewUrl}}" class="btn btn-primary btn-sm ivf-payment-font">View</a>
                 @if($patient_notification['name'] == $name)
