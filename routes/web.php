@@ -401,6 +401,11 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('bank/delete/{id}','InjectionController@bankDelete');
     Route::get('bank/getBank/{id}','InjectionController@getBank');
 
+    //charges
+    Route::get('charge','HospitalChargeController@index');
+    Route::post('charge/store','HospitalChargeController@store');
+    Route::get('charge/delete/{id}','HospitalChargeController@chargeDelete');
+    Route::get('charge/getHospitalCharge/{id}','HospitalChargeController@getHospitalCharge');
 
     Route::get('print-preview','SystemSettingController@printpreview');
     

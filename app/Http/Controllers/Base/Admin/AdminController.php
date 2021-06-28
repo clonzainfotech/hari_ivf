@@ -112,6 +112,7 @@ class AdminController extends BaseController
                 $appointment->category_id = !empty($data['category']) ? $data['category'] : $appointment->category_id;
                 $appointment->created_by = Auth::user()->id;
                 $appointment->updated_by = Auth::user()->id;
+                $appointment->seen_by = !empty($appointmentData->getPatientsDetails['hospital_doctor_id']) ? $appointmentData->getPatientsDetails['hospital_doctor_id'] : 0;
                 $appointment->usg_status = !empty($data['usg_status']) ? $data['usg_status'] : 0;
                 $appointment->patients_id = $appointmentData->patients_id;
                 $appointment->save();

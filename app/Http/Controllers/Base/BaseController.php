@@ -74,6 +74,7 @@ use App\Models\patientNotification;
 use App\Models\CaExpense;
 use App\Models\BankDetail;
 use App\Models\PatientToken;
+use App\Models\HospitalCharge;
 
 
 class BaseController extends Controller
@@ -149,6 +150,7 @@ class BaseController extends Controller
         $this->CaExpense = new CaExpense;
         $this->BankDetail = new BankDetail;
         $this->PatientToken = new PatientToken;
+        $this->HospitalCharge = new HospitalCharge;
         
     }
 

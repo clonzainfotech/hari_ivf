@@ -327,6 +327,11 @@
                                                 ])}}
                                             </div>
                                         </div>
+                                        <div class="col-md-6 col-sm-6">
+                                            <div class="form-group">
+                                                {{Form::select('seen_by',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seenBy_doctor','placeholder'=>'Select Seen By Doctor','data-live-search'=>'true'])}}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class=" col-md-6 col-sm-6 ref-pro-doctor-data d-none">
@@ -342,6 +347,7 @@
                                                 {{$errors->first('pro_reference_doctor_mobile_number')}}
                                             </span>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>

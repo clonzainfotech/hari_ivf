@@ -87,7 +87,7 @@
                 </td>
                 <td>{{$row->getPatientsDetails['mobile_number']}}</td>
                 <td>{{ucfirst($row->categoryDetails['name'])}}</td>
-                <td>{{$row->getPatientsDetails->getHospitalDoctor['name']}}</td>
+                <td>{{$row->getSeenBy['name']}}</td>
 
                     @php
                     $paymentUrl = url('ivf/payments/'.encrypt($row->patients_id));

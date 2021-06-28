@@ -407,6 +407,7 @@ class AppointmentController extends AdminController
             return redirect($url);
         }catch(Exception $e) {
             // dd($e);
+            log::Debug($e);
             abort(500);
         }
 
@@ -469,6 +470,9 @@ class AppointmentController extends AdminController
             $appointment->patients_id = $updatePatient->id;
             $appointment->remark = $request->remark;
             $appointment->usg_status= $request->is_usg ? 1 : 0;
+            dd($request->hospital_doctor);
+
+            $appointment->seen_by = !empty($request->seen_by) ? $request->seen_by :$request->hospital_doctor;
 
             $appointment->save();
             if($request->category){
@@ -483,6 +487,7 @@ class AppointmentController extends AdminController
 
             return;
         }else{
+            dd($request->hospital_doctor);
             $updatePatient->reference_doctor_id =  $patients->reference_doctor_id;
             $updatePatient->reference_doctor_pro_id =  $patients->reference_doctor_pro_id;
             $updatePatient->save();
@@ -505,6 +510,8 @@ class AppointmentController extends AdminController
             $appointment->patients_id = $patient_check->id;
             $appointment->usg_status= $request->is_usg ? 1 : 0;
             $appointment->remark = $request->remark;
+            $appointment->seen_by = !empty($request->seen_by) ? $request->seen_by : $request->hospital_doctor;
+
             $appointment->save();
             // store on patients category table
             if($request->category){
@@ -727,6 +734,7 @@ class AppointmentController extends AdminController
             $appointment->category_id = $request->category;
             $appointment->updated_by = Auth::user()->id;
             $appointment->remark = $request->remark;
+            $appointment->seen_by = !empty($request->seen_by) ? $request->seen_by : $patients->hospital_doctor_id;
             $appointment->save();
             $newFollowUpDate = $appointment->date;
             $lastAppointment = $this->Appointment->where('date','<',$appointment->date)->where('patients_id',$patients->id)->orderBy('id','DESC')->first();

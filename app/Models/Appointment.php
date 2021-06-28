@@ -27,6 +27,9 @@ class Appointment extends BaseModel
         return $this->hasMany('App\Models\PatientsCategory','appointment_id');
     }
 
+    public function getSeenBy(){
+        return $this->belongsTo('App\user','seen_by','id');
+    }
     public function nextAppointmentDate() {
         $date = self::where([
             ['id', '>', $this->id],

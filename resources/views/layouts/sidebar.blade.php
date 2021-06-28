@@ -153,6 +153,7 @@
                             <li class="{{ Request::segment(1) === 'systemsetting' ? 'sub active open' : null }}"><a href="{{URL::to('systemsetting')}}"><span>System</span></a></li>
                             <li class="{{ Request::segment(1) === 'medicines-setting' || Request::segment(1) === 'medicines-mapping' ? 'sub active open' : null }}"><a href="{{URL::to('medicines-setting')}}"><span>Medicine</span></a></li>
                             <li class="{{ Request::segment(1) === 'injection' || Request::segment(1) === 'injection/*'? 'sub active open' : null }}"><a href="{{URL::to('injection')}}"><span>Injection</span></a></li>
+                            <li class="{{ Request::segment(1) === 'charge' || Request::segment(1) === 'charge/*'? 'sub active open' : null }}"><a href="{{URL::to('charge')}}"><span>Charges</span></a></li>
                         </ul>
                     </li>
                     @endif
