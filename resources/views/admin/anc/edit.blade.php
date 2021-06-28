@@ -4644,7 +4644,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     @php
                         $terminationTypeTermStatus = !empty($ancHistoryId) && !empty($usg->termination_type) && $usg->termination_type == 'Delivery' ? '' : 'd-none';
                     @endphp
-                    <div class="{{'col-sm-2 termination_type_term '.$terminationTypeTermStatus}}">
+                    <div class="{{'col-sm-3 termination_type_term '.$terminationTypeTermStatus}}">
                         <div class="radio is-conceived">
                             {{Form::radio("usg[termination_type_trem]",'full',!empty($ancHistoryId) && !empty($usg->termination_type_trem) && $usg->termination_type_trem == 'full' ? true : false,['id'=>'termination_term_yes','class'=>'termination_type_term'])}}
                             <label for="termination_term_yes">
@@ -4654,6 +4654,11 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             {{Form::radio("usg[termination_type_trem]",'pre',!empty($ancHistoryId) && !empty($usg->termination_type_trem) && $usg->termination_type_trem == 'pre' ? true : false,['id'=>'termination_term_no','class'=>'termination_type_term'])}}
                             <label for="termination_term_no">
                                 Pre Term
+                            </label>
+
+                            {{Form::radio("usg[termination_type_trem]",'lscs',!empty($ancHistoryId) && !empty($usg->termination_type_trem) && $usg->termination_type_trem == 'lscs' ? true : false,['id'=>'termination_term_lscs','class'=>'termination_type_term'])}}
+                            <label for="termination_term_lscs">
+                               LSCS
                             </label>
                             
                         </div>

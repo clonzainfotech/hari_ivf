@@ -144,9 +144,20 @@
                 </div>
                 <div class="col-md-12">
                     @if(!empty($usg->termination_type_trem))
-                    @php
-                     $tremination_term = ($usg->termination_type_trem == 'full') ? 'Full Term' : 'Pre Term';
-                    @endphp
+                        @php
+                        $tremination_term = ($usg->termination_type_trem == 'full') ? 'Full Term' : 'Pre Term';
+                            switch($usg->termination_type_trem){
+                                case 'full':
+                                $tremination_term = 'Full Term';
+                                    break;
+                                case 'pre':
+                                $tremination_term = 'Pre Term';
+                                    break;
+                                case 'lscs':
+                                $tremination_term = 'LSCS';
+                                    break;
+                            }
+                        @endphp
                     @endif
                     @if(!empty($usg->termination_detail))
                         <span>Admission Detail : </span><span> {{$usg->termination_detail.(isset($tremination_term) ? ' - '.$tremination_term : '')}}</span>
