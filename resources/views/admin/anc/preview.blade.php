@@ -1852,14 +1852,14 @@
                             <tr>
 
                             </tr>
-                            @if(!empty($oe->remark))
+                            {{-- @if(!empty($oe->remark))
                                 <tr>
                                     <th>
                                         <span class="anc-label">Remark : </span>
                                         {{$oe->remark}}
                                     </th>
                                 </tr>
-                            @endif
+                            @endif --}}
                         </tbody>
                     </table>
                 @endif
