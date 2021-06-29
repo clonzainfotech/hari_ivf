@@ -463,14 +463,26 @@
                                 <div class="col-md-3">
                                     Time
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-5">
                                     {{Form::select('next-time', $hospitalTime, '', [
-                                        'class'=>'next-time col-md-9 select-padding-0',
+                                        'class'=>'next-time select-padding-0',
                                         'placeholder'=>'Time'
                                     ])}}
                                     <span class="form-error-msg date"></span>
                                 </div>
                                 <span class="form-error-msg time"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div class="col-md-11 pl-4">
+                                    <div class="checkbox">
+                                        {{Form::checkbox('is_usg','1','',['id'=>'is_usg'])}}
+                                        <label for="is_usg">
+                                            Is USG Appointment
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -718,6 +730,11 @@
                 var day = $('.next-day').val();
                 var date = $('.next-date').val();
                 var remark = $('.remark').val();
+                // var is_usg = 0;
+                if($('#is_usg:checked').prop('checked'))
+                {
+                    usg_status = 1;
+                }
                 var time = $('select.next-time').find("option:selected").text();
                 var token = "{{csrf_token()}}";
 
