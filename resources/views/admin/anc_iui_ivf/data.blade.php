@@ -116,7 +116,7 @@
                 <td>{{\Carbon\Carbon::parse($row->time)->format('h:i a')}}</td>
                 <td>{{$row->getPatientsDetails['code']}}</td>
                 <td>{{ucwords(strtolower($row->getPatientsDetails['name']))}}</td>
-                <td>{{$row->getPatientsDetails->getHospitalDoctor['name']}}</td>
+                <td>{{$row->getSeenBy['name']}}</td>
                 <td>{{$row->arrival_time}}</td>
                 <td>{{$row->categoryDetails['name']}}</td>
                 <td>{{$row->getPatientsDetails['mobile_number']}}</td>
