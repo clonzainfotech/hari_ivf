@@ -1423,12 +1423,15 @@ class ANCController extends AdminController
                         $lmdDate = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
                         $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
                         $usgEddDate = !empty($mhData->usg_edd) ? $mhData->usg_edd : null;
+                        $oeData = !empty($ancData->o_e) ? json_decode($ancData->o_e,true) : null;
                         $previousAnc = null;
                         $investigationReport = $this->allInvestigationReport();
                         $now = Carbon::now()->format('Y-m-d');
                         $usgStatus = 0;
-                        $usg = json_encode($ancData->usg);
-                        if(((!empty($usg['nt_scan']) && $usg['nt_scan'] == $usg['follow_up']) || (!empty($usg['early_scan']) && $usg['early_scan'] == $usg['follow_up']) || (!empty($usg['anomalies_miles']) && $usg['anomalies_miles'] == $usg['follow_up']) || (!empty($usg['growth_scan']) && $usg['growth_scan'] == $usg['follow_up']))){
+                        $usg = json_encode($ancData->usg,true);
+                        $oe_followUp = !empty($oeData['follow_up']) ? Carbon::parse($oeData['follow_up'])->format('D d M Y') : '';
+                        // dd($weight);
+                        if(((!empty($usg['nt_scan']) && $usg['nt_scan'] == $oe_followUp) || (!empty($usg['early_scan']) && $usg['early_scan'] == $oe_followUp) || (!empty($usg['anomalies_miles']) && $usg['anomalies_miles'] == $oe_followUp) || (!empty($usg['growth_scan']) && $usg['growth_scan'] == $oe_followUp))){
                             $usgStatus = 1;
                         }
 
@@ -1461,14 +1464,15 @@ class ANCController extends AdminController
                         $lmdDate = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
                         $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
                         $usgEddDate = !empty($mhData->usg_edd) ? $mhData->usg_edd : null;
+                        $oeData = !empty($ancData->o_e) ? json_decode($ancData->o_e,true) : null;
                         $previousAnc = null;
                         $investigationReport = $this->allInvestigationReport();
                         $now = Carbon::now()->format('Y-m-d');
                         $usgStatus = 0;
-                        $usg = json_encode($ancData->usg);
-                        
+                        $usg = json_decode($ancData->usg,true);
+                        $oe_followUp = !empty($oeData['follow_up']) ? Carbon::parse($oeData['follow_up'])->format('D d M Y') : '';
                         // dd($weight);
-                        if(((!empty($usg['nt_scan']) && $usg['nt_scan'] == $usg['follow_up']) || (!empty($usg['early_scan']) && $usg['early_scan'] == $usg['follow_up']) || (!empty($usg['anomalies_miles']) && $usg['anomalies_miles'] == $usg['follow_up']) || (!empty($usg['growth_scan']) && $usg['growth_scan'] == $usg['follow_up']))){
+                        if(((!empty($usg['nt_scan']) && $usg['nt_scan'] == $oe_followUp) || (!empty($usg['early_scan']) && $usg['early_scan'] == $oe_followUp) || (!empty($usg['anomalies_miles']) && $usg['anomalies_miles'] == $oe_followUp) || (!empty($usg['growth_scan']) && $usg['growth_scan'] == $oe_followUp))){
                             $usgStatus = 1;
                         }
 
@@ -1496,14 +1500,7 @@ class ANCController extends AdminController
                 // $weight = $opdPatient->weight;
                 $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
                 $ancType = 2;
-                $ancFirstVisitData = $this->ANC->where('patients_id',$patientId)->first();
-                $upt = json_decode($ancFirstVisitData->patients_obstratics, true);
-                $oe = json_decode($ancFirstVisitData->o_e, true);
-                $mhData = !empty($ancData->m_h) ? json_decode($ancData->m_h) : null;
-                $lmdDate = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
-                $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
-                $usgEddDate = !empty($mhData->usg_edd) ? $mhData->usg_edd : null;
-                $previousAnc = null;
+                
                 $ancData = $this->ANC->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
                 $p_info = !empty($ancData->patients_info) ? json_decode($ancData->patients_info) : null;
                 $weight = !empty($p_info->weight) ? $p_info->weight : null;
@@ -1512,6 +1509,27 @@ class ANCController extends AdminController
                     $h_o = !empty($ancData->h_o) ? json_decode($ancData->h_o) : null;
                     $weight = !empty($h_o->weight) ? $h_o->weight : null;
                 }
+                $ancFirstVisitData = $this->ANC->where('patients_id',$patientId)->first();
+                $upt = json_decode($ancFirstVisitData->patients_obstratics, true);
+                $oe = json_decode($ancFirstVisitData->o_e, true);
+                $mhData = !empty($ancData->m_h) ? json_decode($ancData->m_h) : null;
+                $lmdDate = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
+                $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
+                $usgEddDate = !empty($mhData->usg_edd) ? $mhData->usg_edd : null;
+                $previousAnc = null;
+                $usgStatus = 0;
+                $usg = json_decode($ancData->usg,true);
+                $oeData = !empty($ancData->o_e) ? json_decode($ancData->o_e,true) : null;
+                $oe_followUp = !empty($oeData['follow_up']) ? Carbon::parse($oeData['follow_up'])->format('D d M Y') : '';
+                // dd($weight);
+                if(((!empty($usg['nt_scan']) && $usg['nt_scan'] == $oe_followUp) || (!empty($usg['early_scan']) && $usg['early_scan'] == $oe_followUp) || (!empty($usg['anomalies_miles']) && $usg['anomalies_miles'] == $oe_followUp) || (!empty($usg['growth_scan']) && $usg['growth_scan'] == $oe_followUp))){
+                    $usgStatus = 1;
+                }
+
+                if(!empty($upt['upt_type']) && $upt['upt_type'] == 'positive' && isset($oe['utdata'][1]['ut_type']) && $oe['utdata'][1]['ut_type'] == 'g-sac' && (strtolower($oe['utdata'][1]['oe_ut_sac']) == 'no' || strtolower($oe['utdata'][1]['oe_ut_sac_2']) == 'no')) {
+                    $isGsac = true;
+                }
+                
                 if(!$ancData){
                     return 'no record available';
                 }
