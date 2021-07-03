@@ -53,7 +53,7 @@
                     $categoryName = 'ANC';
                     $cName = 'ANC';
                     $type = $row->getPatientsDetails->getAnc && $row->is_new_anc == 0? 'history' : 'next-appointment';
-                    if(($row->is_new_anc == 0 || $row->getAppointmentDateANC() == 1))
+                    if(($row->getAppointmentDateANC() == 1))
                     {
                         $type = 'history';
                     }
@@ -92,7 +92,7 @@
                     $categoryName = 'ANC'; 
                     $cName = 'ANC';
                     $type = $row->getPatientsDetails->getAnc && $row->is_new_anc == 0 ? 'history' : 'next-appointment';
-                    if(($row->is_new_anc == 0 || $row->getAppointmentDateANC() == 1))
+                    if(($row->getAppointmentDateANC() == 1))
                     {
                         $type = 'history';
                     }
