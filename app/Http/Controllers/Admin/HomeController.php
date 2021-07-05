@@ -239,6 +239,29 @@ class HomeController extends AdminController
         $doctorcount =  $user = $this->User->where('role','3')->where('status','1')->count();
         $usercount = $user = $this->User->whereIn('role', array(1,2,4,5,6,7,8))->where('status','1')->count();
 
+        $ancAllVisit = $this->ANC->get();
+        if($ancAllVisit)
+        {
+            foreach($ancAllVisit as $ancVisit)
+            {
+                $reportDate = Carbon::parse($ancVisit->created_at)->format('Y-m-d');
+                $ancAllHistoryVisit = $this->AncHistory->where('patients_id',$ancVisit->patients_id)->get();
+
+                if($ancAllHistoryVisit)
+                {
+                    foreach($ancAllHistoryVisit as $ancHistoryVisit)
+                    {
+                        $historyDate =  Carbon::parse($ancHistoryVisit->created_at)->format('Y-m-d');
+                        if($historyDate >= $reportDate)
+                        {
+                            $this->AncHistory->whereId($ancHistoryVisit->id)->update([
+                                'anc_id' => $ancVisit->id
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
 
         return view('admin.home.dashboard', compact('balance', 'profit', 'expenseTotal', 'totalAppointments',
             'totalPatients', 'totalOpds','incomeArray','expense_array','year','month','day','week','event','category', 'categories',
