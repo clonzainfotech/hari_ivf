@@ -4654,7 +4654,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     $inducing_agent = implode(',',$inducingAgentDataValue);
                                                 }
                                             @endphp
-                                                @if(!empty($inducing_agent) && ($inducing_diff < $diff) && (!empty($date)) && ($date != $appointmentDate))
+                                                @if(!empty($inducing_agent) && ($inducing_diff < $diff) && (!empty($valueData->date)) && ($valueData->date != $appointmentDate))
                                                     <tr >
                                                         <td>{{$date}}</td>
                                                         <td>{{$inducing_diff}}</td>
@@ -4783,7 +4783,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     $inducing_agent = implode(',',$inducingAgentDataValue);
                                                 }
                                             @endphp
-                                                @if(!empty($inducing_agent) && ($inducing_diff > $diff) && (!empty($date)) && ($date != $appointmentDate))
+                                                @if(!empty($inducing_agent) && ($inducing_diff > $diff) && (!empty($valueData->date)) && ($valueData->date != $appointmentDate))
                                                     <tr >
                                                         <td>{{$date}}</td>
                                                         <td>{{$inducing_diff}}</td>
