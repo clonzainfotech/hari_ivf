@@ -3974,13 +3974,18 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 </div>
                 <!-- {{-- 4 .Remark --}} -->
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="input-group">
-                            {{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                            {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('remark')}}
                         </span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            {{Form::textarea("data[pt_remark]",!empty($historyData->pt_remark) ? $historyData->pt_remark : '',['class'=>'form-control no-resize pt_remark','placeholder'=>"Patient's Remark",'rows'=>'5'])}}
+                        </div>
                     </div>
                 </div>
             @endif
@@ -4686,13 +4691,18 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 {{-- {{Form::hidden('old_medicine_data','',['class'=>'old-medicine-data'])}} --}}
                      <!-- {{-- 4 .Remark --}} -->
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="input-group">
-                            {{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                            {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('remark')}}
                         </span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            {{Form::textarea("data[pt_remark]",!empty($historyData->pt_remark) ? $historyData->pt_remark : '',['class'=>'form-control no-resize pt_remark','placeholder'=>"Patient's Remark",'rows'=>'5'])}}
+                        </div>
                     </div>
                 </div>
             @endif
@@ -5213,13 +5223,21 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::text("data[date]",!empty($historyData->date) ? \Carbon\Carbon::parse($historyData->date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date next-date',!empty($historyData->date) ? 'disabled' : ''])}}
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            {{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                            </div>
+                            <span class="form-error-msg">
+                                {{$errors->first('remark')}}
+                            </span>
                         </div>
-                        <span class="form-error-msg">
-                            {{$errors->first('remark')}}
-                        </span>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                {{Form::textarea("data[pt_remark]",!empty($historyData->pt_remark) ? $historyData->pt_remark : '',['class'=>'form-control no-resize pt_remark','placeholder'=>"Patient's Remark",'rows'=>'5'])}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             @endif

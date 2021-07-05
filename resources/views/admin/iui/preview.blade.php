@@ -154,6 +154,11 @@
     {
         border:none !important;
     }
+    .font-bold
+    {
+        font-weight : 700px;
+    }
+    
     @page { margin-top : 200px; margin-left : 100px;}
     .card .body .follicular-table th,  .card .body .table .follicular-table td{
     padding: .8rem .2rem !important;
@@ -205,6 +210,11 @@
                                     <br>Weight: {{$iui->getPatientsInfo['weight'].' kg'}}
                                     @endif
                                 </th>
+                            </tr>
+                        @endif
+                        @if(isset($patients_remark) && !empty($patients_remark))
+                            <tr>
+                            <th><span class="iui-label">Remark : </span>{{$patients_remark}}</th>
                             </tr>
                         @endif
                         @if($ho)
@@ -2028,10 +2038,15 @@
                             </tbody>
                         </table>
                     @endif
+                    
                     <br><br><br>
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                             <tbody>
-                                
+                                @if(isset($patients_remark) && !empty($patients_remark))
+                                    <tr>
+                                        <th><span class="iui-label">Remark : </span>{{$patients_remark}}</th>
+                                    </tr>
+                                @endif
                                 <tr>
                                     {{-- @if(!empty($coData)) --}}
                                         <th>
@@ -2699,7 +2714,13 @@
                         </table>
                     @endif
                 @endif
+                @if(isset($patients_remark) && !empty($patients_remark))
+                <!-- <div class="row"> -->
+                <span class="font-bold">Remark : </span>{{$patients_remark}}
+                <!-- </div> -->
+                @endif
             </div>
+
         @else
             <style>
                 @page { margin-top : 5px; margin-bottom : 80px;}
@@ -3324,7 +3345,7 @@
                         </tbody>
                     </table>
                 @endif
-                <h4 class="mt-2"><u>Medicine:</u></h4>
+                <h4 class="mt-2 text-left"><u>Medicine:</u></h4>
                 <table class="module-report-table study-report-table">
                     <thead>
                         <tr>
@@ -3414,6 +3435,14 @@
                     
                 </table>
             </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                @if(isset($patients_remark) && !empty($patients_remark))
+                    <span class="font-bold">Remark : {{$patients_remark}}</span>
+                @endif
+                </div>
         </div>
         @if(!empty($description->hcg) && $description->hcg->type == 'yes')
             <div class="row follicular-iui-print">

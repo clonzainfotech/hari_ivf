@@ -198,14 +198,14 @@ class HormonController extends AdminController
             $patientname=$this->OpdPatients->where('id',$hormon->patient_id)->first();
             // print_r($patientname);die();
             if($request->isprint){
-                if($request->htype == 2 && !empty($ivfPaymentData)){
-                    $status = 1;
-                    $ivfPayment = $ivfPaymentData;
-                    $data = View::make('admin.ivf.payment_preview', compact('ivfPayment'))->render();
-                }else{
+                // if($request->htype == 2 && !empty($ivfPaymentData)){
+                //     $status = 1;
+                //     $ivfPayment = $ivfPaymentData;
+                //     $data = View::make('admin.ivf.payment_preview', compact('ivfPayment'))->render();
+                // }else{
                     $status = 1;
                     $data = View::make('admin.appointment.hormon.hormon_preview', compact('hormon','patientname','doctor','depositeWord'))->render();
-                }
+                // }
                 return response()->json([
                     'status' => $status,
                     'data' => $data

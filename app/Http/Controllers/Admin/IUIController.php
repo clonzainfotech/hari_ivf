@@ -1511,11 +1511,19 @@ class IUIController extends AdminController
                 $iuiData = $this->IUI->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
                 $iuiFirstVisit = $this->IUI->wherePatientsId($patientId)->first();
                 $getcycleNo = $this->IuiHistory->wherePatientsId($patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                if($iuiData)
+                {
+                    $patientInfo = json_decode($iuiData->patients_info);
+                    $patients_remark = !empty($patientInfo) ? $patientInfo->remark : '';
+                }
                 if($getcycleNo)
                 {
+                    $description = json_decode($getcycleNo->description);
+                    $patients_remark = !empty($description) && isset($description->pt_remark) ? $description->pt_remark : '';
                     $iuiHistoryData = collect($this->IuiHistory->wherePatientsId($patientId)->whereCycleNo($getcycleNo->cycle_no)->get());
                     $iuiSecondVisit = $iuiHistoryData->where('visit',2)->first();
                 }
+                
                     
                     if($iuiSecondVisit){
                         $iuiSecondVisit = json_decode($iuiSecondVisit->description);
@@ -1547,7 +1555,7 @@ class IUIController extends AdminController
                 $iui = $iuiData;
                 $printPreview = 1;
                 // dd($iui);
-                return view('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview'));
+                return view('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview','patients_remark'));
             }
         }catch(Exception $e){
             log::Debug($e);
