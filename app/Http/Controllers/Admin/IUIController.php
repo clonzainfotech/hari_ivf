@@ -143,16 +143,19 @@ class IUIController extends AdminController
             $ancStatus = 0;
             $ivfStatus = 0;
             $gynecStatus = 0;
+            $bloodOldImages = [];
             if($request->visit == 1){
                 $iui = $this->IUI;
                 $investigationData = $request->investigation;
                 $hystroscopyOldImages = [];
                 $laproscopyOldImages = [];
                 $hcgOldImages = [];
+                
                 if($request->iui_id){
                     $this->getImagesData('hystroscopy_old','iui',$request->iui_id,$request->hystroscopy_old ? $request->hystroscopy_old : [-1]);
                     $this->getImagesData('laproscopy_old','iui',$request->iui_id,$request->laproscopy_old ? $request->laproscopy_old : [-1]);
                     $this->getImagesData('hcg_old','iui',$request->iui_id,$request->hcg_old ? $request->hcg_old : [-1]);
+                    $this->getImagesData('blood_report_old','iui',$request->iui_id,$request->blood_report_old ? $request->blood_report_old : [-1]);
                     $iui = $iui->where('id',$request->iui_id)->first();
                     if(!empty($iui->investigation)){
                         $oldInvestigationData = json_decode($iui->investigation);
@@ -160,6 +163,7 @@ class IUIController extends AdminController
                             $hystroscopyOldImages = !empty($oldInvestigationData->hystroscopy->images) ? (array)$oldInvestigationData->hystroscopy->images : [];
                             $laproscopyOldImages = !empty($oldInvestigationData->laproscopy->images) ? (array)$oldInvestigationData->laproscopy->images : [];
                             $hcgOldImages = !empty($oldInvestigationData->hcg->images) ? (array)$oldInvestigationData->hcg->images : [];
+                            $bloodOldImages = !empty($oldInvestigationData->blood_report->image) ? (array)$oldInvestigationData->blood_report->image : [];
                         }
                     }
                 }
@@ -189,6 +193,15 @@ class IUIController extends AdminController
                     $investigationData['hcg']['images'] = array_merge($hcgImagesData,$hcgOldImages);
                 }else{
                     $investigationData['hcg']['images'] = $hcgOldImages;
+                }
+                if(!empty($request['investigation']['blood_report']['image'])){
+                    foreach($request['investigation']['blood_report']['image'] as $key=>$row){
+                        $name = $this->uploadImage($row, 'public/upload/ivf/blood/');
+                        $bloodImagesData[] = 'public/upload/ivf/blood/' . $name;
+                    }
+                    $investigationData['blood_report']['image'] = array_merge($bloodImagesData,$bloodOldImages);
+                }else{
+                    $investigationData['blood_report']['image'] = $bloodOldImages;
                 }
                 if(!empty($request['p_detailes']['personal_history_history_type'])){
                     $this->storeIUIHoData($request['p_detailes']['personal_history_history_type'],1);
@@ -522,6 +535,20 @@ class IUIController extends AdminController
                     // $inducingDate = array_values($inducingDate);
                     // $inducingDate = array_combine(range(1, count($inducingDate)), $inducingDate);
                     // $data['inducing'] = $inducingDate;
+                }
+                if(!empty($iui->description))
+                {
+                    $description = json_decode($iui->description);
+                    $bloodOldImages = !empty($description->blood_report->image) ? (array)$description->blood_report->image : [];
+                }
+                if(!empty($request['data']['blood_report']['image'])){
+                    foreach($request['data']['blood_report']['image'] as $key=>$row){
+                        $name = $this->uploadImage($row, 'public/upload/ivf/blood/');
+                        $bloodImagesData[] = 'public/upload/ivf/blood/' . $name;
+                    }
+                    $data['blood_report']['image'] = array_merge($bloodImagesData,$bloodOldImages);
+                }else{
+                    $data['blood_report']['image'] = $bloodOldImages;
                 }
                 $iui->description = json_encode($data);
                 if(!empty($request->data['oe']['ovary']['right']['details']) || !empty($request->data['oe']['ovary']['left']['details'])){
@@ -921,6 +948,28 @@ class IUIController extends AdminController
                         $laproscopyImagesData[$key]['src'] = url($row);
                     }
                 }
+                if($investigation)
+                {
+                    $bloodImages = !empty($investigation->blood_report->image) ? $investigation->blood_report->image : null;
+                    if($bloodImages){
+                        foreach($bloodImages as $key=>$row){
+                            $bloodImagesData[$key]['id'] = $key;
+                            $bloodImagesData[$key]['src'] = url($row);
+                        }
+                    }
+                }
+                if($description)
+                {
+                    $bloodImages = !empty($description->blood_report->image) ? $description->blood_report->image : null;
+                    // dd($description->blood_report->image);
+                    if($bloodImages){
+                        foreach($bloodImages as $key=>$row){
+                            $bloodImagesData[$key]['id'] = $key;
+                            $bloodImagesData[$key]['src'] = url($row);
+                        }
+                    }
+                }
+                
                 $medicineKey = [];
                 if(!empty($treatment)){
                     $medicineKey = (array)$treatment;
@@ -949,6 +998,7 @@ class IUIController extends AdminController
                 $data['hystroscopyImages'] = json_encode($hystroscopyImagesData);
                 $data['hcgImages'] = json_encode($hcgImagesData);
                 $data['laproscopyImages'] = json_encode($laproscopyImagesData);
+                $data['bloodImages'] = json_encode($bloodImagesData);
                 $data['ho'] = $ho;
                 $data['co'] = $co;
                 $data['mh'] = $mh;

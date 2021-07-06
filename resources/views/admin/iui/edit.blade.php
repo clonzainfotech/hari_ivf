@@ -2560,6 +2560,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -3604,7 +3605,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <span class="input-group-addon">Residual follicale : &nbsp;</span>
-                                                {{Form::text("data[oe][ovary][right][residual_follicale]",!empty($historyOe->ovary->right->residual_follicale) ? $historyOe->ovary->right->residual_follicale : null,['class'=>'form-control second-right-ovary-data-text'])}}
+                                                {{Form::text("data[oe][ovary][right][residual_follicale]",!empty($historyOe->ovary->right->residual_follicale) ? $historyOe->ovary->right->residual_follicale : null,['class'=>'form-control'])}}
                                             </div>
                                         </div>
                                     </div>
@@ -3666,7 +3667,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <div class="col-md-3">
                                             <div class="input-group">
                                                 <span class="input-group-addon">Residual follicale : &nbsp;</span>
-                                                {{Form::text("data[oe][ovary][left][residual_follicale]",!empty($historyOe->ovary->left->residual_follicale) ? $historyOe->ovary->left->residual_follicale : null,['class'=>'form-control second-right-ovary-data-text'])}}
+                                                {{Form::text("data[oe][ovary][left][residual_follicale]",!empty($historyOe->ovary->left->residual_follicale) ? $historyOe->ovary->left->residual_follicale : null,['class'=>'form-control'])}}
                                             </div>
                                         </div>
                                     </div>
@@ -3971,6 +3972,33 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 No
                             </label>
                         </div>
+                    </div>
+                </div>
+                @php
+                $bloodReportClass = !empty($historyData->blood_report) && !empty($historyData->blood_report->type) && $historyData->blood_report->type == 'yes' ? true : false;
+                $bloodReportClassName = $bloodReportClass ? '' : 'd-none';
+                @endphp
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            Blood Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[blood_report][type]",'yes',$bloodReportClass,['id'=>'blood_type_yes','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                            <label for="blood_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[blood_report][type]",'no',!empty($historyData->blood_report) && !empty($historyData->blood_report->type) && $historyData->blood_report->type == 'no' ? true : false,['id'=>'blood_type_no','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                            <label for="blood_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 blood-type '.$bloodReportClassName}}">
+                        <div class="data-blood-images"></div>
                     </div>
                 </div>
                 <!-- {{-- 4 .Remark --}} -->
@@ -4434,6 +4462,29 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                     </div>
                 </div>       
+                <div class="row mt-1">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            Blood Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[blood_report][type]",'yes','',['id'=>'blood_type_yes','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                            <label for="blood_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[blood_report][type]",'no',false,['id'=>'blood_type_no','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                            <label for="blood_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 blood-type d-none'}}">
+                        <div class="data-blood-images"></div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-md-6 mt-3">
                         <div class="input-group">
@@ -5071,11 +5122,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         </label>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-md-1 pr-0">
-                                                    <label class="vertical-form-label pr-0">
-                                                        Vitals :
-                                                    </label>
-                                                </div> --}}
+                                            
                                                 <div class="{{'col-md-2 vitals_status_data '.$vitlasClass}}">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">B.P : &nbsp;</span>
@@ -5095,6 +5142,29 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         <span class="input-group-addon">Temp : &nbsp;</span>
                                                         {{Form::text("data[le][temp]",!empty($historyData->le->temp) ? $historyData->le->temp : null,['class'=>'form-control'])}}
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="row child-no-box">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        Blood Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("data[blood_report][type]",'yes','',['id'=>'blood_type_yes','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                                                        <label for="blood_type_yes">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("data[blood_report][type]",'no',false,['id'=>'blood_type_no','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                                                        <label for="blood_type_no">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="{{'col-md-8 pr-0 blood-type d-none'}}">
+                                                    <div class="data-blood-images"></div>
                                                 </div>
                                             </div>
                                             <div class="row child-no-box">
@@ -5119,6 +5189,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     </div>
                                                 </div>
                                                 <span class="col-md-1 p-3 history-lmp-date">Day</span>
+                                                <div class="col-md-12">
+                                                    
+                                                </div>
                                                 <div class="col-md-12">
                                                     <div class="input-group">
                                                         {{Form::textarea("data[pt_remark]",'',['class'=>'form-control no-resize pt_remark','placeholder'=>"Patient's Remark",'rows'=>'2'])}}
@@ -5353,6 +5426,12 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
         });
         $('.laproscopy-images').imageUploader({
             imagesInputName: 'investigation[laproscopy][images]',
+        });
+        $('.blood-images').imageUploader({
+            imagesInputName: 'investigation[blood_report][image]',
+        });
+        $('.data-blood-images').imageUploader({
+            imagesInputName: 'data[blood_report][image]',
         });
         $(document).on('click', '.add-row', function() {
             addRow();

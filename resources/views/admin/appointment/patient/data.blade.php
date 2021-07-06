@@ -40,9 +40,10 @@
                 </td>
                 <td>{{$row->city .', ' . $row->getState['name']}}</td>
                 <td>{{$row->getReferenceDoctor['name']}}</td>
-                <td><a href="#" class="label-link font-bold"  data-toggle="modal" data-target="#label-modal" data-name="{{$row->name}}">
-                    Label
-                </a>
+                <td>
+                    <a href="#" class="mr-1"  data-toggle="modal" data-target="#label-modal" data-name="{{$row->name}}"><i class="fa fa-address-card-o candor-color font-20" title="Name Print"></i>
+                    </a>
+                    <a href="{{URL::to('get-all-report/'.encrypt($row->id).'?status=')}}" class=""><i class="fa fa-file candor-color font-20" title="All Reports"></i></a>
                 </a></td>
             </tr>
         @empty

@@ -2324,6 +2324,30 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        Blood Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("investigation[blood_report][type]",'yes','',['id'=>'blood_type_yes','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                                                        <label for="blood_type_yes">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("investigation[blood_report][type]",'no',true,['id'=>'blood_type_no','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                                                        <label for="blood_type_no">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 pr-0 blood-type d-none">
+                                                    <div class="blood-images"></div>
+                                                </div>
+                                                
+                                            </div>
 
                                         </div>
                                     </div>
@@ -3284,6 +3308,9 @@
         });
         $('.hcg-images').imageUploader({
             imagesInputName: 'investigation[hcg][images]',
+        });
+        $('.blood-images').imageUploader({
+            imagesInputName: 'investigation[blood_report][image]',
         });
         $(document).ready(function(){
             $('.complain-multi .show-tick').addClass('d-none');

@@ -183,9 +183,15 @@
     <div class="row clearfix">
         <div class="col-md-12 p-0">
             <div class="card patients-list">
-                <div class="header">
-                    <h2><strong class="text-secondary">{{ucwords($iui->getPatientsInfo->name)}}</strong>{{' care of '.$referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]}}</h2>
+                <div class="header d-flex">
+                    <div class="col-md-6">
+                        <h2><strong class="text-secondary">{{ucwords($iui->getPatientsInfo->name)}}</strong>{{' care of '.$referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]}}</h2>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="{{URL::to('get-all-report/'.encrypt($iui->getPatientsInfo->id).'?status=iui')}}" class="btn btn-primary m-n3">View Reports</a>
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -1097,6 +1103,7 @@
                 dataType: 'json',
                 type:'GET',
             }).done(function(data) {
+                console.log(data);
                 $('.iui-history-data').html(data.update_iui);
                 var dateData = '<option value="0">Select Date</option>';
                 $.each(data.date,function(key,value){
@@ -1173,6 +1180,26 @@
                         preloaded: jQuery.parseJSON(data.laproscopyImages),
                         imagesInputName: 'investigation[laproscopy][images]',
                         preloadedInputName: 'laproscopy_old'
+                    });
+                }
+                if(data.bloodImages != 'null') {
+                    $('.blood-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.bloodImages),
+                        imagesInputName: 'investigation[blood_report][image]',
+                        preloadedInputName: 'blood_report_old'
+                    });
+                }
+                if(data.historyData != null && data.bloodImages != 'null')
+                {
+                    $('.blood-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.bloodImages),
+                        imagesInputName: 'investigation[blood_report][image]',
+                        preloadedInputName: 'blood_report_old'
+                    });
+                    $('.data-blood-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.bloodImages),
+                        imagesInputName: 'data[blood_report][image]',
+                        preloadedInputName: 'blood_report_old'
                     });
                 }
                 $('.view-file-edit-modal').modal('hide');
@@ -1286,6 +1313,18 @@
                         preloaded: jQuery.parseJSON(data.laproscopyImages),
                         imagesInputName: 'investigation[laproscopy][images]',
                         preloadedInputName: 'laproscopy_old'
+                    });
+                }
+                if(data.bloodImages != 'null') {
+                    $('.blood-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.bloodImages),
+                        imagesInputName: 'investigation[blood_report][image]',
+                        preloadedInputName: 'blood_report_old'
+                    });
+                    $('.data-blood-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.bloodImages),
+                        imagesInputName: 'data[blood_report][image]',
+                        preloadedInputName: 'blood_report_old'
                     });
                 }
                 $('.view-file-edit-modal').modal('hide');

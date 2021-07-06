@@ -44,9 +44,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+		@php
+			if(empty($status))
+			{
+				$ancReport = '';
+				$ivfReport = '';
+				$iuiReport = '';
+			}
+			else 
+			{
+				$ancReport = !empty($status) && $status == 'anc' ? '' : 'd-none';
+				$ivfReport = !empty($status) && $status == 'ivf' ? '' : 'd-none';
+				$iuiReport = !empty($status) && $status == 'iui' ? '' : 'd-none';
+			}
+			
+		@endphp
+        <div class="{{'col-md-12 '.$ancReport}}">
             <div class="card">
-            <div class="header">
+                <div class="header">
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <strong class="pr-3">ANC Reports</strong>
@@ -59,9 +74,9 @@
                         <div class="cont">
                             <div class="page-head">
                                 <div class="demo-gallery">
-                                    <ul id="lightgallery">
-                                    @if(@allReports)
-										@foreach($allReports as $key => $reports)
+                                    <ul id="lightgallery1">
+                                    @if($ANCReports)
+										@foreach($ANCReports as $key => $reports)
 											@php
 											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
 											@endphp
@@ -92,10 +107,14 @@
 												@if(!empty($value))
 													@foreach($value as $image)
 													@php
-														$imageType = mime_content_type($image);   
-														                           
+                                                    
+                                                        $imageType = '';
+                                                        if(is_file($image))
+                                                        {
+														    $imageType = mime_content_type($image);   
+                                                        }
 													@endphp
-													@if($imageType == "application/pdf")     
+													@if($imageType == "application/pdf" && !empty($imageType))     
 													<li data-responsive="{{asset($image)}}" data-iframe="true" data-src="{{asset($image)}}"
 													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
 														<a href="{{asset($image)}}" class="mb-1" target="_blank">
@@ -107,7 +126,7 @@
 														<div class="content"><h6 class="candor-color">{{$report_name}}</h6><p>{{$date}}</p></div>
 													</li>
 													@endif
-													@if($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg")     
+													@if($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" && !empty($imageType))     
 														<li data-responsive="{{asset($image)}}" data-src="{{asset($image)}}"
 														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
 															<a href="" class="mb-1">
@@ -132,6 +151,179 @@
                 </div>
             </div>
         </div>
+        <div class="{{'col-md-12 '.$ivfReport}}">
+            <div class="card">
+                <div class="header">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <strong class="pr-3">IVF Reports</strong>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="cont">
+                            <div class="page-head">
+                                <div class="demo-gallery">
+                                    <ul id="lightgallery2">
+                                    @if($IVFReports)
+										@foreach($IVFReports as $key => $reports)
+											@php
+											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
+											@endphp
+											@foreach($reports as $report => $value)
+												@php
+													switch($report)
+													{
+													case 'hystroscopy':
+														$report_name = 'Hystroscopy Report';
+														break;
+													case 'laproscopy':
+														$report_name = 'Laproscopy Report';
+														break;
+													case 'hcg':
+														$report_name = 'HCG Report';
+														break;
+													case 'blood_report':
+														$report_name = 'Blood Report';
+														break;
+													}
+												@endphp
+												@if(!empty($value))
+													@foreach($value as $image)
+													@php
+                                                    
+                                                        $imageType = '';
+                                                        if(is_file($image))
+                                                        {
+														    $imageType = mime_content_type($image);   
+                                                        }
+													@endphp
+													@if($imageType == "application/pdf" && !empty($imageType))     
+													<li data-responsive="{{asset($image)}}" data-iframe="true" data-src="{{asset($image)}}"
+													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
+														<a href="{{asset($image)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{asset('public/images/default-pdf.png')}}">
+															<div class="demo-gallery-poster">
+																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+															</div>
+														</a>
+														<div class="content"><h6 class="candor-color">{{$report_name}}</h6><p>{{$date}}</p></div>
+													</li>
+													@endif
+													@if(($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" )&& !empty($imageType))     
+														<li data-responsive="{{asset($image)}}" data-src="{{asset($image)}}"
+														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
+															<a href="" class="mb-1">
+																<img class="img-responsive" src="{{asset($image)}}">
+																<div class="demo-gallery-poster">
+																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+																</div>
+															</a>
+															<div class="content"><h6 class="candor-color">{{$report_name}}</h6><p>{{$date}}</p></div>
+														</li>
+														@endif
+													@endforeach
+												@endif
+											@endforeach
+										@endforeach
+                                    @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="{{'col-md-12 '.$iuiReport}}">
+            <div class="card">
+                <div class="header">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <strong class="pr-3">IUI Reports</strong>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="cont">
+                            <div class="page-head">
+                                <div class="demo-gallery">
+                                    <ul id="lightgallery3">
+                                    @if($IUIReports)
+										@foreach($IUIReports as $key => $reports)
+											@php
+											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
+											@endphp
+											@foreach($reports as $report => $value)
+												@php
+													switch($report)
+													{
+													case 'hystroscopy':
+														$report_name = 'Hystroscopy Report';
+														break;
+													case 'laproscopy':
+														$report_name = 'Laproscopy Report';
+														break;
+													case 'hcg':
+														$report_name = 'HCG Report';
+														break;
+													case 'blood_report':
+														$report_name = 'Blood Report';
+														break;
+													}
+												@endphp
+												@if(!empty($value))
+													@foreach($value as $image)
+													@php
+                                                    
+                                                        $imageType = '';
+                                                        if(is_file($image))
+                                                        {
+														    $imageType = mime_content_type($image);   
+                                                        }
+													@endphp
+													@if($imageType == "application/pdf" && !empty($imageType))     
+													<li data-responsive="{{asset($image)}}" data-iframe="true" data-src="{{asset($image)}}"
+													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
+														<a href="{{asset($image)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{asset('public/images/default-pdf.png')}}">
+															<div class="demo-gallery-poster">
+																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+															</div>
+														</a>
+														<div class="content"><h6 class="candor-color">{{$report_name}}</h6><p>{{$date}}</p></div>
+													</li>
+													@endif
+													@if(($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" )&& !empty($imageType))     
+														<li data-responsive="{{asset($image)}}" data-src="{{asset($image)}}"
+														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
+															<a href="" class="mb-1">
+																<img class="img-responsive" src="{{asset($image)}}">
+																<div class="demo-gallery-poster">
+																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+																</div>
+															</a>
+															<div class="content"><h6 class="candor-color">{{$report_name}}</h6><p>{{$date}}</p></div>
+														</li>
+														@endif
+													@endforeach
+												@endif
+											@endforeach
+										@endforeach
+                                    @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
 </section>
@@ -145,7 +337,9 @@
 <script src="https://cdn.rawgit.com/sachinchoolur/lg-share.js/master/dist/lg-share.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    lightGallery(document.getElementById('lightgallery'))
+    lightGallery(document.getElementById('lightgallery1'))
+    lightGallery(document.getElementById('lightgallery2'))
+    lightGallery(document.getElementById('lightgallery3'))
 	
   </script>
 </body>

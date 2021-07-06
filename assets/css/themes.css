@@ -2630,3 +2630,7 @@ input[type=number]::-webkit-outer-spin-button {
 {
     max-width: 1100px !important;
 }
+.font-20
+{
+    font-size: 20px !important;
+}

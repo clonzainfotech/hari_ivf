@@ -55,7 +55,7 @@
                         <h2><strong class="text-secondary"> {{ucwords($ancPatients->name)}}</strong>{{' care of '.$careOf}}</h2>
                     </div>
                     <div class="col-md-6 text-right">
-                        <a href="{{URL::to('get-all-report/'.encrypt($ancData->getPatients['id']))}}" class="btn btn-primary m-n3">View Reports</a>
+                        <a href="{{URL::to('get-all-report/'.encrypt($ancData->getPatients['id']).'?status=anc')}}" class="btn btn-primary m-n3">View Reports</a>
                     </div>
                 </div>
             </div>
