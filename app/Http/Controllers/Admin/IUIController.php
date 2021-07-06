@@ -801,6 +801,7 @@ class IUIController extends AdminController
             $hystroscopyImagesData = [];
             $hcgImagesData = [];
             $laproscopyImagesData = [];
+            $bloodImagesData = [];
             $follicle = null;
             $iuiThirdVisitData = null;
 
