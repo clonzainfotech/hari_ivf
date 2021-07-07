@@ -641,7 +641,10 @@ class ANCController extends AdminController
             // update appointment flag
             $now = Carbon::now()->format('Y-m-d');
             $usgStatus = 0;
-            $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1]);
+            if(!$request->anc_id &&  !$request->anc_history_id)
+            {
+                $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1]);
+            }
             if(!empty($request->oe['follow_up']) && ((!empty($request->usg['nt_scan']) && strtotime($request->usg['nt_scan']) == strtotime($request->oe['follow_up'])) || (!empty($request->usg['early_scan']) && strtotime($request->usg['early_scan']) == strtotime($request->oe['follow_up'])) || (!empty($request->usg['anomalies_miles']) && strtotime($request->usg['anomalies_miles']) == strtotime($request->oe['follow_up'])) || (!empty($request->usg['growth_scan']) && strtotime($request->usg['growth_scan']) == strtotime($request->oe['follow_up'])))){
                 $usgStatus = 1;
                 // $usgAppointment = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['usg_status'=>1]);

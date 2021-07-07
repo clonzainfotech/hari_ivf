@@ -77,7 +77,7 @@ class AdminController extends BaseController
             $appointmentData->updated_by = Auth::user()->id;
             $appointmentData->save();
         }else{
-            if($appointmentData['date'] != $date){
+            if($appointmentData['date'] != $date && $appointmentData['date'] < $date){
                 $appointment = $this->Appointment;
                 $appointment->date = $date;
                 $appointment->is_procedure = $isProcedure;
