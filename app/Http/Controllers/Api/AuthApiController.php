@@ -96,14 +96,14 @@ class AuthApiController extends ApiController
                 return $this->sendError($validator->errors()->first(), 422);
             }
             $patient = $this->OpdPatients->where('id', $pid)->first();
-            // if($patient && $patient->mobile_number == '9825604838')
-            // {
-            //     $user = $this->OpdPatients->where('id', $pid)->first();
-            // }
-            // else
-            // {
+            if($patient && $patient->mobile_number == '9825604838')
+            {
+                $user = $this->OpdPatients->where('id', $pid)->first();
+            }
+            else
+            {
                 $user = $this->OpdPatients->where('id', $pid)->where('otp',$request->otp)->first();
-            // }
+            }
             $PatientToken = $this->PatientToken;
             if($user) {
                 $token = $this->apiToken;
