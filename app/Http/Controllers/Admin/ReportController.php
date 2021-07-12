@@ -1465,4 +1465,146 @@ class ReportController extends AdminController
             abort(500);
         }
     }
+    public function getAllCollectionReport(Request $request)
+    {
+        try{
+            $doctor = $this->getDoctor();
+            $referenceDoctor = $doctor['referenceDoctor'];
+            $reportDatails = [];
+            $reportDatails['doctor'] = '';
+            if($request->ajax() || $request->isexport == 1){
+                $paymentType = $request->payment_type;
+                $collectionReport = $this->AppointmentCharges->orderBy('id','DESC');
+
+                $fromdate = $request->fromdate;
+                $todate = $request->todate;
+                if($fromdate || $todate){
+                    // $month = carbon::parse($fromdate)->format('Y-m-d');
+                    $fromdate = carbon::parse($fromdate)->format('Y-m-d');
+                    $todate = carbon::parse($todate)->format('Y-m-d');
+                    $collectionReport = $collectionReport->WhereHas('getAppointment', function ($query) use ($fromdate, $todate) {
+                        $query->whereBetween('date', [$fromdate, $todate]);
+                    });
+                }
+                // dd($collectionReport->get()->toArray());
+                // USG
+                $usg = $this->Appointment->whereHas('getAppointmentCharges',function($q) {
+                    $q->where('usg', '!=', null);
+                })->orderBy('id', 'desc');
+                // Hormon
+                $hormon = $this->IndoorDeposit->where([['charge_type', '=', 1],['case_type', '=', 'Credit']])->orderBy('id', 'desc');
+                // IUI
+                $iui = $this->IndoorDeposit->where([['charge_type', '=', 3],['case_type', '=', 'Credit']])->orderBy('id', 'desc');
+                // IVF
+                $ivf = $this->IndoorDeposit->where([['charge_type', '=', 2],['case_type', '=', 'Credit']])->orderBy('id', 'desc');
+                // Main Collection Data Card
+                $mainDataCash = $this->Appointment
+                    ->whereHas('getAppointmentCharges', function($query) {$query->where([
+                        ['category_id', '!=', 7],
+                    ])
+                        ->select(['id','appointment_id','consulting_charges','extra_field','nst','cut','usg','dressing','ivf','charge_types','total','payment_mode','created_at']);})
+                    ->with([
+                        'getPatientsDetails',
+                        'getAppointmentCharges',
+                    ])
+                    ->orderBy('id', 'desc');
+
+                
+                if($fromdate || $todate){
+                    $usg = $usg->whereBetween('date', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                    $hormon = $hormon->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                    $iui = $iui->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                    $ivf = $ivf->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+
+                    $mainDataCash = $mainDataCash->whereBetween('date', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                    
+                }
+
+                $mainDataCash  = $mainDataCash->get();
+                $mainDataCash = $mainDataCash->groupBy('category_id')->toArray();
+
+                $ivfCash = array_merge(!empty($mainDataCash[1]) ? $mainDataCash[1] : [],!empty($mainDataCash[2]) ? $mainDataCash[2] : []);
+                $iuiCash = array_merge(!empty($mainDataCash[3]) ? $mainDataCash[3] : [],!empty($mainDataCash[4]) ? $mainDataCash[4] : []);
+                $ancCash = array_merge(!empty($mainDataCash[5]) ? $mainDataCash[5] : [],!empty($mainDataCash[6]) ? $mainDataCash[6] : []);
+                $gynecCash = array_merge(!empty($mainDataCash[17]) ? $mainDataCash[17] : [],!empty($mainDataCash[18]) ? $mainDataCash[18] : []);
+                
+
+                $indoor = $this->IndoorBook
+                    ->whereIsFinalInvoice(1)
+                    ->whereNotNull('final_invoice_date')
+                    ->with([
+                        'getInvoice',
+                        'getPatientsDetails'
+                    ])
+                    ->orderBy('id', 'DESC');
+
+
+                $indoorCaseDeposit = $this->IndoorDeposit->whereCaseTypeAndChargeType('Credit', 4)->with('getPatients')->orderBy('id', 'DESC');
+                $indoorDebit = $this->IndoorDeposit->whereCaseTypeAndChargeType('Debit', 4)->with('getPatients')->orderBy('id', 'DESC');
+
+                if($fromdate || $todate) {
+                    $indoor = $indoor->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                    $indoorCaseDeposit = $indoorCaseDeposit->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                    $indoorDebit = $indoorDebit->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                }
+                $indoorCaseDeposit = $indoorCaseDeposit->get()->toArray();
+                $indoorDebit = $indoorDebit->get()->toArray();
+                $indoor = $indoor->get()->toArray();
+
+                // $indoorCash = collect($indoor)->where('get_invoice.payment_mode', '=', $paymentType)->all();
+                $indoorCash = collect($indoor)->all();
+                $indoorCash = array_slice($indoorCash, 0);
+
+                $procedures = $this->IndoorProcedure->select('id', 'name')->get()->toArray();
+                $paymentMethodValueData = [1=>2,2=>1,3=>3,4=>4,5=>5];
+                $income = $this->IncomeManager->orderBy('id', 'desc');
+                if($fromdate || $todate){
+                    $income = $income->whereBetween('date', [$fromdate, $todate]);
+                }
+                // expense
+                $expense = $this->ExpenseManager->orderBy('id', 'desc');
+
+                if($fromdate || $todate){
+                    $expense = $expense->whereBetween('date', [$fromdate, $todate]);
+                }
+                // $usgGrandTotal = $usg->sum('usg');
+                $incomeGrandTotal = $income->sum('amount');
+                $expenseGrandTotal = $expense->sum('amount');
+
+                if($request->isprint==1){
+                    $usg = $usg->get();
+                    $hormon = $hormon->get();
+                    $iui = $iui->get();
+                    $ivf = $ivf->get();
+                    $income = $income->get();
+                    $expense = $expense->get();
+                    $collectionReport = $collectionReport->get();
+                    $reportDatails['total'] = $collectionReport->sum('netamount');
+                    $reportDatails['count'] = $collectionReport->count();
+
+                    return response()->json([
+                        View::make('admin.report.collection.all_collection_preview',compact('collectionReport','reportDatails', 'expense', 'expenseGrandTotal', 'hormon', 'iui', 'ivf', 'income', 'incomeGrandTotal', 'usg', 'indoorCash', 'indoorCaseDeposit','ivfCash', 'iuiCash', 'ancCash','gynecCash','procedures','indoorDebit'))->render()
+                    ]);
+                }
+                $collectionReport = $collectionReport->get();
+                $reportDatails['total'] = $collectionReport->sum('netamount');
+                $reportDatails['count'] = $collectionReport->count();
+
+                $usg = $usg->get();
+                $hormon = $hormon->get();
+                $iui = $iui->get();
+                $ivf = $ivf->get();
+                $income = $income->get();
+                $expense = $expense->get();
+                
+                return response()->json([
+                    View::make('admin.report.collection.all_collection_data',compact('collectionReport','reportDatails', 'expense', 'expenseGrandTotal', 'hormon', 'iui', 'ivf', 'income', 'incomeGrandTotal', 'usg', 'indoorCash', 'indoorCaseDeposit','ivfCash', 'iuiCash', 'ancCash','gynecCash','procedures','indoorDebit'))->render()
+                ]);
+            }
+            return view('admin.report.collection.index',compact('referenceDoctor'));
+        }catch(Exception $e){
+            log::Debug($e);
+            abort(500);
+        }
+    }
 }

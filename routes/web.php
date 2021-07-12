@@ -232,6 +232,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::any('ca-expense-report','ReportController@getCaExpenseReport');
     Route::post('ca-expense-report/store','ReportController@storeCaExpense');
     Route::get('ca-expense-report/getCaExpense','ReportController@getCaExpense');
+    Route::get('all-collection-report','ReportController@getAllCollectionReport');
 
     // infertility report data
     Route::get('infertility-report','ReportController@infertilityReport');

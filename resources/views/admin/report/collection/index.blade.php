@@ -89,6 +89,15 @@
                                         UPI
                                     </label>
                                 </div>
+                                <div class="col-md-1 checkbox">
+                                    {{Form::checkbox('all_type_payment','0','',[
+                                        'id'=>'all_box',
+                                        'class'=>'all_type_payment',
+                                    ])}}
+                                    <label for="all_box">
+                                        All
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     <div class="tab-content m-t-10">
@@ -140,7 +149,14 @@
                 fromdate = picker.startDate.format('YYYY-MM-DD');
                 todate = picker.endDate.format('YYYY-MM-DD');
                 qstring = 'usg=' + usg + '&hormon=' + hormon + '&iui=' + iui + '&ivf=' + ivf + '&mainCollection=' + mainCollection + '&income=' + income + '&expense=' + expense + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId+'&payment_type='+reportPaymentType;
-                getCollectionReportData(qstring);
+                if($('.all_type_payment').is(':checked'))
+                {
+                    qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+                    getAllCollectionReportData(qstring);
+                }
+                else{
+                    getCollectionReportData(qstring);
+                }
             });
             $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
                 // Reset values
@@ -150,8 +166,15 @@
 
                 fromdate = '';
                 todate = '';
-                qstring = 'usg=' + usg + '&hormon=' + hormon + '&iui=' + iui + '&ivf=' + ivf + '&mainCollection=' + mainCollection + '&income=' + income + '&expense=' + expense + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId+'&payment_type='+reportPaymentType;
-                getCollectionReportData(qstring);
+                if($('.all_type_payment').is(':checked'))
+                {
+                    qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+                    getAllCollectionReportData(qstring);
+                }
+                else{
+                    qstring = 'usg=' + usg + '&hormon=' + hormon + '&iui=' + iui + '&ivf=' + ivf + '&mainCollection=' + mainCollection + '&income=' + income + '&expense=' + expense + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId+'&payment_type='+reportPaymentType;
+                    getCollectionReportData(qstring);
+                }
             });
             getCollectionReportData(qstring);
 
@@ -202,32 +225,60 @@
 
         $(document).on('click', '.print-collection-report', function () {
 
-            var isprint = 1;
-            $.ajax({
-                url: "{{URL::to('collection-report')}}?" + qstring,
-                data: {isprint},
-                dataType: 'json',
-            }).done(function (data) {
-                w = window.open(window.location.href, "_blank");
-                w.document.open();
-                w.document.write(data);
-                w.document.close();
-                w.window.print();
-            });
+            if($('.all_type_payment').is(':checked'))
+                {
+                    var isprint = 1;
+                    qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+                    $.ajax({
+                        url: "{{URL::to('all-collection-report')}}" + qstring,
+                        data: {isprint},
+                        dataType: 'json',
+                    }).done(function (data) {
+                        w = window.open(window.location.href, "_blank");
+                        w.document.open();
+                        w.document.write(data);
+                        w.document.close();
+                        w.window.print();
+                    });
+                }
+                else{
+                    var isprint = 1;
+                    $.ajax({
+                        url: "{{URL::to('collection-report')}}?" + qstring,
+                        data: {isprint},
+                        dataType: 'json',
+                    }).done(function (data) {
+                        w = window.open(window.location.href, "_blank");
+                        w.document.open();
+                        w.document.write(data);
+                        w.document.close();
+                        w.window.print();
+                    });
+                }
         });
 
         $(document).on('click','.report-payment-type',function(){
             reportPaymentType = 2;
             $('.report-payment-type').not(this).prop('checked', false);
+            $('.all_type_payment').prop('checked', false);
             if($(this).is(':checked')){
                 reportPaymentType = $(this).val();
             }
             qstring = 'usg=' + usg + '&hormon=' + hormon + '&iui=' + iui + '&ivf=' + ivf + '&mainCollection=' + mainCollection + '&income=' + income + '&expense=' + expense + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId+'&payment_type='+reportPaymentType;
             getCollectionReportData(qstring);
         });
-        // $('.report-payment-type').on('change', function() {
-        //     $(this).siblings('.report-payment-type').not(this).prop('checked', false);
-        // });
+        $('.all_type_payment').on('change', function() {
+            $('.report-payment-type').prop('checked', false);
+            if($(this).is(':checked')){
+                qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+                getAllCollectionReportData(qstring);
+            }
+            else{
+                qstring = 'usg=' + usg + '&hormon=' + hormon + '&iui=' + iui + '&ivf=' + ivf + '&mainCollection=' + mainCollection + '&income=' + income + '&expense=' + expense + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId+'&payment_type='+reportPaymentType;
+                getCollectionReportData(qstring);
+            }
+            
+        });
 
         $(document).on('click', '.export-collection-report', function () {
             qstring = 'usg=' + usg + '&hormon=' + hormon + '&iui=' + iui + '&ivf=' + ivf + '&mainCollection=' + mainCollection + '&income=' + income + '&expense=' + expense + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId+'&payment_type='+reportPaymentType+'&isexport=1';
@@ -241,6 +292,21 @@
             $('.collection-report-data').addClass('d-none');
             $.ajax({
                 url: "{{URL::to('collection-report')}}?" + qstring,
+                dataType: 'json',
+            }).done(function (data) {
+                $('.report-loader').css('display','none');
+                $('.collection-report-data').removeClass('d-none');
+                $('.collection-report-data').html(data);
+            }).fail(function () {
+
+            });
+        }
+        //get all type of collection
+        function getAllCollectionReportData(qstring) {
+            $('.report-loader').css('display','block');
+            $('.collection-report-data').addClass('d-none');
+            $.ajax({
+                url: "{{URL::to('all-collection-report')}}" + qstring+'&all_type_payment=1',
                 dataType: 'json',
             }).done(function (data) {
                 $('.report-loader').css('display','none');
