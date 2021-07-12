@@ -795,7 +795,7 @@
                                                                     <div class="col-md-4">
                                                                         <div class="input-group">
                                                                             <span class="input-group-addon">Blood report: &nbsp;</span>
-                                                                            {{Form::text("data[blood][report]",'',['class'=>'form-control'])}}
+                                                                            {{Form::text("data[blood_report][report]",'',['class'=>'form-control'])}}
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-8">
@@ -2319,7 +2319,7 @@
                                             <div class="col-md-4">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Blood report: &nbsp;</span>
-                                                    {{Form::text("data[blood][report]",'',['class'=>'form-control'])}}
+                                                    {{Form::text("data[blood_report][report]",'',['class'=>'form-control'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-8">
@@ -4727,7 +4727,7 @@
             imagesInputName: 'investigation[laproscopy][images]',
         });
         $('.blood-images').imageUploader({
-        imagesInputName: 'data[blood][image]',
+        imagesInputName: 'data[blood_report][image]',
     });
 </script>
 @stop

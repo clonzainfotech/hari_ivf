@@ -628,7 +628,7 @@ class IVFController extends AdminController
 
                         $autoRemark = [];
                         $ancData = $this->ANC;
-                        $autoRemark['remark'] = "Consive from IVF";
+                        $autoRemark['remark'] = "Conceived from IVF";
                         $ancData->patients_id = $patientsId;
                         $ancData->patients_info = $ivfFirstVisitData->patients_info;
                         $ancData->patients_details_ho = $ivfFirstVisitData->patients_details_ho;
@@ -670,6 +670,7 @@ class IVFController extends AdminController
                     $investigationData = $request->investigation;
                     $hystroscopyOldImages = [];
                     $laproscopyOldImages = [];
+                    $bloodReportOldImages = [];
                     if(!empty($checkIvfHistory))
                     {
                         
@@ -690,7 +691,7 @@ class IVFController extends AdminController
                         }
                         if($ivfHistoryData)
                         {
-                            $bloodReportOldImages = !empty($ivfHistoryData->report->image) ? (array)$ivfHistoryData->report->image : [];
+                            $bloodReportOldImages = !empty($ivfHistoryData->blood_report->image) ? (array)$ivfHistoryData->blood_report->image : [];
                         }
                     }
                     if(!empty($request['investigation']['hystroscopy']['images'])){
@@ -713,15 +714,15 @@ class IVFController extends AdminController
                         $investigationData['laproscopy']['images'] = $laproscopyOldImages;
 
                     }
-                    if(!empty($request->data['blood']['image'])){
-                        foreach($request->data['blood']['image'] as $key=>$row){
+                    if(!empty($request->data['blood_report']['image'])){
+                        foreach($request->data['blood_report']['image'] as $key=>$row){
                             $name = $this->uploadImage($row, 'public/upload/ivf/blood/');
                             $bloodReport[] = 'public/upload/ivf/blood/' . $name;
                         }
-                        $data['blood']['image'] = array_merge($bloodReport,$bloodReportOldImages);
+                        $data['blood_report']['image'] = array_merge($bloodReport,$bloodReportOldImages);
                     }
                     else{
-                        $data['blood']['image'] = $hystroscopyOldImages;
+                        $data['blood_report']['image'] = $bloodReportOldImages;
                     }
                     $ivfHistory->description = json_encode($data);
                     $ivfHistory->investigation = isset($request->investigation) ? json_encode($investigationData) : null;
@@ -1849,7 +1850,7 @@ class IVFController extends AdminController
                         $laproscopyImagesData[$key]['src'] = url($row);
                     }
                 }
-                $bloodReportImages = !empty($description) && !empty($description->blood->image) ? $description->blood->image : null;
+                $bloodReportImages = !empty($description) && !empty($description->blood_report->image) ? $description->blood_report->image : null;
                 if($bloodReportImages){
                     foreach($bloodReportImages as $key=>$row){
                         $bloodReportImagesData[$key]['id'] = $key;
@@ -2024,6 +2025,47 @@ class IVFController extends AdminController
                 }
             }
         }
+        if($reportType == 'blood_report_old'){
+            if($type == 'ivf_history')
+            {
+                $ivfDescription = json_decode($ivf->description);
+                $ivfData = !empty($ivfDescription->blood_report) ? $ivfDescription->blood_report : [];
+                if(!empty($ivfData)){
+                    $blood_reportImages = $this->getBloodImagesKey($ivfData,$data)['key'];
+                    if(!empty($blood_reportImages)){
+                        foreach($blood_reportImages as $row){
+                            $this->removeImage($ivfData->image[$row]);
+                            unset($ivfData->image[$row]);
+                        }
+                        $iuiArray = (array)$ivfData->image;
+                        $iuiArrayData = array_values($iuiArray);
+                        $ivfData->image =  $iuiArrayData;
+                        $ivfDescription->blood_report = $ivfData;
+                        $ivf->description = $ivfDescription;
+                    }
+                }
+                $ivf->description = json_encode($ivfDescription);
+            }
+            else
+            {
+                $ivfData = !empty($ivfInvestigation->blood_report) ? $ivfInvestigation->blood_report : [];
+                if(!empty($ivfData)){
+                    $blood_reportImages = $this->getBloodImagesKey($ivfData,$data)['key'];
+                    if(!empty($blood_reportImages)){
+                        foreach($blood_reportImages as $row){
+                            $this->removeImage($ivfData->image[$row]);
+                            unset($ivfData->image[$row]);
+                        }
+                        $iuiArray = (array)$ivfData->image;
+                        $iuiArrayData = array_values($iuiArray);
+                        $ivfData->image =  $iuiArrayData;
+                        $ivfInvestigation->blood_report = $ivfData;
+                        $ivf->investigation = $ivfInvestigation;
+                    }
+                }
+            }
+            
+        }
         $ivf->investigation = json_encode($ivfInvestigation);
         $ivf->save();
         return ['status'=>true];
@@ -2034,6 +2076,18 @@ class IVFController extends AdminController
         $removedImageKey = [];
         if(!empty($ivfData->images)){
             foreach($ivfData->images as $key=>$row){
+                $imagesKey[] =$key;
+            }
+            $removedImageKey = array_diff($imagesKey,$data);
+        }
+        return ['key'=>$removedImageKey];
+    }
+    //get blood_report keys
+    private function getBloodImagesKey($ivfData,$data){
+        $imagesKey = [];
+        $removedImageKey = [];
+        if(!empty($ivfData->image)){
+            foreach($ivfData->image as $key=>$row){
                 $imagesKey[] =$key;
             }
             $removedImageKey = array_diff($imagesKey,$data);

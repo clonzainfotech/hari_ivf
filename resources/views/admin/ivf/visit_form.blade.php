@@ -858,7 +858,7 @@
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-addon">Blood report: &nbsp;</span>
-                            {{Form::text("data[blood][report]",!empty($ivfData->blood->report) ? $ivfData->blood->report : null,['class'=>'form-control'])}}
+                            {{Form::text("data[blood_report][report]",!empty($ivfData->blood_report->report) ? $ivfData->blood_report->report : null,['class'=>'form-control'])}}
                         </div>
                     </div>
                     
@@ -1771,7 +1771,7 @@
         imagesInputName: 'investigation[laproscopy][images]',
     });
     $('.edit-blood-images').imageUploader({
-        imagesInputName: 'data[blood][image]',
+        imagesInputName: 'data[blood_report][image]',
     });
     var hystroscopyImages = @json($hystroscopyImagesData);
     var laproscopyImages = @json($laproscopyImagesData);
@@ -1793,8 +1793,9 @@
         if(bloodReport != 'null'){
                 $('.edit-blood-images').imageUploader({
                     preloaded: jQuery.parseJSON(bloodReport),
-                    preloadedInputName: 'data[blood][image]',
-                    imagesInputName: 'blood_report_old'
+                    imagesInputName: 'data[blood_report][image]',
+                    preloadedInputName: 'blood_report_old'
+
                 });
             }
     </script>

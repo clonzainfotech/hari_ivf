@@ -4426,7 +4426,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
 
                                         {{Form::radio("data[result]",'consive',!empty($historyData->result) && $historyData->result == 'consive' ? true : false,['id'=>'consive','class'=>'r-type'])}}
                                         <label for="consive">
-                                            Consive
+                                            Conceive
                                         </label>
                                     </div>
                                     <span class="form-error-msg r-type-msg"></span>
@@ -4944,7 +4944,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         </td>
                                                         <td>{{!empty($iui_decription->no_follicle) ? $iui_decription->no_follicle : ''}}</td>
                                                         <td>{{(!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes') ? 'YES' : ''}}</td>
-                                                        <td>{{($row->visit == 4 && !empty($iui_decription->result)) ? $iui_decription->result : ''}}</td>
+                                                        <td>{{($row->visit == 4 && !empty($iui_decription->result)) ? ($iui_decription->result == 'consive' ? 'Conceived' : 'Fail') : ''}}</td>
                                                     </tr>
                                                     @endif
                                                 @endforeach

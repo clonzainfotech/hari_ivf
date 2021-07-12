@@ -436,7 +436,7 @@ class IUIController extends AdminController
                     $iui_mh_data->lmd_date_diff = !empty($iuiSecondVisitData->lmp->lmp_date_diff) ? $iuiSecondVisitData->lmp->lmp_date_diff : '';
                     $iui_mh_data->edd = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->addMonths(9)->addDays(7)->format('Y-m-d') : '';
                     $iuiPatientsData->m_h = json_encode($iui_mh_data);
-                    $autoRemark['remark'] = "Consive from IUI";
+                    $autoRemark['remark'] = "Conceived from IUI";
                     $ancData->patients_id = $patientsId;
                     $ancData->patients_info = $iuiPatientsData->patients_info;
                     $ancData->patients_details_ho = $iuiPatientsData->patients_details_ho;
@@ -753,6 +753,7 @@ class IUIController extends AdminController
             $iuiSecondVisitData = null;
             $remark = null;
             $visitNo = 2;
+            $iui_completed = false;
             $personalData = $this->AncHoHistory->where('type',1)->pluck('name','name')->toArray();
             $pastData = $this->AncHoHistory->where('type',2)->pluck('name','name')->toArray();
             $familyData = $this->AncHoHistory->where('type',3)->pluck('name','name')->toArray();
@@ -812,6 +813,19 @@ class IUIController extends AdminController
             $hospitalTime = $this->appointmentTime('09:00', '17:00', '5 mins');
             $inducingInjectionData = $this->inducingInjection()['inj'];
             $medicines = $this->Medicine->pluck('name','name');
+            //check if patients is transfer on another plan
+            $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_status',2)->orderBy('created_at','desc')->first();
+            if($iuiHistoryData)
+            {
+                
+                $ivfTransfer = $this->IVF->wherePatientsId($id)->where('created_at','>=',$iuiHistoryData->created_at)->first();
+                $ancTransfer = $this->ANC->wherePatientsId($id)->where('created_at','>=',$iuiHistoryData->created_at)->first();
+                if(!empty($ivfTransfer) || !empty($ancTransfer))
+                {
+                    $iui_completed = true;
+                }
+            }
+            
             if($request->ajax()){
                 // date wise visit show
                 $iuiReportCycleNo = $request->iui_cycle_no ? $request->iui_cycle_no :  $cycleNo;
@@ -827,9 +841,10 @@ class IUIController extends AdminController
                         $iuiVisitId = decrypt($request->iui_visit_id);
                         $iuiFirstVisit = $this->IUI->where('id',$iuiVisitId)->first();
                         $iuiHistory = $this->IuiHistory->where('id',$iuiVisitId)->first();
+
                     }
                     // dump($request->iuihistorydate);
-                    // dd($iuiFirstVisit);
+                    
                     if($iuiFirstVisit){
                         $visitNo = 1;
                         $iui = $iuiFirstVisit;
@@ -1052,6 +1067,7 @@ class IUIController extends AdminController
                 $data['iuiThirdVisit'] = $iuiThirdVisit;
                 $data['iuiHistoryData'] = collect($this->IuiHistory->wherePatientsId(decrypt($patientsId))->whereCycleNo($cycleNo)->get());
                 $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+                $data['iui_completed'] = $iui_completed;
                 if(($request->iuihistorydate) || ($request->iui_visit_id))
                 {
                     $data['update_iui'] = View::make('admin.iui.edit1',$data)->render();
@@ -1066,8 +1082,14 @@ class IUIController extends AdminController
             $iuiFirstVisitData = $this->IUI->wherePatientsId($id)->orderBy('id','DESC')->first();
             $cycleData = $this->IUI->wherePatientsId($id)->orderBy('cycle_no','asc')->pluck('cycle_no','cycle_no')->toArray();
             $view = view('admin.iui.history',compact('medicines','patientsId','hospitalTime','date','iuiCycleNo','iuiCurrentCycleNo','iui','iuiFirstVisitData','cycleData','referenceDoctor'));
-            if($iuifourthVisit){
-                $view = redirect('iui/create/'.encrypt($id));
+           //display old iui visit when patients is tranfer from iui to ANC or IVf
+            if(($iuifourthVisit)){
+                $ivfTransfer = $this->IVF->wherePatientsId($id)->where('created_at','>=',$iuifourthVisit->created_at)->first();
+                $ancTransfer = $this->ANC->wherePatientsId($id)->where('created_at','>=',$iuifourthVisit->created_at)->first();
+                if((empty($ivfTransfer) && empty($ancTransfer)))
+                {
+                    $view = redirect('iui/create/'.encrypt($id));
+                }
             }
             return $view;
         }catch(Exception $e){

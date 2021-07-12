@@ -883,8 +883,12 @@
             });
 
             $(document).on('change','select.iui-cycle-no',function(e){
-                cycleNo = $(this).val();
-                getIuiVisitData(cycleNo);
+                if($(this).val() != '')
+                {
+                    cycleNo = $(this).val();
+                    getIuiVisitData(cycleNo);
+                }
+                
             });
 
             $(document).on('input','.iui-charges',function() {
@@ -1103,7 +1107,13 @@
                 dataType: 'json',
                 type:'GET',
             }).done(function(data) {
-                console.log(data);
+                if(data.iui_completed == true)
+                {
+                    var lastCycle = $('select.iui-cycle-no option:last').val();
+                    
+                    getIuiVisitData(lastCycle);
+                }
+                
                 $('.iui-history-data').html(data.update_iui);
                 var dateData = '<option value="0">Select Date</option>';
                 $.each(data.date,function(key,value){
@@ -1228,6 +1238,8 @@
             }).done(function(data) {
                 // $('.panel-group').html('')
                 $('.iui-history-data').html(data.update_iui);
+                $('select.iui-cycle-no').val(cycleNo);
+                    $('.iui-cycle-no').selectpicker('refresh');
                 $('.div-seen-by').remove();
                 $('.div-btn').remove();
                 $('.ho-value .selectized').addClass('d-none');

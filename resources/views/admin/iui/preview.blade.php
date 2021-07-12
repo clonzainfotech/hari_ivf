@@ -3338,7 +3338,7 @@
                                 </td>
                                 <td>{{!empty($iui_decription->no_follicle) ? $iui_decription->no_follicle : ''}}</td>
                                 <td>{{(!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes') ? 'YES' : ''}}</td>
-                                <td>{{($row->visit == 4 && !empty($iui_decription->result)) ? $iui_decription->result : ''}}</td>
+                                <td>{{($row->visit == 4 && !empty($iui_decription->result)) ? ($iui_decription->result == 'consive' ? 'Conceived' : 'Fail') : ''}}</td>
                             </tr>
                             @endif
                             @endforeach

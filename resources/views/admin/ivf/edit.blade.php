@@ -2815,7 +2815,7 @@
                                                 </div>
                                             </div>
                                             <div class="{{'col-md-8 pr-0 blood-type '.$bloodReportClassName}}">
-                                                <div class="edit-blood-images"></div>
+                                                <div class="blood-images"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -3621,7 +3621,7 @@
         $('.laproscopy-images').imageUploader({
             imagesInputName: 'investigation[laproscopy][images]',
         });
-        $('.edit-blood-images').imageUploader({
+        $('.blood-images').imageUploader({
             imagesInputName: 'investigation[blood_report][image]',
         });
         var hystroscopyImages = @json($hystroscopyImagesData);
@@ -3651,7 +3651,7 @@
                 });
             }
             if(bloodReportImages != 'null') {
-                $('.edit-blood-images').imageUploader({
+                $('.blood-images').imageUploader({
                     preloaded: jQuery.parseJSON(bloodReportImages),
                     imagesInputName: 'investigation[blood_report][image]',
                     preloadedInputName: 'blood_report_old'
