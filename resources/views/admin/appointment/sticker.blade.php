@@ -47,16 +47,21 @@ td{
 .label-table
 {
     border: 1px solid;
-    /* padding: 4% 45%; */
+    /* padding: 4% 45%;
     padding-bottom:3%;
-    padding-top: 3%; 
+    padding-top: 3%;  */
     padding-left: 5%;
     border-radius: 25px;
-    text-align: left;
+    width: 136%;
+    height: 223px;
+    -ms-transform: rotate(20deg);
+    transform: rotate(90deg);
+    margin: 60% 0px;
+    font-size: 20px;
 }
 .font-7
 {
-    font-size: 3.5em;
+    font-size: 4.5em;
     font-weight: bold;
 }
 .pro_name
@@ -73,7 +78,11 @@ td{
 @if(isset($is_label) && $is_label == 1)
 <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}">
 <div class="label-table">
-    <div class="row"><span class="font-7">{{ucwords(strtolower($label_name))}}<sub class="pro_name">({{$procedure_name}})</sub></span></div>
+    @php
+        $namePart = explode(' ',$label_name);
+
+    @endphp
+    <div class="row"><span class="font-7">{{ucwords(strtolower($namePart[0].' '.(!empty($namePart[1][0]) ?$namePart[1][0].'.' : '' ).' '.$namePart[2]))}}<sub class="pro_name">({{$procedure_name}})</sub></span></div>
 </div>
 @else
 
