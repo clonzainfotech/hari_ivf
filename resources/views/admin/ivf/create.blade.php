@@ -2868,6 +2868,14 @@
                                             <div class="row">
                                                 <div class="col-md-1">
                                                     <div class="checkbox">
+                                                        {{Form::checkbox('plan_of_management[is_print]','is_print','',['id'=>'is_print','class'=>'plan-management'])}}
+                                                        <label for="is_print">
+                                                            Is Print
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="checkbox">
                                                         {{Form::checkbox('plan_of_management[plan_of_management_data][]','ivf','',['id'=>'ivf','class'=>'plan-management','data-id'=>'ivf-details'])}}
                                                         <label for="ivf">
                                                             I.V.F

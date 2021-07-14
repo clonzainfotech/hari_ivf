@@ -208,9 +208,9 @@
                                         </a>
                                         <a href="{{URL::to('ivf-plan-report/'.encrypt("1").'/'.$patientsId.'/'.encrypt($row))}}" class="btn btn-sm btn-primary btn-ivf-report">IVF Report</a>
                                         <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-ivf-report preview-file-btn" data-cycleno="{{$row}}" data-plan="4" data-pid="{{$patientsId}}">View File</a>
-                                        <a href="{{URL::to('get-all-report/'.$patientsId.'?status=ivf')}}" class="mb-1 ml-1">
+                                        {{-- <a href="{{URL::to('get-all-report/'.$patientsId.'?status=ivf')}}" class="mb-1 ml-1">
                                             <button class="btn btn-primary btn-sm btn-ivf-report">View Reports</button>
-                                        </a>
+                                        </a> --}}
                                     </div>
                                 </div>
                             </div>

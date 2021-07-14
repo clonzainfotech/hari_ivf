@@ -1244,7 +1244,7 @@
                                 <tr>
                                     <th>
                                         <span class="ivf-label"> IVF</span>
-                                        {{!empty($planManagement->ivf_details) ? $planManagement->ivf_details : '-' }}
+                                        {{!empty($planManagement->ivf_details) && !empty($planManagement->is_print) ? $planManagement->ivf_details : '-' }}
                                     </td>
                                 </tr>
                             @endif
