@@ -1663,7 +1663,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-2 extra-female-data-1 expected-data-1 d-none">
-                                                    {{Form::number("oe[utdata][1][expected_birth_weight]",'',['id'=>'expected_birth_weight','class'=>'form-control expected_birth_weight','data-id'=>1])}}
+                                                    {{Form::text("oe[utdata][1][expected_birth_weight]",'',['id'=>'expected_birth_weight','class'=>'form-control expected_birth_weight','data-id'=>1])}}
                                                 </div>
                                             </div>
                                             <div class="row">
