@@ -992,7 +992,8 @@ class IVFController extends AdminController
                 $lastCycleId = $ivfHistory->id;
                 $lastIvfHistory = json_decode($ivfHistory->description);
                 $lastCycleNo = $ivfHistory->cycle_no;
-                if(isset($lastIvfHistory->plan) && empty($lastIvfHistory->plan) && (!empty($lastIvfHistory->plan) && $lastIvfHistory->plan == null || $lastIvfHistory->plan == '') && $ivfHistory->plan == 1){
+                if((!isset($lastIvfHistory->plan) || (isset($lastIvfHistory->plan) && (empty($lastIvfHistory->plan) || $lastIvfHistory->plan == null || $lastIvfHistory->plan == ''))) && $ivfHistory->plan == 1)
+                {
                     $ivfReport = $this->IvfPlanReport->wherePlanAndPatientsIdAndCycleNo($ivfHistory->plan, $id, $ivfHistory->cycle_no)->first();
                     if($ivfReport){
                         $lastIvfHistory->plan = 2;
