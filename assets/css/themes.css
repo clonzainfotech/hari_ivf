@@ -58,7 +58,7 @@
 }
 
 body, .sidebar {
-    font-family: roboto, sans-serif, Arial;
+    font-family: sans-serif, Arial;
 }
 
 .login-error, #depositerrmsg {
