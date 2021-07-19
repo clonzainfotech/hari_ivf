@@ -60,6 +60,16 @@
                                         ])}}
                                     </ul>
                                 </div>
+                                <div class="col-md-3">
+                                    <ul class="nav nav-tabs padding-0">
+                                        {{ Form::select('procudure_search',$procedures,'',[
+                                            'class'=>'form-control select-padding-0',
+                                            'placeholder'=>'Select Procedure',
+                                            'id' => 'procudure_search',
+                                            'data-live-search' => 'true'
+                                        ])}}
+                                    </ul>
+                                </div>
                             </div>
                         <div class="indoor-data table-responsive active">
                             <!-- table data here include -->
@@ -226,6 +236,7 @@
         var roomType = '';
         var search = '';
         var referenceDoctorId = '';
+        var procudure_search = '';
         $('.datetimepicker').bootstrapMaterialDatePicker({
             format: 'dddd DD MMMM YYYY',
             clearButton: true,
@@ -243,24 +254,24 @@
         });
 
         date = $('.daterange').val();
-        qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+        qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
 
         $(document).ready(function() {
             getIndoorData(qstring);
 
             if (date != '') {
                 $('.daterange').val(date);
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
             }
 
             $('.daterange').change(function(){
                 date = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
             $(document).on('keyup','.search-mobile-number',function(){
                 search = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
 
@@ -269,32 +280,37 @@
                 e.preventDefault();
                 $('.daterange').val('');
                 date = $('.daterange').val();
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
 
             $(document).on('click','.btn-success',function(e){
                 e.preventDefault();
                 date = $('.daterange').val();
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
 
             $(document).on('change','select.patient-id',function(){
                 patientId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
             $(document).on('change','select.reference-doctor-id',function(){
                 referenceDoctorId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
+                getIndoorData(qstring);
+            });
+            $(document).on('change','select#procudure_search',function(){
+                procudure_search = $(this).val();
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
 
             $(document).on('click', '.pagination a',function(event){
                 event.preventDefault();
                 page=$(this).attr('href').split('page=')[1];
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
 
@@ -302,7 +318,7 @@
                 e.preventDefault();
                 roomType = $(this).val();
                 // charge_text = $('select.charge_type option:selected').text();
-                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId + '&date='+date+'&room_type='+roomType+'&search='+search+'&reference_doctor='+referenceDoctorId+'&procudure_search='+procudure_search;
                 getIndoorData(qstring);
             });
 

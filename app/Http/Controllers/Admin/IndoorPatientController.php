@@ -54,15 +54,22 @@ class IndoorPatientController extends AdminController
                         });
                     });
                 }
-                $search = $request->search;
-            if($search){
-                $indoorData = $indoorData->where(function($query) use($search) {
-                    $query
-                    ->orWhereHas('getPatientsDetails', function($query) use($search) {
-                        $query->where('mobile_number','LIKE',$search.'%');
+                if($request->procudure_search)
+                {
+                    $procedure_search = $request->procudure_search;
+                    $indoorData = $indoorData->where(function($query) use($procedure_search) {
+                            $query->where('procedure_id', $procedure_search);
                     });
-                });
-            }
+                }
+                $search = $request->search;
+                if($search){
+                    $indoorData = $indoorData->where(function($query) use($search) {
+                        $query
+                        ->orWhereHas('getPatientsDetails', function($query) use($search) {
+                            $query->where('mobile_number','LIKE',$search.'%');
+                        });
+                    });
+                }
 
                 if ($request->date) {
                     $date = explode('-', $request->date);
@@ -92,6 +99,7 @@ class IndoorPatientController extends AdminController
                         ->whereIn('id', explode(',', $data['procedure_id']))
                         ->pluck('name')
                         ->toArray());
+                        
                     $data->procedurename = $procedureName;
                 }
 

@@ -1823,6 +1823,7 @@ class IVFController extends AdminController
             $hystroscopyImagesData = [];
             $laproscopyImagesData = [];
             $bloodReportImagesData = [];
+            $usgReportImagesData = [];
             $ivfHistoryId = decrypt($ivfHistoryId);
             $data['ivf'] = $this->IvfHistory->find($ivfHistoryId);
             $lastIvf = $this->IvfHistory->where('id','<',$ivfHistoryId)->where('cycle_no',$data['ivf']['cycle_no'])->where('plan',$data['ivf']['plan'])->where('patients_id',$data['ivf']['patients_id'])->orderBy('id','DESC')->first();

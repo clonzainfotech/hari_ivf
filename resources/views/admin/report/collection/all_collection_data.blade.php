@@ -197,7 +197,7 @@
         @foreach ($indoorCaseDeposit as $key => $value)
             @php
                 
-                if(isset($indoorCash[$key]))
+                if(isset($indoorCaseDeposit[$key]))
                 {
                     $date = \Carbon\Carbon::parse($indoorCaseDeposit[$key]['created_at'])->format('d-m-Y');
 

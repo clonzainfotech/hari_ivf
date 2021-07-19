@@ -627,6 +627,33 @@ class IndoorController extends AdminController
             $dischargeTime = $request->dischargetime ? Carbon::parse($request->dischargetime)->format('H:i:s') : null;
             $this->IndoorBook->whereId($bookingId)->update(['is_discharge_card' => 1,'dod_date' => $dodDate,'admit_time'=>$admitTime,'discharge_time'=>$dischargeTime]);
             $iBook = $this->IndoorBook->find($bookingId);
+            if(!empty($request->followdate)){
+                $followupDate = $request->followdate;
+                $followDate = date('Y-m-d',strtotime($followupDate));
+                $appointmentTime = null;
+                $fDate = !empty($followDate) ? Carbon::parse($followDate)->format('Y-m-d') : null;
+                if($fDate){
+                    $requestData = new \Illuminate\Http\Request();
+                    $requestData->replace(['date' => $fDate,'status'=>true]);
+                    $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
+                    if(!empty($nextAppontment['time']) || $nextAppontment['time'] == 0){
+                        $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
+                        $appointmentTime = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
+                        $followDate = !empty($nextAppontment['date']) ? $nextAppontment['date'] : $followDate;
+                    }
+                }
+                
+                $appointment = $this->Appointment->where('patients_id',$iBook->patient_id)->orderBy('id','DESC')->first();
+                if($appointment){
+                    $procedures = $this->IndoorProcedure->pluck('name', 'id');
+                    $appointmentData['appointmentId'] = encrypt($appointment->id);
+                    $appointmentData['date'] = $followDate;
+                    $appointmentData['time'] = $appointmentTime;
+                    $appointmentData['is_procedure'] = 0;
+                    $appointmentData['remark'] = isset($procedures[$iBook->procedure_id]) ? $procedures[$iBook->procedure_id].' follow up' : null;
+                    $nextAppointment = $this->nextAppointmentData($appointmentData);
+                }
+            }
             $pId = explode(',',$iBook->procedure_id);
             if($dodDate && (in_array('1',$pId) || in_array('2',$pId))){
                 // $this->SmsManager::sendDischargeCardToRefDoctor($bookingId);
@@ -649,6 +676,7 @@ class IndoorController extends AdminController
             }
             return redirect('indoor');
         } catch (Exception $exception) {
+            log::debug($exception);
             abort(500);
         }
     }

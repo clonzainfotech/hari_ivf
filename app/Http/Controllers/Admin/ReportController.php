@@ -266,7 +266,6 @@ class ReportController extends AdminController
                     $query = ucwords(strtolower($query));
                     return $query;
                 });
-
             $reportDatails = [];
             $reportDatails['doctor'] = '';
             if($request->ajax()){
@@ -284,6 +283,11 @@ class ReportController extends AdminController
                         ['case_type', '=', 'Credit'],
                     ])
                     ->orderBy('id', 'DESC');
+                $indoorBook = $this->IndoorBook->with('getInvoice')->where(function($query) {
+                    $query->whereHas('getPatientsDetails', function($query) {
+                        $query->whereNotIn('reference_doctor_id', [1, 3, 12, 32]);
+                    });
+                })->where('is_final_invoice',1)->whereNotNull('final_invoice_date')->orderBy('id','DESC');
 
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
@@ -292,6 +296,7 @@ class ReportController extends AdminController
                         $query->whereBetween('date', [$fromdate, $todate]);
                     });
                     $iuiReport = $iuiReport->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
+                    $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
 
                 }
 
@@ -305,34 +310,57 @@ class ReportController extends AdminController
                         });
                     });
                     $iuiReport = $iuiReport->where('reference_doctor_id', $referenceDoctorId);
+                    $indoorBook = $indoorBook->where(function($query) use ($referenceDoctorId) {
+                        $query->whereHas('getPatientsDetails', function($query)  use ($referenceDoctorId) {
+                            $query->where('reference_doctor_id', $referenceDoctorId);
+                        });
+                    });
                 }
 
                 $cutReport = collect($cutReport->get())
                     ->map(function ($query) {
                         $query->reference_doctor_id = $query->getAppointment->getPatientsDetails['reference_doctor_id'];
+                        $query->date = $query->getAppointment['date'];
+                        $query->reference_doctor_name = $query->getAppointment->getPatientsDetails->getReferenceDoctor['name'];
                         return $query;
                     });
-
-                $iuiReport = $iuiReport->get();
+                $iuiReport = collect($iuiReport->get())
+                    ->map(function ($query) {
+                        $query->reference_doctor_name = $query->getReferenceDoctors['name'];
+                        $query->date = $query->created_at;
+                        return $query;
+                    });
+                $indoorBook = collect($indoorBook->get())
+                    ->map(function ($query) {
+                        $query->reference_doctor_id = $query->getPatientsDetails['reference_doctor_id'];
+                        $query->reference_doctor_name = $query->getPatientsDetails->getReferenceDoctor['name'];
+                        $procedureName = implode(', ', $this->IndoorProcedure
+                            ->whereIn('id', explode(',', $query->procedure_id))
+                            ->pluck('name')
+                            ->toArray());
+                        $query->procedure_name = $procedureName;
+                        $query->date = $query->final_invoice_date;
+                        return $query;
+                    });
                 $cutReport = collect($cutReport)->merge($iuiReport);
-                $cutReport = $cutReport->groupBy('getReferenceDoctors.name');
+                $cutReport = $cutReport->merge($indoorBook);
+                $cutReport = $cutReport->sortby('date');
+                // $cutReport = $cutReport->groupBy('getReferenceDoctors.name');
+                $cutReport = $cutReport->groupBy('reference_doctor_name');
                 if($request->isprint==1){
 
-                    $reportDatails['total'] = $cutReport->sum('netamount');
-                    $reportDatails['count'] = $cutReport->count();
                     return response()->json([
-                        View::make('admin.report.cut.preview', compact('cutReport','reportDatails'))->render()
+                        View::make('admin.report.cut.preview', compact('cutReport'))->render()
                     ]);
                 }
 
-                $reportDatails['total'] = $cutReport->sum('netamount');
-                $reportDatails['count'] = $cutReport->count();
                 return response()->json([
-                    View::make('admin.report.cut.data',compact('cutReport','reportDatails'))->render()
+                    View::make('admin.report.cut.data',compact('cutReport'))->render()
                 ]);
             }
             return view('admin.report.cut.index',compact('doctor'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }

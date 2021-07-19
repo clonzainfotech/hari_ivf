@@ -106,17 +106,21 @@ tr td th {
         @foreach ($rowList as $row)
             <tr>
                 @php
-                    $totalNetAmount += ($row->charge_type == 3) ? $row->amount : $row->netamount;
-                    $amount = ($row->charge_type == 3) ? $row->amount : $row->netamount;
-                    $totalCutAmount += ($amount * 30 / 100);
+                    $totalNetAmount += ($row->charge_type == 3) ? $row->amount : (($row->is_final_invoice == 1) ? $row->getInvoice['grand_total_amt'] + $row->getInvoice['deposit_amt'] : $row->netamount);
+                    $amount = ($row->charge_type == 3) ? $row->amount : (($row->is_final_invoice == 1) ? $row->getInvoice['grand_total_amt'] + $row->getInvoice['deposit_amt'] : $row->netamount);
+                    $totalCutAmount += round(($amount * 30 / 100));
+                    $patient_name = ($row->charge_type == 3) ? strtoupper(@$row->getPatients['name']) : (($row->is_final_invoice == 1) ? strtoupper($row->getPatientsDetails['name']) : strtoupper($row->getAppointment->getPatientsDetails['name'])) ;
+                    $mobile = ($row->charge_type == 3) ? @$row->getPatients['mobile_number'] : (($row->is_final_invoice == 1) ? $row->getPatientsDetails['mobile_number'] : $row->getAppointment->getPatientsDetails['mobile_number']) ;
                 @endphp
                 <td class="data-font seperator">{{ ($i + 1) . '.' }}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y') }}</td>
-                <td class="data-font seperator">{{ ($row->charge_type == 3) ? strtoupper(@$row->getPatients['name']) : strtoupper(@$row->getAppointment->getPatientsDetails['name']) }}</td>
-                <td class="data-font seperator">{{ ($row->charge_type == 3) ? $row->getPatients['mobile_number'] : @$row->getAppointment->getPatientsDetails['mobile_number']}}</td>
+                <td class="data-font seperator">{{ ($row->final_invoice_date) ? \Carbon\Carbon::parse($row->final_invoice_date)->format('d-m-Y') : \Carbon\Carbon::parse($row->created_at)->format('d-m-Y') }}</td>
+                <td class="data-font seperator">{{ $patient_name}}</td>
+                <td class="data-font seperator">{{ $mobile}}</td>
                 <td class="data-font seperator">
                     @if ($row->charge_type == 3)
                         IUI
+                    @elseif($row->procedure_id)
+                        {{isset($row->procedure_name) ? $row->procedure_name : ''}}
                     @else
                         @if ($row->total = 0)
                             -
@@ -160,6 +164,8 @@ tr td th {
                     <div class="charges">
                         @if ($row->charge_type == 3)
                             {{$row->amount}}
+                        @elseif($row->is_final_invoice == 1)
+                            {{(!empty($row->getInvoice['grand_total_amt']) || !empty($row->getInvoice['deposit_amt'])) ?  $row->getInvoice['grand_total_amt'] + $row->getInvoice['deposit_amt'] : 0}}
                         @else
                             {{$row->netamount}}
                         @endif
@@ -167,7 +173,7 @@ tr td th {
                 </td>
                 <td class="data-font seperator">
                     <div class="charges">
-                        {{($amount*30)/100}}
+                        {{round(($amount*30)/100)}}
                     </div>
                 </td>
                 @php
