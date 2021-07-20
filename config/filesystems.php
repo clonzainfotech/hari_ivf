@@ -66,10 +66,10 @@ return [
 
         'google' => [
             'driver' => 'google',
-            'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),
-            'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
-            'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
-            'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
+            'clientId' => config('app.GOOGLE_CLIENT_ID'),
+            'clientSecret' => config('app.GOOGLE_CLIENT_SECRET'),
+            'refreshToken' => config('app.GOOGLE_REFRESH_TOKEN'),
+            'folderId' => config('app.GOOGLE_FOLDER_ID'),
         ],
 
     ],

@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Log;
 
-class UploadGoogleDrive extends Command
+class Uploadbackup extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'uploadGoogleDrive';
+    protected $signature = 'db:uploadbackup';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Upload backup in google drive';
 
     /**
      * Create a new command instance.
@@ -42,6 +42,7 @@ class UploadGoogleDrive extends Command
             $date = \Carbon\Carbon::now()->format('Y_m_d');
             $zipFileName = 'db_'.$date;
             $pathdir = storage_path().'/'.'backups/'.$zipFileName;
+
             // Enter the name to creating zipped directory
             $pathdir = $pathdir."/";
             $zipcreated = $zipFileName.'.zip';
@@ -60,12 +61,11 @@ class UploadGoogleDrive extends Command
                     }
                     $zip ->close();
                 }
-                \Storage::disk('google')->put($zipcreated, file_get_contents($zipcreated));
+                \Storage::disk('google')->put($zipcreated, file_get_contents(storage_path().'/'.'backups/'.$zipcreated));
                 \File::delete($zipcreated);
             }
         }catch(\Exceptio $e){
             log::debug($e);
         }
-
     }
 }

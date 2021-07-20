@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'candor'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://app.candorivf.com/'),
 
-    'asset_url' => env('ASSET_URL', null),
+    'asset_url' => env('ASSET_URL', 'https://app.candorivf.com/'),
 
 
     'collection_password' => env('COLLECTION_PASSWORD'),
@@ -253,5 +253,10 @@ return [
     'hospitalname1'=>'Candor Hospital & Candor IVF Center',
     'hospitalname2'=>'Candor Hospital & Maternity Home',
     'doctor'=>'Dr. Jaydev Dhameliya',
-    'stopNotification' => ['anc','ivf','iui']
+    'stopNotification' => ['anc','ivf','iui'],
+
+    'GOOGLE_CLIENT_ID' => '984779626869-fjht6mtsrqfla3ug8rmdvpn1n55gn509.apps.googleusercontent.com',
+    'GOOGLE_CLIENT_SECRET' => 'eSold9YPOYmRmF_j13M1WVZo',
+    'GOOGLE_REFRESH_TOKEN' => '1//04lMN1kpE8NfeCgYIARAAGAQSNwF-L9Ir_MfDBdhubB1CXFkX6moKG-x9Rcjm9AqWLU1baEFUUzPvjzW0xy67wI6-IXDLzGHO8yE',
+    'GOOGLE_FOLDER_ID' => '1uK79a2YTAOW4CALT0eWgoDHtnkzkHnaX',
 ];
