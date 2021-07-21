@@ -4874,9 +4874,16 @@
                             if(v.length > 0)
                             {
                                 $.each(v, function(index,image) {
+                                    var extension = image.substr( (image.lastIndexOf('.') +1) );
                                     var path = "{{url('')}}" + '/'+image;
-                                    console.log(path);
-                                   html += '<img class="mySlides" src="'+path+'">';
+                                    if(extension == 'pdf')
+                                    {
+                                        html += '<embed type="application/pdf" src="'+path+'" frameborder="0" height="100%" width="100%" class="mySlides">';
+                                    }
+                                    else
+                                    {
+                                        html += '<img class="mySlides" src="'+path+'">';
+                                    }
                                 });
                                 
                             }
@@ -4900,12 +4907,9 @@
         function showDivs(n) {
             var i;
             var x = document.getElementsByClassName("mySlides");
-            console.log(x.length);
-            console.log($('.report-image.mySlides').length);
             if (n > x.length) {slideIndex = 1}
             if (n < 1) {slideIndex = x.length}
             for (i = 0; i < x.length; i++) {
-                console.log('sdf');
                 x[i].style.display = "none";  
             }
             x[slideIndex-1].style.display = "block";  

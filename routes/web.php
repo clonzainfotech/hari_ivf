@@ -163,6 +163,8 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('iui/history/delete','IUIController@iuiHistoryDelete');
     // Route::get('iui-final-print/{patientId}/{cycle}','IUIController@iuiFinalPrint');
     Route::get('get-iui-report/{id}','IUIController@getIuiHistoryReport');
+    Route::get('iui-update-followUp','IUIController@updateFollowUp');
+
 
     // get plan data
     Route::get('get-plandata/{type}','IUIController@getPlanData');

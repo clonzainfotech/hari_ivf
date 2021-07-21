@@ -593,6 +593,8 @@
     <script src="{{asset('public/js/iui.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="{{asset('assets/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
+    <script src="{{asset('assets/js/pages/ui/notifications.js')}}"></script>
     <script>    $.fn.selectpicker.Constructor.DEFAULTS.iconBase = 'zmdi';
     $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
     <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
@@ -1460,10 +1462,19 @@
                         $.each(this, function(k, v) {
                             if(v.length > 0)
                             {
+                                
                                 $.each(v, function(index,image) {
+                                    var extension = image.substr( (image.lastIndexOf('.') +1) );
                                     var path = "{{url('')}}" + '/'+image;
-                                    console.log(path);
-                                   html += '<img class="mySlides" src="'+path+'">';
+                                    if(extension == 'pdf')
+                                    {
+                                        html += '<embed type="application/pdf" src="'+path+'" frameborder="0" height="100%" width="100%" class="mySlides">';
+                                    }
+                                    else
+                                    {
+                                        html += '<img class="mySlides" src="'+path+'">';
+                                    }
+                                    
                                 });
                                 
                             }
@@ -1487,8 +1498,6 @@
         function showDivs(n) {
             var i;
             var x = document.getElementsByClassName("mySlides");
-            console.log(x.length);
-            console.log($('.report-image.mySlides').length);
             if (n > x.length) {slideIndex = 1}
             if (n < 1) {slideIndex = x.length}
             for (i = 0; i < x.length; i++) {
@@ -1496,6 +1505,54 @@
                 x[i].style.display = "none";  
             }
             x[slideIndex-1].style.display = "block";  
+        }
+        $(document).on('click','.edit-remark-icon',function(e){
+            e.preventDefault();
+            var dId = $(this).data('id');
+            var value = $(this).data('value');
+            if($('.follow-data').hasClass('remark-val')){
+                var previousId = $('.remark-val').data('id');
+                var previousRemark = $('.remark-val').data('value');
+                var data = "<div class='edit-follow-data edit-follow-'"+previousId+"'>"+
+                    wordwrap(""+previousRemark+"", 30,'<br>\n')+
+                    "<span class='edit-follow'>"+
+                        "<i class='material-icons edit-follow-icon' data-value="+previousRemark+" data-id="+previousId+">edit</i>"+
+                    "</span>"+
+                "</div>";
+                $('.edit-follow-'+previousId).html(data);
+            }
+            var remarkData = "<input type ='text' name='total' value='"+value+"' class='form-control remark-val follow-data remark-value-"+dId+"' data-value='"+value+"' data-id="+dId+">";
+            $('.edit-follow-'+dId).html(remarkData);
+        });
+
+        $(document).on('blur','.follow-data',function(){
+            var remark = $(this).val();
+            var iuiId = $(this).data('id');
+            var remarkValue = 'followUP='+remark+'&iui_id='+iuiId;
+            updateRemark(remarkValue,'blur');
+        });
+
+        $(document).on('keyup','.follow-data',function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                var remark = $(this).val();
+                var iuiId = $(this).data('id');
+                var remarkValue = 'followUP='+remark+'&iui_id='+iuiId;
+                updateRemark(remarkValue,'keyup');
+            }
+        });
+        function updateRemark(remarkValue,type){
+            $.ajax({
+                url: "{{URL::to('iui-update-followUp')}}?"+remarkValue,
+                dataType: 'json',
+            }).done(function(data) {
+                if(type == 'blur'){
+                    showNotification('bg-blue', 'FollowUp changed successfully.', 'bottom', 'right', "", "");
+                }
+               location.reload(true);
+            }).fail(function() {
+                location.reload(true);
+            });
         }
 </script>
 @stop

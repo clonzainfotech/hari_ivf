@@ -2032,5 +2032,27 @@ class IUIController extends AdminController
             return ['status'=>2];
         }
     }
+    /**
+    * Update FollowUd date of iui history
+    */
+    public function updateFollowUp(Request $request)
+    {
+        try{
+            $iui_id = $request->iui_id;
+            $newDate = \Carbon\Carbon::parse($request->followUP)->format('d-m-Y');
+            $iui = $this->IuiHistory->find($iui_id);
+            
+            $iuiData = json_decode($iui->description);
+            $iuiData->new_follow_up = $newDate;
+            $iui->description = json_encode($iuiData);
+            $iui->save();
+            return ['status'=>true];
+        }catch(Exception $e){
+            return [
+                'status' => false,
+                'message' => 'Internal server error'
+            ];
+        }
+    }
 }
 

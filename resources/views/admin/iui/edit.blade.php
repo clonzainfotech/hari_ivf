@@ -4878,7 +4878,15 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
                                     @endphp
                                         <tr class="">
-                                            <td>{{\Carbon\Carbon::parse($prevAppointmentDate)->format('d-m-Y')}}</td>
+                                            {{-- <td>{{\Carbon\Carbon::parse($prevAppointmentDate)->format('d-m-Y')}}</td> --}}
+                                            <td>
+                                                <div class="{{'edit-follow-data edit-follow-'.$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">
+                                                    {{$prevAppointmentDate}}
+                                                        <span class="edit-follow">
+                                                            <i class="material-icons edit-remark-icon pencil-icon ml-0" data-value="{{$prevAppointmentDate}}" data-id="{{$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">edit</i>
+                                                        </span>
+                                                </div>
+                                            </td>
                                             <td> {{$currentDateDiff+1}}</td>
                                             <td class=""> 
                                                 <input class="{{$right_class_name.' border-none bg-transparent'}}" name="data[ovary][ovary_type][right][details]" type="text">
