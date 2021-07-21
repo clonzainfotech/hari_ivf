@@ -33,7 +33,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('seen_by',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select Doctor'])}}
+                            {{Form::select('seen_by',$hospitalDoctor,isset($iui) && !empty($iui->seen_by) ? $iui->seen_by : '',['class'=>'form-control select-padding-0','placeholder'=>'Select Doctor'])}}
                         </div>
                     </div>
                 </div>
@@ -3421,9 +3421,10 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             Seen By :
                         </label>
                     </div>
+                    
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('seen_by_2',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seen-by-2','placeholder'=>'Select Doctor'])}}
+                            {{Form::select('seen_by_2',$hospitalDoctor,isset($iui) && !empty($iui->seen_by) ? $iui->seen_by : '',['class'=>'form-control select-padding-0 seen-by-2','placeholder'=>'Select Doctor'])}}
                         </div>
                         <span class="seen-by-error-2 text-danger mb-2"></span>
                     </div>
@@ -4291,7 +4292,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('seen_by_3',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seen-by-3','placeholder'=>'Select Doctor'])}}
+                            {{Form::select('seen_by_3',$hospitalDoctor,isset($iui) && !empty($iui->seen_by) ? $iui->seen_by : '',['class'=>'form-control select-padding-0 seen-by-3','placeholder'=>'Select Doctor'])}}
                         </div>
                         <span class="seen-by-error-3 text-danger mb-2"></span>
                     </div>
@@ -4849,7 +4850,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('seen_by_4',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seen-by-4','placeholder'=>'Select Doctor'])}}
+                            {{Form::select('seen_by_4',$hospitalDoctor,isset($iui) && !empty($iui->seen_by) ? $iui->seen_by : '',['class'=>'form-control select-padding-0 seen-by-4','placeholder'=>'Select Doctor'])}}
                         </div>
                         <span class="seen-by-error-4 text-danger mb-2"></span>
                     </div>

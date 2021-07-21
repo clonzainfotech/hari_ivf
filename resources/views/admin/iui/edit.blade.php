@@ -4800,9 +4800,12 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
                                                     <i class="zmdi zmdi-edit material-icons"></i>
                                                 </a>
+                                                @if((isset($data->blood_report->image) && !empty($data->blood_report->image)) || (isset($data->usg->images) && !empty($data->usg->images)))
+                                                
                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{\Carbon\Carbon::parse($row->created_at)->format('d M Y')}}">
                                                     <i class="zmdi zmdi-camera material-icons"></i>
                                                 </a>
+                                                @endif
                                         </td>
                                         </tr>
                                         @if(!empty($dateAndInjectionData))
@@ -4869,7 +4872,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     }
                                 @endphp
                                     {{-- nextAppoinment Data --}}
-                                    @if($iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 && $prevAppointmentDate)
+                                    @if($iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 && $prevAppointmentDate && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] != 2)
                                     @php
                                         $left_class_name = 'td-left-overy-'.$prevAppointmentDate.'-text';
                                         $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
@@ -4958,7 +4961,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                             </tbody>
                                         </table>
                                     @endif
-                                    @if(!$isCycleComplete && $iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 )
+                                    @if(!$isCycleComplete && $iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] != 2)
                                         <div class="">
                                             <div class="row child-no-box">
                                                 <div class="col-md-1 pr-0">
@@ -5321,7 +5324,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     @endif
                                     @endforeach
                             </tbody>
-                            @if($iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 && $prevAppointmentDate)
+                            @if($iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 && $prevAppointmentDate && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] != 2)
                                 <tfoot>
                                     <td colspan="8">
                                         <div class="row treatment-data" id="t_data_1">

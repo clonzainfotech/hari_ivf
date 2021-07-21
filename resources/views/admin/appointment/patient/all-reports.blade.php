@@ -188,6 +188,9 @@
 													case 'blood_report':
 														$report_name = 'Blood Report';
 														break;
+													case 'usg_report':
+														$report_name = 'Usg Report';
+														break;
 													}
 												@endphp
 												@if(!empty($value))
@@ -273,6 +276,9 @@
 														break;
 													case 'blood_report':
 														$report_name = 'Blood Report';
+														break;
+													case 'usg_report':
+														$report_name = 'Usg Report';
 														break;
 													}
 												@endphp

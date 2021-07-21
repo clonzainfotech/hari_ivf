@@ -591,6 +591,7 @@
                                                 @foreach($cycle as $row)
                                                     @php
                                                         $historyData = json_decode($row->description);
+                                                        $investigationData = json_decode($row->investigation);
                                                         $visitDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
                                                         $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $row->created_at)->diffInDays(\Carbon\Carbon::parse($row->created_at));
                                                         $diff = $diff + 1;
@@ -671,9 +672,11 @@
                                                                     @if(isset($historyData->is_transfer) && ($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no'))
                                                                     <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-visit-data" data-id="{{encrypt($row->id)}}"><i class="zmdi zmdi-edit material-icons"></i></a>
                                                                     @endif
+                                                                    @if((isset($historyData->blood_report->image) && !empty($historyData->blood_report->image)) || (isset($historyData->usg->images) && !empty($historyData->usg->images)) || (isset($investigationData->hystroscopy->images) && !empty($investigationData->hystroscopy->images)) || (isset($investigationData->laproscopy->images) && !empty($investigationData->laproscopy->images)))
                                                                     <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{\Carbon\Carbon::parse($row->created_at)->format('d M Y')}}">
                                                                         <i class="zmdi zmdi-camera material-icons"></i>
                                                                     </a>
+                                                                    @endif
                                                                 </td>
                                                         </tr>
                                                     @endif
