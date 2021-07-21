@@ -49,13 +49,13 @@
                         @endphp
                         <h2><strong class="text-secondary"> {{ucwords($ancPatients->name)}}</strong>{{' care of '.$careOf}}</h2>
                     </div>
-                    <div class="col-md-6 text-right">
-                        <a href="{{URL::to('get-all-report/'.encrypt($ancData->getPatients['id']).'?status=anc')}}" class="btn btn-primary m-n3">View Reports</a>
+                    <div class="col-md-6">
+                        <a href="{{URL::to('get-all-report/'.encrypt($ancData->getPatients['id']).'?status=anc')}}" class="btn btn-primary pull-right">View Reports</a>
                         @if($isConceivedIUI)
-                            <a href="{{URL::to('iui/history/'.encrypt($ancData->getPatients['id']))}}" target="_blank" class="btn btn-primary m-n3">IUI History</a>
+                            <a href="{{URL::to('iui/history/'.encrypt($ancData->getPatients['id']))}}" target="_blank" class="btn btn-primary pull-right">IUI History</a>
                         @endif
                         @if($isConceivedIVF)
-                            <a href="{{URL::to('ivf/history/'.encrypt($ancData->getPatients['id']))}}" target="_blank" class="btn btn-primary m-n3">IVF History</a>
+                            <a href="{{URL::to('ivf/history/'.encrypt($ancData->getPatients['id']))}}" target="_blank" class="btn btn-primary pull-right">IVF History</a>
                         @endif
                     </div>
                     
