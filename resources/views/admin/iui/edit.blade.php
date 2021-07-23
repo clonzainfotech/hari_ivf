@@ -4722,7 +4722,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                             @endforeach
                                         @endif
                                         <tr >
-                                            <td>{{$appointmentDate}}</td>
+                                            <td>{{$createdAt}}</td>
                                             <td>{{$diff}}</td>
                                             <td class="{{$right_class_name}}" id="{{$row->id}}">
                                                 @if($row->visit != 1)

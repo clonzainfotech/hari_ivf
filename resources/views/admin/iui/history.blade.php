@@ -167,10 +167,7 @@
         a.ui-state-default:hover, a.ui-datepicker-prev.ui-corner-all:hover ,a.ui-datepicker-next.ui-corner-all:hover {
             background: #1e5f63 !important;
         }
-        .border-none
-        {
-            border: none !important;
-        }
+        
         .table-layout
         {
             table-layout: fixed !important;

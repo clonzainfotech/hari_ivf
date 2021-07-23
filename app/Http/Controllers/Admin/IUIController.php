@@ -595,6 +595,8 @@ class IUIController extends AdminController
                 if(!empty($request->data['ivf']) && $request->data['ivf'] == 'yes'){
                     $lastIui = $this->IUI->wherePatientsIdAndCycleNo($patientsId, $request->cycle_no)->first();
                     $lastIUIHistory = $this->IuiHistory->wherePatientsIdAndCycleNo($patientsId, $request->cycle_no)->get();
+                    $iuiSecondVisit = $this->IuiHistory->where('patients_id',$patientsId)->whereCycleNo($request->cycle_no)->where('visit',2)->first();
+                    $iuiSecondVisitData = json_decode($iuiSecondVisit->description);
                     
                     $checkIvf = $this->IVF->wherePatientsId($lastIui->patients_id)->first();
                     $ivf = (!$checkIvf) ? $this->IVF : $this->IVF->wherePatientsId($lastIui->patients_id)->first();
@@ -613,6 +615,7 @@ class IUIController extends AdminController
                     $ivf->plan_management = $lastIui->plan_management;
                     $ivf->possible_case_of_infertility = $lastIui->possible_case_of_infertility;
                     $ivf->treatment = $lastIui->treatment;
+                    $ivf->lmp_date = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->format('Y-m-d') : '';
                     $ivf->save();
                     if($lastIUIHistory)
                     {
@@ -655,7 +658,7 @@ class IUIController extends AdminController
                                 {
                                     $protocol[$protocol_key]['day'] = $diff;
                                     $protocol[$protocol_key]['s_day'] = $s_key;
-                                    $protocol[$protocol_key]['date'] = $appointmentDate;
+                                    $protocol[$protocol_key]['date'] = \Carbon\Carbon::parse($appointmentDate)->format('D d M Y');
                                     $protocol[$protocol_key]['injection'] = null;
                                     $protocol[$protocol_key]['hmg'] = null;
                                     $protocol[$protocol_key]['hmg_brand_name'] = null;
@@ -668,11 +671,7 @@ class IUIController extends AdminController
                                     
                                     $iuiData->protocol = $protocol;
                                     $iuiData->le = $iuiData->lmp->le;
-                                    // $overy = [];
-                                    // $overy['ovary']['ovary_status'] = isset($iuiData->oe->ovary->ovary_type) && !empty($iuiData->oe->ovary->ovary_type) ? $iuiData->oe->ovary->ovary_type : [];
-                                    // $overy['ovary']['ovary_type']['right']['details'] = $iuiData->oe->ovary->right->afcs;
-                                    // $overy['ovary']['ovary_type']['left']['details'] = $iuiData->oe->ovary->left->afcs;
-                                    // $iuiData->overy = $overy;
+                                   
                                     $iuiData->is_transfer = "no";
                                     $iuiData->is_transfer_print = "no";
                                     $iuiData->skip_reason = null;
@@ -727,7 +726,7 @@ class IUIController extends AdminController
                                             {
                                                 $protocol[$protocol_key]['day'] = $inducing_diff;
                                                 $protocol[$protocol_key]['s_day'] = $s_key;
-                                                $protocol[$protocol_key]['date'] = $date;
+                                                $protocol[$protocol_key]['date'] = \Carbon\Carbon::parse($date)->format('D d M Y');
                                                 
                                                 $injection = '';
                                                 $inducing_agent = trim($inducing_agent);
@@ -759,11 +758,6 @@ class IUIController extends AdminController
                                                 $ivfVisit++;
                                                 $iuiData->protocol = $protocol;
                                                 $iuiData->le = $iuiData->lmp->le;
-                                                // $overy = [];
-                                                // $overy['ovary']['ovary_status'] = $iuiData->oe->ovary->ovary_type;
-                                                // $overy['ovary']['ovary_type']['right']['details'] = $iuiData->oe->ovary->right->afcs;
-                                                // $overy['ovary']['ovary_type']['left']['details'] = $iuiData->oe->ovary->left->afcs;
-                                                // $iuiData->overy = $overy;
                                                 $iuiData->is_transfer = "no";
                                                 $iuiData->is_transfer_print = "no";
                                                 $iuiData->skip_reason = null;
@@ -786,10 +780,10 @@ class IUIController extends AdminController
                                                     'updated_at'=>date('Y-m-d H:i:s')
                                                 ];
                                             }
-                                            
                                         }
-                                        $s_key++;
+                                        
                                         $third_visit_Skey = $s_key;
+                                        $s_key++;
                                        
                                     }
                                 }
@@ -803,9 +797,10 @@ class IUIController extends AdminController
                                         $protocol = [];
                                         foreach($agentData as $agentData)
                                         {
+                                            $third_visit_Skey++;
                                             $protocol[$protocol_key]['day'] = $diff;
                                             $protocol[$protocol_key]['s_day'] = $third_visit_Skey;
-                                            $protocol[$protocol_key]['date'] = \Carbon\Carbon::parse($iuiHistory->created_at)->format('d-m-Y');
+                                            $protocol[$protocol_key]['date'] = \Carbon\Carbon::parse($iuiHistory->created_at)->format('D d M Y');
                                             $injection = '';
                                             $inducingInjection = $inducingInjectionData[$agentData];
                                             $inducing_agent = trim($inducingInjection);
@@ -838,6 +833,7 @@ class IUIController extends AdminController
                                             $protocol[$protocol_key]['time'] = null;
                                             // dd($protocol);
                                             $protocol_key++;
+                                            
                                         }
                                         $iuiData->protocol = $protocol;
                                         $iuiData->is_transfer = "no";
@@ -861,6 +857,47 @@ class IUIController extends AdminController
                                             'created_at'=>\Carbon\Carbon::parse($createdAt)->format('Y-m-d H:i:s'),
                                             'updated_at'=>date('Y-m-d H:i:s')
                                         ];
+                                    }
+                                    else
+                                    {
+                                        $ivfVisit++;
+                                        $third_visit_Skey++;
+                                        $protocol = [];
+                                        $protocol[$protocol_key]['day'] = $diff;
+                                        $protocol[$protocol_key]['s_day'] = $third_visit_Skey;
+                                        $protocol[$protocol_key]['date'] = \Carbon\Carbon::parse($iuiHistory->created_at)->format('D d M Y');
+                                        $protocol[$protocol_key]['injection'] = null;
+                                        $protocol[$protocol_key]['hmg'] = null;
+                                        $protocol[$protocol_key]['hmg_brand_name'] = null;
+                                        $protocol[$protocol_key]['fsh'] = null;
+                                        $protocol[$protocol_key]['fsh_brand_name'] = null;
+                                        $protocol[$protocol_key]['antagonist'] = null;
+                                        $protocol[$protocol_key]['time'] = null;
+                                        $protocol_key++;
+                                        $iuiData->protocol = $protocol;
+                                        $iuiData->is_transfer = "no";
+                                        $iuiData->is_transfer_print = "no";
+                                        $iuiData->skip_reason = null;
+                                        $iuiData->plan = null;
+                                        $iuiData->follow_up = \Carbon\Carbon::parse($followupDate)->format('D d M Y');
+                                        $iuiHistory->description = json_encode($iuiData);
+                                        $ivfHistorydata[] = [
+                                            "patients_id" => $iuiHistory->patients_id,
+                                            "seen_by" => $iuiHistory->seen_by,
+                                            "created_by" => Auth::user()->id,
+                                            "plan" => 1,
+                                            'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
+                                            'visit' =>$ivfVisit,
+                                            'cycle_status' => 1,
+                                            'description' => stripslashes($iuiHistory->description),
+                                            'investigation' => null,
+                                            'trigger_date' => null,
+                                            'trigger_time' => null,
+                                            'created_at'=>\Carbon\Carbon::parse($createdAt)->format('Y-m-d H:i:s'),
+                                            'updated_at'=>date('Y-m-d H:i:s')
+                                        ];
+                                        
+
                                     }
                                 }
                             }
@@ -2043,6 +2080,10 @@ class IUIController extends AdminController
             $iui = $this->IuiHistory->find($iui_id);
             
             $iuiData = json_decode($iui->description);
+            if($iui->visit == 2)
+            {
+                $iuiData->plan->follow_up = $newDate;
+            }
             $iuiData->new_follow_up = $newDate;
             $iui->description = json_encode($iuiData);
             $iui->save();
