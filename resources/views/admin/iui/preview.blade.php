@@ -2572,10 +2572,10 @@
                                 </tr>
                                 @endif
                                 <th>
-                                    <span class="iui-label">Result :</span>
+                                    {{-- <span class="iui-label">Result :</span>
                                     @if(!empty($description->result))
                                         {{ ($description->result == 'fail') ? 'Fail' : 'Conceive' }}
-                                    @endif
+                                    @endif --}}
                                     {{-- &nbsp;&nbsp;&nbsp;&nbsp;
                                     <span class="iui-label">Date</span>
                                     {{!empty($description->date) ? $description->date : '-' }} --}}
