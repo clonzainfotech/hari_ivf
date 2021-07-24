@@ -1711,9 +1711,10 @@ class IVFController extends AdminController
             return back();
         }
         try {
+            $ivf = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->whereCycleNo($cycleNo)->get();
             $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
             $ivfReport = $this->IvfPlanReport->wherePlanAndPatientsIdAndCycleNo($plan, $patientId, $cycleNo)->first();
-            return view('admin.ivf.ivf_plan_report',compact('patientId','cycleNo','plan', 'ivfReport','lastAppointmentData'));
+            return view('admin.ivf.ivf_plan_report',compact('patientId','cycleNo','plan', 'ivfReport','lastAppointmentData','ivf'));
 
         } catch (Exception $e) {
             abort(500);
@@ -2351,7 +2352,8 @@ class IVFController extends AdminController
                     }
                     $ivf = $ivfData;
                     $printPreview = 1;
-                    return view('admin.ivf.preview', compact('investigationReport','ivf', 'historyData', 'isIvfHistory','doseData','remark','transferDate','currentdate','lastAppointmentData','printPreview'));
+                    $pt_view = 1;
+                    return view('admin.ivf.preview', compact('investigationReport','ivf', 'historyData', 'isIvfHistory','doseData','remark','transferDate','currentdate','lastAppointmentData','printPreview','pt_view'));
                 }
                 
             }

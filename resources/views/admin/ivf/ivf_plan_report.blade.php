@@ -24,6 +24,63 @@ if(!empty($ivfReport)) {
         $file = url($ivfReportData->ovum->erphoto);
     }
 }
+$injectionData = ['1'=>'Only HMG','2'=>'Only FSH','3'=>'FSH + HMG','4'=>'Lupride','5'=>'Letrozole + HMG','6'=>'Letrozole + FSH','7'=>'CC + HMG','8'=>'CC + FSH','9'=>'Antagonist'];
+$se2Data = [];
+$slhData = [];
+$bloodReport = [];
+$protocols = [];
+$injectionBrand = [];
+$antagonist = [];
+$simulationDay = null;
+$triggerDate = null;
+$hystrocopy = null;
+foreach($ivf as $ivf)
+{
+    $ivfData = json_decode($ivf->description);
+    if(!empty($ivfData->s_e2)){
+        $se2Data[] = $ivfData->s_e2;
+    }
+    if(!empty($ivfData->s_lh)){
+        $slhData[] = $ivfData->s_lh;
+    }
+    if(!empty($ivfData->blood->report)){
+        $bloodReport[] = $ivfData->blood->report;
+    }
+    $duringPickupStatus = !empty($ivfData->during_pickup) ? ucfirst($ivfData->during_pickup) : null;
+    $triggerDate = !empty($ivf->trigger_date) ? $ivf->trigger_date : null;
+    if(!empty($ivfData->protocol))
+    {
+        foreach($ivfData->protocol as $key=>$value)
+        {
+            // $injectionBrand[] = !empty($value->hmg_brand_name) ? $value->hmg_brand_name : (!empty($value->fsh_brand_name) ? $value->fsh_brand_name : '');
+            if(!empty($value->antagonist))
+            {
+                $antagonist[] = $value->antagonist.'('.$ivf->visit.')';
+            }
+           
+            if(!empty($value->hmg_brand_name))
+            {
+                $injectionBrand[] = $value->hmg_brand_name;
+                
+            }
+            if(!empty($value->fsh_brand_name))
+            {
+                $injectionBrand[] = $value->fsh_brand_name;
+                
+            }
+            if(!empty($value->hmg))
+            {
+                $protocols[] = 'HMG -'.$value->hmg;
+                
+            }
+            if(!empty($value->fsh))
+            {
+                $protocols[] = 'FSH -'.$value->fsh;
+            }
+            $simulationDay = !empty($ivf->trigger_date) ? 'S'.$value->s_day : null;
+        }
+    }
+}
 @endphp
 <div class="row clearfix">
     <div class="col-md-12 p-0">
@@ -38,7 +95,7 @@ if(!empty($ivfReport)) {
     <div class="col-md-12">
         <div class="card">
             <div class="header">
-                <h2><strong>IVF Reportt</strong>
+                <h2><strong>IVF Report</strong>
                 </h2>
                 <ul class="header-dropdown">
                     <li>
@@ -120,104 +177,106 @@ if(!empty($ivfReport)) {
                 <div class="pt-3 pb-3"><h6><strong>Stimulation</strong></h5></div>
 
                 <div class="row">
-                    <div class="col-md-12">
-                            <div class="input-group">
-                                <span class="input-group-addon col-md-2">Protocol : &nbsp;</span>
-                                {{Form::text('data[simulation][protocol]',!empty($ivfReportData->simulation->protocol) ? $ivfReportData->simulation->protocol : null,['class'=>'form-control protocol col-md-10'])}}
-                            </div>
-                            <span class="form-error-msg">
-                                {{$errors->first('protocol')}}
-                            </span>
-                        </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                            <div class="input-group">
-                                <span class="input-group-addon col-md-2">Injection : &nbsp;</span>
-                                {{Form::text('data[simulation][injection]',!empty($ivfReportData->simulation->injection) ? $ivfReportData->simulation->injection : null,['class'=>'form-control injection col-md-10'])}}
-                            </div>
-                            <span class="form-error-msg">
-                                {{$errors->first('injection')}}
-                            </span>
-                        </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                            <div class="input-group">
-                                <span class="input-group-addon col-md-2">Antagonist : &nbsp;</span>
-                                {{Form::text('data[simulation][antagonist]',!empty($ivfReportData->simulation->antagonist) ? $ivfReportData->simulation->antagonist : null,['class'=>'form-control antagonist col-md-10'])}}
-                            </div>
-                            <span class="form-error-msg">
-                                {{$errors->first('antagonist')}}
-                            </span>
-                        </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Stimulation days : &nbsp;</span>
-                            {{Form::text('data[simulation][simulation_days]',!empty($ivfReportData->simulation->simulation_days) ? $ivfReportData->simulation->simulation_days : null,['class'=>'form-control simulation_days col-md-10'])}}
+                            <span class="input-group-addon col-md-2">Protocol : &nbsp;</span>
+                            {{Form::text('data[simulation][protocol]',!empty($ivfReportData->simulation->protocol) ? $ivfReportData->simulation->protocol :implode(',',$protocols),['class'=>'form-control protocol col-md-10'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('protocol')}}
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-addon col-md-2">Injection : &nbsp;</span>
+                            {{Form::text('data[simulation][injection]',!empty($ivfReportData->simulation->injection) ? $ivfReportData->simulation->injection : implode(',',$injectionBrand),['class'=>'form-control injection col-md-10'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('injection')}}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Antagonist : &nbsp;</span>
+                            {{Form::text('data[simulation][antagonist]',!empty($ivfReportData->simulation->antagonist) ? $ivfReportData->simulation->antagonist : implode(',',$antagonist),['class'=>'form-control antagonist col-md-10'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('antagonist')}}
+                        </span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Stimulation days :</span>
+                            {{Form::text('data[simulation][simulation_days]',!empty($ivfReportData->simulation->simulation_days) ? $ivfReportData->simulation->simulation_days : $simulationDay,['class'=>'form-control simulation_days col-md-10'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('simulation_days')}}
                         </span>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Trigger : &nbsp;</span>
-                            {{Form::text('data[simulation][trigger][trigger]',!empty($ivfReportData->simulation->trigger->trigger) ? $ivfReportData->simulation->trigger->trigger : null,['class'=>'form-control trigger col-md-8'])}}
+                            <span class="input-group-addon">Total ACF : &nbsp;</span>
+                            {{Form::text('data[simulation][totalacf]',!empty($ivfReportData->simulation->totalacf) ? $ivfReportData->simulation->totalacf : null,['class'=>'form-control total-acf col-md-10'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('total-acf')}}
+                        </span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">sp2 : &nbsp;</span>
+                            {{Form::text('data[simulation][sp2]',!empty($ivfReportData->simulation->sp2) ? $ivfReportData->simulation->sp2 : null,['class'=>'form-control sp2 col-md-10'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('sp2')}}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Trigger : &nbsp;</span>
+                            {{Form::text('data[simulation][trigger][trigger]',!empty($ivfReportData->simulation->trigger->trigger) ? $ivfReportData->simulation->trigger->trigger :null,['class'=>'form-control trigger'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('trigger')}}
                         </span>
                     </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon col-md-2">Date: &nbsp;</span>
-                                    {{Form::text("data[simulation][trigger][date]",\Carbon\Carbon::parse(!empty($ivfReportData->simulation->trigger->date) ? $ivfReportData->simulation->trigger->date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker triggerdate'])}}
-                                    {{-- {{Form::text('data[ovum][trigger][date]','',['class'=>'form-control trigger col-md-10'])}} --}}
-                                </div>
-                                <span class="form-error-msg">
-                                    {{$errors->first('trigger')}}
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon col-md-2">Time : &nbsp;</span>
-                                    {{ Form::text('data[simulation][trigger][time]', !empty($ivfReportData->simulation->trigger->time) ? $ivfReportData->simulation->trigger->time : null, [
-                                        'class'=>'form-control timepicker triggertime',
-                                        'placeholder'=>'Time'
-                                    ])}}
-                                    {{-- {{Form::text('data[ovum][trigger][time]','',['class'=>'form-control trigger col-md-10'])}} --}}
-                                </div>
-                                <span class="form-error-msg">
-                                    {{$errors->first('trigger')}}
-                                </span>
-                            </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Date: &nbsp;</span>
+                            {{Form::text("data[simulation][trigger][date]",\Carbon\Carbon::parse(!empty($ivfReportData->simulation->trigger->date) ? $ivfReportData->simulation->trigger->date :  $triggerDate)->format('D d M Y'),['class'=>'form-control datetimepicker triggerdate'])}}
+                            {{-- {{Form::text('data[ovum][trigger][date]','',['class'=>'form-control trigger col-md-10'])}} --}}
                         </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('trigger')}}
+                        </span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Time :</span>
+                            {{ Form::text('data[simulation][trigger][time]', !empty($ivfReportData->simulation->trigger->time) ? $ivfReportData->simulation->trigger->time : null, [
+                                'class'=>'form-control timepicker triggertime',
+                                'placeholder'=>'Time'
+                            ])}}
+                            {{-- {{Form::text('data[ovum][trigger][time]','',['class'=>'form-control trigger col-md-10'])}} --}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('trigger')}}
+                        </span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Sp2 Date: &nbsp;</span>
+                            {{Form::text("data[simulation][sp2date]",\Carbon\Carbon::parse(!empty($ivfReportData->simulation->sp2date) ? $ivfReportData->simulation->sp2date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker sp2date'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('sp2date')}}
+                        </span>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                            <div class="input-group">
-                                <span class="input-group-addon col-md-2">Total ACF : &nbsp;</span>
-                                {{Form::text('data[simulation][totalacf]',!empty($ivfReportData->simulation->totalacf) ? $ivfReportData->simulation->totalacf : null,['class'=>'form-control total-acf col-md-10'])}}
-                            </div>
-                            <span class="form-error-msg">
-                                {{$errors->first('total-acf')}}
-                            </span>
-                        </div>
-                </div>
-
                 <div class="row">
                     <div class="col-md-4">
                             <div class="input-group">
@@ -248,41 +307,21 @@ if(!empty($ivfReport)) {
                     </div>
 
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-addon col-md-2">sp2 : &nbsp;</span>
-                                {{Form::text('data[simulation][sp2]',!empty($ivfReportData->simulation->sp2) ? $ivfReportData->simulation->sp2 : null,['class'=>'form-control sp2 col-md-10'])}}
-                            </div>
-                            <span class="form-error-msg">
-                                {{$errors->first('sp2')}}
-                            </span>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="input-group-addon col-md-2">Sp2 Date: &nbsp;</span>
-                            {{Form::text("data[simulation][sp2date]",\Carbon\Carbon::parse(!empty($ivfReportData->simulation->sp2date) ? $ivfReportData->simulation->sp2date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker sp2date'])}}
-                        </div>
-                        <span class="form-error-msg">
-                            {{$errors->first('sp2date')}}
-                        </span>
-                    </div>
-                </div>
 
                 <div class="pt-3 pb-3"><h6><strong>Ovum pick up</strong></h5></div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3 col-sm-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Date : &nbsp;</span>
+                            <span class="input-group-addon">Date : &nbsp;</span>
                             {{Form::text("data[ovum][date]",\Carbon\Carbon::parse(!empty($ivfReportData->ovum->date) ? $ivfReportData->ovum->date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker ovumdate'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('ovumdate')}}
                         </span>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Time : &nbsp;</span>
+                            <span class="input-group-addon">Time : &nbsp;</span>
                             {{Form::text('data[ovum][time]', !empty($ivfReportData->ovum->time) ? $ivfReportData->ovum->time : null, [
                                 'class'=>'form-control timepicker ovumtime',
                                 'placeholder'=>'Time'
@@ -292,13 +331,37 @@ if(!empty($ivfReport)) {
                             {{$errors->first('ovumtime')}}
                         </span>
                     </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Total OCC : &nbsp;</span>
+                            {{Form::text('data[ovum][totalocc]',!empty($ivfReportData->ovum->totalocc) ? $ivfReportData->ovum->totalocc : null,['class'=>'form-control total-occ col-md-10'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('total-occ')}}
+                        </span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="radio">
+                            <span class="">Hystroscopy : &nbsp;</span>
+                            {{Form::radio("data[ovum][hysteroscopy_status]",'yes', !empty($ivfReportData->ovum->hysteroscopy_status) && $ivfReportData->ovum->hysteroscopy_status == 'yes' ? true : false,[
+                                'id'=>'hysteroscopy_status_yes',
+                                'class'=>'hysteroscopy_status form-control'
+                            ])}}
+                            <label for="hysteroscopy_status_yes">Yes</label>
+                            {{Form::radio("data[ovum][hysteroscopy_status]",'no',!empty($ivfReportData->ovum->hysteroscopy_status) && $ivfReportData->ovum->hysteroscopy_status == 'no' ? true : false,[
+                                'id'=>'hysteroscopy_status_no',
+                                'class'=>'hysteroscopy_status form-control'
+                            ])}}
+                            <label for="hysteroscopy_status_no">No</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Er Photo : </span>
-                            <span>{{Form::file('data[ovum][erphoto]',['class'=>'form-control report-file'])}}</span>
+                            <span class="input-group-addon">Er Photo : </span>
+                            {{Form::file('data[ovum][erphoto]',['class'=>'form-control report-file'])}}
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -313,102 +376,62 @@ if(!empty($ivfReport)) {
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <span class="input-group-addon col-md-2">Total OCC : &nbsp;</span>
-                            {{Form::text('data[ovum][totalocc]',!empty($ivfReportData->ovum->totalocc) ? $ivfReportData->ovum->totalocc : null,['class'=>'form-control total-occ col-md-10'])}}
-                        </div>
-                        <span class="form-error-msg">
-                            {{$errors->first('total-occ')}}
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">MII : &nbsp;</span>
-                            {{Form::text('data[ovum][mii]',!empty($ivfReportData->ovum->mii) ? $ivfReportData->ovum->mii : null,['class'=>'form-control mii col-md-10'])}}
+                            {{Form::text('data[ovum][mii]',!empty($ivfReportData->ovum->mii) ? $ivfReportData->ovum->mii : null,['class'=>'form-control mii'])}}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">MII Rate: &nbsp;</span>
-                            {{Form::text('data[ovum][mii_rate]',!empty($ivfReportData->ovum->mii_rate) ? $ivfReportData->ovum->mii_rate : null,['class'=>'form-control mii_rate col-md-10'])}}
+                            {{Form::text('data[ovum][mii_rate]',!empty($ivfReportData->ovum->mii_rate) ? $ivfReportData->ovum->mii_rate : null,['class'=>'form-control mii_rate '])}}
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-1">MI : &nbsp;</span>
-                            {{Form::text('data[ovum][mi]',!empty($ivfReportData->ovum->mi) ? $ivfReportData->ovum->mi : null,['class'=>'form-control mi col-md-10'])}}
+                            <span class="input-group-addon">MI : &nbsp;</span>
+                            {{Form::text('data[ovum][mi]',!empty($ivfReportData->ovum->mi) ? $ivfReportData->ovum->mi : null,['class'=>'form-control mi'])}}
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-1">GV : &nbsp;</span>
-                            {{Form::text('data[ovum][gv]',!empty($ivfReportData->ovum->gv) ? $ivfReportData->ovum->gv : null,['class'=>'form-control gv col-md-10'])}}
+                            <span class="input-group-addon">GV : &nbsp;</span>
+                            {{Form::text('data[ovum][gv]',!empty($ivfReportData->ovum->gv) ? $ivfReportData->ovum->gv : null,['class'=>'form-control gv'])}}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2">
-                        <span class="">Hysteroscopy : &nbsp;</span>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="radio">
-                            {{Form::radio("data[ovum][hysteroscopy_status]",'yes', !empty($ivfReportData->ovum->hysteroscopy_status) && $ivfReportData->ovum->hysteroscopy_status == 'yes' ? true : false,[
-                                'id'=>'hysteroscopy_status_yes',
-                                'class'=>'hysteroscopy_status form-control'
-                            ])}}
-                            <label for="hysteroscopy_status_yes">Yes</label>
-                            {{Form::radio("data[ovum][hysteroscopy_status]",'no',!empty($ivfReportData->ovum->hysteroscopy_status) && $ivfReportData->ovum->hysteroscopy_status == 'no' ? true : false,[
-                                'id'=>'hysteroscopy_status_no',
-                                'class'=>'hysteroscopy_status form-control'
-                            ])}}
-                            <label for="hysteroscopy_status_no">No</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Semen Report : &nbsp;</span>
+                            <span class="input-group-addon">Semen Report : &nbsp;</span>
                             {{Form::text('data[ovum][semenreport]',!empty($ivfReportData->ovum->semenreport) ? $ivfReportData->ovum->semenreport : null,['class'=>'form-control semen-report col-md-10'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('semen-report')}}
                         </span>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Count : &nbsp;</span>
+                            <span class="input-group-addon">Count : &nbsp;</span>
                             {{Form::text('data[ovum][count]',!empty($ivfReportData->ovum->count) ? $ivfReportData->ovum->count : null,['class'=>'form-control count col-md-10'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('count')}}
                         </span>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Total Motility : &nbsp;</span>
+                            <span class="input-group-addon">Total Motility : &nbsp;</span>
                             {{Form::text('data[ovum][motility]',!empty($ivfReportData->ovum->motility) ? $ivfReportData->ovum->motility : null,['class'=>'form-control motility col-md-10'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('motility')}}
                         </span>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Active : &nbsp;</span>
+                            <span class="input-group-addon">Active : &nbsp;</span>
                             {{Form::text('data[ovum][active]',!empty($ivfReportData->ovum->active) ? $ivfReportData->ovum->active : null,['class'=>'form-control active col-md-10'])}}
                         </div>
                         <span class="form-error-msg">
@@ -417,31 +440,32 @@ if(!empty($ivfReport)) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-addon col-md-2">Sperm Morphology : &nbsp;</span>
+                            <span class="input-group-addon">Sperm Morphology : &nbsp;</span>
                             {{Form::text('data[ovum][sperm]',!empty($ivfReportData->ovum->sperm) ? $ivfReportData->ovum->sperm : null,['class'=>'form-control sperm col-md-10'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('sperm')}}
                         </span>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Oocyte Quality : &nbsp;</span>
                             {{Form::text('data[ovum][quality]',!empty($ivfReportData->ovum->quality) ? $ivfReportData->ovum->quality : null,['class'=>'form-control quality col-md-10'])}}
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Total Blastcyst : &nbsp;</span>
                             {{Form::text('data[ovum][total_blastcyst]',!empty($ivfReportData->ovum->total_blastcyst) ? $ivfReportData->ovum->total_blastcyst : null,['class'=>'form-control total_blastcyst col-md-10'])}}
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Blastcyst Rate: &nbsp;</span>
                             {{Form::text('data[ovum][blastcyst_rate]',!empty($ivfReportData->ovum->blastcyst_rate) ? $ivfReportData->ovum->blastcyst_rate : null,['class'=>'form-control blastcyst_rate col-md-10'])}}
@@ -449,38 +473,53 @@ if(!empty($ivfReport)) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Loop 1 : &nbsp;</span>
                             {{Form::text('data[loop_1]',!empty($ivfReportData->loop_1) ? $ivfReportData->loop_1 : null,['class'=>'form-control'])}}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Loop 2 : &nbsp;</span>
                             {{Form::text('data[loop_2]',!empty($ivfReportData->loop_2) ? $ivfReportData->loop_2 : null,['class'=>'form-control'])}}
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Loop 3 : &nbsp;</span>
                             {{Form::text('data[loop_3]',!empty($ivfReportData->loop_3) ? $ivfReportData->loop_3 : null,['class'=>'form-control'])}}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Loop 4 : &nbsp;</span>
                             {{Form::text('data[loop_4]',!empty($ivfReportData->loop_4) ? $ivfReportData->loop_4 : null,['class'=>'form-control'])}}
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    
+                </div>
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        {{-- <div class="checkbox">
+                            {{Form::checkbox('plan_of_management[is_print]','is_print',!empty($planManagement->is_print) ? true : false,['id'=>'is_print','class'=>'plan-management'])}}
+                            <label for="is_print">
+                                Is Print
+                            </label>
+                        </div> --}}
                         <div class="form-group">
-                            {{Form::textarea('data[remark]',!empty($ivfReportData->remark) ? $ivfReportData->remark : null,['class'=>'form-control remark','placeholder'=>'remark','rows'=>'5'])}}
+                            {{Form::textarea('data[remark]',!empty($ivfReportData->remark) ? $ivfReportData->remark : null,['class'=>'form-control remark','placeholder'=>'remark','rows'=>'2'])}}
+                        </div>
+                        <span class="form-error-msg">
+                            {{$errors->first('remark')}}
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{Form::textarea('data[pt_remark]',isset($ivfReportData->pt_remark) && !empty($ivfReportData->pt_remark) ? $ivfReportData->pt_remark : null,['class'=>'form-control remark','placeholder'=>"Patients'sremark",'rows'=>'2'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('remark')}}

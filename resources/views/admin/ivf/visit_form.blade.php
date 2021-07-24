@@ -63,10 +63,10 @@
                     <span class="input-group-addon">L.M.P Date : &nbsp;</span>
                     @php
                         // $lmpDateValue = !empty($ivfData->lmp->date) ? \Carbon\Carbon::parse($ivfData->lmp->date)->format('Y-m-d') : null;
-                        // $currentDateValue = Carbon\Carbon::now()->format('Y-m-d');
+                        $currentDateValue = Carbon\Carbon::now()->format('Y-m-d');
                         // $lmpDateDiff = $currentDateValue->diffInDays($lmpDateValue);
                         $lmpDateValue = !empty($lmpDate) ? \Carbon\Carbon::parse($lmpDate) : null;
-                        $currentDateValue = Carbon\Carbon::now();
+                        // $currentDateValue = Carbon\Carbon::now();
                         $lmpDateDiff = $lmpDateValue->diffInDays($currentDateValue);
                         $lmpDateDiff = $lmpDateDiff + 1;
                     @endphp

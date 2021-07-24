@@ -248,7 +248,11 @@ body {margin-top :100px;}
         <div class="row" style="padding: 20px 0">
             <div class="col-md-12">
                 <span>Remark:</span>
+                @if(isset($pt_view) && $pt_view == 1)
+                <span>{{isset($ivfReportData->pt_remark) && !empty($ivfReportData->pt_remark) ? $ivfReportData->pt_remark : '-'}}</span>
+                @else
                 <span>{{!empty($ivfReportData->remark) ? $ivfReportData->remark : '-'}}</span>
+                @endif
             </div>
         </div>
 
