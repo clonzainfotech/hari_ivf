@@ -729,7 +729,7 @@
                     </div>
                 </div> --}}
             </div>
-            @if(in_array('trigger',$collectionData) || !empty($ivfData->trigger->hcg->status) || !empty($ivfData->trigger->decapeptyl->status) || !empty($ivfData->trigger->dualtrigger->stauts))
+            {{-- @if(!empty($ivfData->trigger->hcg->status) || !empty($ivfData->trigger->decapeptyl->status) || !empty($ivfData->trigger->dualtrigger->stauts))
                 @php
                     $trigger = 'trigger';
                     $hcg = !empty($ivfData->trigger->hcg->status) ? $ivfData->trigger->hcg->status : null;
@@ -753,7 +753,7 @@
                 {{Form::hidden("data[trigger][decapeptyl][brand]",$decapeptyl_brand)}}
                 {{Form::hidden("data[trigger][dualtrigger][stauts]",$dule)}}
                 {{Form::hidden("data[trigger][update_status]",'yes')}}
-            @else
+            @else --}}
                 @php
                     $hcgStatus = !empty($ivfData->trigger->hcg->status ) && $ivfData->trigger->hcg->status == 'hcg' ? '' : 'd-none';
                     $decapeptylStatus = !empty($ivfData->trigger->decapeptyl->status) && $ivfData->trigger->decapeptyl->status == 'decapeptyl' ? '' : 'd-none';
@@ -853,7 +853,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            {{-- @endif --}}
             
             @if($ivf->plan != 3 )
                 {{-- <div class="row mt-1">
