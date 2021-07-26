@@ -226,7 +226,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
     var ancQstring = '';
     var status = '1';
     var type = '1';
-    var ancStatus = 'current';
+    var ancCycleStatus = 'current';
     var anc_id = '';
     $(document).ready(function(){
         $(window).keydown(function(event){
@@ -274,7 +274,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             anc_id = $(this).val();
             if(anc_id != '')
             {
-                ancStatus = $(this).data('class');
+                ancCycleStatus = $(this).data('class');
                 $('.preview-file-modal').modal('hide');
                 $('.anc-details-data').html('');
                 $('.preview-file-modal').modal('show');
@@ -287,7 +287,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         $(document).on('click','.preview-file',function(e){
             e.preventDefault();
             anc_id = $(this).data('id');
-            ancStatus = $(this).data('class');
+            ancCycleStatus = $(this).data('class');
             $('.preview-file-modal').modal('hide');
             $('.anc-details-data').html('');
             $('.preview-file-modal').modal('show');
@@ -678,7 +678,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                         var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
                         var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
                     }
-                    if(ancStatus == 'current')
+                    if(ancCycleStatus == 'current')
                     {
                         buttonHtml = ancPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a></div></div>';
 

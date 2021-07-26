@@ -74,7 +74,7 @@
                             <li class="{{ Request::segment(1) === 'ivf' ? 'sub active open' : null }}"><a href="{{URL::to('ivf')}}">
                                 <span>IVF ({{$ivfCount}})</span>&nbsp;</a></li>
                             <li class="{{ Request::segment(1) === 'iui' ? 'sub active open' : null }}"><a href="{{URL::to('iui')}}">
-                                    <span>IUI ({{$iuiCount}})</span>&nbsp;</a></li>
+                                    <span>INFERTILITY ({{$iuiCount}})</span>&nbsp;</a></li>
                             <li class="{{ Request::segment(1) === 'call-reminder' ? 'sub active open' : null }}"><a href="{{URL::to('call-reminder')}}"><span>IUI Call Reminder</span></a></li>
                             <li class="{{ Request::segment(1) === 'iui-result' ? 'sub active open' : null }}"><a href="{{URL::to('iui-result')}}"><span>IUI Result</span></a></li>
                         </ul>
