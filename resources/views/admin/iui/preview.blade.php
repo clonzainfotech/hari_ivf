@@ -3310,7 +3310,7 @@
                             // echo $row->visit;
                                $iui_decription =  json_decode($row->description);
                             @endphp
-                            @if(((!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes' || $iui_decription->hcg->iui->status == 'yes')) || (!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes')) || ($row->visit == 4))
+                            @if(((!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes')) || (!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes')) || ($row->visit == 4))
                             <tr>
                                 <td>
                                     @if(!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date))
@@ -3332,7 +3332,7 @@
                             </tr>
                             @endif
                             {{-- for IUI --}}
-                            @if(!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes' || $iui_decription->hcg->iui->status == 'yes'))
+                            @if(!empty($iui_decription->hcg) && ($iui_decription->hcg->iui->status == 'yes'))
                                 <tr>
                                     <td>
                                        

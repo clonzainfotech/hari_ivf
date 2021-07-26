@@ -4938,7 +4938,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     $iui_decription =  json_decode($row->description);
                                                     @endphp
                                                     
-                                                    @if(((!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes' || $iui_decription->hcg->iui->status == 'yes')) || (!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes')) || ($row->visit == 4))
+                                                    @if(((!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes')) || (!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes')) || ($row->visit == 4))
                                                     <tr>
                                                         <td>
                                                             @if(!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date))
@@ -4960,7 +4960,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         <td>{{($row->visit == 4 && !empty($iui_decription->result)) ? ($iui_decription->result == 'consive' ? 'Conceived' : 'Fail') : ''}}</td>
                                                     </tr>
                                                     @endif
-                                                    @if(!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes' || $iui_decription->hcg->iui->status == 'yes'))
+                                                    @if(!empty($iui_decription->hcg) && ($iui_decription->hcg->iui->status == 'yes'))
                                                         <tr>
                                                             <td>
                                                                
