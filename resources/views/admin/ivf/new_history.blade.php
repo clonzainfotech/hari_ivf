@@ -30,18 +30,19 @@
             @endphp
                 @foreach($pickupCycle as $key=>$row)
                     @php
+                        $cycleNumber++;
                         $cycleNoKey = array_search('1',$dataForSkipPlans);
                         
                         $class = null;
                         if($lastPlan == 1 && $lastCycleNo == $row){
                             $class = 'current-cycle';
-                            $cycleNumber++;
+                            
                         }
                         $cycleNo = explode('_',$cycleNoKey);
                         $cycleNo = array_filter($cycleNo);
                         if(!empty($cycleNo)){
                             $cycleNo = (int)$cycleNo[1];
-                            $cycleNumber++;
+                            // $cycleNumber++;
                         }
                         if($cycleNo == $row){
                             unset($dataForSkipPlans[$cycleNoKey]);
@@ -101,18 +102,19 @@
             @endphp
                 @foreach($fetCycle as $key=>$row)
                     @php
+                        $cycleNumber++;
                         $cycleNoKey = array_search('2',$dataForSkipPlans);
                         $class = null;
                         if($lastPlan == 2 && $lastCycleNo == $row){
                             $class = 'current-cycle';
-                            $cycleNumber++;
+                            
                             
                         }
                         $cycleNo = explode('_',$cycleNoKey);
                         $cycleNo = array_filter($cycleNo);
                         if(!empty($cycleNo)){
                             $cycleNo = (int)$cycleNo[1];
-                            $cycleNumber++;
+                            // $cycleNumber++;
                         }
                         if($cycleNo == $row){
                             unset($dataForSkipPlans[$cycleNoKey]);
@@ -151,17 +153,18 @@
             @endphp
                 @foreach($fetOdCycle as $key=>$row)
                     @php
+                    $cycleNumber++;
                         $cycleNoKey = array_search('3',$dataForSkipPlans);
                         $class = null;
                         if($lastPlan == 3 && $lastCycleNo == $row){
                             $class = 'current-cycle';
-                            $cycleNumber++;
+                            
                         }
                         $cycleNo = explode('_',$cycleNoKey);
                         $cycleNo = array_filter($cycleNo);
                         if(!empty($cycleNo)){
                             $cycleNo = (int)$cycleNo[1];
-                            $cycleNumber++;
+                            // $cycleNumber++;
                         }
                         if($cycleNo == $row){
                             unset($dataForSkipPlans[$cycleNoKey]);
@@ -204,17 +207,17 @@
             @endphp
                 @foreach($fetEdCycle as $key=>$row)
                     @php
+                        $cycleNumber++;
                         $cycleNoKey = array_search('4',$dataForSkipPlans);
                         $class = null;
                         if($lastPlan == 4 && $lastCycleNo == $row){
                             $class = 'current-cycle';
-                            $cycleNumber++;
                         }
                         $cycleNo = explode('_',$cycleNoKey);
                         $cycleNo = array_filter($cycleNo);
                         if(!empty($cycleNo)){
                             $cycleNo = (int)$cycleNo[1];
-                            $cycleNumber++;
+                            // $cycleNumber++;
                         }
                         if($cycleNo == $row){
                             unset($dataForSkipPlans[$cycleNoKey]);
