@@ -1166,7 +1166,7 @@ class IUIController extends AdminController
             $inducingInjectionData = $this->inducingInjection()['inj'];
             $medicines = $this->Medicine->pluck('name','name');
             //check if patients is transfer on another plan
-            $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_no','')->where('cycle_status',$iui->cycle_no)->orderBy('created_at','desc')->first();
+            $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_no',$iui->cycle_no)->where('cycle_status',2)->orderBy('created_at','desc')->first();
             if($iuiHistoryData)
             {
                 
