@@ -161,7 +161,8 @@ class PatientController extends ApiController
         {
             $user = OpdPatients::where('id', $get_token->patients_id)->first();
             if ($user && !empty($user->code)) 
-            {   $patients = $user->id;
+            {   
+                $patients = $user->id;
                 $ANCReports = [];
                 $IVFReports = [];
                 $IUIReports = [];
@@ -331,6 +332,140 @@ class PatientController extends ApiController
             return $this->sendError(__('auth.failed'), 401);
         }
 
+    }
+    public function addPatientMemory(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $get_token = $this->PatientToken->where('token', $token)->first();
+        $rule = [
+            'title' => 'required',
+            'description' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(),$rule);
+        if($validator->fails()){
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+        if ($get_token) 
+        {
+            $user = OpdPatients::where('id', $get_token->patients_id)->first();
+            if ($user && !empty($user->code)) 
+            {   
+                $patient_memory = $this->PatientMemory;
+                $patient_memory->patients_id = $get_token->patients_id;
+                $patient_memory->title = $request->title;
+                $patient_memory->description = $request->description;
+                if($request->hasFile('image'))
+                {
+                    $image = $request->file('image');
+                    $profilePicture = $this->uploadImage($image, 'public/upload/patient/memory/');
+                    $patient_memory->image = url('public/upload/patient/memory/'.$profilePicture);
+                }
+                $patient_memory->save();
+                return $this->sendResponse('Add Memory Successfully',$patient_memory);
+            } 
+            else 
+            {
+                return $this->sendError('User is not found');
+            }
+        }else{
+            return $this->sendError(__('auth.failed'), 401);
+        }
+    }
+    public function editPatientMemory(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $get_token = $this->PatientToken->where('token', $token)->first();
+        $rule = [
+            'id' => 'required',
+            'title' => 'required',
+            'description' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(),$rule);
+        if($validator->fails()){
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+        if ($get_token) 
+        {
+            $user = OpdPatients::where('id', $get_token->patients_id)->first();
+            if ($user && !empty($user->code)) 
+            {   
+                $patient_memory = $this->PatientMemory->find($request->id);
+                $patient_memory->title = $request->title;
+                $patient_memory->description = $request->description;
+                // $patient_memory->image = null;
+                if($request->hasFile('image'))
+                {
+                    $image = $request->file('image');
+                    $profilePicture = $this->uploadImage($image, 'public/upload/patient/memory/');
+                    $patient_memory->image = url('public/upload/patient/memory/'.$profilePicture);
+                }
+                $patient_memory->save();
+                return $this->sendResponse('Update Memory Successfully',$patient_memory);
+            } 
+            else 
+            {
+                return $this->sendError('User is not found');
+            }
+        }else{
+            return $this->sendError(__('auth.failed'), 401);
+        }
+    }
+    public function deletePatientMemory(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $get_token = $this->PatientToken->where('token', $token)->first();
+        $rule = [
+            'id' => 'required',
+        ];
+        $validator = Validator::make($request->all(),$rule);
+        if($validator->fails()){
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+        if ($get_token) 
+        {
+            $user = OpdPatients::where('id', $get_token->patients_id)->first();
+            if ($user && !empty($user->code)) 
+            {   
+                $patient_memory = $this->PatientMemory->find($request->id);
+                if($patient_memory)
+                {
+                    $patient_memory->delete();
+                }
+                return $this->sendResponse('Delete Memory Successfully');
+            } 
+            else 
+            {
+                return $this->sendError('User is not found');
+            }
+        }else{
+            return $this->sendError(__('auth.failed'), 401);
+        }
+    }
+    public function getPatientMemory(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $get_token = $this->PatientToken->where('token', $token)->first();
+        if ($get_token) 
+        {
+            $user = OpdPatients::where('id', $get_token->patients_id)->first();
+            if ($user && !empty($user->code)) 
+            {   
+                $patient_memory = $this->PatientMemory->where('patients_id',$user->id)->get();
+                // if($patient_memory)
+                // {
+                //     $patient_memory->delete();
+                // }
+                return $this->sendResponse('Delete Memory Successfully',$patient_memory);
+            } 
+            else 
+            {
+                return $this->sendError('User is not found');
+            }
+        }else{
+            return $this->sendError(__('auth.failed'), 401);
+        }
     }
     public function cmp($a, $b) {
         if (strtotime($a['date']) == strtotime($b['date'])) return 0;

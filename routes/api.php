@@ -76,6 +76,13 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
         Route::get('all-appointment','AppointmentController@allAppointment');
         Route::post('get_medicines','MedicineController@get_medicines');
+
+        //patient's memory
+        
+        Route::post('addPatientMemory','PatientController@addPatientMemory');
+        Route::post('editPatientMemory','PatientController@editPatientMemory');
+        Route::post('deletePatientMemory','PatientController@deletePatientMemory');
+        Route::get('getPatientMemory','PatientController@getPatientMemory');
     });
 
 });

@@ -75,6 +75,7 @@ use App\Models\CaExpense;
 use App\Models\BankDetail;
 use App\Models\PatientToken;
 use App\Models\HospitalCharge;
+use App\Models\PatientMemory;
 
 
 class BaseController extends Controller
@@ -151,6 +152,7 @@ class BaseController extends Controller
         $this->BankDetail = new BankDetail;
         $this->PatientToken = new PatientToken;
         $this->HospitalCharge = new HospitalCharge;
+        $this->PatientMemory = new PatientMemory;
         
     }
 
