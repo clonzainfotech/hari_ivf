@@ -80,7 +80,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">weight : &nbsp;</span>
-                                        {{Form::number("weight",$iui->getPatientsInfo->weight,['class'=>'form-control weight','id'=>'weight'])}}
+                                        {{Form::text("weight",$iui->getPatientsInfo->weight,['class'=>'form-control weight','id'=>'weight'])}}
                                     </div>
                                     <span class="form-error-msg weight"></span>
                                 </div>
@@ -1944,69 +1944,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             </div>
                             {{-- end hcg  --}}
                             <br>
-                            {{-- <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            CBC : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[cbc]",!empty($investigation->cbc) ? $investigation->cbc : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Urine : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[urine]",!empty($investigation->urine) ? $investigation->urine : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            RBS : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[rbs]",!empty($investigation->rbs) ? $investigation->rbs : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            HIV : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[hiv]",!empty($investigation->hiv) ? $investigation->hiv : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Hbs Ag : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[hbs_ag]",!empty($investigation->hbs_ag) ? $investigation->hbs_ag : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Date : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[date_1]",!empty($investigation->date_1) ? \Carbon\Carbon::parse($investigation->date_1)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
-                                    </div>
-                                </div>
-                            </div>
-                            <br> --}}
-
-                            <div class="row">
-                                {{-- <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            TSH : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[tsh]",!empty($investigation->tsh) ? $investigation->tsh : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div> --}}
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">
@@ -2590,6 +2529,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 </div>
                                 <div class="{{'col-md-8 pr-0 blood-type '.$bloodReportClassName}}">
                                     <div class="blood-images"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Other Report : &nbsp;
+                                        </span>
+                                        {{Form::text("investigation[investigation_extra]",isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null,['class'=>'form-control'])}}
+                                    </div>
                                 </div>
                             </div>
                         </div>

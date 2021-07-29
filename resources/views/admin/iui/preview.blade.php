@@ -384,9 +384,11 @@
                                                                 $hoValue.= ' '.$row->when_where;
                                                             }
                                                         }
+                                                        $ho_term_details = isset($row->ho_term_details) && !empty($row->ho_term_details) ? ' - '.$row->ho_term_details : '';
+
                                                     }
                                                 @endphp
-                                                {{$hoValue}}
+                                                {{$hoValue.$ho_term_details}}
                                             </th>
                                         </tr>
                                     @endforeach
@@ -626,13 +628,13 @@
                                                     }
                                                     if(!empty($row->ho_birth_type)){
                                                         if($row->ho_birth_type == 'live_health'){
-                                                            $secondHoValue.= '/L';
+                                                            $secondHoValue.= '/Live';
                                                         }
                                                         if($row->ho_birth_type == 'stil_birth'){
-                                                            $secondHoValue.= '/StilBirth';
+                                                            $secondHoValue.= '/Stil Birth';
                                                         }
                                                         if($row->ho_birth_type == 'expired'){
-                                                            $secondHoValue.= '/E';
+                                                            $secondHoValue.= '/Expired';
                                                             if($row->expired_reason){
                                                                 $secondHoValue.= '('.$row->expired_reason.')';
                                                             }
@@ -656,9 +658,10 @@
                                                                 $secondHoValue.= ' - '.$row->when_where;
                                                             }
                                                         }
+                                                    $second_ho_term_details = isset($row->ho_term_details) && !empty($row->ho_term_details) ? ' - '.$row->ho_term_details : '';
                                                     }
                                                 @endphp
-                                                {{$secondHoValue}}
+                                                {{$secondHoValue.$second_ho_term_details}}
                                             </th>
                                         </tr>
                                     @endforeach
@@ -1743,7 +1746,7 @@
                         </table>
                     @endif
 
-                    @if($investigation || (!empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes' || (!empty($investigation->laproscopy) && $investigation->laproscopy->type == 'yes') || (!empty($investigation->hcg) && $investigation->hcg->type == 'yes')))
+                    @if($investigation  && (!empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes' || (!empty($investigation->laproscopy) && $investigation->laproscopy->type == 'yes') || (!empty($investigation->hcg) && $investigation->hcg->type == 'yes') || (isset($investigation->investigation_extra) && !empty($investigation->investigation_extra))))
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                             <tbody>
                                 <tr>
@@ -2006,9 +2009,18 @@
                                         </tr>
                                     @endif
                                 @endif
+                                @if(isset($investigation->investigation_extra) && !empty($investigation->investigation_extra))
+                                    <tr >
+                                        <th>
+                                            <span class="iui-label">Other Report :</span>
+                                            {{$investigation->investigation_extra}}
+                                        </th>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     @endif
+                    
                 @endif
                 @if(isset($visit) && $visit != null)
                     @if($patientsInfo)

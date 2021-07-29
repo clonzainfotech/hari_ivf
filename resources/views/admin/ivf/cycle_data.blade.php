@@ -1664,7 +1664,10 @@
                                                             
                                                         </td>
                                                         
-                                                        <td class="">{{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}</td>
+                                                        <td class="">
+                                                            {{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
+                                                            <span class="transfer-error text-danger mb-2"></span>
+                                                        </td>
                                                         <td class=""></td>
                                                     </tr>
                                                 @endif
@@ -1672,7 +1675,7 @@
                                             <tfoot>
                                                 <tr>
                                                 <td colspan="7" class="frozen_table_footer">
-                                                    @if(!$isForm && $lastHistoryData->plan != $pStatus)
+                                                    @if(!$isForm && !empty($lastHistoryData->plan) && $lastHistory->cycle_status == 2)
                                                     <div class="mb-2">
                                                         <span class="visit-lable">Transfer Plan :- </span> 
                                                         <span class="visit-lable-value">{{isset($planData[$lastHistoryData->plan])? $planData[$lastHistoryData->plan] : ''}}</span>
@@ -5296,6 +5299,7 @@
                 $('.skip-plan-error').text('');
                 $('.skip-reason-error').text('');
                 $('.seen-by-error').text('');
+                $('.transfer-error').text('');
                 if($('.history-lmd-date').val() == ''){
                     valid = 0;
                     $('.lmp-date-error').text('This field is required.');
@@ -5320,6 +5324,18 @@
                         scrollTop: ($('.seen-by').offset().top - 150)
                     }, 1000);
                     valid = 0;
+                }
+                var plan_transfer = $('select.plan-transfer').val();
+                if((plan_transfer != '')){
+                    if($('.remark').val() == '')
+                    {
+                        $('.transfer-error').text('Please Enter Transfer Reason');
+                        $('html, body').animate({
+                            scrollTop: ($('.remark').offset().top - 150)
+                        }, 1000);
+                        valid = 0;
+                    }
+                    
                 }
                 if(valid == 0){
                     return true;

@@ -111,7 +111,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">weight : &nbsp;</span>
-                                                    {{Form::number("weight",$ivf->getPatientsInfoData->weight,['class'=>'form-control weight','id'=>'weight'])}}
+                                                    {{Form::text("weight",$ivf->getPatientsInfoData->weight,['class'=>'form-control weight','id'=>'weight'])}}
                                                 </div>
                                                 <span class="form-error-msg weight">
                                                     {{$errors->first('weight')}}
@@ -2816,6 +2816,16 @@
                                             </div>
                                             <div class="{{'col-md-8 pr-0 blood-type '.$bloodReportClassName}}">
                                                 <div class="blood-images"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        Other Report : &nbsp;
+                                                    </span>
+                                                    {{Form::text("investigation[investigation_extra]",isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null,['class'=>'form-control'])}}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

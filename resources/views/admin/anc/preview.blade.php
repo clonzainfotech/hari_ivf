@@ -832,7 +832,7 @@
                                                         $hoValue.= '/Live';
                                                     }
                                                     if($row->ho_birth_type == 'stil_birth'){
-                                                        $hoValue.= '/StilBirth';
+                                                        $hoValue.= '/Stil Birth';
                                                     }
                                                     if($row->ho_birth_type == 'expired'){
                                                         $hoValue.= '/Expired';
@@ -1069,13 +1069,13 @@
                                                 }
                                                 if(!empty($row->ho_birth_type)){
                                                     if($row->ho_birth_type == 'live_health'){
-                                                        $secondHoValue.= '/L';
+                                                        $secondHoValue.= '/Live';
                                                     }
                                                     if($row->ho_birth_type == 'stil_birth'){
-                                                        $secondHoValue.= '/StilBirth';
+                                                        $secondHoValue.= '/Stil Birth';
                                                     }
                                                     if($row->ho_birth_type == 'expired'){
-                                                        $secondHoValue.= '/E';
+                                                        $secondHoValue.= '/Expired';
                                                         if($row->expired_reason){
                                                             $secondHoValue.= '('.$row->expired_reason.')';
                                                         }
@@ -1100,9 +1100,11 @@
                                                             $secondHoValue.= ' '.$row->when_where;
                                                         }
                                                     }
+                                                    $second_ho_term_details = isset($row->ho_term_details) && !empty($row->ho_term_details) ? ' - '.$row->ho_term_details : '';
+                                                    
                                                 }
                                             @endphp
-                                            {{$secondHoValue}}
+                                            {{$secondHoValue.$second_ho_term_details}}
                                         </th>
                                     </tr>
                                 @endforeach
@@ -2281,7 +2283,7 @@
                             @if(!empty($patientsInvestigation->investigation_extra))
                                 <tr >
                                     <th>
-                                        <span class="anc-label ">Extra :</span>
+                                        <span class="anc-label ">Other Report :</span>
                                         {{$patientsInvestigation->investigation_extra}}
                                     </th>
                                 </tr>

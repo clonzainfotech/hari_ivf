@@ -1052,7 +1052,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">weight : &nbsp;</span>
-                            {{Form::number("p_info[weight]",$ancData->getPatients['weight'],['class'=>'form-control weight','id'=>'weight'])}}
+                            {{Form::text("p_info[weight]",$ancData->getPatients['weight'],['class'=>'form-control weight','id'=>'weight'])}}
                         </div>
                         <span class="form-error-msg weight">
                             {{$errors->first('weight')}}
@@ -1187,7 +1187,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         <div class="col-md-2">
                             <div class="input-group">
                                 <span class="input-group-addon">Weight : &nbsp;</span>
-                                {{Form::number("ho[weight]",!empty($ho->weight) ? $ho->weight  : (!empty(json_decode($ancData->patients_info)->weight) ? json_decode($ancData->patients_info)->weight : $ancData->getPatients['weight']),['class'=>'form-control weight-2','id'=>'weight'])}}
+                                {{Form::text("ho[weight]",!empty($ho->weight) ? $ho->weight  : (!empty(json_decode($ancData->patients_info)->weight) ? json_decode($ancData->patients_info)->weight : $ancData->getPatients['weight']),['class'=>'form-control weight-2','id'=>'weight'])}}
                             </div>
                             <span class="form-error-msg weight">
                                     {{$errors->first('weight')}}
@@ -4423,7 +4423,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-sm-5">
                         <div class="input-group">
                             <span class="input-group-addon">
-                                Extra : &nbsp;
+                                Other Report : &nbsp;
                             </span>
                             {{Form::text("investigation[investigation_extra]",!empty($patientsInvestigation->investigation_extra) ? $patientsInvestigation->investigation_extra : null,['class'=>'form-control'])}}
                         </div>
