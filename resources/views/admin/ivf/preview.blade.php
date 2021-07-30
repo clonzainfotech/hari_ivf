@@ -3006,31 +3006,23 @@
                                                 <tr>
                                                     <td>{{!empty($datarow->created_at) ? \Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y'):''}}</td>
                                                     <td>
-                                                        @if($j == 1)
                                                             @if($datarow->visit == 2)
                                                                 {{!empty($data->oe->ovary->right->afcs) ? $data->oe->ovary->right->afcs : '-'}}
                                                             @else
                                                                 {{!empty($data->ovary->ovary_type->right->details) ? $data->ovary->ovary_type->right->details : '-'}}
                                                             @endif
-                                                        @else
-                                                            -
-                                                        @endif
                                                     </td>
                                                     <td>
-                                                        @if($j == 1)
+                                                        
                                                             @if($datarow->visit == 2)
                                                                 {{!empty($data->oe->ovary->left->afcs) ? $data->oe->ovary->left->afcs : '-'}}
                                                             @else
                                                                 {{!empty($data->ovary->ovary_type->left->details) ? $data->ovary->ovary_type->left->details : '-'}}
                                                             @endif
-                                                        @else
-                                                            -
-                                                        @endif
                                                     </td>
-                                                    <td>{{$j == 1 && !empty($data->et_details) ? $data->et_details : '-'}}
+                                                    <td>{{!empty($data->et_details) ? $data->et_details : '-'}}
                                                     </td>
                                                     <td>
-                                                        @if($j == 1)
                                                             @if(!empty($se2Data))
                                                             S.E2 : {{implode(',',$se2Data)}}
                                                             @endif
@@ -3043,7 +3035,6 @@
                                                             S.P2 : {{implode(',',$sp2Data)}}
                                                             @endif
                                                             {{!empty($historyData->remark) ? $historyData->remark : ''}}
-                                                        @endif
 
                                                     </td>
                                                 </tr>
