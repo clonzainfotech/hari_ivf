@@ -1755,7 +1755,7 @@
                                                                 </td>
                                                         </tr>
                                                     @endif
-                                                    @if(isset($historyData->progesterone_date) && ($historyData->progesterone->type == 'yes') && (!empty($historyData->progesterone_date)))
+                                                    @if(isset($historyData->progesterone_date) && (!empty($historyData->progesterone->type)) && (!empty($historyData->progesterone_date)))
                                                     <tr>
                                                         <td>{{\Carbon\Carbon::parse($historyData->progesterone_date)->format('d-m-Y')}}</td>
                                                         <td></td>
