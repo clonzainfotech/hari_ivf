@@ -40,7 +40,7 @@
     $treatment = !empty($ancData->treatment) ? json_decode($ancData->treatment) : null;
     $remark=!empty($previousAnc->o_e) ? json_decode($previousAnc->o_e) : null;
     $blood=!empty($previousAnc->investigation) ? json_decode($previousAnc->investigation) : null;
-    
+    $ancCreatedDate = (!empty($ancData)) ? $ancData->created_at : null;
     $contraceptionData = ['barrier_method'=>'Barrier Method','cu_t'=>'Cu - T','tl_done'=>'TL Done ','occipill'=>'Occipill','other_contraception'=>'Other'];
     $utsizearray = ["Normal Size","Just Bulky","6 Weeks","6-8 Weeks","8 Weeks","8-10 Weeks","10-12 Weeks"];
     $utsizearray1 = ["12 Weeks","Uterus Just Palpable","14 Weeks","16 Weeks","18 Weeks","20 Weeks","22 Weeks","24 Weeks","26 Weeks","28 Weeks","30 Weeks","32 Weeks","34 Weeks","36 Weeks","Full Term"];
@@ -687,24 +687,24 @@
                             </tr>
                             <tr>
                                 <th class="text-danger">
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['blood_group']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['blood_group']) &&  (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['blood_group_date'])))
                                         <span class="anc-label ">*Blood Group:</span>
                                             {{$ancAutoRemark['blood_group']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['hbsag']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['hbsag']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hbsag_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*HBSAG:</span>
                                             {{$ancAutoRemark['hbsag']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['hiv']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['hiv']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hiv_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*HIV:</span>
                                             {{$ancAutoRemark['hiv']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['vdrl']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['vdrl']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['vdrl_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*VDRL:</span>
                                             {{$ancAutoRemark['vdrl']}}
                                     @endif
                                     
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['late_concept']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['late_concept']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['late_concept_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Late Conception:</span>
                                         Yes
                                     @endif
@@ -713,14 +713,16 @@
                                             {{$ancAutoRemark['cesarean']. ' - LSCS'}}
                                     @endif
                                     @if($ancAutoRemark && !empty($ancAutoRemark['position']) && ($ancAutoRemark['position'] == 'breech' || $ancAutoRemark['position'] == 'transverse' || $ancAutoRemark['position'] == 'oblique'))
-                                        <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Position:</span>
+                                        @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['position_date']))    
+                                            <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Position:</span>
                                             {{$ancAutoRemark['position']}}
+                                        @endif
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly'))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly') && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['liquor_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Liquor:</span>
                                             {{$ancAutoRemark['liquor']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['placenta']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['placenta']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['placenta_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Placenta:</span>
                                             {{$ancAutoRemark['placenta']}}
                                     @endif

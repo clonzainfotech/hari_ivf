@@ -23,7 +23,7 @@
         $injectionNo = 9;
         $ancId = $ancData->id;
     }
-
+    $ancCreatedDate = (!empty($ancId) || !empty($ancHistoryId)) ? $ancData->created_at : null;
     $previousAncRemark = isset($previousAncRemark->remark) && !empty($previousAncRemark->remark) ? $previousAncRemark->remark : null;
     if(!empty($previousAnc->id)){
         $preId=$previousAnc->id;
@@ -93,57 +93,73 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
     @endif
     <h5 class="autoRemark">
         @if($ancAutoRemark && !empty($ancAutoRemark['blood_group']))
+        @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['blood_group_date']))
             &nbsp;&nbsp;&nbsp;*Blood Group:
             <small>
                 {{$ancAutoRemark['blood_group']}}
             </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['hbsag']))
-            &nbsp;&nbsp;&nbsp;*HBSAG:
-            <small>
-                {{$ancAutoRemark['hbsag']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hbsag_date']))
+                &nbsp;&nbsp;&nbsp;*HBSAG:
+                <small>
+                    {{$ancAutoRemark['hbsag']}}
+                </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['hiv']))
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hiv_date']))
             &nbsp;&nbsp;&nbsp;*HIV:
             <small>
                 {{$ancAutoRemark['hiv']}}
             </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['vdrl']))
-            &nbsp;&nbsp;&nbsp;*VDRL:
-            <small>
-                {{$ancAutoRemark['vdrl']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['vdrl_date']))   
+                &nbsp;&nbsp;&nbsp;*VDRL:
+                <small>
+                    {{$ancAutoRemark['vdrl']}}
+                </small>
+            @endif
         @endif
         
         @if($ancAutoRemark && !empty($ancAutoRemark['late_concept']))
-            &nbsp;&nbsp;&nbsp;*Late Conception:
-            <small>Yes</small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['late_concept_date']))
+                &nbsp;&nbsp;&nbsp;*Late Conception:
+                <small>Yes</small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['cesarean']))
-            &nbsp;&nbsp;&nbsp;*Previous:
-            <small>
-                {{$ancAutoRemark['cesarean']. ' - LSCS'}}
-            </small>
+                &nbsp;&nbsp;&nbsp;*Previous:
+                <small>
+                    {{$ancAutoRemark['cesarean']. ' - LSCS'}}
+                </small>
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['position']) && ($ancAutoRemark['position'] == 'breech' || $ancAutoRemark['position'] == 'transverse' || $ancAutoRemark['position'] == 'oblique'))
-            &nbsp;&nbsp;&nbsp;*Position:
-            <small>
-                {{$ancAutoRemark['position']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['position_date']))
+                &nbsp;&nbsp;&nbsp;*Position:
+                <small>
+                    {{$ancAutoRemark['position']}}
+                </small>
+            @endif 
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly'))
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['liquor_date']))
             &nbsp;&nbsp;&nbsp;*Liquor:
             <small>
                 {{$ancAutoRemark['liquor']}}
             </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['placenta']))
-            &nbsp;&nbsp;&nbsp;*Placenta:
-            <small>
-                {{$ancAutoRemark['placenta']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['placenta_date']))
+                &nbsp;&nbsp;&nbsp;*Placenta:
+                <small>
+                    {{$ancAutoRemark['placenta']}}
+                </small>
+            @endif
         @endif
         
     </h5>

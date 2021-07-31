@@ -1713,40 +1713,57 @@ class ANCController extends AdminController
                 if($investigationDetails && isset($investigationDetails['12'])  && (substr (strtolower($investigationDetails['12']), -3) == '-ve' || strtolower($investigationDetails['12']) == 'negative' || strpos(strtolower($investigationDetails['12']), 'negative') !== false))
                 {
                     $ancAutoRemark['blood_group'] = $investigationDetails['12'];
+                    $ancAutoRemark['blood_group_date'] = $visit->created_at;
                 }
                 if($investigationDetails && isset($investigationDetails['8']) && (substr (strtolower($investigationDetails['8']), -3) == '+ve' || strtolower($investigationDetails['8']) == 'positive' || strpos(strtolower($investigationDetails['8']), 'positive') !== false))
                 {
                     $ancAutoRemark['hbsag'] = $investigationDetails['8'];
+                    $ancAutoRemark['hbsag_date'] = $visit->created_at;
+
                 }
                 if($investigationDetails && isset($investigationDetails['10']) && (substr (strtolower($investigationDetails['10']), -3) == '+ve' || strtolower($investigationDetails['10']) == 'positive' || strpos(strtolower($investigationDetails['10']), 'positive') !== false))
                 {
                     $ancAutoRemark['hiv'] = $investigationDetails['10'];
+                    $ancAutoRemark['hiv_date'] = $visit->created_at;
+
                 }
                 if(!empty($auroRemarkInv->anc_hiv) && strtolower($auroRemarkInv->anc_hiv) == 'positive')
                 {
                     $ancAutoRemark['hiv'] = $auroRemarkInv->anc_hiv;
+                    $ancAutoRemark['hiv_date'] = $visit->created_at;
                 }
                 if(!empty($auroRemarkInv->anc_hbsag) && strtolower($auroRemarkInv->anc_hbsag) == 'positive')
                 {
                     $ancAutoRemark['hbsag'] = $auroRemarkInv->anc_hbsag;
+                    $ancAutoRemark['hbsag_date'] = $visit->created_at;
+
                 }
                 if(!empty($auroRemarkInv->anc_vdrl) && strtolower($auroRemarkInv->anc_vdrl) == 'positive')
                 {
                     $ancAutoRemark['vdrl'] = $auroRemarkInv->anc_vdrl;
+                    $ancAutoRemark['vdrl_date'] = $visit->created_at;
+
                 }
                 if (!empty($historyAncOe->late_data) && !empty($historyAncOe->late_data->late_concept) && $historyAncOe->late_data->late_concept == 'Yes' && !empty(($historyAncOe->late_data->late_concept_week)))
                 {
                     $ancAutoRemark['late_concept'] = 'Yes';
+                    $ancAutoRemark['late_concept_date'] = $visit->created_at;
+
                 }
                 foreach($historyUTData as $key => $value)
                 {
                     if((!empty($value->position_type) && ($value->position_type == 'breech' || $value->position_type == 'transverse' || $value->position_type == 'oblique')) || (isset($ancAutoRemark['position']) && !empty($value->position_type)))
                     {
                         $ancAutoRemark['position'] = $value->position_type;
+                        $ancAutoRemark['position_date'] = $visit->created_at;
+
                     }
                     if((!empty($value->liquor_type) && ($value->liquor_type == 'oligo' || $value->liquor_type == 'poly')) || (isset($ancAutoRemark['liquor']) && !empty($value->liquor_type)))
                     {
+                        
                         $ancAutoRemark['liquor'] = $value->liquor_type;
+                        $ancAutoRemark['liquor_date'] = $visit->created_at;
+
                     }
                     if(!empty($value->placenta))
                     {
@@ -1756,6 +1773,8 @@ class ANCController extends AdminController
                             $placentaValue = !empty($placentaValue) ? $placentaValue.', '.$placenta[$value1] : $placenta[$value1];
                         }
                         $ancAutoRemark['placenta'] =  $placentaValue;
+                        $ancAutoRemark['placenta_date'] = $visit->created_at;
+
                     }
                     else
                     {
