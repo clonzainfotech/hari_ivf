@@ -52,7 +52,7 @@
                     <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
                 @else
                     @if($row->arrival_time)
-                        <button class="btn btn-danger btn-sm notify-patient" id=""   onclick="callPatient('{{$name}}','IUI')">Call Patient</button>
+                        <button class="btn btn-danger btn-sm notify-patient" id=""   onclick="callPatient('{{$name}}','IUI',this)">Call Patient</button>
                     @endif
                 @endif
             </td>

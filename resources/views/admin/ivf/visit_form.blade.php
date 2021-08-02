@@ -680,14 +680,14 @@
                 </div>
             </div>
             <div class="row mt-1">
-                {{-- <div class="col-md-2">
+                <div class="col-md-2">
                     <div class="checkbox">
                         {{Form::checkbox('data[collection][]','progesterone',!empty($progesteroneStatus) ? false : true,['id'=>'progesterone'])}}
                         <label for="progesterone">
-                            Do satrting progesterone?
+                            Progesterone supplementation?
                         </label>
                     </div>
-                </div> --}}
+                </div>
                 @if($ivf->plan == 1)
                     <div class="{{'col-md-2 progesterone_data '.$progesteroneStatus}}">
                         <label for="progesterone">
@@ -707,13 +707,14 @@
                         </div>
                     </div>
                 @endif
-                {{-- @php
+                @php
                     $class= 'progesterone_data';
                     $pTypeValue = 1;
                     if($ivf->plan == 1){
                         $class= 'progesterone_yes';
                         $pTypeValue = 0;
                     }
+                    $progesterone_date = !empty($ivfData->progesterone->type) ? '' : 'd-none';
                 @endphp
                 <div class="{{'col-md-2 '.$class.' '.$progesteroneStatus}}">
                     {{Form::hidden('progesterone_status','yes')}}
@@ -727,7 +728,12 @@
                             Day-5
                         </label>
                     </div>
-                </div> --}}
+                </div>
+                <div class="{{'col-md-2 progesterone_date_div ' .$progesterone_date}}">
+                    <div class="form-group">
+                            {{Form::text("data[progesterone_date]", !empty($ivfData->progesterone_date) ? $ivfData->progesterone_date: '',['class'=>'form-control datetimepicker progesterone_date'])}}
+                    </div>
+                </div>
             </div>
             {{-- @if(!empty($ivfData->trigger->hcg->status) || !empty($ivfData->trigger->decapeptyl->status) || !empty($ivfData->trigger->dualtrigger->stauts))
                 @php

@@ -123,4 +123,69 @@ class Appointment extends BaseModel
         }
         return $status;
     }
+    public function getIVFHistory(){
+        $ivf = IvfHistory::where('patients_id',$this->patients_id)->where('cycle_status','!=',2)->whereNotIn('plan',[1,2])->orderBy('created_at','desc')->first();
+        $embroyReady = '';
+        $semen_Freezing = '';
+        if($ivf)
+        {
+            $ivfHistoryFreezing = IvfHistory::where('patients_id',$ivf->patients_id)
+                        ->where('cycle_no',$ivf->cycle_no)
+                        ->where('plan',$ivf->plan)
+                        ->where('description->collected->frozen->type', 'yes')
+                        ->orderBy('created_at','desc')
+                        ->first();
+            $ivfHistoryEmbroy = IvfHistory::where('patients_id',$this->patients_id)
+                        ->where('cycle_no',$ivf->cycle_no)
+                        ->where('plan',$ivf->plan)
+                        ->where('description->collected->report->embroy->type', 'yes')
+                        ->orderBy('created_at','desc')
+                        ->first();
+            if($ivfHistoryFreezing)
+            {
+                $semen_Freezing = 'yes';
+            }
+            
+            if($ivfHistoryEmbroy)
+            {
+                $embroyReady = 'yes';
+            }
+        }
+        
+        
+        
+        return['frozen'=>$semen_Freezing,'embroy' => $embroyReady];
+    }
+    public function getAncHoverDetail()
+    {
+        $anc = AncHistory::where('patients_id',$this->patients_id)
+                ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'>',$this->date)
+                ->orderBy('created_at','desc')
+                ->first();
+        $lmp = '';
+        $preg_week = '';
+        $eddDate = '';
+        $remark = '';
+        $ancFirst = ANC::where('patients_id',$this->patients_id)->orderBy('created_at','desc')->first();
+        $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
+            $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
+            $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
+        if(!$anc)
+        {
+            $ancFirstH_o = !empty($ancFirst->h_o) ? json_decode($ancFirst->h_o) : null;
+            $ancFirstO_e = !empty($ancFirst->o_e) ? json_decode($ancFirst->o_e) : null;
+            $preg_week = !empty($ancFirstH_o->ho_details) ? $ancFirstH_o->ho_details : '';
+            $remark = !empty($ancFirstO_e->remark) ? $ancFirstO_e->remark : null;
+
+        }
+        if($anc)
+        {
+            
+            $h_o = !empty($anc->h_o) ? json_decode($anc->h_o) : null;
+            $o_e = !empty($anc->o_e) ? json_decode($anc->o_e) : null;
+            $preg_week = !empty($h_o->ho_details) ? $h_o->ho_details : '';
+            $remark = !empty($o_e->remark) ? $o_e->remark : null;
+        }
+        return['preg_week'=>$preg_week, 'lmp'=>$lmp, 'eddDate'=>$eddDate, 'remark' => $remark];
+    }
 }

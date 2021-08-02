@@ -337,6 +337,7 @@
                                                 <span class="iui-label ">H/O :</span>
                                                 @php
                                                     $hoValue = null;
+                                                    $ho_term_details = '';
                                                     if(!empty($row->ho_term)){
                                                         $hoValue.= $row->ho_term  == 'full' ? 'FTND' : 'PT';
                                                     }
@@ -611,6 +612,7 @@
                                                 <span class="iui-label ">H/O :</span>
                                                 @php
                                                     $secondHoValue = null;
+                                                    $second_ho_term_details = '';
                                                     if(!empty($row->ho_term)){
                                                         $secondHoValue.= $row->ho_term  == 'full' ? 'FT' : 'PT';
                                                     }
@@ -2565,27 +2567,27 @@
                                         @if((!empty($description->tvs->type) && $description->tvs->type == 'yes') && ((!empty($description->ovary->type) && in_array('right', $description->ovary->type)) || (!empty($description->ovary->type) && in_array('left', $description->ovary->type))))
                                         <span class="iui-label">Ovary : </span>
                                         @endif
-                                        @if(!empty($description->ovary->type))
-                                            @if(in_array('right', $description->ovary->type))
+                                        {{-- @if(!empty($description->ovary->type)) --}}
+                                            @if(!empty($description->ovary->right->type) || !empty($description->ovary->right->details))
                                             <br>
-                                                <span class="iui-label">Right Ovary: </span>{{($description->ovary->right->type == 1) ? 'Normal' : ''}}
+                                                <span class="iui-label">Right Ovary : </span>{{($description->ovary->right->type == 1) ? 'Normal' : ''}}
                                                 @if(!empty($description->ovary->right->details))
-                                                    <br><span class='iui-label pl-2'>Details:</span>{{implode(',',$description->ovary->right->details)}}
+                                                    <br><span class='iui-label pl-2'>Details : </span>{{implode(',',$description->ovary->right->details)}}
                                                 @endif
                                             @endif
-                                        @endif
+                                        {{-- @endif --}}
                                     </th>
                                 </tr>
                                 <tr>
                                     <th>
-                                        @if(!empty($description->ovary->type))
-                                            @if(in_array('left', $description->ovary->type))
-                                                <span class="iui-label">Left Ovary: </span>{{($description->ovary->left->type == 1) ? 'Normal' : ''}}
+                                        {{-- @if(!empty($description->ovary->type)) --}}
+                                            @if(!empty($description->ovary->left->type) || !empty($description->ovary->left->details))
+                                                <span class="iui-label">Left Ovary : </span>{{($description->ovary->left->type == 1) ? 'Normal' : ''}}
                                                 @if(!empty($description->ovary->left->details))
-                                                    <br><span class='iui-label pl-2'>Details:</span>{{implode(',',$description->ovary->left->details)}}
+                                                    <br><span class='iui-label pl-2'>Details : </span>{{implode(',',$description->ovary->left->details)}}
                                                 @endif
                                             @endif
-                                        @endif
+                                        {{-- @endif --}}
                                     </th>
                                 </tr>
                                 @endif

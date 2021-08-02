@@ -145,17 +145,19 @@ $menu = "";
 <link href="https://code.jquery.com/ui/1.12.1/themes/pepper-grinder/jquery-ui.css" rel="stylesheet"/>
 
 <script type="text/javascript">
-    $(document).on('click','.notify-patient',function(){
-        $(this).parent().html("reuqest send!");
+    // $(document).on('click','.notify-patient',function(){
+    //     $(this).parent().html("reuqest send!");
 
-    });
-    function callPatient(name, cat) {
+    // });
+    function callPatient(name, cat, e) {
+        // $(this).removeClass('notify-patient');
         swal({
                 title: "OPD Area",
                 text: "Enter OPD",
                 type: "input",
                 confirmButtonColor: '#DD6B55',
-                confirmButtonText: 'Yes',
+                confirmButtonText: 'Send',
+                showCancelButton: true,
                 animation: "slide-from-top",
                 closeOnConfirm: false,
                 html: true,
@@ -166,13 +168,13 @@ $menu = "";
                     return false;
                 }
                 if (title === "") {
-                    swal.showInputError("Please enter holiday name!");
-                    return false
+                    swal.showInputError("Please enter OPD area!");
+                    return false;
                 }
                 else
                 {
-                    // console.log(title);
                     swal("Thank You!", "", "success");
+                    $(e).parent().html("reuqest send!");
                     $.ajax({
                         url:"{{url('patient_notification')}}",
                         data:{name:name,cat:cat,title:title},

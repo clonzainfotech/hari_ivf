@@ -2682,4 +2682,8 @@ line-height: 6px !important;
 {
     background-color: #eff6f6  !important
 }
+.line-height
+{
+    line-height: 20px;
+}
 

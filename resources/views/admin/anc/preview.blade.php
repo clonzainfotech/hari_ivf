@@ -819,6 +819,7 @@
                                             <span class="anc-label ">H/O :</span>
                                             @php
                                                 $hoValue = null;
+                                                $ho_term_details = '';
                                                 if(!empty($row->ho_term)){
                                                     $hoValue.= $row->ho_term  == 'full' ? 'FT' : 'Pre Term';
                                                 }
@@ -1059,6 +1060,7 @@
                                             <span class="anc-label ">H/O :</span>
                                             @php
                                                 $secondHoValue = null;
+                                                $second_ho_term_details = '';
                                                 if(!empty($row->ho_term)){
                                                     $secondHoValue.= $row->ho_term  == 'full' ? 'FT' : 'Pre Term';
                                                 }
@@ -1371,7 +1373,7 @@
                         </tbody>
                     </table>
                 @endif
-                @if($ancFirst_mh_date)
+                @if($ancFirst_mh_date && $isFirstVisit == false)
                     <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
                         @if($ancFirstlmdDate)
                         <tr>

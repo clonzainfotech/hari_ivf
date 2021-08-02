@@ -8,9 +8,10 @@
         {{-- <th>Arrival Time</th> --}}
         <th>Appointment Date & Time</th>
         <th>Name</th>
-        <th>Mobile</th>
-        <th>UHID </th>
+        {{-- <th>Mobile</th>
+        <th>UHID </th> --}}
         <th>Plan</th>
+        <th>Frozen/Embroy</th>
         <th>Seen By</th>
         <th>Remark</th>
         <th>Action</th>
@@ -36,6 +37,17 @@
             }
             $paymentUrl = url('ivf/payments/'.encrypt($row->patients_id));
             $name = ucwords(strtolower($row->getPatientsDetails['name']));
+            $frozen = '';
+            $embroy = '';
+            if(!empty($row->getIVFPLan()['plan']) && ($row->getIVFPLan()['plan'] == 3))
+            {
+                $frozen = !empty($row->getIVFHistory()['frozen']) ? $row->getIVFHistory()['frozen'] : null;
+                $embroy = !empty($row->getIVFHistory()['embroy']) ? $row->getIVFHistory()['embroy'] : null;
+            }
+            if(!empty($row->getIVFPLan()['plan']) && ($row->getIVFPLan()['plan'] == 4))
+            {
+                $embroy = !empty($row->getIVFHistory()['embroy']) ? $row->getIVFHistory()['embroy'] : null;
+            }
         @endphp
         <tr data-id="{{encrypt($row->getPatientsDetails['id'])}}" class="{{'ivfdata ' . $checkIvf}}">
             <td>{{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
@@ -47,10 +59,12 @@
                     <span class="appointment-arrival-time">{{'Arrival:'.date('h:i', strtotime($row->arrival_time))}}</span>
                 @endif
             </td>
-            <td>{{ $name }}</td>
-            <td>{{$row->getPatientsDetails['mobile_number']}}</td>
-            <td>{{$row->getPatientsDetails['code'] }}</td>
+            <td class="line-height">{{ $name }}<br>{{$row->getPatientsDetails['mobile_number'] .' | '.$row->getPatientsDetails['code']}}</td>
+            {{-- <td>{{$row->getPatientsDetails['mobile_number']}}</td>
+            <td>{{$row->getPatientsDetails['code'] }}</td> --}}
             <td>{{!empty($row->getIVFPLan()['plan']) ? $planData[$row->getIVFPLan()['plan']] : null}}</td>
+            <td>{{!empty($frozen) ? 'Semen Freezing : '.$frozen : null}}<br>{{!empty($embroy) ? 'Embroy Ready : '.$embroy : null}}</td>
+            
             <td>{{$row->getSeenBy['name']}}</td>
             <td><div class="text-wrraping">{{$row->remark}}</div></td>
             <td><a href="{{$paymentUrl}}"   class="btn btn-primary btn-sm ivf-payment-font">Payment</a><a href="{{$viewUrl}}" class="btn btn-primary btn-sm ivf-payment-font">View</a>
@@ -58,7 +72,7 @@
                     <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
                 @else
                     @if($row->arrival_time)
-                        <button class="btn btn-danger btn-sm notify-patient" id=""   onclick="callPatient('{{$name}}','IVF')">Call Patient</button>
+                        <button class="btn btn-danger btn-sm notify-patient" id=""   onclick="callPatient('{{$name}}','IVF',this)">Call Patient</button>
                     @endif
                 @endif
             </td>

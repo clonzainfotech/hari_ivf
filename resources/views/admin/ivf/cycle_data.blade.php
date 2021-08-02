@@ -1772,7 +1772,7 @@
                                                 @if(!empty($lastHistoryData) && $resultValue == 0 && $skipValue == 0 && $isForm == true)
                                                     @php
                                                         $date = \Carbon\Carbon::parse($lastHistoryData->follow_up)->format('d-m-Y');
-                                                        $diff = \Carbon\Carbon::parse($ivfSecondVisitData->lmp->date)->diffInDays(\Carbon\Carbon::parse($date));
+                                                        $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $lastHistory->created_at)->diffInDays(\Carbon\Carbon::parse($date));
                                                         $diff = $diff + 1;
                                                     @endphp
                                                     <tr class="">
@@ -1877,7 +1877,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-2 d-none progesterone_data">
+                                                            <div class="col-md-2 d-none progesterone_date_div">
                                                                 <div class="form-group">
                                                                         {{Form::text("data[progesterone_date]",\Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker progesterone_date'])}}
                                                                 </div>
@@ -5284,7 +5284,10 @@
                 if($(this).is(":checked")) {
                     var days = $(this).val();
                     days = days == 'day_3' ? 3 : 5;
-
+                    // if(days != null)
+                    // {
+                        $('.progesterone_date_div').removeClass('d-none');
+                    // }
                     var now = new Date($('.last-appointment-date').val());
                     var progesteroneDate = new Date($('.progesterone_date').val());
                     if(progesteroneDate != null)
