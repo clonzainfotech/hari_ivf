@@ -299,6 +299,7 @@
                 var patient_id = $(this).data('ptid');
                 var appoitmentDate = $(this).data('date');
                 var appendClass = $(this).data('class');
+                var category = $(this).data('category');
                 if($(this).hasClass('dropdown-open'))
                 {
                     $('.'+appendClass).slideUp('medium');
@@ -307,7 +308,7 @@
                 else{
                     $(this).addClass('dropdown-open');
                     $.ajax({
-                    url: "{{URL::to('get-anc-hoverDetail')}}?patients_id="+patient_id+"&appoitmentDate="+appoitmentDate,
+                    url: "{{URL::to('get-patient-popup-Detail')}}?patients_id="+patient_id+"&appoitmentDate="+appoitmentDate+"&category="+category,
                     dataType: 'json',
                     }).done(function(data) {
                         $('.'+appendClass).html(data.data);
@@ -328,5 +329,11 @@
                 });
            
         // });
+        $(document).on("click", function(event){
+            var $trigger = $(".patient_dropdown");
+            if($trigger !== event.target && !$trigger.has(event.target).length){
+                $(".appointment_dropdown_content").slideUp("fast");
+            }            
+        });
     </script>
 @stop

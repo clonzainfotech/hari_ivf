@@ -142,12 +142,16 @@ class Appointment extends BaseModel
                         ->where('description->collected->report->embroy->type', 'yes')
                         ->orderBy('created_at','desc')
                         ->first();
-            if($ivfHistoryFreezing)
+            $ivfTranferReport = IvfTransferReport::where('patient_id',$this->patients_id)
+                            ->where('cycle_no',$ivf->cycle_no)
+                            ->where('plan',$ivf->plan)
+                            ->orderBy('created_at','desc')
+                            ->first();
+            if($ivfHistoryFreezing && empty($ivfTranferReport))
             {
                 $semen_Freezing = 'yes';
             }
-            
-            if($ivfHistoryEmbroy)
+            if($ivfHistoryEmbroy && empty($ivfTranferReport))
             {
                 $embroyReady = 'yes';
             }

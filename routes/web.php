@@ -137,6 +137,8 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
 
     // anc iui and ivf
     Route::get('anc-iui-ivf','HomeController@ancIuiIvf');
+    Route::get('get-patient-popup-Detail','HomeController@getPatientPopUpDetail');
+
 
     // gynec route
     Route::get('gynec/create/{patientsId}/{appointmentId?}','GynecController@create');
@@ -149,7 +151,6 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('get-ref-doctor-mobile-number','ANCController@getRefDoctorMobileNumber');
     Route::post('removeRemark/{id}/{tid}','ANCController@updateStatus');
     Route::get('get-anc-details','ANCController@getAncDetails');
-    Route::get('get-anc-hoverDetail','ANCController@getAncHoverDetail');
 
     // IUI Route
     Route::get('iui/create/{patientsId}/{appointmentId?}','IUIController@create');
