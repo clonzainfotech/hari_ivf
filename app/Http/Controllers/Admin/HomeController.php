@@ -547,7 +547,7 @@ class HomeController extends AdminController
                     <p><span class="font-bold candor-color">EDD Date : </span>'.\Carbon\Carbon::parse($eddDate)->format('d M Y').'</p>
                     <p><span class="font-bold candor-color">Preg. Week : </span>'.$preg_week.'</p>
                     <p><span class="font-bold candor-color">Remark : </span>'.$html.'</p>
-                    <p><span class="font-bold candor-color">Last Remark : </span>'.$ancCreatedDate.'</p>
+                    <p><span class="font-bold candor-color">Last Remark : </span>'.$remark.'</p>
                     <p><span class="font-bold candor-color">Ref. By : </span>'.$opdPatient->getReferenceDoctor['name'].'</p>';
         }
         if($request->category && in_array($request->category,[1,2]))
