@@ -2450,6 +2450,9 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             &nbsp&nbsp<span class="lmd-text">{{'( USG EDD Date: ' .\Carbon\Carbon::parse($usgEddDate)->format('d-m-Y') . ' ) ' }}</span>
                             {{Form::hidden('oe_usg_edd_date',\Carbon\Carbon::parse($usgEddDate)->format('d-m-Y'))}}
                         @endif
+                        @if(!empty($utersWeek) && empty($ancHistoryId) && empty($ancId))
+                            &nbsp&nbsp<span class="lmd-text">{{'(Approx Uters Week: ' .$utersWeek . ' week) ' }}</span>
+                        @endif
                     @endif
                 </a></h4>
         </div>
@@ -2661,7 +2664,6 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         </div>
                     </div>
                 </div>
-                
                 <div class="row">
                     <div class="col-md-1 pr-0">
                         <label class="vertical-form-label pr-0">

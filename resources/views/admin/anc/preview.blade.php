@@ -172,7 +172,7 @@
                 <tbody>
                     <tr>
                         <th style="padding-bottom: 30px;">Name: {{ucwords(strtolower($patients->name))}}
-                            @if (!empty($oe->oe_no) && (in_array($oe->oe_no, ['1', '2'])) && (!empty($oe->oe_child_type) && array_key_exists($oe->oe_child_type, $childType)))
+                            @if (!empty($oe->oe_no) && (!in_array($oe->oe_no, ['1'])) && (!empty($oe->oe_child_type) && array_key_exists($oe->oe_child_type, $childType)))
                                 <br>
                                     {{ $childType[$oe->oe_child_type] }}
                             @endif
@@ -1520,7 +1520,7 @@
                                             {{ !empty($oe->oe_type) && $oe->oe_type == 'tvs' ? 'TVS' : 'PA'  }}
                                         @endif
 
-                                        @if (!empty($oe->oe_no) && (in_array($oe->oe_no, ['1', '2'])))
+                                        @if (!empty($oe->oe_no) && (!in_array($oe->oe_no, ['1'])))
                                             @if (!empty($oe->oe_child_type) && array_key_exists($oe->oe_child_type, $childType))
                                                 {{ ' | ' . $childType[$oe->oe_child_type] }}
                                             @endif

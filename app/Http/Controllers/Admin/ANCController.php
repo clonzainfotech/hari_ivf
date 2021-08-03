@@ -938,6 +938,7 @@ class ANCController extends AdminController
             $eddDate = null;
             $medicineData = null;
             $historyOE = null;
+            $utersWeek = null;
             $referenceDoctor = $this->ReferenceDoctor->pluck('name','id');
             $leftOvaryData = $this->OvaryDetail->where('type',1)->pluck('name','name');
             $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
@@ -968,32 +969,36 @@ class ANCController extends AdminController
             }
             $hoDate = null;
             $hoData = json_decode($ancData->h_o);
-            if(!empty($hoData)){
-                $hoDetails = $hoData->ho_details;
-                $hoDetails = strtolower($hoDetails);
-                $hoMonth = str_replace('month', '-', $hoDetails);
-                if(strpos($hoDetails,'months') !== false || strpos($hoDetails,'days') !== false){
-                    $hoDetails = str_replace('s', '', $hoMonth);
-                }else{
-                    $hoDetails = $hoMonth;
-                }
-                if(strpos($hoDetails,'day') !== false){
-                    $hoDetails = str_replace('day', '', $hoDetails);
-                }
-                $hoDetails = str_replace(' ', '', $hoDetails);
-                $hoMonth = explode('-',$hoDetails);
-                $hoMonthData = !empty($hoMonth[0]) ? $hoMonth[0] : 0;
-                // dd($hoMonthData);
-                $hoDay = !empty($hoMonth[1]) ? $hoMonth[1] : 0;
-                $days = 30;
-                $monthDays = ((int)$hoMonthData * (int)$days) + (int)str_replace(' ', '', $hoDay);
-                $oldDate = Carbon::parse($ancData->created_at)->format('Y-m-d');
-                $nowDate = Carbon::now();
-                $diffDays = Carbon::parse($oldDate)->diffInDays($nowDate);
-                $totalDays = $monthDays + $diffDays;
-                $hoDate = (int)($totalDays/$days).'-'.$totalDays % $days;
-            }
             $lmdDate = $mhData->last_menstrual_date;
+            if(!empty($hoData) && !empty($lmdDate)){
+                // $hoDetails = $hoData->ho_details;
+                // // dd($hoDetails);
+                // $hoDetails = strtolower($hoDetails);
+                // $hoMonth = str_replace('month', '-', $hoDetails);
+                // if(strpos($hoDetails,'months') !== false || strpos($hoDetails,'days') !== false){
+                //     $hoDetails = str_replace('s', '', $hoMonth);
+                // }else{
+                //     $hoDetails = $hoMonth;
+                // }
+                // if(strpos($hoDetails,'day') !== false){
+                //     $hoDetails = str_replace('day', '', $hoDetails);
+                // }
+                // $hoDetails = str_replace(' ', '', $hoDetails);
+                // $hoMonth = explode('-',$hoDetails);
+                // $hoMonthData = !empty($hoMonth[0]) ? $hoMonth[0] : 0;
+                // // dd($hoMonthData);
+                // $hoDay = !empty($hoMonth[1]) ? $hoMonth[1] : 0;
+                $days = 30;
+                // $monthDays = ((int)$hoMonthData * (int)$days) + (int)str_replace(' ', '', $hoDay);
+                $oldDate = Carbon::parse($lmdDate)->format('Y-m-d');
+                $nowDate = Carbon::now()->format('Y-m-d');
+                $diffDays = Carbon::parse($oldDate)->diffInDays($nowDate);
+                // $totalDays = $monthDays + $diffDays;
+                $totalDays = $diffDays;
+                $hoDate = (int)($totalDays/$days).'-'.$totalDays % $days; 
+                $utersWeek = Carbon::parse($oldDate)->diffInWeeks($nowDate);
+            }
+            
             $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
             $usgEddDate = !empty($mhData->usg_edd) ? $mhData->usg_edd : null;
             $anc = null;
@@ -1098,6 +1103,7 @@ class ANCController extends AdminController
             $hospitalTime = $this->appointmentTime('09:00', '17:00', '5 mins');
             $ovaryData = $this->OvaryDetail->pluck('name','name');
             $hoData = $this->getHoData();
+            
             if($hoDate){
                 $hoDate = explode('-',$hoDate);
                 $mon = $hoDate[0]. ' month';
@@ -1105,6 +1111,7 @@ class ANCController extends AdminController
                 $hoDate = $mon.' '.$day;
                 $hoData[$hoDate] = $hoDate;
             }
+            
             $lastAppointment = $this->Appointment->wherePatientsId($patients)->orderBy('id','DESC')->first();
             if(!empty($treatment)){
                 $medicineData = !empty($treatment->medicinedata) ? $treatment->medicinedata : null;
@@ -1228,6 +1235,7 @@ class ANCController extends AdminController
                 $data['lmdDate'] = $lmdDate;
                 $data['eddDate'] = $eddDate;
                 $data['hoDate'] = $hoDate;
+                $data['utersWeek'] = $utersWeek;
                 $data['medicineData'] = $medicineData;
                 $data['oeDataCount'] = $oeDataCount;
                 $data['referenceDoctor'] = $referenceDoctor;
