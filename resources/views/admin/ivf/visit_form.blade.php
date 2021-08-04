@@ -1659,7 +1659,7 @@
                         @foreach($ivfData->protocol as $key=>$row)
                             @if(!empty($row->day) || !empty($row->date) || !empty($row->injection) || !empty($row->hmg) || !empty($row->hmg_brand_name) || !empty($row->fsh) || !empty($row->fsh_brand_name) || !empty($row->antagonist))
                                 <tr>
-                                    <td class='width-80'>
+                                    <td class='width-80 protocol-day'>
                                         {{Form::text("data[protocol][".$key."][day]",!empty($row->day) ? $row->day : null,['class'=>'form-control'])}}
                                     </td>
                                     <td>
