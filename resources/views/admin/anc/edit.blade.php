@@ -2304,7 +2304,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">EDD : &nbsp;</span>
                             @php
                                 $date = !empty($mh->edd) ? \Carbon\Carbon::parse($mh->edd)->format('D d M Y') : null;
-                                $usgEddDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
+                                // $usgEddDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
                             @endphp
                             {{Form::text("mh[edd]",$date,['class'=>'form-control date edd-date','disabled'])}}
                         </div>
@@ -2316,7 +2316,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-4">
                         <div class="input-group edd-week-data">
                             <span class="input-group-addon">USG EDD : &nbsp;</span>
-                            {{Form::text("mh[usg_edd]",$usgEddDate,['class'=>'form-control datetimepicker usg-edd-date'])}}
+                            {{Form::text("mh[usg_edd]",!empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null,['class'=>'form-control datetimepicker usg-edd-date'])}}
                         </div>
                     </div>
                 </div>
@@ -2432,6 +2432,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         if(!empty($oe->late_data) && !empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'Yes' && !empty($oe->late_data->late_concept_week)){
                             $msgClass = '';
                         }
+                        // print_r($usgEddDate);
                     @endphp
                     {{-- @if(!empty($oe->late_concept) && $oe->late_concept == 1)       --}}
                     <span class="{{'text-danger week-message '.$msgClass}}">Late Conception</span>
