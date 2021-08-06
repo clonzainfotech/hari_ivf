@@ -2578,6 +2578,30 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        HSA Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("investigation[hsa_report][type]",'yes','',['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_yes">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("investigation[hsa_report][type]",'no',true,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_no">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 pr-0 hsa-type d-none">
+                                                    <div class="hsa-images"></div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         {{Form::textarea("h_factor[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
@@ -3178,6 +3202,9 @@
         $('.blood-images').imageUploader({
             imagesInputName: 'investigation[blood_report][image]',
         });
+        $('.hsa-images').imageUploader({
+            imagesInputName: 'investigation[hsa_report][images]',
+        });
         $(document).ready(function(){
             setAppointmentDate();
             $('.complain-multi .show-tick').addClass('d-none');
@@ -3215,6 +3242,10 @@
                 var file_data = $('input[name="investigation[blood_report][image][]"]')[0].files;
                 for (var i = 0; i < file_data.length; i++) {
                     data.append("investigation[blood_report][image][]", file_data[i]);
+                }
+                var file_data = $('input[name="investigation[hsa_report][images][]"]')[0].files;
+                for (var i = 0; i < file_data.length; i++) {
+                    data.append("investigation[hsa_report][images][]", file_data[i]);
                 }
                 ivfFormData(data);
             });

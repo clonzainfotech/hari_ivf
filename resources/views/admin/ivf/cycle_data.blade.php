@@ -411,6 +411,11 @@
                                                                                 @if(isset($historyData->is_transfer) && ($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no'))
                                                                                 <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-visit-data" data-id="{{encrypt($datarow->id)}}"><i class="zmdi zmdi-edit material-icons"></i></a>
                                                                                 @endif
+                                                                                @if((isset($historyData->hsa_report->images) && !empty($historyData->hsa_report->images)) || (isset($historyData->blood_report->image) && !empty($historyData->blood_report->image)) || (isset($historyData->usg->images) && !empty($historyData->usg->images)) || (isset($investigationData->hystroscopy->images) && !empty($investigationData->hystroscopy->images)) || (isset($investigationData->laproscopy->images) && !empty($investigationData->laproscopy->images)))
+                                                                                    <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($datarow->id) }}" data-date="{{\Carbon\Carbon::parse($datarow->created_at)->format('d M Y')}}">
+                                                                                        <i class="zmdi zmdi-camera material-icons"></i>
+                                                                                    </a>
+                                                                                @endif
                                                                             @endif
                                                                         </td>
                                                                         @php
@@ -468,6 +473,7 @@
                                         </tr>
                                     @endif
                                     </tbody>
+                                    
                                     @if(($cycle[count($cycle)-1]['cycle_status'] != 2))
                                     <tfoot>
                                         <tr>
@@ -885,6 +891,30 @@
                                                     <div class="row mt-1">
                                                         <div class="col-md-2">
                                                             <div class="checkbox">
+                                                                {{Form::checkbox('data[collection][]','hsa','',['id'=>'hsa'])}}
+                                                                <label for="blood">
+                                                                HSA Report
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 hsareport d-none">
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">HSA report: &nbsp;</span>
+                                                                        {{Form::text("data[hsa_report][report]",'',['class'=>'form-control'])}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    {{-- {{Form::file('data[blood][image]',['class'=>'form-control report-file'])}} --}}
+                                                                    <div class="hsa-images"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-1">
+                                                        <div class="col-md-2">
+                                                            <div class="checkbox">
                                                                 {{Form::checkbox('data[collection][]','usg','',['id'=>'usg'])}}
                                                                 <label for="usg">
                                                                     USG Report
@@ -1226,85 +1256,91 @@
                                     @endif
                             </table>
                         </div>
+                        @if(!empty($lastCycleData->plan) && $cycle[count($cycle)-1]['cycle_status'] == 2)
+                        <div class="col-md-12 mt-2">
+                            <span class="font-bold font-16">Transfer Plan :- </span> 
+                            <span class="visit-lable-value">{{isset($planData[$lastCycleData->plan])? $planData[$lastCycleData->plan] : ''}}</span>
+                        </div>
+                        @endif
                         <div class="col-md-12">
                         @if($isForm != true)
-                        <div class="col-md-6"></div>
-                        <div class="col-md-6 float-right">
-                            <table class='table table-responsive'>
-                                <tbody>
-                                <tr>
-                                    @if(!empty($triggerHistoryData))
-                                    <td >
-                                        <table>
-                                            <tbody>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6 float-right">
+                                <table class='table table-responsive'>
+                                    <tbody>
+                                    <tr>
+                                        @if(!empty($triggerHistoryData))
+                                        <td >
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="font-bold border-none">Trigger : </td>
+                                                        <td class="border-none">{{$hcgTrigger.(!empty($hcgTrigger) ? '+' : '').$dualTrigger}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Date & Time : </td>
+                                                        <td>
+                                                            @if($triggerHistoryData)
+                                                                {{$triggerHistory ? (\Carbon\Carbon::parse($triggerHistory->trigger_date)->format('D d M Y')) : ''}} {{!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null)}}
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-bold">Ovum Pick Up:</td>
+                                                        <td>
+                                                            @if($triggerHistoryData)
+                                                                @php
+                                                                    $nowDate = \Carbon\Carbon::parse($triggerHistory->trigger_date)->format('Y-m-d');
+                                                                    $nowTime = \Carbon\Carbon::parse(!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null))->format('H:i:s');
+                                                                    $triggerDateTime = \Carbon\Carbon::parse($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
+                                                                    $triggerDate = \Carbon\Carbon::parse($triggerDateTime)->format('D d M Y');
+                                                                @endphp
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Date & Time</td>
+                                                        <td>
+                                                            @if($triggerHistoryData)
+                                                                {{$triggerDate.' '.\Carbon\Carbon::parse($triggerDateTime)->format('h:i a')}}
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-bold">Hystroscopy : </td>
+                                                        <td>
+                                                            @if(!empty($duringPickupStatus))
+                                                                {{$duringPickupStatus}}
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        @endif
+                                        <td class="border-left">
+                                        
+                                            <table class="">
+                                                <tbody>
                                                 <tr>
-                                                    <td class="font-bold border-none">Trigger : </td>
-                                                    <td class="border-none">{{$hcgTrigger.(!empty($hcgTrigger) ? '+' : '').$dualTrigger}}</td>
+                                                    <td class="border-none">Total HMG dose:</td>
+                                                    <td class="font-bold border-none">{{$hmgDose}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Date & Time : </td>
-                                                    <td>
-                                                        @if($triggerHistoryData)
-                                                            {{$triggerHistory ? (\Carbon\Carbon::parse($triggerHistory->trigger_date)->format('D d M Y')) : ''}} {{!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null)}}
-                                                        @endif
-                                                    </td>
+                                                    <td>Total Anta dose:</td>
+                                                    <td class="font-bold">{{$antaDose}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="font-bold">Ovum Pick Up:</td>
-                                                    <td>
-                                                        @if($triggerHistoryData)
-                                                            @php
-                                                                $nowDate = \Carbon\Carbon::parse($triggerHistory->trigger_date)->format('Y-m-d');
-                                                                $nowTime = \Carbon\Carbon::parse(!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null))->format('H:i:s');
-                                                                $triggerDateTime = \Carbon\Carbon::parse($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
-                                                                $triggerDate = \Carbon\Carbon::parse($triggerDateTime)->format('D d M Y');
-                                                            @endphp
-                                                        @endif
-                                                    </td>
+                                                    <td>Total FSH dose:</td>
+                                                    <td class="font-bold">{{$fshDose}}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Date & Time</td>
-                                                    <td>
-                                                        @if($triggerHistoryData)
-                                                            {{$triggerDate.' '.\Carbon\Carbon::parse($triggerDateTime)->format('h:i a')}}
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="font-bold">Hystroscopy : </td>
-                                                    <td>
-                                                        @if(!empty($duringPickupStatus))
-                                                            {{$duringPickupStatus}}
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    @endif
-                                    <td class="border-left">
-                                    
-                                        <table class="">
-                                            <tbody>
-                                            <tr>
-                                                <td class="border-none">Total HMG dose:</td>
-                                                <td class="font-bold border-none">{{$hmgDose}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Total Anta dose:</td>
-                                                <td class="font-bold">{{$antaDose}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Total FSH dose:</td>
-                                                <td class="font-bold">{{$fshDose}}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         
                         @endif
                         </div>
@@ -1747,7 +1783,7 @@
                                                                     @if(isset($historyData->is_transfer) && ($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no'))
                                                                     <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-visit-data" data-id="{{encrypt($row->id)}}"><i class="zmdi zmdi-edit material-icons"></i></a>
                                                                     @endif
-                                                                    @if((isset($historyData->blood_report->image) && !empty($historyData->blood_report->image)) || (isset($historyData->usg->images) && !empty($historyData->usg->images)) || (isset($investigationData->hystroscopy->images) && !empty($investigationData->hystroscopy->images)) || (isset($investigationData->laproscopy->images) && !empty($investigationData->laproscopy->images)))
+                                                                    @if((isset($historyData->hsa_report->images) && !empty($historyData->hsa_report->images)) || (isset($historyData->blood_report->image) && !empty($historyData->blood_report->image)) || (isset($historyData->usg->images) && !empty($historyData->usg->images)) || (isset($investigationData->hystroscopy->images) && !empty($investigationData->hystroscopy->images)) || (isset($investigationData->laproscopy->images) && !empty($investigationData->laproscopy->images)))
                                                                     <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{\Carbon\Carbon::parse($row->created_at)->format('d M Y')}}">
                                                                         <i class="zmdi zmdi-camera material-icons"></i>
                                                                     </a>
@@ -1927,6 +1963,30 @@
                                                                     <div class="col-md-8">
                                                                         {{-- {{Form::file('data[blood][image]',['class'=>'form-control report-file'])}} --}}
                                                                         <div class="usg-images"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-1">
+                                                            <div class="col-md-2">
+                                                                <div class="checkbox">
+                                                                    {{Form::checkbox('data[collection][]','hsa','',['id'=>'hsa'])}}
+                                                                    <label for="hsa">
+                                                                        HSA Report
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 usgreport d-none">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">USG report: &nbsp;</span>
+                                                                            {{Form::text("data[hsa_report][report]",'',['class'=>'form-control'])}}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        {{-- {{Form::file('data[blood][image]',['class'=>'form-control report-file'])}} --}}
+                                                                        <div class="hsa-images"></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3476,6 +3536,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row mt-1">
+                                    <div class="col-md-2">
+                                        <div class="checkbox">
+                                            {{Form::checkbox('data[collection][]','hsa','',['id'=>'hsa'])}}
+                                            <label for="hsa">
+                                            HSA Report
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 hsareport d-none">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">HSA report: &nbsp;</span>
+                                                    {{Form::text("data[hsa_report][report]",'',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                {{-- {{Form::file('data[blood][image]',['class'=>'form-control report-file'])}} --}}
+                                                <div class="hsa-images"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {{-- end ivf comman form --}}
                                 <br>
                                 {{-- pre operative data --}}
@@ -4122,6 +4206,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 {{Form::textarea('data[remark]','', ['class' => 'form-control no-resize remark call-response','placeholder' => 'Remark','rows' => '5'])}}
+                                                <span class="transfer-error text-danger mb-2"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -5545,6 +5630,13 @@
                     $('.usgreport').addClass('d-none');
                 }
             });
+            $(document).on('click','#hsa',function(e){
+                if($(this).is(':checked')){
+                    $('.hsareport').removeClass('d-none');
+                }else{
+                    $('.hsareport').addClass('d-none');
+                }
+            });
 
             $(document).on('click','#embroy',function(e){
                 if($(this).is(':checked')){
@@ -5957,6 +6049,9 @@
         });
         $('.usg-images').imageUploader({
         imagesInputName: 'data[usg][images]',
+        });
+        $('.hsa-images').imageUploader({
+        imagesInputName: 'data[hsa_report][images]',
         });
         $(document).on('click','.report-btn', function(){
             var ivfId = $(this).data('id');

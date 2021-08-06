@@ -191,6 +191,9 @@
 													case 'usg_report':
 														$report_name = 'Usg Report';
 														break;
+													case 'hsa_report':
+														$report_name = 'HSA Report';
+														break;
 													}
 												@endphp
 												@if(!empty($value))
@@ -279,6 +282,9 @@
 														break;
 													case 'usg_report':
 														$report_name = 'Usg Report';
+														break;
+													case 'hsa_report':
+														$report_name = 'HSA Report';
 														break;
 													}
 												@endphp

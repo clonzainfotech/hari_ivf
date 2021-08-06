@@ -470,6 +470,7 @@
             $laproscopy_detail = !empty($laproscopy->type) && $laproscopy->type == 'yes' ? '':'d-none';
             $bloodStatus = in_array('blood',$collectionData) ? '' : 'd-none';
             $usgStatus = in_array('usg',$collectionData) ? '' : 'd-none';
+            $hsaStatus = in_array('hsa',$collectionData) ? '' : 'd-none';
         @endphp
         <div class="row mt-1">
             <div class="col-md-1 pr-0">
@@ -942,6 +943,31 @@
                     
                     <div class="col-md-8">
                         <div class="edit-usg-images"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    {{Form::checkbox('data[collection][]','hsa',!empty($hsaStatus) ? false : true,['id'=>'hsa'])}}
+                    <label for="hsa">
+                        HSA Report
+                    </label>
+                </div>
+            </div>
+            <div class="{{'col-md-8 hsareport '.$hsaStatus}}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">HSA report: &nbsp;</span>
+                            {{Form::text("data[usa_report][report]",!empty($ivfData->hsa_report->report) ? $ivfData->hsa_report->report : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <div class="edit-hsa-images"></div>
 
                     </div>
                 </div>
@@ -1855,10 +1881,14 @@
     $('.edit-usg-images').imageUploader({
         imagesInputName: 'data[usg][images]',
     });
+    $('.edit-hsa-images').imageUploader({
+        imagesInputName: 'data[hsa_report][images]',
+    });
     var hystroscopyImages = @json($hystroscopyImagesData);
     var laproscopyImages = @json($laproscopyImagesData);
     var bloodReport = @json($bloodReportImagesData);
     var usgReport = @json($usgReportImagesData);
+    var hsaReport = @json($hsaReportImagesData);
         if(hystroscopyImages != 'null') {
             $('.edit-hystroscopy-images').imageUploader({
                 preloaded: jQuery.parseJSON(hystroscopyImages),
@@ -1886,6 +1916,15 @@
                 preloaded: jQuery.parseJSON(usgReport),
                 imagesInputName: 'data[usg][images]',
                 preloadedInputName: 'usg_old'
+
+            });
+        }
+        if(hsaReport != 'null')
+        {
+            $('.edit-hsa-images').imageUploader({
+                preloaded: jQuery.parseJSON(hsaReport),
+                imagesInputName: 'data[hsa_report][images]',
+                preloadedInputName: 'hsa_report_old'
 
             });
         }

@@ -2938,6 +2938,34 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @php
+                                                $hsaReportClass = !empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'yes' ? true : false;
+                                                $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                                        @endphp
+                                        <div class="row">
+                                            <div class="col-md-1 pr-0">
+                                                <label class="vertical-form-label pr-0">
+                                                    HSA Report :
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("investigation[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                    <label for="hsa_type_yes">
+                                                        Yes
+                                                    </label>
+
+                                                    {{Form::radio("investigation[hsa_report][type]",'no',!empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                    <label for="hsa_type_no">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                                                <div class="hsa-images"></div>
+                                            </div>
+                                            
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
@@ -3642,10 +3670,14 @@
         $('.blood-images').imageUploader({
             imagesInputName: 'investigation[blood_report][image]',
         });
+        $('.hsa-images').imageUploader({
+            imagesInputName: 'investigation[hsa_report][images]',
+        });
         var hystroscopyImages = @json($hystroscopyImagesData);
         var hcgImages = @json($hcgImagesData);
         var laproscopyImages = @json($laproscopyImagesData);
         var bloodReportImages = @json($bloodReportImagesData);
+        var hsaReportImages = @json($hsaReportImagesData);
         $(document).ready(function(){
             if(hystroscopyImages != 'null') {
                 $('.hystroscopy-images').imageUploader({
@@ -3673,6 +3705,13 @@
                     preloaded: jQuery.parseJSON(bloodReportImages),
                     imagesInputName: 'investigation[blood_report][image]',
                     preloadedInputName: 'blood_report_old'
+                });
+            }
+            if(hsaReportImages != 'null') {
+                $('.hsa-images').imageUploader({
+                    preloaded: jQuery.parseJSON(hsaReportImages),
+                    imagesInputName: 'investigation[hsa_report][images]',
+                    preloadedInputName: 'hsa_report_old'
                 });
             }
             $('.complain-multi .show-tick').addClass('d-none');
@@ -3723,6 +3762,10 @@
             var file_data = $('input[name="investigation[blood_report][image][]"]')[0].files;
             for (var i = 0; i < file_data.length; i++) {
                 data.append("investigation[blood_report][image][]", file_data[i]);
+            }
+            var file_data = $('input[name="investigation[hsa_report][images][]"]')[0].files;
+            for (var i = 0; i < file_data.length; i++) {
+                data.append("investigation[hsa_report][images][]", file_data[i]);
             }
             
             $('.seen-by-error').text('');
