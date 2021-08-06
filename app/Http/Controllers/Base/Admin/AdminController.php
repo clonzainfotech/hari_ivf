@@ -499,12 +499,17 @@ class AdminController extends BaseController
     {
         $now = Carbon::now()->format('Y-m-d');
         $auth_id = Auth::user()->id;
-        $data = $this->CategoryNotification->with('getPatients')->whereDate('date','=',$now)->where('read_by','not like', '%'.Auth::user()->id.'%')->orWhere('read_by',null);
+        $data = $this->CategoryNotification->with('getPatients')->whereDate('date','=',$now);
         $data = collect($data->get())
-                    ->map(function ($query) {
-                        $query->patient_name = ucWords($query->getPatients['name']);
-                        $query->date = Carbon::parse($query->date)->format('d M Y h:i a');
-                        return $query;
+                    ->map(function ($query) use($auth_id){
+                        $read_by = empty($query->read_by) ? explode(',',$query->read_by) : [];
+                        if(empty($query->read_by) || in_array($auth_id,$read_by))
+                        {
+                            $query->patient_name = ucWords($query->getPatients['name']);
+                            $query->date = Carbon::parse($query->date)->format('d M Y h:i a');
+                            return $query;
+                        }
+                        
                     });
         return response()->json([
             'status'=>1,

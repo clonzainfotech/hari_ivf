@@ -259,21 +259,24 @@ $menu = "";
                     url: "{{url('get-category-notification')}}",
                     dataType: 'json',
                 }).done(function(data) {
-                    console.log(data.data.length);
                     // var existingNotifications = notifications.html();
                     var newNotificationHtml = '';
+                    var notificationsCount = 0;
                     for(var i=0; i< data.data.length; i++)
                     {
-                        newNotificationHtml += '<li class="category-notification notification active">'+
-                        '<div class="media mb-1">'+
-                        '<div class="media-left"><div class="media-object">'+
-                        ''+
-                        '</div></div>'+
-                        '<div class="media-body">'+
-                        '<strong class="notification-title">'+data.data[i].patient_name+'</strong><br>'+
-                        '<p class="notification-desc">'+data.data[i].date+' - '+data.data[i].message+'</p>'+
-                        '</div></div></li>';
-                        // notificationsCount += 1;
+                        if(data.data[i] != null)
+                        {
+                            newNotificationHtml += '<li class="category-notification notification active">'+
+                            '<div class="media mb-1">'+
+                            '<div class="media-left"><div class="media-object">'+
+                            ''+
+                            '</div></div>'+
+                            '<div class="media-body">'+
+                            '<strong class="notification-title">'+data.data[i].patient_name+'</strong><br>'+
+                            '<p class="notification-desc">'+data.data[i].date+' - '+data.data[i].message+'</p>'+
+                            '</div></div></li>';
+                            notificationsCount += 1;
+                        }
                     }
                     if(data.data.length == 0)
                     {
@@ -290,7 +293,7 @@ $menu = "";
                     }
                     // $(newNotificationHtml).insertAfter($('ul.notification-menu li.notification-head'));
                     $('.notification-menu').html(newNotificationHtml);
-                    $('.notification-count').text(data.data.length);
+                    $('.notification-count').text(notificationsCount);
                 }).fail({
 
                 });
