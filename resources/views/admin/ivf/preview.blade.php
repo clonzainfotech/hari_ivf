@@ -1308,7 +1308,7 @@
                                         @if (isset($planManagement->plan) && !empty($planManagement->plan))
                                             @switch($planManagement->plan)
                                                 @case('1')
-                                                    INF Self
+                                                    IVF Self
                                                     @break
                                                 @case('2')
                                                     FET Self
