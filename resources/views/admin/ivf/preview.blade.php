@@ -1037,10 +1037,10 @@
                                                 @endif
                                             </th>
                                         @endif
-                                        @if(!empty($husbandFactor->seman_analysis))
                                             <th>
-                                                <span class="ivf-label">Semen Analysis:  </span>
                                                 @if (!empty($husbandFactor->seman_analysis))
+                                                    <span class="ivf-label">Semen Analysis:  </span>
+                                                
                                                     @if ($husbandFactor->seman_analysis == 1)
                                                         WNL
                                                     @elseif ($husbandFactor->seman_analysis == 2)
@@ -1060,8 +1060,6 @@
                                                     {{ !empty($husbandFactor->motility) ? $husbandFactor->motility : '-' }}
                                                 @endif
                                                 </th>
-                                        @endif
-
                                     </tr>
                                 @endif
                                 @if(!empty($husbandFactor->amount_in_ml) ||!empty($husbandFactor->personal_history_date))

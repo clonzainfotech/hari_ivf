@@ -1204,10 +1204,10 @@
                                                 @endif
                                             </th>
                                         @endif
-                                        @if(!empty($husbandFactor->seman_analysis))
                                             <th>
-                                                <span class="iui-label">Semen Analysis:  </span>
+                                                
                                                 @if (!empty($husbandFactor->seman_analysis))
+                                                <span class="iui-label">Semen Analysis:  </span>
                                                     @if ($husbandFactor->seman_analysis == 1)
                                                         WNL
                                                     @elseif ($husbandFactor->seman_analysis == 2)
@@ -1227,7 +1227,6 @@
                                                     {{ !empty($husbandFactor->motility) ? $husbandFactor->motility : '-' }}
                                                 @endif
                                             </th>
-                                        @endif
                                     </tr>
                                 @endif
                                 @if(!empty($husbandFactor->amount_in_ml) || !empty($husbandFactor->personal_history_date))
@@ -2066,10 +2065,14 @@
                                 @if(isset($patients_remark) && !empty($patients_remark))
                 
                                 <!-- <div class="row"> -->
-                                    <br><span class="iui-label">Remark : </span>{{$patients_remark}}
+                                    <tr>
+                                        <th><span class="iui-label">Remark : </span>{{$patients_remark}}</th>
+                                    </tr>
                                 <!-- </div> -->
                                 @else
-                                    <br><span class="iui-label">Remark : </span>{{!empty($description->remark) ? $description->remark : ''}}
+                                <tr>
+                                    <th><span class="iui-label">Remark : </span>{{!empty($description->remark) ? $description->remark : ''}}</th>
+                                </tr>
                             @endif
                             <br>
                                 <tr>
