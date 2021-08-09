@@ -672,7 +672,7 @@ class ANCController extends AdminController
                     }
                 // }
             }
-            if(!empty($followupDate))
+            if(!empty($followupDate) && !$request->anc_id &&  !$request->anc_history_id)
             {
                 $categoryPatientData['patients_id'] = $patientsId;
                 $categoryPatientData['date'] = Carbon::parse($followupDate)->format('Y-m-d H:i:s');
