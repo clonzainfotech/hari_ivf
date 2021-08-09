@@ -2621,6 +2621,34 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                             </div>
+                            @php
+                                    $hsaReportClass = !empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'yes' ? true : false;
+                                    $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                            @endphp
+                            <div class="row">
+                                <div class="col-md-1 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        HSA Report :
+                                    </label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="radio is-conceived">
+                                        {{Form::radio("investigation[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                        <label for="hsa_type_yes">
+                                            Yes
+                                        </label>
+
+                                        {{Form::radio("investigation[hsa_report][type]",'no',!empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                        <label for="hsa_type_no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                                    <div class="hsa-images"></div>
+                                </div>
+                                
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
@@ -3951,6 +3979,34 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="data-blood-images"></div>
                     </div>
                 </div>
+                @php
+                        $hsaReportClass = !empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'yes' ? true : false;
+                        $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                @endphp
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            HSA Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[hsa_report][type]",'no',!empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                        <div class="data-hsa-images"></div>
+                    </div>
+                    
+                </div>
                 <!-- {{-- 4 .Remark --}} -->
                 <div class="row">
                     <div class="col-md-12">
@@ -3992,7 +4048,15 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     {{Form::hidden('data[lmp][lmp_date_diff]',$lmpDataDiff,['class'=>'lmd-date-diff-val'])}}
             @endif
             @if($visitNo == 4)
-                <h3>Today : {{\Carbon\Carbon::now()->format('d M Y')}}</h3>
+                <div class="row">
+                    <div class="col-md-5">
+                        <h3>Today : {{\Carbon\Carbon::now()->format('d M Y')}}</h3>
+                    </div>
+                    <div class="col-md-5"></div>
+                    <div class="col-md-2 text-right">
+                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
+                    </div>
+                </div>
                 @if($remark && !$iuiHistoryId)
                     <span class="remark-text m-0">Remark: {{$remark}}</span>
                     <br>
@@ -4435,6 +4499,30 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="data-blood-images"></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            HSA Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[hsa_report][type]",'yes','',['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[hsa_report][type]",'no',false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 hsa-type d-none'}}">
+                        <div class="data-hsa-images"></div>
+                    </div>
+                    
+                </div>
                  <div class="row">
                     <div class="col-md-6 mt-3">
                         <div class="input-group">
@@ -4756,7 +4844,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
                                                     <i class="zmdi zmdi-edit material-icons"></i>
                                                 </a>
-                                                @if((isset($data->blood_report->image) && !empty($data->blood_report->image)) || (isset($data->usg->images) && !empty($data->usg->images)))
+                                                @if((isset($data->hsa_report->images) && !empty($data->hsa_report->images)) || (isset($data->blood_report->image) && !empty($data->blood_report->image)) || (isset($data->usg->images) && !empty($data->usg->images)))
                                                 
                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{\Carbon\Carbon::parse($row->created_at)->format('d M Y')}}">
                                                     <i class="zmdi zmdi-camera material-icons"></i>
@@ -5180,6 +5268,31 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     <div class="data-usg-images"></div>
                                                 </div>
                                             </div>
+                                        
+                                            <div class="row child-no-box">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        HSA Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("data[hsa_report][type]",'yes','',['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_yes">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("data[hsa_report][type]",'no',false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_no">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="{{'col-md-8 pr-0 hsa-type d-none'}}">
+                                                    <div class="data-hsa-images"></div>
+                                                </div>
+                                                
+                                            </div>
                                             <div class="row child-no-box">
                                                 <div class="col-md-1">
                                                     <label class="vertical-form-label pr-0">
@@ -5448,6 +5561,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
         });
         $('.data-usg-images').imageUploader({
             imagesInputName: 'data[usg][images]',
+        });
+        $('.data-hsa-images').imageUploader({
+            imagesInputName: 'data[hsa_report][images]',
         });
         $(document).on('click', '.add-row', function() {
             addRow();

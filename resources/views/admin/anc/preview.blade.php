@@ -114,7 +114,7 @@
     {
         border:none !important;
     }
-    @page { margin-top :20px; margin-left : 100px;}
+    /* @page { margin-top :200px; margin-left : 100px;} */
     
 </style>
 @if(isset($printPreview) && $printPreview != 0)
@@ -122,6 +122,9 @@
 @endif  
 <div class="main-print-anc-div mb-5">
     @if(isset($anc_print) && $anc_print== '3')
+    <style>
+        @page { margin-top : 5px; margin-bottom : 80px;}
+    </style>
         <div class="ivf-print-data">
             <div class="row mb-2 patient-detail">
                 <div class="col-md-12">
@@ -173,6 +176,9 @@
             </div>
         </div>
     @else
+    <style>
+        @page { margin-top : 200px; margin-bottom : 80px;}
+    </style>
         <div class="{{'panel panel-primary print-panle-primary '.(isset($printPreview) && $printPreview == 1 ? 'watermark' : '')}}">
             <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
                 <tbody>

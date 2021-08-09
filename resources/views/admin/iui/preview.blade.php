@@ -2058,11 +2058,20 @@
                     <br><br><br>
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                             <tbody>
-                                @if(isset($patients_remark) && !empty($patients_remark))
+                                {{-- @if(isset($patients_remark) && !empty($patients_remark))
                                     <tr>
                                         <th><span class="iui-label">Remark : </span>{{$patients_remark}}</th>
                                     </tr>
-                                @endif
+                                @endif --}}
+                                @if(isset($patients_remark) && !empty($patients_remark))
+                
+                                <!-- <div class="row"> -->
+                                    <br><span class="iui-label">Remark : </span>{{$patients_remark}}
+                                <!-- </div> -->
+                                @else
+                                    <br><span class="iui-label">Remark : </span>{{!empty($description->remark) ? $description->remark : ''}}
+                            @endif
+                            <br>
                                 <tr>
                                     {{-- @if(!empty($coData)) --}}
                                         <th>
@@ -2603,25 +2612,19 @@
                                 
                             </tr>
                             <tr>
-                                @if(!empty($description->remark))
-                                <th>
-                                    <span class="iui-label">Remark :</span>
-                                    <span class="remark-text m-0">{{ !empty($description->remark) ? $description->remark : '-' }}</span>
-                                </th>
-                                @endif
+                                {{-- @if(isset($patients_remark) && !empty($patients_remark))
+                
+                                    <!-- <div class="row"> -->
+                                    <br><span class="iui-label">Remark : </span>{{$patients_remark}}
+                                    <!-- </div> -->
+                                    @else
+                                    <br><span class="iui-label">Remark : </span>{{!empty($description->remark) ? $description->remark : ''}}
+                                @endif --}}
                             </tr>
                         </tbody>
                     </table>
                 @endif
-                @if(isset($patients_remark) && !empty($patients_remark))
                 
-                    <!-- <div class="row"> -->
-                    <br><span class="iui-label">Remark : </span>{{$patients_remark}}
-                    <!-- </div> -->
-                    @else
-                    <br><span class="iui-label">Remark : </span>{{!empty($description->remark) ? $description->remark : ''}}
-                @endif
-                <br>
                 @if($visit == 2 || $visit == 3 || $visit == 4)
                 <?php
                     unset($treatment->medicinedata);
@@ -2828,198 +2831,7 @@
         $possibleFactorData = !empty($possibleFactorData->infertility_type) ? $possibleFactorData->infertility_type : [];
         $dateAndInjectionData = [];
     @endphp
-    {{-- <div class="study-report">
-        <div class="study-report-data">
-            <div class="patient-details">
-                @php
-                    $iuiData = json_decode($iui->description);
-                @endphp
-                <div class="row">
-                    <div class="col-md-6 study-form">
-                        <span class="col-md-5">Patients Name :
-                            <span>{{strtoupper($iuiFirstVisit->getPatientsInfo['name'])}}</span>
-                        </span>
-                    </div>
-                    <div class="row">
 
-                    </div>
-                    <div class="col-md-4 study-form">
-                        <span class="col-md-3 form-group">Date :
-                            @if(!empty($iuiThirdVisit->hcg->type) && $iuiThirdVisit->hcg->type == 'yes')
-                                {{!empty($iuiThirdVisit->hcg->iui->status) && $iuiThirdVisit->hcg->iui->status == 'yes' && !empty($iuiData->last_appointment_date) ? \Carbon\Carbon::parse($iuiData->last_appointment_date.' '.$hTime)->addHours(36)->format('d/m/Y') : \Carbon\Carbon::parse($lastAppointmentData->date)->format('d/m/Y') }}
-                            @elseif(!empty($iuiData->hcg->type) && $iuiData->hcg->type == 'yes')
-                                {{!empty($iuiData->hcg->iui->status) && $iuiData->hcg->iui->status == 'yes' && !empty($iuiData->last_appointment_date) ? \Carbon\Carbon::parse($iuiData->last_appointment_date.' '.$hTime)->addHours(36)->format('d/m/Y') : \Carbon\Carbon::parse($lastAppointmentData->date)->format('d/m/Y') }}
-                            @endif
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 study-form">
-                        <span class="col-md-3">LMP Date :
-                            <span>{{!empty($iuiSecondVisit->lmp->date) ? \Carbon\Carbon::parse($iuiSecondVisit->lmp->date)->format('d-m-Y') : null}}</span>
-                        </span>
-                    </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-3 study-form">
-                        <span class="col-md-3">Follow Date :
-                            <span>{{!empty($iuiThirdVisit->follow_up) ? \Carbon\Carbon::parse($iuiThirdVisit->follow_up)->format('d-m-Y') : null}}</span>
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5 study-form">
-                        <span class="col-md-5">Medicine With :
-                            <span>{{!empty($iuiSecondVisit->plan->plan_type) ? $iuiSecondVisit->plan->plan_type : null}}</span>
-                        </span>
-                    </div>
-                    <div class="col-md-1 study-form">
-                        <span>Cycel : {{$iui->cycle_no}}</span>
-                    </div>
-                </div>
-            </div>
-            <hr>
-                <div class="report-title">
-                    <h5>Follicular Study Report</h5>
-                </div>
-            <hr>
-            <div class="follicular-report">
-                <div class="row">
-                    <div class="col-md-6 study-form">
-                        <span class="col-md-6">{{!empty($ohData->type_of_infertility) ? $typeOfData[$ohData->type_of_infertility] : 'Primary'}} &nbsp;&nbsp;
-                            <span>{{!empty($ohData->first_marriage_life) ? 'First Marriage Life : '.$ohData->first_marriage_life : null}} {{!empty($ohData->second_marriage_details) ? 'Second Marriage Life :'.$ohData->second_marriage_details : null}}</span>
-                        </span>
-                    </div>
-                    <div class="col-md-6 study-form">
-                        <span class="col-md-6">Possible Factor :
-                            <span>{{implode(',',$possibleFactorData)}}</span>
-                        </span>
-                    </div>
-                </div>
-                <table class="module-report-table study-report-table ">
-                    <thead>
-                        <tr>
-                            <th>Study Date</th>
-                            <th>Days</th>
-                            <th>Rt Ovary</th>
-                            <th>Lt Ovary</th>
-                            <th>ET</th>
-                            <th>Gondotropin Trigger</th>
-                            <th>Remark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($iuiHistoryData as $key=>$row)
-                            @php
-                                $iuiPrevVisit = IuiHistory::where('patients_id',$row->patients_id)->where('created_at','<',$row->created_at)->orderBy('id','DESC')->first();
-                                if($iuiPrevVisit){
-                                    $prevData = json_decode($iuiPrevVisit->description);
-                                    $prevAppointmentDate = !empty($prevData->new_follow_up) ? \Carbon\Carbon::parse($prevData->new_follow_up)->format('d-m-Y') : null;
-                                }
-                                $data = json_decode($row->description);
-                                $agentData = !empty($data->plan->inducing_agent) ? $data->plan->inducing_agent : [];
-                                $lmpDate = \Carbon\Carbon::parse($data->lmp->date)->format('d-m-Y');
-                                $createdAt = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                $appointmentDate = !empty($data->new_follow_up) ? \Carbon\Carbon::parse($data->new_follow_up)->format('d-m-Y') : \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                $diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($createdAt));
-                                $diff = $diff + 1;
-                                if(!empty($prevAppointmentDate)){
-                                    $appointmentDate = $prevAppointmentDate;
-                                }
-                                if($row->visit == 2){
-                                    $appointmentDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                }
-                            @endphp
-                            <tr >
-                                <td>{{$appointmentDate}}</td>
-                                <td>{{$diff}}</td>
-                                <td>
-                                    @if($row->visit == 3)
-                                        @php
-                                            if(!empty($data->inducing)){
-                                                $agentDataValue = [];
-                                                foreach($data->inducing as $key => $value) {
-                                                    $agentDataValue = !empty($data->plan->inducing_agent) ? $data->plan->inducing_agent : [];
-                                                    $value->injection = $agentDataValue;
-                                                }
-                                                $dateAndInjectionData[] = (array)$data->inducing;
-                                            }
-                                        @endphp
-                                        {{!empty($data->ovary->ovary_type->right->details) ? $data->ovary->ovary_type->right->details : ''}}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($row->visit == 3)
-                                        {{!empty($data->ovary->ovary_type->left->details) ? $data->ovary->ovary_type->left->details : ''}}
-                                    @endif
-                                </td>
-                                <td>{{!empty($data->endometrial->type) ? $data->endometrial->type : ''}}</td>
-                                <td>
-                                    @if($row->visit == 2)
-                                        {{!empty($data->plan->agenet) ? implode(',',$data->plan->agenet) : ''}}
-                                    @endif
-                                </td>
-                                <td>{{!empty($data->remark) ? $data->remark : ''}}</td>
-                            </tr>
-                        @endforeach
-                        @if(!empty($dateAndInjectionData))
-                            @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
-                                <tr  >
-                                    <td>{{\Carbon\Carbon::parse($valueData->date)->format('d-m-Y')}}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    @php
-                                        $inducingAgentDataValue = [];
-                                        foreach($valueData->injection as $injectionValue){
-                                            $inducingAgentDataValue[] = $inducingInjectionData[$injectionValue];
-                                        }
-                                    @endphp
-                                    <td>{{implode(',',$inducingAgentDataValue)}}</td>
-                                    <td></td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-                <table class="module-report-table study-report-table " >
-                    <thead>
-                        <tr>
-                            <th>HCG</th>
-                            <th>IUI</th>
-                            <th>No Of Follicle </th>
-                            <th>Ovaluation</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $result = json_decode($iui->description);
-                        @endphp
-                        <tr >
-                            <td>
-                                @if($iui->visit == 4)
-                                    {{!empty($iuiThirdVisit->hcg->type) && $iuiThirdVisit->hcg->type == 'yes' && !empty($iuiData->last_appointment_date) ? 'YES '.\Carbon\Carbon::parse($iuiData->last_appointment_date)->format('d/m/Y') : ''}}
-                                @else
-                                    {{!empty($iuiData->hcg->type) && $iuiData->hcg->type == 'yes' && !empty($iuiData->last_appointment_date) ? 'YES '.\Carbon\Carbon::parse($iuiData->last_appointment_date)->format('d/m/Y') : ''}}
-                                @endif
-                            </td>
-                            <td>
-                                @if($iui->visit == 4)
-                                    {{!empty($iuiThirdVisit->hcg->iui->status) && $iuiThirdVisit->hcg->iui->status == 'yes' && !empty($iuiData->last_appointment_date) ? 'YES '.\Carbon\Carbon::parse($iuiData->last_appointment_date.' '.$hTime)->addHours(36)->format('d/m/Y') : ''}}
-                                @else
-                                    {{!empty($iuiData->hcg->iui->status) && $iuiData->hcg->iui->status == 'yes' && !empty($iuiData->last_appointment_date) ? 'YES '.\Carbon\Carbon::parse($iuiData->last_appointment_date.' '.$hTime)->addHours(36)->format('d/m/Y') : ''}}
-                                @endif
-                            </td>
-                            <td>{{!empty($iuiThirdVisit->no_follicle) ? $iuiThirdVisit->no_follicle : ''}}</td>
-                            <td>{{!empty($iuiThirdVisit) ? 'YES' : ''}}</td>
-                            <td>{{!empty($result->result) ? $result->result : ''}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> --}}
     <div class="">
         @php
             $agentData = [];
@@ -3275,7 +3087,7 @@
                                 <td>
                                     {{isset($vascularity_of_endo[$row->vascularity_of_endo]) ? $vascularity_of_endo[$row->vascularity_of_endo] : null}}
                                 </td>
-                                <td class="editStudyReport">{{!empty($data->remark) ? $data->remark : ''}}</td>
+                                <td class="editStudyReport">{{isset($patient_view) && $patient_view == 1 ? $data->pt_remark : $data->remark}}</td>
                             </tr>
                             @if(!empty($dateAndInjectionData))
                                 @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)

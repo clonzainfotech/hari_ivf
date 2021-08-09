@@ -193,11 +193,15 @@
         <div class="col-md-12 p-0">
             <div class="card patients-list">
                 <div class="header d-flex">
+                    @php
+                        $careof = isset($referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]) ? $referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]: '';
+                    @endphp
                     <div class="col-md-6">
-                        <h2><strong class="text-secondary">{{ucwords($iui->getPatientsInfo->name)}}</strong>{{' care of '.$referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]}}</h2>
+                        <h2><strong class="text-secondary">{{ucwords($iui->getPatientsInfo->name)}}</strong>{{' care of '.$careof}}</h2>
                     </div>
                     <div class="col-md-6 text-right">
-                        <a href="{{URL::to('get-all-report/'.encrypt($iui->getPatientsInfo->id).'?status=iui')}}" class="btn btn-primary m-n3">View Reports</a>
+                        <a href="{{URL::to('get-all-report/'.encrypt($iui->getPatientsInfo->id).'?status=iui')}}" class="btn btn-primary mr-1">View Reports</a>
+                        <a class="btn btn-primary view-file-edit ml-2">View File & Edit</a>
                     </div>
                 </div>
                 
@@ -210,12 +214,9 @@
                 <div class="header">
                     <h2><strong>IUI Appointment</strong>
                     </h2>
-                    <ul class="header-dropdown col-md-12 align-right">
+                    <ul class="header-dropdown col-md-12 text-right">
                         <li class="w-25">
                             {{Form::select("cycle_no",$iuiCycleNo,'',['class'=>'form-control select-padding-0 iui-cycle-no','placeholder'=>'Select Cycle No.'])}}
-                        </li>
-                        <li class="w-25">
-                            <button class="btn btn-primary view-file-edit">View File & Edit</button>
                         </li>
                     </ul>
                 </div>
@@ -1227,18 +1228,41 @@
                         preloadedInputName: 'blood_report_old'
                     });
                 }
-                if(data.historyData != null && data.bloodImages != 'null')
+                if(data.hsaImages != 'null') {
+                    $('.hsa-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.hsaImages),
+                        imagesInputName: 'investigation[hsa_report][images]',
+                        preloadedInputName: 'hsa_report_old'
+                    });
+                }
+                if(data.historyData != null)
                 {
-                    $('.blood-images').imageUploader({
-                        preloaded: jQuery.parseJSON(data.bloodImages),
-                        imagesInputName: 'investigation[blood_report][image]',
-                        preloadedInputName: 'blood_report_old'
-                    });
-                    $('.data-blood-images').imageUploader({
-                        preloaded: jQuery.parseJSON(data.bloodImages),
-                        imagesInputName: 'data[blood_report][image]',
-                        preloadedInputName: 'blood_report_old'
-                    });
+                    if(data.bloodImages != 'null')
+                    {
+                        $('.blood-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.bloodImages),
+                            imagesInputName: 'investigation[blood_report][image]',
+                            preloadedInputName: 'blood_report_old'
+                        });
+                        $('.data-blood-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.bloodImages),
+                            imagesInputName: 'data[blood_report][image]',
+                            preloadedInputName: 'blood_report_old'
+                        });
+                    }
+                    if(data.hsaImages != 'null') {
+                        $('.hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'investigation[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                        $('.data-hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'data[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                    }
+                    
                 }
                 if(data.historyData != null && data.usgImages != 'null')
                 {
@@ -1375,6 +1399,18 @@
                         preloadedInputName: 'blood_report_old'
                     });
                 }
+                if(data.hsaImages != 'null') {
+                        $('.hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'investigation[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                        $('.data-hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'data[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                    }
                 if(data.usgImages != 'null')
                 {
                     $('.data-usg-images').imageUploader({

@@ -5569,26 +5569,26 @@
                 var frozen = $('#progesteroneyes:checked').val();
                 var visitNo = $('.visit-no').val();
                 var planType = $('.plan_type').val();
-                if((frozen == 'no' || typeof frozen == 'undefined') && ($('.is-transfer').val() != 'yes') && (visitNo == 3 || visitNo == 4) && planType == 3){
-                    if(visitNo == 3){
-                        swal({
-                            title: "Is semen sample not collected!",
-                            // type: "warning",
-                            confirmButtonColor: "#00cfd1",
-                            confirmButtonText: "Ok!",
-                            closeOnConfirm: false,
-                            cancelButtonClass: 'btn btn-danger',
-                        }, function () {
-                            $('.showSweetAlert').remove();
-                            $('.sweet-overlay').remove();
-                            ivfFormData(formData);
-                        });
-                    }
-                    if(visitNo == 4){
-                        swal("Is semen sample not collected!");
-                    }
-                    return true;
-                }
+                // if((frozen == 'no' || typeof frozen == 'undefined') && ($('.is-transfer').val() != 'yes') && (visitNo == 3 || visitNo == 4) && planType == 3){
+                //     if(visitNo == 3){
+                //         swal({
+                //             title: "Is semen sample not collected!",
+                //             // type: "warning",
+                //             confirmButtonColor: "#00cfd1",
+                //             confirmButtonText: "Ok!",
+                //             closeOnConfirm: false,
+                //             cancelButtonClass: 'btn btn-danger',
+                //         }, function () {
+                //             $('.showSweetAlert').remove();
+                //             $('.sweet-overlay').remove();
+                //             ivfFormData(formData);
+                //         });
+                //     }
+                //     if(visitNo == 4){
+                //         swal("Is semen sample not collected!");
+                //     }
+                //     return true;
+                // }
                 ivfFormData(formData);
             });
 

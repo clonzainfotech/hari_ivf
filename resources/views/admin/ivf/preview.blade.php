@@ -144,7 +144,7 @@
     {
         font-size: 22px !important;
     } */
-    @page { margin-top : 20px; margin-left : 100px;}
+    /* @page { margin-top : 20px; margin-left : 100px;} */
 </style>
 @if(isset($printPreview) && $printPreview != 0)
 
@@ -153,6 +153,9 @@
 <div class="main-print-ivf-div">
     @if(!isset($isTableView) || $isTableView == 0)
         @if ($isIvfHistory == '1')
+        <style>
+            @page { margin-top : 200px; margin-bottom : 80px;}
+        </style>
             <div class="{{'panel panel-primary '.(isset($printPreview) && $printPreview == 1 ? 'watermark' : '')}}">
                 <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
                     <tbody>
@@ -1797,6 +1800,9 @@
             </div>
         @endif
         @if($isIvfHistory == '2')
+            <style>
+                @page { margin-top : 200px; margin-bottom : 80px;}
+            </style>
             <div class="panel panel-primary">
             @if(@$historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no')
                 @if($lmp)
@@ -2700,6 +2706,9 @@
             </div>
         @endif
         @if($isIvfHistory == '3')
+            <style>
+                @page { margin-top : 5px; margin-bottom : 80px;}
+            </style>
             <div class="ivf-print-data">
                 <div class="row mb-2 patient-detail">
                     <div class="col-md-12">
@@ -2724,6 +2733,9 @@
             </div>
         @endif
         @if($isIvfHistory == '4')
+            <style>
+                @page { margin-top : 5px; margin-bottom : 80px;}
+            </style>
             <div class="panel panel-primary transfer-print">
                 <table class="table m-b-0 table-hover ivf-print-table">
                     <tbody>
@@ -2796,6 +2808,9 @@
             </div>
         @endif
     @else
+        <style>
+            @page { margin-top : 200px; margin-bottom : 80px;}
+        </style>
         @if(!isset($printPreview))
             <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" >
         @endif
