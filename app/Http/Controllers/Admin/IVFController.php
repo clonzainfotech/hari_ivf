@@ -2523,13 +2523,13 @@ class IVFController extends AdminController
                     $investigationReport = $this->allInvestigationReport();
                     $historyDate = $request->date;
                     $patientId = decrypt($request->patient_id);
-                    $cycle_no = decrypt($request->cycle_no);
                     $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
                     $ivfData = $this->IVF->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
                     $isIvfHistory = '1';
                     $ivfSecondVisitData = null;
                     
                     if(!$ivfData || $request->is_history == 1){
+                        $cycle_no = decrypt($request->cycle_no);
                         $ivfData = $this->IvfHistory->where('patients_id',$patientId)->where('cycle_no',$cycle_no)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
                         $ivf = $ivfData;
                         $historyData = json_decode($ivf->description);
