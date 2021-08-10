@@ -5435,9 +5435,11 @@
                         complaintWiseMedicines(covalue,type,mType,hovalue,isIvf,isSp2,false,isTrigger,isTransfer);
                     }
                     $('.progesterone_data').removeClass('d-none');
+                    $('.progesterone_date').removeClass('d-none');
                 }else{
                     $('.progesterone_data').addClass('d-none');
                     $('.progesterone_yes').addClass('d-none');
+                    $('.progesterone_date').addClass('d-none');
                     if(typeof ivfHId == 'undefined' && ivfHId != ''){
                         complaintWiseMedicines(covalue,type,mType,hovalue,isIvf,isSp2,false,isTrigger,isTransfer);
                     }
@@ -5569,26 +5571,28 @@
                 var frozen = $('#progesteroneyes:checked').val();
                 var visitNo = $('.visit-no').val();
                 var planType = $('.plan_type').val();
-                // if((frozen == 'no' || typeof frozen == 'undefined') && ($('.is-transfer').val() != 'yes') && (visitNo == 3 || visitNo == 4) && planType == 3){
-                //     if(visitNo == 3){
-                //         swal({
-                //             title: "Is semen sample not collected!",
-                //             // type: "warning",
-                //             confirmButtonColor: "#00cfd1",
-                //             confirmButtonText: "Ok!",
-                //             closeOnConfirm: false,
-                //             cancelButtonClass: 'btn btn-danger',
-                //         }, function () {
-                //             $('.showSweetAlert').remove();
-                //             $('.sweet-overlay').remove();
-                //             ivfFormData(formData);
-                //         });
-                //     }
-                //     if(visitNo == 4){
-                //         swal("Is semen sample not collected!");
-                //     }
-                //     return true;
-                // }
+                // alert(planType);
+                // return false;
+                if((frozen == 'no' || typeof frozen == 'undefined') && ($('.is-transfer').val() != 'yes') && (visitNo == 3 || visitNo == 4) && planType == 3){
+                    if(visitNo == 3){
+                        swal({
+                            title: "Is semen sample not collected!",
+                            // type: "warning",
+                            confirmButtonColor: "#00cfd1",
+                            confirmButtonText: "Ok!",
+                            closeOnConfirm: false,
+                            cancelButtonClass: 'btn btn-danger',
+                        }, function () {
+                            $('.showSweetAlert').remove();
+                            $('.sweet-overlay').remove();
+                            ivfFormData(formData);
+                        });
+                    }
+                    if(visitNo == 4){
+                        swal("Is semen sample not collected!");
+                    }
+                    return true;
+                }
                 ivfFormData(formData);
             });
 

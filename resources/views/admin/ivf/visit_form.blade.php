@@ -715,7 +715,7 @@
                         $class= 'progesterone_yes';
                         $pTypeValue = 0;
                     }
-                    $progesterone_date = !empty($ivfData->progesterone->type) ? '' : 'd-none';
+                    $progesterone_date = !empty($ivfData->progesterone->type) ? $ivfData->progesterone->type : 'd-none';
                 @endphp
                 <div class="{{'col-md-2 '.$class.' '.$progesteroneStatus}}">
                     {{Form::hidden('progesterone_status','yes')}}
@@ -730,7 +730,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="{{'col-md-2 progesterone_date_div ' .$progesterone_date}}">
+                <div class="{{'col-md-2 progesterone_date_div ' .$progesteroneStatus}}">
                     <div class="form-group">
                             {{Form::text("data[progesterone_date]", !empty($ivfData->progesterone_date) ? $ivfData->progesterone_date: '',['class'=>'form-control datetimepicker progesterone_date'])}}
                     </div>
