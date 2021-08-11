@@ -3393,11 +3393,11 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             $diff = $diff + 1;
                     @endphp
                     <div class="col-md-12 mt-3">
-                        <h3 class="text-left"><u>Medicine:</u></h3>
+                        <h3 class="text-left"><u>Skip Cycle:</u></h3>
                         <table class="module-report-table study-report-table mt-3">
                             <thead>
                                 <tr>
-                                    <th>Follow UP</th>
+                                    <th>Date</th>
                                     @if((!isset($pt_view) || $pt_view != 1))
                                     <th>Transfer Plan</th>
                                     @endif
