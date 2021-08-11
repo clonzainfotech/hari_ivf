@@ -567,7 +567,7 @@ class HomeController extends AdminController
             }
             $no_cycle = count($this->IvfHistory->where('patients_id',$patients_id)->WhereNull('description->skip_reason')->Where('description->is_transfer','=','yes')->groupBy('cycle_no')->get());
             // dd($no_cycle); 
-            $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+            $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)->orderBy('id','desc')->first();
             $current_cycle = $no_cycle + 1;
             if($currentHistory)
             {
@@ -599,7 +599,9 @@ class HomeController extends AdminController
             }
             $no_cycle = count($this->IuiHistory->where('patients_id',$patients_id)->WhereNotNull('description->result')->groupBy('cycle_no')->get());
             // $current_cycle = $no_cycle + 1;
-            $currentHistory = $this->IuiHistory->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+            $currentHistory = $this->IuiHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)
+            ->orderBy('id','desc')
+            ->first();
             $iuiSecondVisit = $this->IuiHistory->where('patients_id',$patients_id)->where('visit',2)->orderBy('id','desc')->first();
             if($iuiSecondVisit)
             {

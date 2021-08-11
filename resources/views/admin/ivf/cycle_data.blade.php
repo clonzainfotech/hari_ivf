@@ -1265,7 +1265,7 @@
                         </div>
                         @endif
                         <div class="col-md-12">
-                        @if($isForm != true)
+                        @if($cycle[count($cycle)-1]['cycle_status'] == 2)
                             <div class="col-md-6"></div>
                             <div class="col-md-6 float-right">
                                 <table class='table table-responsive'>
@@ -1672,7 +1672,7 @@
                                     {{-- <div class="col-md-12">
                                         <a class="btn btn-primary btn-icon btn-icon-mini btn-round add-row" data-id="5" data-day="0"><i class="material-icons">add</i></a>
                                     </div> --}}
-                                    @if($isForm)
+                                    @if(($cycle[count($cycle)-1]['cycle_status'] != 2))
                                         <div class="col-md-1">
                                             <label class="vertical-form-label pr-0">
                                                 Seen By :
@@ -2453,7 +2453,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <td colspan="6">
-                                                    @if($isForm == true)
+                                                    @if($isForm == true && ($cycle[count($cycle)-1]['cycle_status'] != 2))
                                                     <div class="row treatment-data" id="t_data_1">
                                                         <div class="col-md-2 pr-2">
                                                             <label class="vertical-form-label pr-0">
