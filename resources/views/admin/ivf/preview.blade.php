@@ -3399,7 +3399,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 <tr>
                                     <th>Date</th>
                                     @if((!isset($pt_view) || $pt_view != 1))
-                                    <th>Transfer Plan</th>
+                                        <th>Transfer Plan</th>
                                     @endif
                                     <th>Reason</th>
                                 </tr>
