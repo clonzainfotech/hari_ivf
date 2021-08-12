@@ -2378,11 +2378,12 @@ class IVFController extends AdminController
                 $ivfDate = [Carbon::parse($ivfDateData->created_at)->format('Y-m-d H:i:s')=>Carbon::parse($ivfDateData->created_at)->format('Y-m-d H:i:s')];
                 $ivfVisitDate = array_merge($ivfHistoryDate,$ivfDate);
                 $ivfPatients = $this->OpdPatients->find($patientId);
+                $ivfType = 1;
                 $encIvfId = [];
                 if($request->visitDate && !empty($request->visitDate))
                 {
                     $visitDate = $request->visitDate;
-                    if($request->extraVisit && $request->extraVisit == 0)
+                    if(empty($request->extraVisit))
                     {
                         $ivf = $this->IVF->where('patients_id',$patientId)->where('created_at',$visitDate)->first();
                         $isIvfHistory = '1';
@@ -2402,7 +2403,7 @@ class IVFController extends AdminController
                         $dateValue[] = $visitDate;
                         $extraVisit[] = 0;
                     }
-                    if($request->extraVisit && $request->extraVisit == 1)
+                    if($request->extraVisit && $request->extraVisit == '1')
                     {
                         $ivfType = 2;
                         $isExtraVisit = 1;

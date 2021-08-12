@@ -1015,8 +1015,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                         </tbody>
                     </table>
                 @endif
-                <div class="col-md-6">
-                    @if($husbandFactor && !empty($husbandFactor->occupation) || !empty($husbandFactor->seman_analysis) || !empty($husbandFactor->habbit) || !empty($husbandFactor->sperm_count) || !empty($husbandFactor->personal_history_date) || !empty($husbandFactor->remark))
+                @if($husbandFactor && !empty($husbandFactor->occupation) || !empty($husbandFactor->seman_analysis) || !empty($husbandFactor->habbit) || !empty($husbandFactor->sperm_count) || !empty($husbandFactor->personal_history_date) || !empty($husbandFactor->remark))
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
                             <tbody>
                                 <tr>
@@ -1114,8 +1113,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 </tr>
                             </tbody>
                         </table>
-                    @endif
-                    @if($patientDetailedHO && (!empty($patientDetailedHO->personal_history_history_type) || !empty($patientDetailedHO->personal_history_date) || !empty($patientDetailedHO->family_history) || !empty($patientDetailedHO->past_history_type)))
+                @endif
+                @if($patientDetailedHO && (!empty($patientDetailedHO->personal_history_history_type) || !empty($patientDetailedHO->personal_history_date) || !empty($patientDetailedHO->family_history) || !empty($patientDetailedHO->past_history_type)))
                         <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
                             <tbody>
                                 @if(!empty($patientDetailedHO->personal_history_history_type))
@@ -1165,9 +1164,9 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 @endif
                             </tbody>
                         </table>
-                    @endif
-                </div>
-                <div class="col-md-6">
+                @endif
+                
+                <div class="display">
                     @if($oe  && ($oe->tvs->type == 'yes' || $oe->p_s->type == 'yes' || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
                             <tbody>
@@ -1286,84 +1285,85 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             </tbody>
                         </table>
                     @endif
-                </div>
-                {{-- $pt_view is set bcz don't want to display in patients application --}}
-                @if($planManagement && (!isset($pt_view) || $pt_view != 1) && (isset($planManagement->plan_of_management_data) || (isset($planManagement->plan) && !empty($planManagement->plan))))
-                    <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
-                        <tbody>
-                            <tr>
-                                <td colspan="9">
-                                    <div class="panel-title header-print-title">Plan Management</div>
-                                </td>
-                            </tr>
-                            @if (isset($planManagement->plan_of_management_data))
-                                @if (in_array('ivf', $planManagement->plan_of_management_data))
+                    {{-- $pt_view is set bcz don't want to display in patients application --}}
+                    @if($planManagement && (!isset($pt_view) || $pt_view != 1) && (isset($planManagement->plan_of_management_data) || (isset($planManagement->plan) && !empty($planManagement->plan))))
+                        <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="panel-title header-print-title">Plan Management</div>
+                                    </td>
+                                </tr>
+                                @if (isset($planManagement->plan_of_management_data))
+                                    @if (in_array('ivf', $planManagement->plan_of_management_data))
+                                        <tr>
+                                            <th>
+                                                <span class="ivf-label"> IVF</span>
+                                                {{!empty($planManagement->ivf_details) && !empty($planManagement->is_print) ? $planManagement->ivf_details : '-' }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endif
+                                @if(isset($planManagement->plan) && !empty($planManagement->plan))
                                     <tr>
                                         <th>
-                                            <span class="ivf-label"> IVF</span>
-                                            {{!empty($planManagement->ivf_details) && !empty($planManagement->is_print) ? $planManagement->ivf_details : '-' }}
-                                        </td>
+                                            <span class="ivf-label"> Plan</span>
+                                            @if (isset($planManagement->plan) && !empty($planManagement->plan))
+                                                @switch($planManagement->plan)
+                                                    @case('1')
+                                                        IVF Self
+                                                        @break
+                                                    @case('2')
+                                                        FET Self
+                                                        @break
+                                                    @case('3')
+                                                        FET-OD
+                                                        @break
+                                                    @case('4')
+                                                        FET-ED
+                                                        @break
+                                                @endswitch
+                                            @endif
+                                        </th>
                                     </tr>
                                 @endif
-                            @endif
-                            @if(isset($planManagement->plan) && !empty($planManagement->plan))
+                            </tbody>
+                        </table>
+                    @endif
+                    
+                    @if($possibleCaseOfInfertility && (!empty($possibleCaseOfInfertility->other) || !empty($possibleCaseOfInfertility->infertility_type)))
+                        <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
+                            <tbody>
                                 <tr>
-                                    <th>
-                                        <span class="ivf-label"> Plan</span>
-                                        @if (isset($planManagement->plan) && !empty($planManagement->plan))
-                                            @switch($planManagement->plan)
-                                                @case('1')
-                                                    IVF Self
-                                                    @break
-                                                @case('2')
-                                                    FET Self
-                                                    @break
-                                                @case('3')
-                                                    FET-OD
-                                                    @break
-                                                @case('4')
-                                                    FET-ED
-                                                    @break
-                                            @endswitch
-                                        @endif
-                                    </th>
+                                    <td colspan="9">
+                                        <div class="panel-title header-print-title">Possible Cause of Infertility</div>
+                                    </td>
                                 </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                @endif
-                @if($possibleCaseOfInfertility && (!empty($possibleCaseOfInfertility->other) || !empty($possibleCaseOfInfertility->infertility_type)))
-                    <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
-                        <tbody>
-                            <tr>
-                                <td colspan="9">
-                                    <div class="panel-title header-print-title">Possible Cause of Infertility</div>
-                                </td>
-                            </tr>
-                            @php
-                                $infertilityType = null;
-                                if(!empty($possibleCaseOfInfertility->infertility_type)) {
-                                    $infertilityType = implode(', ', $possibleCaseOfInfertility->infertility_type);
-                                }
-                            @endphp
-                            <tr>
-                                @if(!empty($infertilityType))
-                                    <th>
-                                        {{ ucwords($infertilityType) }}
-                                    </th>
-                                @endif
-                            </tr>
-                            <tr>
-                                @if(!empty($possibleCaseOfInfertility->other))
-                                    <th>
-                                        <span class="ivf-label">Other </span>
-                                        {{ !empty($possibleCaseOfInfertility->other) ? $possibleCaseOfInfertility->other : '-' }}
-                                    </th>
-                                @endif
-                            </tr>
-                        </tbody>
-                    </table>
-                @endif
+                                @php
+                                    $infertilityType = null;
+                                    if(!empty($possibleCaseOfInfertility->infertility_type)) {
+                                        $infertilityType = implode(', ', $possibleCaseOfInfertility->infertility_type);
+                                    }
+                                @endphp
+                                <tr>
+                                    @if(!empty($infertilityType))
+                                        <th>
+                                            {{ ucwords($infertilityType) }}
+                                        </th>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    @if(!empty($possibleCaseOfInfertility->other))
+                                        <th>
+                                            <span class="ivf-label">Other </span>
+                                            {{ !empty($possibleCaseOfInfertility->other) ? $possibleCaseOfInfertility->other : '-' }}
+                                        </th>
+                                    @endif
+                                </tr>
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
                 <?php
                 unset($treatment->medicinedata);
                 ?>
@@ -1807,7 +1807,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                 @page { margin-top : 200px; margin-bottom : 80px;}
             </style>
             <div class="panel panel-primary">
-            @if(@$historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no')
+            @if(@$historyData->is_transfer == 'no' || !isset($historyData->is_transfer_print) || $historyData->is_transfer_print == 'no')
                 @if($lmp)
                     <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
                         <tbody>
