@@ -13,6 +13,10 @@
             }
         }
         $mData = $medicineKey;
+        $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
+        $medicine_status = ['' => 'Select Medicine Status','1'=>'જમ્યા પછી','2'=>'જમ્યા પહેલાં','3'=>'માસિકની જગ્યાએ મુકવી'];
+        $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
+        $dose = ['' => 'Select Dose',"1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
     @endphp
         <!--1 C/O -->
         {{Form::hidden('iui_extra_visit_id',!empty($iuiHistoryData) ? encrypt($iuiHistoryData->id) : null)}}
@@ -439,7 +443,6 @@
             {{Form::hidden("oe[follow_up]", isset($oe->follow_up) && !empty($oe->follow_up) ? $oe->follow_up : \Carbon\Carbon::now()->format('D d M Y'),[
                                 'class'=>'form-control next-date'
                             ])}}
-        @endif
         @endif
         <br>
         <br>

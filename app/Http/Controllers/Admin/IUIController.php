@@ -1381,8 +1381,7 @@ class IUIController extends AdminController
                             $bloodImagesData[$key]['src'] = url($row);
                         }
                     }
-                    $hsaImages = !empty($investigation->hsa_report->images) ? $investigation->hsa_report->images : null;
-                    // dd($hsaImages);
+                    $hsaImages = isset($investigation->hsa_report) && !empty($investigation->hsa_report->images) ? $investigation->hsa_report->images : null;
                     if($hsaImages){
                         foreach($hsaImages as $key=>$row){
                             $hsaImagesData[$key]['id'] = $key;
@@ -1935,7 +1934,7 @@ class IUIController extends AdminController
     }
 
     // fetch data to extra visit of IUI
-    public function extraVisit(Request $request,$id){
+    public function extraVisit(Request $request,$id,$cycleNo){
         try{
             $pId = decrypt($id);
             $iuiPatients = $this->OpdPatients->find($pId);
@@ -1944,9 +1943,11 @@ class IUIController extends AdminController
             $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
             $medicines = $this->Medicine->pluck('name','name');
             $iuiHistoryDate = $this->IuiExtraVisit->where('patient_id',$pId)->pluck('created_at','created_at')->toArray();
+            $cycle_no = decrypt($cycleNo);
             if($request->ajax()){
                 $iuiHistoryData = null;
                 $date = $request->date;
+                
                 $status = 0;
                 if($date){
                     $iuiHistoryData = $this->IuiExtraVisit->where('created_at',$date)->first();
@@ -1958,8 +1959,9 @@ class IUIController extends AdminController
                 $data['extra_visit_data'] = View::make('admin.iui.extra_visit_data',compact('iuiHistoryData','complaints','leftOvaryData','rightOvaryData','medicines','iuiPatients'))->render();
                 return $data;
             }
-            return view('admin.iui.extra_visit',compact('iuiPatients','iuiHistoryDate','medicines'));
+            return view('admin.iui.extra_visit',compact('iuiPatients','iuiHistoryDate','medicines','cycle_no'));
         }catch(Exception $e){
+            log::Debug($e);
             abort(500);
         }
     }
@@ -1968,6 +1970,7 @@ class IUIController extends AdminController
     public function storeExtraVisit(Request $request){
         try{
             $patientId = decrypt($request->patient_id);
+            $cycle_no = decrypt($request->cycle_no);
             $iuiPatients = $this->OpdPatients->find($patientId);
             if(!empty($request->oe['ovary']['right']['details']) || !empty($request->oe['ovary']['left']['details'])){
                 $rightData = !empty($request->oe['ovary']['right']['details']) ? $request->oe['ovary']['right']['details'] : [];
@@ -1991,6 +1994,7 @@ class IUIController extends AdminController
                 $iuiExtraVisit = $this->IuiExtraVisit->find(decrypt($request->iui_extra_visit_id));
             }
             $iuiExtraVisit->patient_id = $patientId;
+            $iuiExtraVisit->cycle_no = $cycle_no;
             $iuiExtraVisit->co = json_encode($request->co);
             $iuiExtraVisit->lmp = json_encode($request->lmp);
             $iuiExtraVisit->oe = json_encode($request->oe);
@@ -2062,10 +2066,12 @@ class IUIController extends AdminController
                 $iuiAllData = $this->IUI->where('patients_id',$patientId)->orderBy('id','ASC')->get();
                 // $date = $request->appointment_date;
                 $historyDate = $request->history_date;
-                
+                $iuiPatients = $this->OpdPatients->find($patientId);
                 $viewAllVisit = [];
                 $dateValue = [];
                 $table_view = [];
+                $extraVisit = [];
+                $extraVisitDisplay = false;
                 if($request->cycle_no && !empty($request->cycle_no))
                 {
                     $iuiVisitDate = [];
@@ -2098,8 +2104,8 @@ class IUIController extends AdminController
                     }
                 }
                 
-                if($historyDate){
-
+                if($historyDate)
+                {
                     $iuiType = 2;
                     $iuiData = $this->IUI->where('patients_id',$patientId)->where('created_at','=',$historyDate)->first();
                     if(!$iuiData){
@@ -2110,7 +2116,16 @@ class IUIController extends AdminController
                         }
                     }
                     $iui = $iuiData;
-                    $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport'))->render();
+                    if(!empty($request->extra_visit))
+                    {
+                        $isExtraVisit = 1;
+                        $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$patientId)->where('created_at','=',$historyDate)->first();
+                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('iuiPatients','iuiExtraVisit','isExtraVisit'))->render();
+                    }
+                    else
+                    {
+                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport'))->render();
+                    }
                     
                 }
                 else{
@@ -2118,6 +2133,9 @@ class IUIController extends AdminController
                     foreach($iuiVisitDate as $key => $value)
                     {
                         $iuiType = 1;
+                        $iuiExtra = null;
+                        $isExtraVisit = 0;
+
                         $iuiHistoryData = collect($this->IuiHistory->wherePatientsId($patientId)->whereCycleNo($value)->get());
                         $iuiSecondVisit = $iuiHistoryData->where('visit',2)->first();
                         if($iuiSecondVisit){
@@ -2128,6 +2146,7 @@ class IUIController extends AdminController
                         {
                             $preview = 0;
                             $isTable_view = false;
+                            
                         }
                         if(empty($iuiData))
                         {
@@ -2143,17 +2162,64 @@ class IUIController extends AdminController
                                 $preview++;
                             }
                         }
-                        $iuiThirdVisit = $this->IuiHistory->wherePatientsId($patientId)->where('cycle_no',$value)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$key)->where('visit',3)->where('description->ovalution','yes')->first();
+                        $iuiThirdVisit = $this->IuiHistory->wherePatientsId($patientId)->where('cycle_no',$value)->where('created_at',$key)->where('visit',3)->where('description->ovalution','yes')->first();
                         if($iuiThirdVisit){
                             $iuiThirdVisit = json_decode($iuiThirdVisit->description);
                         }
                         $iui = $iuiData;
+                        //find extra visit after 1st visit
+                        $firstVisit = $this->IUI->where('patients_id',$patientId)->where('cycle_no',$value)->where('created_at','=',$key)->first();
+                        if($firstVisit)
+                        {
+                            $iuiExtra = $this->IuiExtraVisit->where('patient_id',$patientId)->where('cycle_no',$value)->where('created_at','>',$iuiData->created_at)->get();
+                            if(!empty($iuiExtra))
+                            {
+                                foreach($iuiExtra as $iuiExtraVisit)
+                                {
+                                    $isExtraVisit = 1; 
+                                    $isTable_view = false;
+                                    $iui->study_report = false;
+                                    $extraVisitDisplay = true; 
+                                    $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','iuiExtraVisit','iuiPatients','isExtraVisit'))->render();
+                                    $dateValue[] = $iuiExtraVisit->created_at;
+                                    $table_view[] = $isTable_view;
+                                    $extraVisit[] = 1;
+
+                                }
+                                
+                            }
+                        }
                         if($preview == 1 || $preview == 0) //display only one time  table view
                         {
                             $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport'))->render();
                             $dateValue[] = $key;
                             $table_view[] = $isTable_view;
+                            $extraVisit[] = 0;
                         }
+                        //for add extra visit after ovalution start
+                        
+                        $lastThirdVisit = $this->IuiHistory->wherePatientsId($patientId)->where('cycle_no',$value)->where('visit',3)->where('created_at','=',$key)->where('description->ovalution','yes')->first();
+                        if($lastThirdVisit)
+                        {
+                            $iuiExtra = $this->IuiExtraVisit->where('patient_id',$patientId)->where('cycle_no',$value)->where('created_at','>',$lastThirdVisit->created_at)->get();
+                            if(!empty($iuiExtra))
+                            {
+                                foreach($iuiExtra as $iuiExtraVisit)
+                                {
+                                    $isExtraVisit = 1; 
+                                    $isTable_view = false;
+                                    $iui->study_report = false;
+                                    $extraVisitDisplay = true; 
+                                    $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','iuiExtraVisit','iuiPatients','isExtraVisit'))->render();
+                                    $dateValue[] = $iuiExtraVisit->created_at;
+                                    $table_view[] = $isTable_view;
+                                    $extraVisit[] = 1;
+
+                                }
+                                
+                            }
+                        }
+                        
                     }
                 }
                 
@@ -2166,6 +2232,7 @@ class IUIController extends AdminController
                     'iui_type' => $iuiType,
                     'date' => $dateValue,
                     'table_view' => $table_view,
+                    'extraVisit' => $extraVisit,
                     // 'id' => $iuiData->id,
                     'data' => $viewAllVisit
                 ]);

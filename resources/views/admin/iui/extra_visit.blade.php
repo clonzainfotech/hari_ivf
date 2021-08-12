@@ -70,7 +70,7 @@
             <div class="card">
                 <div class="header">
                     <h2><strong>IUI Appointment</strong></h2>
-                    <ul class="header-dropdown col-md-7">
+                    <ul class="header-dropdown col-md-6 text-right">
                         <li class="w-50">
                             {{Form::select("date",$iuiHistoryDate,'',['class'=>'form-control select-padding-0 iui-date','placeholder'=>'Select Date'])}}
                         </li>
@@ -95,6 +95,7 @@
                                     {{-- appned form data --}}
                                 </div>
                                 {{Form::hidden('patient_id',encrypt($iuiPatients->id),['class'=>'patient-id'])}}
+                                {{Form::hidden('cycle_no',encrypt($cycle_no),['class'=>'cycle-no'])}}
                                 <div class="col-sm-12">
                                     {{Form::submit('submit',['class'=>'btn btn-primary submit'])}}
                                     <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
@@ -173,8 +174,9 @@
 
         function getIuiData(qstring){
             var pId = $('.patient-id').val();
+            var cycleNo = $('.cycle-no').val();
             $.ajax({
-                url: "{{URL::to('iui/extra-visit')}}"+'/'+pId+'?'+qstring,
+                url: "{{URL::to('iui/extra-visit')}}"+'/'+pId+'/'+cycleNo+'?'+qstring,
                 dataType: 'json',
                 type:'GET',
             }).done(function(data){

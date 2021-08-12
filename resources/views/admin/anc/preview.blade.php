@@ -1037,13 +1037,13 @@
                                     $noValueData[] = '';
                                 @endphp
                             @endif
-                            {{-- @if(!empty($noValueData))
+                            @if(!empty($noValueData))
                                 <tr>
                                     <th>
                                         {{'No H/O '.implode(',',$noValueData)}}
                                     </th>
                                 </tr>
-                            @endif --}}
+                            @endif
                             @if (isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes')
                                 <tr>
                                     <th class=" w-300">
@@ -1249,13 +1249,13 @@
                                 @endphp
                             @endif
                             <br>
-                            {{-- @if(!empty($secondNoValueData) && !empty($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && ('No '.implode(',',$noValueData)!='No H/O '.implode(',',$secondNoValueData)))
+                            @if(!empty($secondNoValueData) && !empty($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && ('No '.implode(',',$noValueData)!='No H/O '.implode(',',$secondNoValueData)))
                                 <tr>
                                     <th>
                                         {{'No H/O '.implode(',',$secondNoValueData)}}
                                     </th>
                                 </tr>
-                            @endif --}}
+                            @endif
                             @if(!empty($patientsObstratics->remark))
                                 <tr>
                                     <th>

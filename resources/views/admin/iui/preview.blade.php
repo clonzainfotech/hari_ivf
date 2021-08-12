@@ -142,7 +142,7 @@
         white-space: inherit !important;
     }
     .medicine-table td{
-        padding: 2px 15px;
+        padding: 4px 15px;
         text-transform: capitalize;
     }
     .remark-text
@@ -3628,7 +3628,8 @@
             @endif
         @endif
         @if(isset($oe->follow_up) && !empty($oe->follow_up))
-                    <h3 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h3>
+        <br>
+                    <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
         @endif
     </div>
 @endif

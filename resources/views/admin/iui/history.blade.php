@@ -1056,12 +1056,14 @@
 
             $(document).on('click','.edit-btn',function(){
                 date = $(this).data('date');
+                // var extraVisit = 
                 getIuiData(date,cycleNo);
             });
 
             $(document).on('click','.print-btn',function(){
                 date = $(this).data('date');
-                iuiString = 'patient_id='+patientsId+'&history_date='+date+'&status='+status+'&type='+type+'&cycle_no='+cycleNo;
+                var extra_visit = $(this).data('type');
+                iuiString = 'patient_id='+patientsId+'&history_date='+date+'&status='+status+'&type='+type+'&cycle_no='+cycleNo+'&extra_visit='+extra_visit;
                 getIuiHistoryData(iuiString);
             });
             $(document).on('click','.edit-iui-data',function(){
@@ -1570,20 +1572,21 @@
                     var iuiPreview = $('.anc-details-data').html();
                     for(i=0; i<data.data.length;i++)
                     {
-                        if(typeof data.date[i] != 'undefined'){
+                        if(typeof data.date[i] != 'undefined')
+                        {
                             var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
                             var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
                         }
-                        buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a></div></div>';
-
-                        if(data.table_view[i] == true)//table view
+                        var class_name = (data.extraVisit[i] == 1) ? 'extra-visit' : '';
+                        buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a></div></div>';
+                        
+                        if(data.table_view[i] == true || data.extraVisit[i] == 1)//table view end Extra Visit
                         {
-                            buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"></div><div class="col-md-6 text-right"><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a></div></div>';
-
+                            buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"></div><div class="col-md-6 text-right"><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a></div></div>';
                         }
                         iuiPreview = buttonHtml + data.data[i];
                         $('.anc-details-data').html(iuiPreview);
-                        // iuiPreview = iuiPreview + '<div class="row sepreator"></div>';
+                        iuiPreview = iuiPreview + '<div class="row sepreator"></div>';
                     }
                 }
                 if(data.iui_type == 2){

@@ -2348,6 +2348,16 @@
                                                 </div>
                                                 
                                             </div>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            Other Report : &nbsp;
+                                                        </span>
+                                                        {{Form::text("investigation[investigation_extra]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </div>

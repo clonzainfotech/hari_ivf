@@ -783,84 +783,83 @@
                             </div>
                         </div>
                     </div>
-                @endif
-                <div class="{{'trigger ml-3 '.$triggerStatus}}">
-                    <div class="row mt-1">
-                        <div class="col-md-2">
-                            <div class="checkbox">
-                                {{Form::checkbox('data[trigger][hcg][status]','hcg',!empty($hcgStatus) ? false : true,['id'=>'hcg'])}}
-                                <label for="hcg">
-                                    HCG
-                                </label>
+                    <div class="{{'trigger ml-3 '.$triggerStatus}}">
+                        <div class="row mt-1">
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    {{Form::checkbox('data[trigger][hcg][status]','hcg',!empty($hcgStatus) ? false : true,['id'=>'hcg'])}}
+                                    <label for="hcg">
+                                        HCG
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="{{'hcgtrigger '.$hcgStatus}}">
-                            <div class="row ml-3">
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Time : &nbsp;</span>
-                                        {{Form::text("data[trigger][hcg][time]",!empty($ivfData->trigger->hcg->time) ? $ivfData->trigger->hcg->time : null,['class'=>'form-control timepicker time','id'=>'hcg_time','placeholsder'=>'Brand'])}}
+                            <div class="{{'hcgtrigger '.$hcgStatus}}">
+                                <div class="row ml-3">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Time : &nbsp;</span>
+                                            {{Form::text("data[trigger][hcg][time]",!empty($ivfData->trigger->hcg->time) ? $ivfData->trigger->hcg->time : null,['class'=>'form-control timepicker time','id'=>'hcg_time','placeholsder'=>'Brand'])}}
+                                        </div>
                                     </div>
-                                </div>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Dose : &nbsp;</span>
-                                    {{Form::text("data[trigger][hcg][dose]",!empty($ivfData->trigger->hcg->dose) ? $ivfData->trigger->hcg->dose : null,['class'=>'form-control'])}}
-                                </div>
-                            </div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Brand : &nbsp;</span>
-                                        {{Form::text("data[trigger][hcg][brand]",!empty($ivfData->trigger->hcg->brand) ? $ivfData->trigger->hcg->brand : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-2">
-                            <div class="checkbox">
-                                {{Form::checkbox('data[trigger][decapeptyl][status]','decapeptyl',!empty($decapeptylStatus) ? false : true,['id'=>'decapeptyl'])}}
-                                <label for="decapeptyl">
-                                    Decapeptyl
-                                </label>
-                            </div>
-                        </div>
-                        <div class="{{'decapeptyltrigger '.$decapeptylStatus}}">
-                            <div class="row ml-3">
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Time : &nbsp;</span>
-                                            {{Form::text("data[trigger][decapeptyl][time]",!empty($ivfData->trigger->decapeptyl->time) ? $ivfData->trigger->decapeptyl->time : null,['class'=>'form-control timepicker time','placeholsder'=>'Brand'])}}
-                                    </div>
-                                </div>
                                 <div class="col-sm-4">
                                     <div class="input-group">
                                         <span class="input-group-addon">Dose : &nbsp;</span>
-                                        {{Form::text("data[trigger][decapeptyl][dose]",!empty($ivfData->trigger->decapeptyl->dose) ? $ivfData->trigger->decapeptyl->dose : null,['class'=>'form-control'])}}
+                                        {{Form::text("data[trigger][hcg][dose]",!empty($ivfData->trigger->hcg->dose) ? $ivfData->trigger->hcg->dose : null,['class'=>'form-control'])}}
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Brand : &nbsp;</span>
-                                        {{Form::text("data[trigger][decapeptyl][brand]",!empty($ivfData->trigger->decapeptyl->brand) ? $ivfData->trigger->decapeptyl->brand : null,['class'=>'form-control'])}}
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Brand : &nbsp;</span>
+                                            {{Form::text("data[trigger][hcg][brand]",!empty($ivfData->trigger->hcg->brand) ? $ivfData->trigger->hcg->brand : null,['class'=>'form-control'])}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-2">
-                            <div class="checkbox">
-                                {{Form::checkbox('data[trigger][dualtrigger][stauts]','dualtrigger',!empty($ivfData->trigger->dualtrigger->stauts) && $ivfData->trigger->dualtrigger->stauts == 'dualtrigger' ? true : false ,['id'=>'dualtrigger'])}}
-                                <label for="dualtrigger">
-                                    Dule Trigger
-                                </label>
+                        <div class="row mt-1">
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    {{Form::checkbox('data[trigger][decapeptyl][status]','decapeptyl',!empty($decapeptylStatus) ? false : true,['id'=>'decapeptyl'])}}
+                                    <label for="decapeptyl">
+                                        Decapeptyl
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="{{'decapeptyltrigger '.$decapeptylStatus}}">
+                                <div class="row ml-3">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Time : &nbsp;</span>
+                                                {{Form::text("data[trigger][decapeptyl][time]",!empty($ivfData->trigger->decapeptyl->time) ? $ivfData->trigger->decapeptyl->time : null,['class'=>'form-control timepicker time','placeholsder'=>'Brand'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Dose : &nbsp;</span>
+                                            {{Form::text("data[trigger][decapeptyl][dose]",!empty($ivfData->trigger->decapeptyl->dose) ? $ivfData->trigger->decapeptyl->dose : null,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Brand : &nbsp;</span>
+                                            {{Form::text("data[trigger][decapeptyl][brand]",!empty($ivfData->trigger->decapeptyl->brand) ? $ivfData->trigger->decapeptyl->brand : null,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    {{Form::checkbox('data[trigger][dualtrigger][stauts]','dualtrigger',!empty($ivfData->trigger->dualtrigger->stauts) && $ivfData->trigger->dualtrigger->stauts == 'dualtrigger' ? true : false ,['id'=>'dualtrigger'])}}
+                                    <label for="dualtrigger">
+                                        Dule Trigger
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {{-- @endif --}}
+                @endif
             
             @if($ivf->plan != 3 )
                 {{-- <div class="row mt-1">

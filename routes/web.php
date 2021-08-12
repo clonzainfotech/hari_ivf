@@ -155,7 +155,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
 
     // IUI Route
     Route::get('iui/create/{patientsId}/{appointmentId?}','IUIController@create');
-    Route::get('iui/extra-visit/{patientsId}','IUIController@extraVisit');
+    Route::get('iui/extra-visit/{patientsId}/{cycleNo}','IUIController@extraVisit');
     Route::post('iui/store-extra-visit','IUIController@storeExtraVisit');
     Route::get('iui/history/{patientsId}/{appointmentId?}','IUIController@iuiHistory');
     Route::get('iui','IUIController@index');

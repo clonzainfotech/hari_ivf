@@ -1,9 +1,10 @@
 @php
 use App\Models\IuiHistory;
+use App\Models\IuiExtraVisit;
 $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
-$medicine_status = ['' => 'Select Medicine Status','1'=>'જમ્યા પછી','2'=>'જમ્યા પહેલાં','3'=>'માસિકની જગ્યાએ મુકવી'];
-$medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
-$dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day"];
+        $medicine_status = ['' => 'Select Medicine Status','1'=>'જમ્યા પછી','2'=>'જમ્યા પહેલાં','3'=>'માસિકની જગ્યાએ મુકવી'];
+        $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
+        $dose = ['' => 'Select Dose',"1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
 @endphp
 {{-- <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet"/> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -3298,7 +3299,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     $notinject = "";
                                     if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                         $notinject = "is-inj";
-                                        $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day",'7'=>"6 hourly",'8'=>"8 hourly",'9'=>"12 hourly",'10'=>"24 hourly"];
 
                                     }
                                     $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
@@ -3387,7 +3387,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
-                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
+                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id).'/'.encrypt($cycleNo))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
                     </div>
                 </div>
                 @if($remark && !$iuiHistoryId)
@@ -3862,8 +3862,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     $notinject = "";
                                     if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                         $notinject = "is-inj";
-                                        $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day",'7'=>"6 hourly",'8'=>"8 hourly",'9'=>"12 hourly",'10'=>"24 hourly"];
-
                                     }
                                     $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
                                     ?>
@@ -4054,7 +4052,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-5"></div>
                     <div class="col-md-2 text-right">
-                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
+                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id).'/'.encrypt($cycleNo))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
                     </div>
                 </div>
                 @if($remark && !$iuiHistoryId)
@@ -4663,6 +4661,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     }
                                     $hcgDataArray = [];
                                 @endphp
+
                                
                                 @foreach($iuiHistoryData as $key=>$row)
                                     @if($row->visit != 4)
@@ -4688,6 +4687,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                             $dateAndInjectionData = [];
                                             $iuiData = [];
                                             $inducingDateArray = [];
+                                            $iuiExtraVisit = null;
                                             if(!empty($prevAppointmentDate)){
                                                 $appointmentDate = $prevAppointmentDate;
                                             }
@@ -4763,6 +4763,29 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     </tr>
                                                 @endif
                                             @endforeach
+                                        @endif
+                                        @if($row->visit == 2)
+                                            @php
+                                                $iuiExtraVisit = IuiExtraVisit::where('patient_id',$row->patients_id)->where('created_at','<',$row->created_at)->orderBy('id','DESC')->get();
+                                            @endphp
+                                            @if(!empty($iuiExtraVisit))
+                                                    @foreach($iuiExtraVisit as $iuiExtra)
+                                                    <tr >
+                                                        <td>{{\Carbon\Carbon::parse($iuiExtra->created_at)->format('d-m-Y')}}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>{{'Extra Visit'}}</td>
+                                                        <td>
+                                                            <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id).'/'.encrypt($cycleNo))}}" class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
+                                                                <i class="zmdi zmdi-edit material-icons"></i>
+                                                            </a>
+                                                    </tr>
+                                                    @endforeach
+                                            @endif
                                         @endif
                                         <tr >
                                             <td>{{$createdAt}}</td>
@@ -5526,8 +5549,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 $notinject = "";
                                                 if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                                     $notinject = "is-inj";
-                                                    $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day",'7'=>"6 hourly",'8'=>"8 hourly",'9'=>"12 hourly",'10'=>"24 hourly"];
-
                                                 }
                                                 $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
                                                 ?>
