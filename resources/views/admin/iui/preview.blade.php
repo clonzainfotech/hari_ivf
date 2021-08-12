@@ -3490,15 +3490,15 @@
                     <tr>
                         <th>
                             @if (!empty($oe->ovary->right->updated_details))
-                            <span class="iui-label">Right Ovary</span>
+                            <span class="iui-label">Right Ovary : </span>
                                 @foreach ($oe->ovary->right->updated_details as $key => $value)
                                     @php
                                         echo !empty($value) ? $value .  '<br />' : '- <br />';
                                     @endphp
                                 @endforeach
                             @endif
-                            @if(!empty($oe->ovary->right->afcs) && isset($mh->lmd_date_diff) && in_array($mh->lmd_date_diff,['2','3','4']))
-                                <span class="iui-label">Follicle numbers per ovaryy</span>
+                            @if(!empty($oe->ovary->right->afcs))
+                                <span class="iui-label">Follicle numbers per ovary : </span>
                                 {{$oe->ovary->right->afcs}}
                             @endif
                         </th>
@@ -3508,15 +3508,15 @@
                     <tr>
                         <th>
                             @if(!empty($oe->ovary->left->updated_details))
-                            <span class="iui-label">Left Ovary</span>
+                            <span class="iui-label">Left Ovary : </span>
                                 @foreach($oe->ovary->left->updated_details as $key => $value)
                                     @php
                                         echo !empty($value) ? $value .  '<br />' : '- <br />';
                                     @endphp
                                 @endforeach
                             @endif
-                            @if(!empty($oe->ovary->left->afcs) && isset($mh->lmd_date_diff) && in_array($mh->lmd_date_diff,['2','3','4']))
-                                <span class="iui-label">Follicle numbers per ovaryy</span>
+                            @if(!empty($oe->ovary->left->afcs))
+                                <span class="iui-label">Follicle numbers per ovary : </span>
                                 {{$oe->ovary->left->afcs}}
                             @endif
                         </th>
@@ -3627,6 +3627,11 @@
                 </table>
             @endif
         @endif
+        @if(isset($patients_remark) && !empty($patients_remark))
+                        <span class="font-bold">Remark : {{$patients_remark}}</span>
+                    @else
+                    <span class="font-bold">Remark : {{isset($oe->remark) && !empty($oe->remark) ? $oe->remark : ''}}</span>
+                    @endif
         @if(isset($oe->follow_up) && !empty($oe->follow_up))
         <br>
                     <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>

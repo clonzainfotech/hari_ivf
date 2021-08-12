@@ -429,6 +429,18 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    {{Form::textarea("oe[remark]",!empty($oe->remark) ? $oe->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    {{Form::textarea("oe[pt_remark]",!empty($oe->pt_remark) ? $oe->pt_remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Patient Remark','rows'=>'2'])}}
+                </div>
+            </div>
+        </div>
         <br>
         @if(empty($iuiHistoryData))
             <div class="row">

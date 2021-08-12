@@ -2292,6 +2292,8 @@ class IUIController extends AdminController
                 {
                     $isExtraVisit = 1;
                     $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                    $oe = !empty($iuiExtraVisit) ? json_decode($iuiExtraVisit->oe) : null;
+                    $patients_remark = !empty($oe) && isset($oe->pt_remark) ? $oe->pt_remark : '';
                 }
                 if(!$iuiData && empty($iuiExtraVisit)){
                     return 'no record available';

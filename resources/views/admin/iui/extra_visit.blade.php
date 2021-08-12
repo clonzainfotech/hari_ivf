@@ -127,7 +127,7 @@
             
             $(document).on('click','.submit',function(e){
                 e.preventDefault();
-                $(this).attr('disabled',true);
+                $('.submit').attr('disabled',true);
                 var iuiFormData = new FormData($(".extra-iui-form")[0]);
                 if(this.value==1){
                     iuiFormData.append('isprint', 1);
