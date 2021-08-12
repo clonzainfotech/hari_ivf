@@ -102,7 +102,7 @@ class PatientController extends ApiController
                 // $surname = $request->surname;
                 // $firstname = $request->firstname;
                 // $lastname = $request->lastname;
-                $name = strtoupper($fullname);
+                $name = strtoupper($request->fullname);
                 $dob = $request->dob ? Carbon::parse($request->dob)->format('Y-m-d') : null;
                 $gender = $request->gender;
                 // $age = (date('Y') - date('Y',strtotime($dob)));
