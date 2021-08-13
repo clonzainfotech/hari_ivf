@@ -394,7 +394,8 @@ class ReportController extends AdminController
                 
                 
                 //OPD
-                if(empty($charge_type) || $charge_type == 1)
+                //charge type 5 and 6 is for  new patients category and old patients category
+                if(empty($charge_type) || $charge_type == 1 || $charge_type == 5 || $charge_type == 6)
                 {
 
                     $iuiReport = $this->IndoorDeposit
@@ -417,6 +418,7 @@ class ReportController extends AdminController
                     ])
                     ->orderBy('id', 'DESC');
                 }
+                
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
                 if($fromdate || $todate){
@@ -426,11 +428,22 @@ class ReportController extends AdminController
                     $iuiReport = $iuiReport->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
                 }
 
-                $categoryId = $request->categoryId;
-                if($categoryId){
+                $categoryId = !empty($request->categoryId) ? [$request->categoryId] : [];
+                if(!empty($charge_type) && $charge_type == 5)//new category patient
+                {
+
+                    $categoryId = [1,3,5,8,10];
+                }
+                if(!empty($charge_type) && $charge_type == 6)//oldcategory patient
+                {
+
+                    $categoryId = [2,4,6,9,13];
+                }
+                
+                if(count($categoryId) > 0){
                     $reportDatails['category'] = $this->Category->where('id',$categoryId)->value('name');
                     $refDoctorReport =$refDoctorReport->WhereHas('getAppointment', function ($query) use ($categoryId) {
-                        $query->where('category_id', $categoryId);
+                        $query->whereIn('category_id', $categoryId);
                     });
                 }
                 $categoryReport = $refDoctorReport->get();
@@ -471,6 +484,7 @@ class ReportController extends AdminController
             }
             return view('admin.report.refdoctor.index',compact('doctor','category'));
         }catch(Exception $e){
+            log::Debug($e);
             abort(500);
         }
     }

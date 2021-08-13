@@ -730,7 +730,6 @@
                                         {{Form::number('package',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->package)) ? $ivfPaymentHistory->package : '',['class'=>'form-control add_sum ivf_payment p-total-package','id'=>'package','min'=>1,$is_readonly])}} 
                                     </div>
                                     <span class="form-error-msg p-total-package-error m-0 p-1"></span>
-
                                 </div>
                                 <div class="col-md-2">
                                     <div class="input-group form-padding">
@@ -750,7 +749,7 @@
                                 <div class="col-md-2">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">Discount : &nbsp;</span>
-                                        {{Form::number('discount',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->discount)) ? $ivfPaymentHistory->discount : '',['class'=>'form-control p-total-payment add_sum ivf_payment','id' => 'discount','min'=>1,'onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57"])}}
+                                        {{Form::number('discount',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->discount)) ? $ivfPaymentHistory->discount : '',['class'=>'form-control p-total-payment add_sum ivf_payment','id' => 'discount','min'=>1,'onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57",$is_readonly])}}
                                     </div>
                                 </div> 
                             </div>

@@ -2672,7 +2672,7 @@
                             {{Form::hidden('last_s_days',$sDay,['class'=>'last-s-days'])}}
                             {{Form::hidden('last_protocol_date',$pDate,['class'=>'last-protocol-date'])}}
 
-                            <h4 class="col-md-2 visit-lable m-0">Visitt :<span class="col-md-2 visit-lable-value">{{$visit}}
+                            <h4 class="col-md-2 visit-lable m-0">Visit :<span class="col-md-2 visit-lable-value">{{$visit}}
                                 {{-- <span class="plan-text">{{!empty($ivfSecondVisitData->plan) ? $planData[$ivfSecondVisitData->plan] : null}}</span> --}}
                             </h4><br>
                             @if(!$isTransfer)
