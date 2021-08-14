@@ -1017,7 +1017,7 @@ class IUIController extends AdminController
                 $fDate = $fDate ? date('d M Y',strtotime($fDate)) : null;
                 $this->SmsManager::sendReferenceDoctor($msg,$seenBy->name,$fDate,$patientsId);
             }
-            if(isset($request->is_iui_report) && $request->is_iui_report == 'yes')
+            if(isset($request->is_iui_report) && $request->is_iui_report == 'yes' && $request->data['hcg']['iui']['status'] == 'yes')
             {
                 $iuiReport = $this->IUIReport;
                 $iuiReport->patients_id = $patientsId;
