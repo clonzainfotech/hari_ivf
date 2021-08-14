@@ -3172,6 +3172,32 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                         </table>
                     </div>
                 @endif
+                @if(!empty($lastHistoryData->transfer->result_type))
+                    @php
+                        $visitDate = \Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y');
+                        $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $datarow->created_at)->diffInDays(\Carbon\Carbon::parse($visitDate));
+                        $diff = $diff + 1;
+                    @endphp
+                    <div class="col-md-12">
+                        <h5 class=""><u>Result:</u></h5>
+                        <table class="table follicular-table frozen-table table-bordered ">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>UPT</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{$visitDate}}</td>
+                                    <td>{{$lastHistoryData->transfer->upt_type}}</td>
+                                    <td>{{$lastHistoryData->transfer->result_type}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
                 <div class="col-md-12 mt-3">
                     <h3 class="text-left"><u>Medicine:</u></h3>
                     <table class="module-report-table study-report-table">

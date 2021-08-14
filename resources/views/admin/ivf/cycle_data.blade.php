@@ -291,6 +291,8 @@
                                             $i++;
                                             $datarow = $row;
                                             $skipValue = 0;
+                                            $resultValue = 0;
+
                                                 $historyData = json_decode($row->description);
                                                 if($row->cycle_status == 2){
                                                     $visit = $row->visit + 1;
@@ -313,6 +315,11 @@
                                             if((!empty($historyData->plan) || !empty($historyData->follow_up)) && !empty($historyData->skip_reason))
                                             {
                                                 $skipValue = 1;
+                                            }
+                                            //for result table
+                                            if(isset($historyData->is_upt) && $historyData->is_upt == 'yes' && !empty($historyData->transfer->upt_type) && !empty($historyData->transfer->result_type))
+                                            {
+                                                $resultValue = 1;
                                             }
                                         @endphp
                                         @if($row->visit == 2)
@@ -419,6 +426,12 @@
                                                                             @endif
                                                                         </td>
                                                                         <td>{{$j == 1 && !empty($data->et_details) ? $data->et_details : '-'}}
+                                                                            @if (in_array('transfer',$collectionData) && $j == 1)
+                                                                            <br>
+                                                                                    <a href="javascript:void(0);" id="ivf_transfer_report_update" data-patient-id={{ encrypt($datarow->patients_id)}} data-cycle-no={{ encrypt($datarow->cycle_no)}} data-plan={{ encrypt($datarow->plan)}} data-visit={{ encrypt($datarow->visit)}}>
+                                                                                        IVF Transfer Report
+                                                                                    </a>
+                                                                            @endif
                                                                         </td>
                                                                         <td>
                                                                             @if($j == 1)
@@ -442,7 +455,7 @@
                                                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini delete-visit-data" data-id="{{ encrypt($datarow->id) }}">
                                                                                     <i class="zmdi zmdi-delete material-icons"></i>
                                                                                 </a>
-                                                                                @if(isset($historyData->is_transfer) && ($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no'))
+                                                                                @if(isset($historyData->is_transfer) && ($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no') && !in_array('transfer',$collectionData))
                                                                                 <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-visit-data" data-id="{{encrypt($datarow->id)}}"><i class="zmdi zmdi-edit material-icons"></i></a>
                                                                                 @endif
                                                                                 @if((isset($historyData->hsa_report->images) && !empty($historyData->hsa_report->images)) || (isset($historyData->blood_report->image) && !empty($historyData->blood_report->image)) || (isset($historyData->usg->images) && !empty($historyData->usg->images)) || (isset($investigationData->hystroscopy->images) && !empty($investigationData->hystroscopy->images)) || (isset($investigationData->laproscopy->images) && !empty($investigationData->laproscopy->images)))
@@ -458,11 +471,31 @@
                                                                             $fshDose += !empty($row->fsh) && is_numeric($row->fsh) ? $row->fsh : 0;
                                                                         @endphp
                                                                     </tr>
+                                                                    
                                                                 {{-- @endif --}}
                                                                 @php
                                                                     $lastS_day = $row->s_day;
                                                                 @endphp
                                                             @endforeach
+                                                            @if(!empty($historyData->progesterone->status) && $historyData->progesterone->status == 'yes' && !empty($historyData->progesterone->type))
+                                                                    <tr>
+                                                                        <td>{{\Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y')}}</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td>{{'Progesterone Start'}}</td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                @endif
                                                         {{-- @if($i===$cycle_no) --}}
                                                         
                                                         {{-- @endif --}}
@@ -475,9 +508,11 @@
                                         $lastCycleData = json_decode($cycle[count($cycle)-1]['description']);
                                         $nextVisitNo = count($cycle) + 2;
                                         $prevAppointmentDate = !empty($lastCycleData->follow_up) ? \Carbon\Carbon::parse($lastCycleData->follow_up)->format('d-m-Y') : null;
-                                        $currentDateDiff = \Carbon\Carbon::parse($lastCycleData->lmp->date)->diffInDays(\Carbon\Carbon::parse($prevAppointmentDate));
+                                        $currentDateDiff = \Carbon\Carbon::parse(!empty($historyLmddateDate) ? $historyLmddateDate : $cycle[count($cycle)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($prevAppointmentDate));
+                                        // $currentDateDiff = \Carbon\Carbon::parse(!empty($historyLmddateDate) ? $historyLmddateDate : $cycle[count($cycle)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
+
                                     @endphp
-                                    @if(($cycle[count($cycle)-1]['cycle_status'] != 2))
+                                    @if(($cycle[count($cycle)-1]['cycle_status'] != 2) && $resultValue == 0)
                                         @php
                                             $left_class_name = 'td-left-overy-'.$prevAppointmentDate.'-text';
                                             $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
@@ -502,13 +537,17 @@
                                                     <i class="material-icons td-left-overy-{{$prevAppointmentDate}} overy-popup" data-class='{{'td-left-overy-'.$prevAppointmentDate}}'>keyboard</i>
                                             </td>
                                             <td>{{Form::text("data[et_details]",'',['class'=>'form-control  border-none bg-transparent','placeholder'=>'Enter ET Details'])}}</td>
-                                            <td>{{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark  border-none bg-transparent','placeholder'=>'Remark','rows'=>'2'])}}</td>
+                                            <td>
+                                                {{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark  border-none bg-transparent','placeholder'=>'Remark','rows'=>'2'])}}
+                                                <span class="transfer-error text-danger mb-2"></span>
+                                            
+                                            </td>
                                             <td></td>
                                         </tr>
                                     @endif
                                     </tbody>
                                     
-                                    @if(($cycle[count($cycle)-1]['cycle_status'] != 2))
+                                    @if(($cycle[count($cycle)-1]['cycle_status'] != 2) && $resultValue == 0)
                                     <tfoot>
                                         <tr>
                                             <td colspan="15">
@@ -804,6 +843,86 @@
                                                                 </label>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="checkbox">
+                                                                {{Form::checkbox('data[collection][]','transfer','',['id'=>'transfer','class'=>'transfer'])}}
+                                                                <label for="transfer">
+                                                                    Transfer
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                        </div>
+                                                        <div class="col-md-4 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Indication: &nbsp;</span>
+                                                                {{Form::text("indication",'',[
+                                                                    'class'=>'form-control',
+                                                                    'maxlength' => 250
+                                                                ])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">ET Date: &nbsp;</span>
+                                                                {{Form::text("et_date", \Carbon\Carbon::now()->addDays(1)->format('D d M Y'), ['class'=>'form-control datetimepicker'])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Day: &nbsp;</span>
+                                                                {{Form::text("day",'',['class'=>'form-control', 'maxlength' => 250])}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-1">
+                                                        <div class="col-md-1">
+                                                        </div>
+                                                        <div class="col-md-4 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Endo. Thickness: &nbsp;</span>
+                                                                {{Form::text("endo_thickness",'',[
+                                                                    'class'=>'form-control',
+                                                                    'maxlength' => 250
+                                                                ])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">ET Procedure: &nbsp;</span>
+                                                                {{Form::text("et_procedure",'',['class'=>'form-control', 'maxlength' => 250])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Frozen Embryos: &nbsp;</span>
+                                                                {{Form::text("frozen_embryos",'',[
+                                                                    'class'=>'form-control',
+                                                                    'maxlength' => 250
+                                                                ])}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-1">
+                                                        <div class="col-md-1">
+                                                        </div>
+                                                        <div class="col-md-3 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Embryos Transferred: &nbsp;</span>
+                                                                {{Form::text("embryos_transferred",'',['class'=>'form-control', 'maxlength' => 250])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 transfer-data d-none">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Embryos Transferred Image: &nbsp;</span>
+                                                                {{Form::file('embryos_transferred_image',['class'=>'form-control embryos_transferred_image'])}}
+                                                            </div>
+                                                        </div>
+                                                        
                                                     </div>
                                                     {{Form::hidden("data[trigger][update_status]",'no')}}
                                                     <div class="row mt-1">
@@ -1130,32 +1249,7 @@
                                                             </div>
                                                         {{-- </div> --}}
                                                     </div>
-                                                    {{-- <br>
-                                                    <br>
-                                                    <div id="treatment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree_1">
-                                                        <div class="panel-body" id="parent">
-                                                            <div class="row treatment-data" id="t_data_1">
-                                                                <div class="col-md-2 pr-0">
-                                                                    <label class="vertical-form-label pr-0">
-                                                                        Select Medicine :
-                                                                    </label>
-                                                                </div>
-                                                                <div class="col-md-9 complain-multi medicine-picker">
-                                                                    {{Form::select("treatment[medicinedata][]",$medicines,'',['id'=>'treatment-medicine','class'=>'form-control co-value medicines-data','placeholder' =>'Enter medicine name'])}}
-                                                                </div>
-                                                            </div>
-                                                            <br>
-                                                            <div class="page-loader-wrapper medicine-loader d-none">
-                                                                <div class="loader">
-                                                                    <div class="m-t-30"><img src="{{url(config('app.loader'))}}" width="48" height="48" alt="Oreo"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="medicine-data treatment-medicine-data">
-
-                                                            </div>
-                                                            {{Form::hidden('old_medicine_data','',['class'=>'old-medicine-data'])}}
-                                                        </div>
-                                                    </div> --}}
+                                                    
                                                     {{Form::hidden("data[is_upt]",'no')}}
                                                 {{-- @endif --}}
                                                 @else
@@ -1399,6 +1493,32 @@
                                             <td>{{$visitDate}}</td>
                                             <td>{{$planData[$lastCycleData->plan]}}</td>
                                             <td>{{$lastCycleData->skip_reason}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        @if(!empty($lastCycleData->transfer->result_type))
+                            @php
+                                $visitDate = \Carbon\Carbon::parse($cycle[count($cycle)-1]['created_at'])->format('d-m-Y');
+                                $diff = \Carbon\Carbon::parse(!empty($historyLmddateDate) ? $historyLmddateDate : $cycle[count($cycle)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
+                                $diff = $diff + 1;
+                            @endphp
+                            <div class="col-md-12">
+                                <h5 class=""><u>Result:</u></h5>
+                                <table class="table follicular-table frozen-table table-bordered ">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>UPT</th>
+                                            <th>Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{$visitDate}}</td>
+                                            <td>{{$lastCycleData->transfer->upt_type}}</td>
+                                            <td>{{$lastCycleData->transfer->result_type}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -5596,7 +5716,8 @@
                 var plan = $('.pickup-plan').val();
                 var pId = $('.patients-id').val();
                 var pType = $('.plan_type').val();
-                if(transferPlan != '' && transferPlan == 2 && ivfReport == '' && pType == 1){
+                var resultType = $('.result-type').val();
+                if(transferPlan != '' && transferPlan == 2 && ivfReport == '' && pType == 1 && resultType == ''){
                     window.location.href  = "{{URL::to('ivf-plan-report/')}}"+"/"+plan+"/"+pId+"/"+cNumber;
                     return true;
                 }
