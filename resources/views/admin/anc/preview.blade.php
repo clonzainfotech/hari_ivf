@@ -975,7 +975,7 @@
                                     $noValueData[] = ' MTP';
                                 @endphp
                             @endif
-                            @if(empty($patientsObstratics->abortion_no) || empty($patientsObstratics->abortion->when_where))
+                            @if(empty($patientsObstratics->abortion_no))
                                 @php
                                     $noValueData[] = ' Abortion';
                                 @endphp
