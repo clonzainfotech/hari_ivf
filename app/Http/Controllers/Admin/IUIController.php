@@ -327,6 +327,32 @@ class IUIController extends AdminController
                 //     $this->medicineData($request->treatment['medicinedata']);
                 //     $this->treatmentData($request->treatment);
                 // }
+                $followupDate = !empty($request->oe['follow_up']) ? $request->oe['follow_up'] : null;
+                $appointmentTime = null;
+                        $fDate = !empty($followupDate) ? Carbon::parse($followupDate)->format('Y-m-d') : null;
+                        if($fDate){
+                            $requestData = new \Illuminate\Http\Request();
+                            $requestData->replace(['date' => $fDate,'status'=>true]);
+                            $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
+                            if(!empty($nextAppontment['time']) || $nextAppontment['time'] == 0){
+                                $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
+                                $appointmentTime = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
+                                $followupDate = !empty($nextAppontment['date']) ? $nextAppontment['date'] : $followDate;
+                            }
+                        }
+                        // $checkAppointment = $this->Appointment->wherePatientsId($patientsId)->whereDate('date',$followDate)->orderBy('id','DESC')->first();
+                        $appointment = $this->Appointment->where('patients_id',$patientsId)->orderBy('id','DESC')->first();
+                        if($appointment){
+                            if(!empty($request->data['ivf']) && $request->data['ivf'] == 'yes')
+                            {
+                                $appointmentData['category'] = 1;
+                            }
+                            $appointmentData['appointmentId'] = encrypt($appointment->id);
+                            $appointmentData['date'] = $followupDate;
+                            $appointmentData['time'] = $appointmentTime;
+                            $nextAppointment = $this->nextAppointmentData($appointmentData);
+                        }
+
                 $iui->treatment = !empty($request->treatment) ? json_encode($request->treatment) : json_encode($request->old_treatment);
                 // patients data update from iui
                 $patients = $this->OpdPatients->find($patientsId);
@@ -650,7 +676,7 @@ class IUIController extends AdminController
                     $lastIui = $this->IUI->wherePatientsIdAndCycleNo($patientsId, $request->cycle_no)->first();
                     $lastIUIHistory = $this->IuiHistory->wherePatientsIdAndCycleNo($patientsId, $request->cycle_no)->get();
                     $iuiSecondVisit = $this->IuiHistory->where('patients_id',$patientsId)->whereCycleNo($request->cycle_no)->where('visit',2)->first();
-                    $iuiSecondVisitData = json_decode($iuiSecondVisit->description);
+                    $iuiSecondVisitData = !empty($iuiSecondVisit) ? json_decode($iuiSecondVisit->description) : null;
                     
                     $checkIvf = $this->IVF->wherePatientsId($lastIui->patients_id)->first();
                     $ivf = (!$checkIvf) ? $this->IVF : $this->IVF->wherePatientsId($lastIui->patients_id)->first();
@@ -669,7 +695,7 @@ class IUIController extends AdminController
                     $ivf->plan_management = $lastIui->plan_management;
                     $ivf->possible_case_of_infertility = $lastIui->possible_case_of_infertility;
                     $ivf->treatment = $lastIui->treatment;
-                    $ivf->lmp_date = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->format('Y-m-d') : '';
+                    $ivf->lmp_date = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->format('Y-m-d') : Carbon::parse(!empty($request->data['lmp']['date']) ? $request->data['lmp']['date'] : date('y-m-d'))->format('Y-m-d');
                     $ivf->save();
                     if($lastIUIHistory)
                     {
@@ -679,6 +705,7 @@ class IUIController extends AdminController
                         $lastivfHistory = $lastCycleNo->last();
                         $ivfVisit = 2;
                         $third_visit_Skey = 1;
+                        $ivfHistorydata = [];
                         foreach($lastIUIHistory as $iuiHistory)
                         {
                             $iuiData = json_decode($iuiHistory->description);

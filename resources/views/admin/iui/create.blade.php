@@ -3139,6 +3139,24 @@
 
                                 {{Form::hidden('next_date','',['class'=>'next-date-value'])}}
                                 {{Form::hidden('next_time','',['class'=>'next-time-value'])}}
+                                <div class="row">
+                                                
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Follow Up : &nbsp;</span>
+                                                        {{Form::text("oe[follow_up]",'',['class'=>'form-control datetimepicker follow-up-date next-date '])}}
+                                                    </div>
+                                                    <span class="follow-date-msg form-error-msg"></span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Day : &nbsp;</span>
+                                                        {{Form::text("oe[follow_up_date_diff]",'',['class'=>'form-control next-day','maxlength'=>3,'placeholder'=>'Date Diff'])}}
+                                                    </div>
+                                                </div>
+
+                                                <span class="col-md-1 p-3 history-lmp-date">Day</span>
+                                            </div>
                                 <div class="col-sm-12">
                                     {{Form::submit('submit',['class'=>'btn btn-primary submit'])}}
                                     <button type="submit" class="btn btn-primary submit" value="1">Save & Preivew</button>

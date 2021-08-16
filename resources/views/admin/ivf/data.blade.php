@@ -68,13 +68,7 @@
             <td>{{$row->getSeenBy['name']}}</td>
             <td><div class="text-wrraping">{{$row->remark}}</div></td>
             <td><a href="{{$paymentUrl}}"   class="btn btn-primary btn-sm ivf-payment-font">Payment</a><a href="{{$viewUrl}}" class="btn btn-primary btn-sm ivf-payment-font">View</a>
-                @if($patient_notification['name'] == $name)
-                    <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
-                @else
-                    @if($row->arrival_time)
-                        <button class="btn btn-danger btn-sm notify-patient" id=""   onclick="callPatient('{{$name}}','IVF',this)">Call Patient</button>
-                    @endif
-                @endif
+                
             </td>
         </tr>
     @empty

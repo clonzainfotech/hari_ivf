@@ -3095,6 +3095,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                     </div>
                                     {{-- Cervical--}}
                                     <div class="row">
+                                        @if($key == 1)
                                         <div class="col-md-1 pr-0 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
                                             <label class="vertical-form-label pr-0 green-lable">
                                                 Cervical length :
@@ -3103,6 +3104,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                         <div class="col-sm-2 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
                                             {{Form::text("oe[utdata][".$key."][cervical_length]",@$value->cervical_length && !empty($value->cervical_length) ? $value->cervical_length:'',['id'=>'cervical_length','class'=>'form-control cervical_length','data-id'=>1])}}
                                         </div>
+                                        @endif
                                         <div class="col-md-2 pr-0 extra-female-data-{{$key}} expected-data-{{$key}} d-none">
                                             <label class="vertical-form-label pr-0 green-lable">
                                                 Expected Birth Weight :

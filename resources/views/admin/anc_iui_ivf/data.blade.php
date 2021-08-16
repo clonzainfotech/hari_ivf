@@ -99,6 +99,8 @@
                 @endphp
             @endif
             @php
+                $name = ucwords(strtolower($row->getPatientsDetails['name']));
+                $catname = $row->categoryDetails['name'];
                 $paymentUrl = url('ivf/payments/'.encrypt($row->patients_id));
                 $uniqId = (($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration;
             @endphp
@@ -152,12 +154,18 @@
                         @endif
                     </div>
                 </td>
-
+                <td>
                 @if($row->categoryDetails['id'] == 1 || $row->categoryDetails['id'] == 2)
-                <td><a href="{{$paymentUrl}}" class="btn btn-primary btn-sm ivf-payment-font"> IVF Payment</a></td>
-                @else
-                <td></td>
+                <a href="{{$paymentUrl}}" class="btn btn-primary btn-sm ivf-payment-font"> IVF Payment</a>
                 @endif
+                @if($patient_notification['name'] == $name)
+                    <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
+                @else
+                    @if($row->arrival_time)
+                        <button class="btn btn-danger btn-sm notify-patient" value="fgdg"  onclick="callPatient('{{$name}}','{{$cName}}',this)">Call Patient</button>
+                    @endif
+                @endif
+                </td>
             </tr>
         @empty
             <td colspan='9' class="text-center">No records available</td>

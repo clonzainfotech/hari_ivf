@@ -428,10 +428,11 @@ class HomeController extends AdminController
                     return $data;
                 }
                 $appointment = $appointment->paginate(100);
+                $patient_notification = $this->patientNotification->first();
                 $data['status'] = 1;
                 $data['patientsData'] = $patients;
                 $data['pId'] = $request->patient_id;
-                $data['appointmentData'] = View::make('admin.anc_iui_ivf.data',compact('patients','appointment','categoryArray'))->render();
+                $data['appointmentData'] = View::make('admin.anc_iui_ivf.data',compact('patients','appointment','categoryArray','patient_notification'))->render();
                 return $data;
             }
             return view('admin.anc_iui_ivf.index',compact('appointment','categoryData','referenceDoctor','doctor','hospitalDoctor','patients'));

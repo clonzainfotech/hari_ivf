@@ -2025,6 +2025,9 @@
                             </tbody>
                         </table>
                     @endif
+                    @if(isset($oe->follow_up) && !empty($oe->follow_up))
+                    <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                    @endif
                     
                 @endif
                 @if(isset($visit) && $visit != null)

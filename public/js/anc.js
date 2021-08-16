@@ -1873,12 +1873,16 @@ function oeNumber(oeValue){
             "</div>"+
             "</div>"+
             "</div>"+
-            "<div class='row mb-2'>"+
-            "<div class='col-md-1 pr-0 extra-female-data-1 cervical-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Cervical length :</label></div>"+
-            "<div class='col-sm-2 extra-female-data-1 cervical-data-"+i+" d-none'>"+
-            "<input id='cervical_length_"+i+"' class='form-control expected_birth_weight' data-id='"+i+"' name='oe[utdata]["+i+"][cervical_length]' type='text' value=''>"+
-            "</div>"+
-            "<div class='col-md-2 pr-0 extra-female-data-1 expected-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Expected Birth Weight :</label></div>"+
+            "<div class='row mb-2'>";
+            if(i == 1)
+            {
+                oeValueData += "<div class='col-md-1 pr-0 extra-female-data-1 cervical-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Cervical length :</label></div>"+
+                "<div class='col-sm-2 extra-female-data-1 cervical-data-"+i+" d-none'>"+
+                "<input id='cervical_length_"+i+"' class='form-control expected_birth_weight' data-id='"+i+"' name='oe[utdata]["+i+"][cervical_length]' type='text' value=''>"+
+                "</div>";
+            }
+            
+            oeValueData += "<div class='col-md-2 pr-0 extra-female-data-1 expected-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Expected Birth Weight :</label></div>"+
             "<div class='col-sm-2 extra-female-data-1 expected-data-"+i+" d-none'>"+
             "<input id='expected_birth_weight_"+i+"' class='form-control expected_birth_weight' data-id='"+i+"' name='oe[utdata]["+i+"][expected_birth_weight]' type='text' value=''>"+
             "</div>"+

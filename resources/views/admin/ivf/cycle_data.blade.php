@@ -146,7 +146,7 @@
             <div class="card">
                 <div class="header">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <h2><strong class="text-secondary">{{ucwords($lastAppointment->getPatientsDetails->name)}}</strong>
                                 @php
                                     $careof = (!empty($lastAppointment->getPatientsDetails->reference_doctor_id) && isset($referenceDoctor[$lastAppointment->getPatientsDetails->reference_doctor_id])) ? $referenceDoctor[$lastAppointment->getPatientsDetails->reference_doctor_id] : '';
@@ -154,7 +154,7 @@
                                 {{' care of '.$careof}}</h2>
                                 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             {{-- @if($pStatus != 1)
                                 <a href="#" class="mb-1">
                                     <button class="btn btn-primary fet-btn pull-right fet-report">FET Report</button>
