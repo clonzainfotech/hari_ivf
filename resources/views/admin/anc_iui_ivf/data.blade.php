@@ -2,14 +2,12 @@
     <thead>
         <tr>             
             <th>Sr.No</th>
-            <th>Date</th>
-            <th>Time</th>
+            <th>Date/Time</th>
             <th>Arrival Time</th>
-            <th>Code</th>
             <th>Name</th>
+            <th>Mob. No/Code</th>
             <th>Seen By</th>
             <th>Category</th>
-            <th>Mobile Number</th>
             <th>Remark</th>
             <th>Action</th>
             
@@ -123,20 +121,18 @@
                     @endif
                     {{$isDone}} " data-apid="{{encrypt($row->id)}}">
                 <td> {{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td>{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
-                <td>{{\Carbon\Carbon::parse($row->time)->format('h:i a')}}</td>
+                <td class="line-height">{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}<br>{{\Carbon\Carbon::parse($row->time)->format('h:i a')}}</td>
                 <td>{{$row->arrival_time}}</td>
-                <td>{{$row->getPatientsDetails['code']}}</td>
-                <td class="patient_dropdown">{{ucwords(strtolower($row->getPatientsDetails['name']))}}&nbsp;
+                <td class="patient_dropdown ">{{ucwords(strtolower($row->getPatientsDetails['name']))}}&nbsp;
                     @if(in_array($row->categoryDetails['id'],[1,2,3,4,5,6]))
                         <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
                         <div class="{{'appointment_dropdown_content appointment_dropdown_content_'.$uniqId}}">
                         </div>
                     @endif
                 </td>
+                <td class="line-height">{{$row->getPatientsDetails['mobile_number']}}<br>{{$row->getPatientsDetails['code']}}</td>
                 <td>{{$row->getSeenBy['name']}}</td>
                 <td>{{$row->categoryDetails['name']}}</td>
-                <td>{{$row->getPatientsDetails['mobile_number']}}</td>
                <!--  <td>
                     {{$categoryName}} 
                 </td> -->

@@ -1762,6 +1762,7 @@ class IUIController extends AdminController
                     $nextAppointment = $this->nextAppointmentData($appointmentData);
                 }
             }
+            $iuiReport = $this->IUIReport->where('patients_id',$patientId)->where('cycle_no',$cycle_no)->first();
             if($request->isprint == 2){
                 return response()->json([
                     'status' => 2,
