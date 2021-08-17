@@ -204,7 +204,7 @@
                     <div class="col-md-6 text-right">
                         <a href="{{URL::to('get-all-report/'.encrypt($iui->getPatientsInfo->id).'?status=iui')}}" class="btn btn-primary mr-1">View Reports</a>
                         <a class="btn btn-primary view-file-edit ml-2">View File & Edit</a>
-                        @if(!empty($iuiReport))
+                        @if(!empty($iuiReportStatus))
                         <a class="btn btn-primary view-iui-report ml-2" data-toggle="modal" data-target="#iui-report-modal">IUI Report</a>
                         @endif
                     </div>
@@ -409,8 +409,8 @@
                 'class'=>'form-inline',
                 'id'=>'iui-report-update'
             ])}}
-            {{Form::hidden('iui_report_patient_id', !empty($iuiReport) ? encrypt($iuiReport->patients_id) : null,['id'=>'iui_report_id'])}}
-            {{Form::hidden('iui_report_cycle_no', !empty($iuiReport) ? encrypt($iuiReport->cycle_no) : null,['id'=>'iui_report_cycle_id'])}}
+            {{Form::hidden('iui_report_patient_id', !empty($iuiReport) ? encrypt($iuiReport->patients_id) : encrypt($iui->getPatientsInfo->id),['id'=>'iui_report_id'])}}
+            {{Form::hidden('iui_report_cycle_no', !empty($iuiReport) ? encrypt($iuiReport->cycle_no) : encrypt($iuiCurrentCycleNo),['id'=>'iui_report_cycle_id'])}}
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12 iui-report-data">
@@ -484,6 +484,18 @@
                             <span class="input-group-addon">Pus Cells / hpf: &nbsp;</span>
                             {{Form::text("iui_report[pus_cells_pre]",!empty($iuiReportData) && !empty($iuiReportData->pus_cells_pre) ? $iuiReportData->pus_cells_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
                             {{Form::text("iui_report[pus_cells_post]",!empty($iuiReportData) && !empty($iuiReportData->pus_cells_post) ? $iuiReportData->pus_cells_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Follow Up: &nbsp;</span>
+                            {{Form::text("iui_report[follow_up]",!empty($iuiReportData) && !empty($iuiReportData->follow_up) ? $iuiReportData->follow_up : null,['class'=>'form-control datetimepicker'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="form-group">
+                            {{-- <span class="input-group-addon">Remark: &nbsp;</span> --}}
+                            {{Form::textarea("iui_report[remark]",!empty($iuiReportData) && !empty($iuiReportData->remark) ? $iuiReportData->remark : null,['class'=>'form-control',"placeholder"=>"Remark",'rows'=>2])}}
                         </div>
                     </div>
                     
