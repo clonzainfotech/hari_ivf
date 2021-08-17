@@ -78,7 +78,7 @@
                             </th>
                             <th>
                             <th class="pb-1 float-right ivf-label">
-                                <span class="pb-1 ivf-label">Date :</span> <span class="pb-1 font-bold ivf-label">{{\Carbon\Carbon::parse($iuiReport->updated_at)->format('d-m-Y')}}</span><br>
+                                <span class="pb-1 ivf-label">Date :</span> <span class="pb-1 font-bold ivf-label">{{\Carbon\Carbon::parse($iuiReport->created_at)->format('d-m-Y')}}</span><br>
                                 <span class="pb-1 ivf-label">Reason :</span> <span class="pb-1 font-bold ivf-label"> {{!empty($iuireportData->reason) ? $iuireportData->reason : '-'}}</span>
                             </th>
                         </tr>
