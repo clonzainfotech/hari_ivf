@@ -1788,9 +1788,6 @@ function iuiYesNoStatus(value, dType) {
     $('.' + dType + '-' + 'abnormal').addClass('d-none');
     if (value == 'yes') {
         $('.' + dType).removeClass('d-none');
-        $('.iui-patient-report').removeClass('d-none');
-            $('.iui-report-data').removeClass('d-none');
-            $('button.iui-report').removeClass('d-none');
 
     }
 }

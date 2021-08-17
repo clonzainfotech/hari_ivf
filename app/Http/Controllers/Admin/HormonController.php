@@ -78,6 +78,7 @@ class HormonController extends AdminController
     public function create(){
         try{
             $category = $this->Category->whereStatus(1)->pluck('name','id');
+            $injection = $this->InjectionCharge->where('stock','>',0)->pluck('name','id');
             $patient = $this->OpdPatients->where(function($query) {
                 $query->whereHas('getAppointments', function($query) {
                     $query->where([
@@ -87,7 +88,7 @@ class HormonController extends AdminController
             })
             ->pluck('name','id');
             $referenceDoctor = ['other' => 'Other'] + $this->ReferenceDoctor->pluck('name','id')->toArray();
-            return view('admin.appointment.hormon.create',compact('category','referenceDoctor', 'patient'));
+            return view('admin.appointment.hormon.create',compact('category','referenceDoctor', 'patient','injection'));
         }catch(Exception $e){
             abort(500);
         }
@@ -165,7 +166,13 @@ class HormonController extends AdminController
             $hormon->reference_doctor_id = $opdPatient->reference_doctor_id;
             if($hormon->charge_type == 1) {
                 $hormon->injection = $request->hinjection;
+                $injection = $this->InjectionCharge->find($request->hinjection);
+                $injection->stock = ($injection->stock - 1) >= 0 ? ($injection->stock - 1) : 0;
+                $injection->save();
+                $hormon->net_price = $injection->net_price;
+                $hormon->cycle_no = $request->cycle_no;
             }
+            // dd($hormon);
             // if ($hormon->charge_type == 3) {
                 
             // }
@@ -194,7 +201,7 @@ class HormonController extends AdminController
                     $isCompleted = 1;
                 }
                 $ivfPaymentData->is_completed = $isCompleted;
-                $ivfPaymentData->discount = $ivfPaymentData->discount + $request->discount;
+                // $ivfPaymentData->discount = $ivfPaymentData->discount + $request->discount;
                 $ivfPaymentData->save();
             }
             $hormon->valuinword = $this->getWordOfNumber($hormon->amount);

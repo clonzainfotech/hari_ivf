@@ -242,6 +242,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('ca-expense-report/store','ReportController@storeCaExpense');
     Route::get('ca-expense-report/getCaExpense','ReportController@getCaExpense');
     Route::get('all-collection-report','ReportController@getAllCollectionReport');
+    Route::get('hormon-inj-report','ReportController@getHormonInjectionReport');
 
     // infertility report data
     Route::get('infertility-report','ReportController@infertilityReport');
@@ -422,6 +423,12 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
 
     Route::get('notification','CategoryNotificationController@index');
     Route::get('notification-all-read','CategoryNotificationController@notificationAllRead');
+
+    //injection charges
+    Route::get('inj-charge','InjectionChargeController@index');
+    Route::post('inj-charge/store','InjectionChargeController@store');
+    Route::get('inj-charge/edit/{id}','InjectionChargeController@getInjCharge');
+    Route::get('inj-charge/delete/{id}','InjectionChargeController@injChargeDelete');
 
     Route::get('print-preview','SystemSettingController@printpreview');
     

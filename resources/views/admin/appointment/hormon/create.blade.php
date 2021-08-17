@@ -46,17 +46,31 @@
                             </div>
                         </div>
                         <div class="row hormon-row hinjection-data">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon unik-lbl-spn">Injection : &nbsp;</span>
-                                    {{Form::text('hinjection','',[
-                                        'class'=>'form-control hinjection',
-                                        'placeholder'=>'Injection',
-                                        'id'=>'injection'
-                                    ])}}
-                                </div>
+                            <div class="col-md-6">
+                                    {{Form::select('hinjection',$injection,'',[
+                                    'class'=>'form-control hinjection',
+                                    'placeholder'=>'Select Injection',
+                                    'id'=>'injection',
+                                    'data-live-search'=>'true',
+                                ])}}
                                 <span class="form-error-msg injection">
                                     {{$errors->first('hinjection')}}
+                                </span>
+                            </div>
+                            <div class="col-md-6 hinjection-data">
+                                <div class="input-group">
+                                    <span class="input-group-addon unik-lbl-spn">Cycle No : &nbsp;</span>
+                                    {{Form::number('cycle_no','',[
+                                        'class'=>'form-control cycle_no',
+                                        'placeholder'=>'Cycle No',
+                                        'maxlength' => 6,
+                                        'onpaste' => 'return false',
+                                        'min' => 1,
+                                        'id'=>'cycle_no'
+                                    ])}}
+                                </div>
+                                <span class="form-error-msg cycle_no">
+                                    {{$errors->first('cycle_no')}}
                                 </span>
                             </div>
                         </div>
@@ -447,6 +461,7 @@
             var htype=document.getElementById('htype').value;
             var injection=document.getElementById('injection').value;
             var hcharge=document.getElementById('hcharge').value;
+            var cycle_no=document.getElementById('cycle_no').value;
             var hreference_doctor=document.getElementById('hreference-doctor').value;
             var doctor=document.getElementById('doctor').value;
             var doctor_mobile=document.getElementById('doctor_mobile').value;
@@ -470,7 +485,13 @@
                     valid = 0;
                     $('.injection').text('The injection field is required.');
                 }
+                if(cycle_no == '')
+                {
+                    valid = 0;
+                    $('.cycle_no').text('The type field is required.');
+                }
             }
+            
             if (hcharge == '') {
                 valid = 0;
                 $('.hchargeerror').text('The charge field is required.');
@@ -534,6 +555,8 @@
                             w.document.write(data.data);
                             w.document.close();
                             w.window.print();
+                            var url = '{{URL::to("hormon")}}';
+                            window.location.href = url;
                         }
                     });
                 }

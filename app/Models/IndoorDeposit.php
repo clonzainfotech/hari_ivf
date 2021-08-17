@@ -45,4 +45,24 @@ class IndoorDeposit extends BaseModel
         }
         return $discount;
     }
+    public function getInjectionCharge(){
+        return $this->belongsTo('App\Models\InjectionCharge','injection');
+    }
+    public function getTotalInjection()
+    {
+        $count = self::where('charge_type',1)->where('patient_id',$this->patient_id)->where('cycle_no',$this->cycle_no)->where('injection',$this->injection)->count();
+        // $count = self::where('charge_type',1)->whereDate('created_at',$this->created_at)->where('patient_id',$this->patient_id)->where('cycle_no',$this->cycle_no)->where('injection',$this->injection)->count();
+        if ($count) {
+            return $count;
+        }
+        return $count;
+    }
+    public function getTotalAmount()
+    {
+        $amount = self::where('charge_type',1)->where('patient_id',$this->patient_id)->where('cycle_no',$this->cycle_no)->where('injection',$this->injection)->sum('amount');
+        if ($amount) {
+            return $amount;
+        }
+        return $amount;
+    }
 }
