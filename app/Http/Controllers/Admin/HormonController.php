@@ -78,7 +78,7 @@ class HormonController extends AdminController
     public function create(){
         try{
             $category = $this->Category->whereStatus(1)->pluck('name','id');
-            $injection = $this->InjectionCharge->where('stock','>',0)->pluck('name','id');
+            $injection = $this->InjectionCharge->where('quantity','>',0)->where('type',1)->pluck('name','id');
             $patient = $this->OpdPatients->where(function($query) {
                 $query->whereHas('getAppointments', function($query) {
                     $query->where([
@@ -167,10 +167,19 @@ class HormonController extends AdminController
             if($hormon->charge_type == 1) {
                 $hormon->injection = $request->hinjection;
                 $injection = $this->InjectionCharge->find($request->hinjection);
-                $injection->stock = ($injection->stock - 1) >= 0 ? ($injection->stock - 1) : 0;
+                $injection->quantity = ($injection->quantity - 1) >= 0 ? ($injection->quantity - 1) : 0;
                 $injection->save();
-                $hormon->net_price = $injection->net_price;
                 $hormon->cycle_no = $request->cycle_no;
+
+                //Add record 
+                $injManager = $this->InjectionManager;
+                $injManager->patients_id = $request->hname;
+                $injManager->cycle_no = $request->cycle_no;
+                $injManager->type = 1;
+                $injManager->inj_charge_id = $request->hinjection;
+                $injManager->net_price = $injection->net_price;
+                $injManager->amount = $request->hcharge;
+                $injManager->save();
             }
             // dd($hormon);
             // if ($hormon->charge_type == 3) {

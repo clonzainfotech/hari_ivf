@@ -80,6 +80,7 @@ use App\Models\PatientWeight;
 use App\Models\CategoryNotification;
 use App\Models\IUIReport;
 use App\Models\IvfExtraVisit;
+use App\Models\InjectionManager;
 
 
 
@@ -162,6 +163,7 @@ class BaseController extends Controller
         $this->CategoryNotification = new CategoryNotification;
         $this->IUIReport = new IUIReport;
         $this->IvfExtraVisit = new IvfExtraVisit;
+        $this->InjectionManager = new InjectionManager;
 
     }
 

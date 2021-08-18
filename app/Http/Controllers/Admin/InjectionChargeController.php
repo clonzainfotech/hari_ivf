@@ -66,7 +66,8 @@ class InjectionChargeController extends AdminController
                 $injection->name = $request->inj_name;
                 $injection->net_price = $request->net_amount;
                 $injection->mrp = $request->mrp;
-                $injection->stock = $request->stock;
+                $injection->quantity = $request->quantity;
+                $injection->type = $request->type;
                 $injection->save();
                 $data['status'] = 1;
             }
@@ -76,7 +77,8 @@ class InjectionChargeController extends AdminController
                 $injection->name = $request->inj_name;
                 $injection->net_price = $request->net_amount;
                 $injection->mrp = $request->mrp;
-                $injection->stock = $request->stock;
+                $injection->quantity = $request->quantity;
+                $injection->type = $request->type;
                 $injection->save();
                 $data['status'] = 1;
             }

@@ -1028,7 +1028,7 @@ class ANCController extends AdminController
                 }else{
                     $ancHistoryId = !empty($ancHistory->id) ? $ancHistory->id : null;
                     $ancData = $ancHistory;
-                    $ancFirstVisitData = $this->ANC->where('patients_id',$patients)->first();
+                    $ancFirstVisitData = $this->ANC->where('patients_id',$patients)->where('id',$ancHistory->anc_id)->first();
                     $upt = json_decode($ancFirstVisitData->patients_obstratics, true);
                     $oe = json_decode($ancFirstVisitData->o_e, true);
                     $historyOE = !empty($ancData->o_e) ? json_decode($ancData->o_e, true) : null;

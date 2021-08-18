@@ -4,6 +4,9 @@
 @section('page-style')
 
 @stop
+@php
+  $type= ["1"=>'Hormon','2'=>'IVF','3'=>'IUI'];  
+@endphp
 @section('content')
 
     <div class="row clearfix">
@@ -115,12 +118,20 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <div class="col-md-3">
-                                    Stock
+                                    Quanity
                                 </div>
                                 <div class="col-md-6">
-                                    {{Form::number('stock','',['class'=>'form-control stock form-required','placeholder'=>' Stock','data-errorclass'=>'stock-error'])}}
+                                    {{Form::number('quantity','',['class'=>'form-control quantity form-required','placeholder'=>' quantity','data-errorclass'=>'quantity-error'])}}
                                 </div>
-                                <span class="form-error-msg stock-error w-100"></span>
+                                <span class="form-error-msg quantity-error w-100"></span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                {{Form::select('type',[''=>'Select Type','1'=>'Hormon', '2'=>'IVF', '3'=>'IUI'],'',[
+                                    'class'=>'form-control type', 
+                                    'id' => 'type',
+                                    'data-errorclass' =>'type-error'
+                                ])}}
+                                <span class="form-error-msg type-error w-100"></span>
                             </div>
                         </div>
                         <!-- footer -->
@@ -171,8 +182,9 @@
                 var inj_name = $('.inj_name').val('');
                 var net_amount = $('.net_amount').val('');
                 var mrp = $('.mrp').val('');
-                var stock = $('.stock').val('');
-                
+                var quantity = $('.quantity').val('');
+                var type = $('select.type').val('');
+                $('.type').selectpicker('refresh');
                 $('#inj-modal').modal('show');
             });
         });
@@ -181,7 +193,9 @@
             var inj_name = $('.inj_name').val('');
             var net_amount = $('.net_amount').val('');
             var mrp = $('.mrp').val('');
-            var stock = $('.stock').val('');
+            var quantity = $('.quantity').val('');
+            var type = $('select.type').val('');
+            $('.type').selectpicker('refresh');
             $('.inj-error').html('');
             $.ajax({
             url: "{{URL::to('inj-charge/edit')}}/" + injId,
@@ -193,7 +207,9 @@
                     $('.inj_name').val(data.injection.name);
                     $('.net_amount').val(data.injection.net_price);
                     $('.mrp').val(data.injection.mrp);
-                    $('.stock').val(data.injection.stock);
+                    $('.quantity').val(data.injection.quantity);
+                    $('select.type').val(data.injection.type);
+                    $('.type').selectpicker('refresh');
                     $('.injId').val(injId);
                 }
                 else{
@@ -204,11 +220,14 @@
             });
         });
         $(document).on('click','.inj-save',function(){
+            $('.form-error-msg').html('');
             var inj_name = $('.inj_name').val();
             var net_amount = $('.net_amount').val();
             var mrp = $('.mrp').val();
-            var stock = $('.stock').val();
+            var quantity = $('.quantity').val();
             var injId = $('.injId').val();
+            var type = $('select.type').val();
+            $('.type').selectpicker('refresh');
             var hasNoValue = 0;
             $(".form-required").each(function() {
                 if($(this).val() == '')
@@ -219,6 +238,13 @@
                     return false;
                 }
             });
+            if($('select.type').val() == '')
+            {
+                var errclass = $('select.type').data('errorclass');
+                hasNoValue = 1;
+                $('.'+errclass).html('This Field is required');
+                return false;
+            }
             if(hasNoValue == 0)
             {
                 $.ajax({
@@ -231,8 +257,9 @@
                         inj_name: inj_name,
                         net_amount:net_amount,
                         mrp:mrp,
-                        stock:stock,
-                        injId:injId
+                        quantity:quantity,
+                        injId:injId,
+                        type:type
                     },
                     dataType: 'json',
                 }).done(function(data) {
