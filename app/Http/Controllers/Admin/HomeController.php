@@ -468,7 +468,7 @@ class HomeController extends AdminController
         $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
         $typeOfData = [1=>'Primary',2=>'Secondary'];
         $data = '';
-        if($request->category && in_array($request->category,[5,6]))
+        if($request->category && in_array($request->category,[5,6,10,13]))
         {
             $ancHistory = $this->AncHistory->where('patients_id','=',$patients_id)
                 ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)

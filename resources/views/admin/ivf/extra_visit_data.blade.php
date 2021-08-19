@@ -225,6 +225,7 @@ $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"S
                                         'class'=>'form-control co-value co_value_data oe_ovary_left_details',
                                         'placeholder'=>'Abnormal Details',
                                         'id' => 'oe_ovary_left_details',
+                                        'data-type' => 'oe',
                                         'multiple'=>true
                                     ])}}
                                 </div>
@@ -277,6 +278,7 @@ $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"S
                                         'class'=>'form-control co-value co_value_data oe_ovary_right_details',
                                         'placeholder'=>'Abnormal Details',
                                         'id' => 'oe_ovary_right_details',
+                                        'data-type' => 'oe',
                                         'multiple'=>true
                                     ])}}
                                 </div>

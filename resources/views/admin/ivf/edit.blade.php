@@ -3450,7 +3450,7 @@
                                                     </label>
                                                 </div>
                                             <div class="col-md-9 complain-multi medicine-picker">
-                                                {{Form::select("treatment[medicinedata][]",$medicines,$medicineKey,['id'=>'treatment-medicine','class'=>'form-control co-value medicine medicine-co','multiple'=>true])}}
+                                                {{Form::select("treatment[medicinedata][]",$medicines,$medicineKey,['id'=>'treatment-medicine','class'=>'form-control co-value medicine medicine-co',"placeholder"=>'select Medicine'])}}
                                             </div>
                                         </div><br>
                                         <div class="page-loader-wrapper medicine-loader d-none">

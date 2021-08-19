@@ -1386,8 +1386,8 @@
                                 <tr>
                                     <th>
                                         <span class="iui-label">Right Ovary</span>
-                                        @if (!empty($oe->ovary->right->details))
-                                            @foreach ($oe->ovary->right->details as $key => $value)
+                                        @if (!empty($oe->ovary->right->updated_details))
+                                            @foreach ($oe->ovary->right->updated_details as $key => $value)
                                                 @php
                                                     echo !empty($value) ? $value .  '<br />' : '- <br />';
                                                 @endphp
@@ -1402,8 +1402,8 @@
                                 <tr>
                                     <th>
                                         <span class="iui-label">Left Ovary</span>
-                                        @if (!empty($oe->ovary->left->details))
-                                            @foreach ($oe->ovary->left->details as $key => $value)
+                                        @if (!empty($oe->ovary->left->updated_details))
+                                            @foreach ($oe->ovary->left->updated_details as $key => $value)
                                                 @php
                                                     echo !empty($value) ? $value .  '<br />' : '- <br />';
                                                 @endphp
@@ -2192,9 +2192,9 @@
                                 <tr>
                                     <th>
                                         
-                                        @if (!empty($oe->ovary->right->details))
+                                        @if (!empty($oe->ovary->right->updated_details))
                                         <span class="iui-label">Right Ovary :</span>
-                                            @foreach ($oe->ovary->right->details as $key => $value)
+                                            @foreach ($oe->ovary->right->updated_details as $key => $value)
                                                 @php
                                                     echo !empty($value) ? $value .  '<br />' : '-' . '<br />';
                                                 @endphp
@@ -2587,11 +2587,11 @@
                                         <span class="iui-label">Ovary : </span>
                                         @endif
                                         {{-- @if(!empty($description->ovary->type)) --}}
-                                            @if(!empty($description->ovary->right->type) || !empty($description->ovary->right->details))
+                                            @if(!empty($description->ovary->right->type) || !empty($description->ovary->right->updated_details))
                                             <br>
                                                 <span class="iui-label">Right Ovary : </span>{{($description->ovary->right->type == 1) ? 'Normal' : ''}}
-                                                @if(!empty($description->ovary->right->details))
-                                                    <br><span class='iui-label pl-2'>Details : </span>{{implode(',',$description->ovary->right->details)}}
+                                                @if(!empty($description->ovary->right->updated_details))
+                                                    <br><span class='iui-label pl-2'>Details : </span>{{implode(',',$description->ovary->right->updated_details)}}
                                                 @endif
                                             @endif
                                         {{-- @endif --}}
@@ -2600,10 +2600,10 @@
                                 <tr>
                                     <th>
                                         {{-- @if(!empty($description->ovary->type)) --}}
-                                            @if(!empty($description->ovary->left->type) || !empty($description->ovary->left->details))
+                                            @if(!empty($description->ovary->left->type) || !empty($description->ovary->left->updated_details))
                                                 <span class="iui-label">Left Ovary : </span>{{($description->ovary->left->type == 1) ? 'Normal' : ''}}
-                                                @if(!empty($description->ovary->left->details))
-                                                    <br><span class='iui-label pl-2'>Details : </span>{{implode(',',$description->ovary->left->details)}}
+                                                @if(!empty($description->ovary->left->updated_details))
+                                                    <br><span class='iui-label pl-2'>Details : </span>{{implode(',',$description->ovary->left->updated_details)}}
                                                 @endif
                                             @endif
                                         {{-- @endif --}}
@@ -2896,12 +2896,12 @@
                             </div> --}}
                             <div class="col-md-9 pl-10">
                                 <div class="mb-2">R :- {{!empty($iuiSecondVisit->oe->ovary->right->afcs) ? $iuiSecondVisit->oe->ovary->right->afcs : null}} / RF :- {{!empty($iuiSecondVisit->oe->ovary->right->residual_follicale) ? $iuiSecondVisit->oe->ovary->right->residual_follicale : null}}</div>
-                                @if(!empty($iuiSecondVisit->oe->ovary->right->details))
-                                    <div class="mb-2">Right Detail :- {{implode(',',$iuiSecondVisit->oe->ovary->right->details)}}</div>
+                                @if(!empty($iuiSecondVisit->oe->ovary->right->updated_details))
+                                    <div class="mb-2">Right Detail :- {{implode(',',$iuiSecondVisit->oe->ovary->right->updated_details)}}</div>
                                 @endif
                                 <div class="mb-2">L :- {{!empty($iuiSecondVisit->oe->ovary->left->afcs) ? $iuiSecondVisit->oe->ovary->left->afcs : null}} / RF :- {{!empty($iuiSecondVisit->oe->ovary->left->residual_follicale) ? $iuiSecondVisit->oe->ovary->left->residual_follicale : null}}</div>
-                                @if(!empty($iuiSecondVisit->oe->ovary->left->details))
-                                    <div class="mb-2">Left Detail :- {{implode(',',$iuiSecondVisit->oe->ovary->left->details)}}</div>
+                                @if(!empty($iuiSecondVisit->oe->ovary->left->updated_details))
+                                    <div class="mb-2">Left Detail :- {{implode(',',$iuiSecondVisit->oe->ovary->left->updated_details)}}</div>
                                 @endif
                             </div>
                         </div>

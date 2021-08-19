@@ -80,7 +80,11 @@ $(document).ready(function () {
     });
 
     $(document).on('change', 'select.oe_ovary_left_details', function (e) {
-        var textboxName = 'oe[ovary][left][updated_details][]';
+        var textboxName = 'data[ovary][left][updated_details][]';
+        if($(this).data('type') == 'oe')
+        {
+            var textboxName = 'oe[ovary][left][updated_details][]';
+        }
         if (typeof ($(this).data('id')) !== 'undefined') {
             var textboxName = 'data[oe][ovary][left][updated_details][]';
         }
@@ -121,7 +125,11 @@ $(document).ready(function () {
     });
 
     $(document).on('change', 'select.oe_ovary_right_details', function (e) {
-        var textboxName = 'oe[ovary][right][updated_details][]';
+        var textboxName = 'data[ovary][right][updated_details][]';
+        if($(this).data('type') == 'oe')
+        {
+            var textboxName = 'oe[ovary][right][updated_details][]';
+        }
         if (typeof ($(this).data('id')) !== 'undefined') {
             var textboxName = 'data[oe][ovary][right][updated_details][]';
         }
