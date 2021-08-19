@@ -1971,7 +1971,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-2 checkbox">
+                                            {{-- <div class="col-md-2 checkbox">
                                                 {{Form::checkbox('oe[is_patient_remark]','0','',[
                                                     'id'=>'is_patient_remark',
                                                     'class'=>'anc-remark'
@@ -1979,8 +1979,13 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                 <label for="is_patient_remark">
                                                   Patient's Remark
                                                 </label>
+                                            </div> --}}
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{Form::textarea('oe[pt_remark]', null, ['class'=>'form-control no-resize remark','placeholder'=>'Patient Remark','rows'=>'2'])}}
+                                                </div>
                                             </div>
-                                            <div class="col-md-8">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     {{Form::textarea('oe[remark]', null, ['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
                                                 </div>

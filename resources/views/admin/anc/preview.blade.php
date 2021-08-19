@@ -61,7 +61,6 @@
                         'Obseravation'=>"Obseravation",
                         'Operation'=>"Operation"];
 @endphp
-
 <style type="text/css">
     .module-report-table {
         text-align: left;
@@ -116,6 +115,14 @@
         display: block;
         width: 250px;
         word-break: break-word;
+    }
+    .font-bold
+    {
+        font-weight : 600 !important;
+    }
+    .text-center
+    {
+        text-align: center !important;
     }
     /* @page { margin-top :200px; margin-left : 100px;} */
     
@@ -676,21 +683,21 @@
                 @if($ho)
                     <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
                         <tbody>
+                            @if(isset($oe->pt_remark) && !empty($oe->pt_remark) && isset($patient_preview) && $patient_preview == 1)
+                                <tr>
+                                        <th class="text-danger">
+                                            <span class="anc-label ">Remark :</span>
+                                            {{$oe->pt_remark}}
+                                        </th>
+                                </tr>
+                            @endif
+                            @if(!isset($patient_preview) || $patient_preview != 1)
                             <tr>
-                                @if(isset($patients_remark))
-                                    @if($patients_remark == 1 && !empty($oe->remark))
+                                @if(!empty($oe->remark))
                                     <th class="text-danger">
                                         <span class="anc-label ">O/E Remark :</span>
                                         {{$oe->remark}}
                                     </th>
-                                    @endif
-                                @else
-                                    @if(!empty($oe->remark))
-                                    <th class="text-danger">
-                                        <span class="anc-label ">O/E Remark :</span>
-                                        {{$oe->remark}}
-                                    </th>
-                                    @endif
                                 @endif
                             </tr>
                             <tr>
@@ -737,6 +744,8 @@
                                     
                                     </th>
                             </tr>
+                            @endif
+
                             <tr>
                                 <th>
                                     <span class="anc-label">H/O: </span>
@@ -1666,6 +1675,7 @@
                                                         @endif
                                                     @endif
                                                     @if(@$value->oe_ut_sac_1 && $value->oe_ut_sac_1>=13)
+                                                    <br>
                                                         @php
                                                             $instra = "પેટમાં કે કમરમાં થોડી થોડી વારે દુખાવો આવે એટલે કે ડિલિવરીનો દુખાવો હોય, ખુન પડે, પાણી પડે કે બાળકો ઓછું ફરકે તો હોસ્પિટલ તાત્કાલિક તપાસ માટે આવવું.";
                                                         @endphp
@@ -2424,15 +2434,15 @@
                         </tbody>
                     </table>
                 @endif
-
+                    <br>
                 @if(!empty($usgStatus) && $usgStatus == 1 && \Carbon\Carbon::parse($oe->follow_up)->format('Y-m-d') > date('Y-m-d'))
-                    <h5>{{"ફરીવાર સોનોગ્રાફી માટે ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર સોનોગ્રાફી માટે ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                 @elseif(isset($oe->follow_up) && !empty($oe->follow_up))
-                    <h5>{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                 @elseif($isNextAppointment == 1)
-                    <h4>{{"ફરીવાર ".\Carbon\Carbon::parse($nextAppointmentDate)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                    <h4 class="lmd-lable font-bold text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($nextAppointmentDate)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
                 @endif
-                <h6>{{$instra}}</h6>
+                <h6 class="lmd-lable font-bold text-center">{{$instra}}</h6>
             @endif
         </div>
     @endif

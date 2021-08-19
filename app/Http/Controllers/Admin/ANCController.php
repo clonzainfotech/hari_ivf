@@ -739,10 +739,11 @@ class ANCController extends AdminController
 
             if($request->isprint){
                 $anc_print = !empty($request->isprint) ? $request->isprint : 0;
+                $patient_preview = 1;
                 return response()->json([
                     'status'=>1,
                     'id' => encrypt($ancData->id),
-                    'data' => View::make('admin.anc.preview', compact('ancFirstVisitData','investigationReport','weight','personal_past_history_type','personal_history_type','placenta', 'ancData','ancHistory','isNextAppointment','nextAppointmentDate','lmdDate','usgEddDate','eddDate', 'isGsac', 'isFirstVisit','currentdate','previousAnc','weekData','usgStatus','patients','ancAutoRemark','anc_print'))->render()
+                    'data' => View::make('admin.anc.preview', compact('ancFirstVisitData','investigationReport','weight','personal_past_history_type','personal_history_type','placenta', 'ancData','ancHistory','isNextAppointment','nextAppointmentDate','lmdDate','usgEddDate','eddDate', 'isGsac', 'isFirstVisit','currentdate','previousAnc','weekData','usgStatus','patients','ancAutoRemark','anc_print','patient_preview'))->render()
                 ]);
             }
             if($request->is_pdf == 1){
@@ -1467,10 +1468,14 @@ class ANCController extends AdminController
                     $date = $historyDate;
                     $ancType = 2;
                     $ancData = $this->ANC->where('patients_id',$patientId)->where('created_at','=',$historyDate)->first();
-                    $p_info = !empty($ancData->patients_info) ? json_decode($ancData->patients_info) : null;
-                    $weight = !empty($p_info->weight) ? $p_info->weight : null;
-                    $anc_id = $ancData->id;
-                    $ancFirstVisitData = $ancData;
+                    if($ancData)
+                    {
+                        $p_info = !empty($ancData->patients_info) ? json_decode($ancData->patients_info) : null;
+                        $weight = !empty($p_info->weight) ? $p_info->weight : null;
+                        $anc_id = $ancData->id;
+                        $ancFirstVisitData = $ancData;
+                    }
+                    
                     if(!$ancData){
                         $ancData = $this->AncHistory->where('patients_id',$patientId)->where('created_at','=',$historyDate)->first();
                         $h_o = !empty($ancData->h_o) ? json_decode($ancData->h_o) : null;
@@ -1501,8 +1506,9 @@ class ANCController extends AdminController
                             $isGsac = true;
                         }
                         $ancAutoRemark = $this->getAutoRemark($patientId);
+                        $patient_preview = 1;
 
-                    $viewAllVisit[] =  View::make('admin.anc.preview', compact('ancFirstVisitData','investigationReport','weight','personal_past_history_type','personal_history_type','placenta', 'ancData','ancHistory','isNextAppointment','nextAppointmentDate','lmdDate','usgEddDate','eddDate', 'isGsac', 'isFirstVisit','currentdate','previousAnc','weekData','usgStatus','date','patients','ancAutoRemark'))->render();
+                    $viewAllVisit[] =  View::make('admin.anc.preview', compact('ancFirstVisitData','investigationReport','weight','personal_past_history_type','personal_history_type','placenta', 'ancData','ancHistory','isNextAppointment','nextAppointmentDate','lmdDate','usgEddDate','eddDate', 'isGsac', 'isFirstVisit','currentdate','previousAnc','weekData','usgStatus','date','patients','ancAutoRemark','patient_preview'))->render();
                 }
                 else
                 {
@@ -1606,9 +1612,10 @@ class ANCController extends AdminController
                 
                 $investigationReport = $this->allInvestigationReport();
                 $printPreview = 1;
+                $patient_preview = 1;
                 $ancAutoRemark = $this->getAutoRemark($patientId,$anc_id);
 
-                return view('admin.anc.preview', compact('ancFirstVisitData','investigationReport','weight','personal_past_history_type','personal_history_type','placenta', 'ancData','ancHistory','isNextAppointment','nextAppointmentDate','lmdDate','usgEddDate','eddDate', 'isGsac', 'isFirstVisit','currentdate','previousAnc','weekData','usgStatus','date','patients','printPreview','ancAutoRemark','patients_remark'));
+                return view('admin.anc.preview', compact('ancFirstVisitData','investigationReport','weight','personal_past_history_type','personal_history_type','placenta', 'ancData','ancHistory','isNextAppointment','nextAppointmentDate','lmdDate','usgEddDate','eddDate', 'isGsac', 'isFirstVisit','currentdate','previousAnc','weekData','usgStatus','date','patients','printPreview','ancAutoRemark','patients_remark','patient_preview'));
             }
         }catch(Exception $e){
             log::debug($e);
