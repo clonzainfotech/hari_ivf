@@ -1015,6 +1015,7 @@ class IUIController extends AdminController
             }
             $iui->created_at = !empty($iui->created_at) ? $iui->created_at : Carbon::now()->format('Y-m-d H:i:s');
             $iui->created_by = Auth::user()->id;
+            // dd($iui);
             $iui->save();
             $now = Carbon::now()->format('Y-m-d');
             if(!$request->iui_history_id && !$request->iui_id)
@@ -1303,7 +1304,7 @@ class IUIController extends AdminController
                         $planType = !empty($historyData->plan->plan_type) ? $historyData->plan->plan_type : null;
 
                         if($planType){
-                            $planData = $planData->where('type',$planType);
+                            $planData = $planData->where('type',$planType)->where('category',1);
                         }
                         $iuiHistoryId = $iuiHistory->id;
                         $historyLmp = !empty($historyData->lmp) ? $historyData->lmp : null;
@@ -1336,7 +1337,7 @@ class IUIController extends AdminController
                     $oldDate = $request->iui_date;
                 }
 
-                $planData = $planData->whereNotNull('name')->pluck('name','name')->toArray();
+                $planData = $planData->where('category',1)->whereNotNull('name')->pluck('name','name')->toArray();
                 $patientsInfo = json_decode($iui->patients_info);
                 $ho = json_decode($iui->h_o);
                 $co = json_decode($iui->c_o);
@@ -1357,7 +1358,7 @@ class IUIController extends AdminController
                 $complaints = $this->Complaint->pluck('name','name');
                 $leftOvaryData = $this->OvaryDetail->where('type',1)->pluck('name','name');
                 $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
-                $planType = $this->Injection->pluck('type','type');
+                $planType = $this->Injection->where('category',1)->pluck('type','type');
                 $hoData = $this->getHoData();
 
                 if(!empty($iuiThirdVisit)) {
@@ -1561,7 +1562,7 @@ class IUIController extends AdminController
     }
 
     public function getPlanData($type){
-        $planData = $this->Injection->where('type',$type)->whereNotNull('name')->pluck('name','name');
+        $planData = $this->Injection->where('type',$type)->where('category',1)->whereNotNull('name')->pluck('name','name');
         return ['planData'=>$planData];
     }
 

@@ -1323,7 +1323,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Since : &nbsp;</span>
-                            {{Form::text("co[since]",!empty($co->since) ? $co->since : null,['class'=>'form-control'])}}
+                            {{Form::text("co[since]",!empty($co->since) && (!empty($ancHistoryId) || !empty($ancId)) ? $co->since : null,['class'=>'form-control'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('since')}}

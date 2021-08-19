@@ -176,7 +176,7 @@ class HormonController extends AdminController
                 $injManager->patients_id = $request->hname;
                 $injManager->cycle_no = $request->cycle_no;
                 $injManager->type = 1;
-                $injManager->inj_charge_id = $request->hinjection;
+                $injManager->injection = $injection->name;
                 $injManager->net_price = $injection->net_price;
                 $injManager->amount = $request->hcharge;
                 $injManager->save();
