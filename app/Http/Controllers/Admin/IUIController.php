@@ -1106,7 +1106,6 @@ class IUIController extends AdminController
             }
             if(isset($request->is_iui_deposit_print) && $request->is_iui_deposit_print == 4){
                 $currentDeposit = $this->IndoorDeposit->wherePatientIdAndChargeType($patientsId, 1)->orderBy('id', 'DESC')->value('total');
-                dd($request);
                 $iuiBill = $this->IuiBill;
                 $iuiBill->patient_id = $patientsId;
                 $iuiBill->cycle_no = $request->cycle_no;

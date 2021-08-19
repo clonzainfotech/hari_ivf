@@ -21,7 +21,7 @@ class InjectionController extends AdminController
         try{
             $planList = $this->Injection->groupBy('type')->pluck('type','type');
             if($request->ajax()) {
-                $injection = $this->Injection->orderBy('id','DESC');
+                $injection = $this->Injection->whereNotNull('name')->orderBy('id','DESC');
             
                 // search text
                 $search = $request->search;
