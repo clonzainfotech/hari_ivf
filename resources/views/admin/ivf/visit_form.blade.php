@@ -1569,7 +1569,7 @@
                         <span class="input-group-addon">
                             Other Report : &nbsp;
                         </span>
-                        {{Form::text("data[investigation_extra]",(!empty($investigation)) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null,['class'=>'form-control'])}}
+                        {{Form::text("data[investigation_extra]",(!empty($ivfData)) && isset($ivfData->investigation_extra) && !empty($ivfData->investigation_extra) ? $ivfData->investigation_extra : null,['class'=>'form-control'])}}
                     </div>
                 </div>
             </div>

@@ -4039,6 +4039,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     
                 </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
                 <!-- {{-- 4 .Remark --}} -->
                 <div class="row">
                     <div class="col-md-6">
@@ -4836,7 +4846,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="data-hsa-images"></div>
                     </div>
                     
-                </div>    
+                </div>  
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>  
                 <div class="row">
                     <div class="col-md-6">
                         <div class="input-group">
@@ -5413,7 +5433,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     
                 </div>     
-                 <div class="row">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 mt-3">
                         <div class="input-group">
                             <span class="input-group-addon">

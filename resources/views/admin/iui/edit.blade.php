@@ -4003,7 +4003,16 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
                         <div class="data-hsa-images"></div>
                     </div>
-                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
                 </div>
                 <!-- {{-- 4 .Remark --}} -->
                 <div class="row">
@@ -4521,6 +4530,16 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     </div>
                     
                 </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-md-6 mt-3">
                         <div class="input-group">
@@ -4860,7 +4879,11 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             <td>
                                                 {{isset($vascularity_of_endo[$row->vascularity_of_endo]) ? $vascularity_of_endo[$row->vascularity_of_endo] : null}}
                                             </td>
-                                            <td class="editStudyReport">{{!empty($data->remark) ? $data->remark : ''}}</td>
+                                            <td class="editStudyReport">
+                                                {{!empty($data->remark) ? $data->remark : ''}}
+                                        {{isset($data->investigation_extra) && !empty($data->investigation_extra) ? ' Other Report :'.$data->investigation_extra : ''}}
+
+                                            </td>
                                             <td class="editStudyReport text-center">
                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini delete-iui-history" data-id="{{ encrypt($row->id) }}">
                                                     <i class="zmdi zmdi-delete material-icons"></i>
@@ -5341,6 +5364,16 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 
                                             </div>
                                             <div class="row child-no-box">
+                                                {{-- <div class="row"> --}}
+                                                    <div class="col-md-12">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                Other Report : &nbsp;
+                                                            </span>
+                                                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                                                        </div>
+                                                    </div>
+                                                {{-- </div> --}}
                                                 <div class="col-md-1">
                                                     <label class="vertical-form-label pr-0">
                                                         Follow Up :

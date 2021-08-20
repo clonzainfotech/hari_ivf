@@ -1354,6 +1354,7 @@ class AppointmentController extends AdminController
                     ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)
                     ->orderBy('id','desc')
                     ->first();
+                    
                     if(!$ancHistory)
                     {
                         $ancHistory = $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
@@ -1361,7 +1362,8 @@ class AppointmentController extends AdminController
                     if($ancHistory)
                     {
                         $investigation = !empty($ancHistory->investigation) ? json_decode($ancHistory->investigation) : null;
-                        $data = $investigation->investigation_data;
+                        $data = !empty($investigation->investigation_data) ? $investigation->investigation_data : [];
+                        // dd($data);
                         $investigationValueData = (array)$investigation->investigation_details;
                         foreach($data as $key => $value){
                             if(!empty($investigationValueData[$value])){
@@ -1371,10 +1373,13 @@ class AppointmentController extends AdminController
                             }
                         }
                     }
+                    
                     $report = !empty($investigationData) ? implode(', ',$investigationData) : '';
                     $report .= !empty($investigation) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? ', '.$investigation->investigation_extra : '';
                     $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
                         <button class="btn btn-primary">Visit</button>';
+           
+
             }
             if($request->category && in_array($request->category,[1,2]))
             {

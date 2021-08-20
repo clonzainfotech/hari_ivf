@@ -2324,6 +2324,14 @@
                             </tbody>
                         </table>
                     @endif
+                    @if(isset($description->investigation_extra) && !empty($description->investigation_extra))
+                        <tr >
+                            <th>
+                                <span class="iui-label">Other Report :</span>
+                                {{$description->investigation_extra}}
+                            </th>
+                        </tr>
+                    @endif
 
                 @endif
                 @if(isset($visit) && $visit == 3)
@@ -2621,24 +2629,22 @@
                                 </th>
                                 
                             </tr>
-                            <tr>
-                                {{-- @if(isset($patients_remark) && !empty($patients_remark))
-                
-                                    <!-- <div class="row"> -->
-                                    <br><span class="iui-label">Remark : </span>{{$patients_remark}}
-                                    <!-- </div> -->
-                                    @else
-                                    <br><span class="iui-label">Remark : </span>{{!empty($description->remark) ? $description->remark : ''}}
-                                @endif --}}
-                            </tr>
+                            @if(isset($description->investigation_extra) && !empty($description->investigation_extra))
+                                <tr >
+                                    <th>
+                                        <span class="iui-label">Other Report :</span>
+                                        {{$description->investigation_extra}}
+                                    </th>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 @endif
                 
                 @if($visit == 2 || $visit == 3 || $visit == 4)
-                <?php
-                    unset($treatment->medicinedata);
-                ?>
+                    <?php
+                        unset($treatment->medicinedata);
+                    ?>
                     @if(!empty($treatment) && count((array)$treatment) > 0)
                     
                         <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
@@ -3112,7 +3118,10 @@
                                     <td>
                                         {{isset($vascularity_of_endo[$row->vascularity_of_endo]) ? $vascularity_of_endo[$row->vascularity_of_endo] : null}}
                                     </td>
-                                    <td class="editStudyReport">{{isset($patient_view) && isset($data->pt_remark) && $patient_view == 1 ? $data->pt_remark : $data->remark}}</td>
+                                    <td class="editStudyReport">
+                                        {{isset($patient_view) && isset($data->pt_remark) && $patient_view == 1 ? $data->pt_remark : $data->remark}}
+                                        {{isset($data->investigation_extra) && !empty($data->investigation_extra) ? ' Other Report :'.$data->investigation_extra : ''}}
+                                    </td>
                                 </tr>
                                 @if(!empty($dateAndInjectionData))
                                     @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
