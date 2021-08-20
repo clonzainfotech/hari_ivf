@@ -1449,20 +1449,36 @@ class ANCController extends AdminController
                 $ancVisitDate = [];
                 $viewAllVisit = [];
                 $dateValue = [];
-                $ancHistoryDate = $this->AncHistory->where('patients_id',$patientId)->where('anc_id',$anc_id)->orderBy('created_at','DESC')->pluck('created_at','created_at')->toArray();
-                $ancDateData = $this->ANC->where('patients_id',$patientId)->where('id',$anc_id)->orderBy('created_at','DESC')->first();
-                //all history for old anc
-                // if($request->old_anc_history && $request->old_anc_history == 1)
-                // {
-                //     $ancDateData = $this->ANC->where('patients_id',$patientId)->orderBy('created_at','DESC')->first();
-                //     if($ancDateData)
-                //     {
-                //         $ancHistoryDate = $this->AncHistory->where('patients_id',$patientId)->where('created_at','>', $ancDateData->created_at)->orderBy('created_at','DESC')->pluck('created_at','created_at')->toArray();
-                //     }
-                // }
-                $ancDate = [Carbon::parse($ancDateData->created_at)->format('Y-m-d H:i:s')=>Carbon::parse($ancDateData->created_at)->format('Y-m-d H:i:s')];
-                
-                $ancVisitDate = array_merge($ancHistoryDate,$ancDate);
+                if($request->is_appointmentView && $request->is_appointmentView == 1 && $request->appointmentDate && !empty($request->appointmentDate))
+                {
+                    $ancType = 1;
+                    $ancHistory = $this->AncHistory->where('patients_id',$patientId)->where('anc_id',$anc_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$request->appointmentDate)->orderBy('created_at','DESC')->first();
+                    if(!$ancHistory)
+                    {
+                        $ancHistory = $this->ANC->where('patients_id',$patientId)->where('id',$anc_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$request->appointmentDate)->orderBy('created_at','DESC')->first();
+                    }
+                    $ancVisitDate = [Carbon::parse($ancHistory->created_at)->format('Y-m-d H:i:s')=>Carbon::parse($ancHistory->created_at)->format('Y-m-d H:i:s')];
+                    // dd()
+
+                }
+                else
+                {
+
+                    $ancHistoryDate = $this->AncHistory->where('patients_id',$patientId)->where('anc_id',$anc_id)->orderBy('created_at','DESC')->pluck('created_at','created_at')->toArray();
+                    $ancDateData = $this->ANC->where('patients_id',$patientId)->where('id',$anc_id)->orderBy('created_at','DESC')->first();
+                    //all history for old anc
+                    // if($request->old_anc_history && $request->old_anc_history == 1)
+                    // {
+                    //     $ancDateData = $this->ANC->where('patients_id',$patientId)->orderBy('created_at','DESC')->first();
+                    //     if($ancDateData)
+                    //     {
+                    //         $ancHistoryDate = $this->AncHistory->where('patients_id',$patientId)->where('created_at','>', $ancDateData->created_at)->orderBy('created_at','DESC')->pluck('created_at','created_at')->toArray();
+                    //     }
+                    // }
+                    $ancDate = [Carbon::parse($ancDateData->created_at)->format('Y-m-d H:i:s')=>Carbon::parse($ancDateData->created_at)->format('Y-m-d H:i:s')];
+                    
+                    $ancVisitDate = array_merge($ancHistoryDate,$ancDate);
+                }
                 if($historyDate)
                 {
                     $date = $historyDate;

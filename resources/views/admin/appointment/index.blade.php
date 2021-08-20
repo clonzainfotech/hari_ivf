@@ -555,7 +555,30 @@
                 </div>
             </div>
         </div>
-
+            
+        </div>
+        <div class="modal fade preview-file-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header header-bottom-border">
+    
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5 class="modal-title" id="myModalLabel"></h5>
+                        </div>
+                   
+                    <div class="modal-body">
+                        <div class="visit-details-data">
+                        </div>
+                    </div>
+    
+                    <div class="modal-footer footer-top-border text-right d-inline-block">
+                        <button type="button" class="btn btn-primary waves-effect" data-dismiss="modal">CLOSE</button>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     @stop
 @stop
@@ -1316,5 +1339,56 @@
                     $(".appointment_dropdown_content").slideUp("fast");
                 }            
             });
+            $(document).on('click','.preview-close',function(){
+                $('.visit-details-data').html('');
+                $('.preview-file-modal').modal('hide');
+            })
+            $(document).on('click','.preview-file',function(e){
+                e.preventDefault();
+                var anc_id = $(this).data('id');
+                var patientsId = $(this).data('patient');
+                var appointmentDate = $(this).data('date');
+                $('.preview-file-modal').modal('hide');
+                $('.visit-details-data').html('');
+                $('.preview-file-modal').modal('show');
+                var ancQstring = 'patient_id='+patientsId+'&anc_id='+anc_id+'&is_appointmentView=1'+'&appointmentDate='+appointmentDate;
+                getANCHistoryData(ancQstring);
+                
+            });
+            function getANCHistoryData(ancQstring)
+            {
+                $.ajax({
+                    url:'{{URL::to("get-anc-details")}}?'+ancQstring,
+                    type:'GET',
+                    dataType:'json'
+                }).done(function(data){
+                    if(data.anc_type == 1){
+                        console.log('dsfdf');
+                        var ancPreview = $('.visit-details-data').html();
+                        var buttonHtml = '';
+                        var previewData = '';
+                        for(i=0; i<data.data.length;i++)
+                        {
+                            if(typeof data.date[i] != 'undefined'){
+                                var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
+                                var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
+                            }
+                            
+                            ancPreview = buttonHtml + data.data[i];
+                            $('.visit-details-data').html(ancPreview);
+                            ancPreview = ancPreview + '<div class="row sepreator"></div>';
+                        }
+                    }
+                    if(data.anc_type == 2){
+                        w = window.open(window.location.href, "_blank");
+                        w.document.open();
+                        w.document.write(data.data);
+                        w.document.close();
+                        w.window.print();
+                    }
+                }).fail(function(error){
+
+                });
+            }
     </script>
 @stop

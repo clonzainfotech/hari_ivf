@@ -479,20 +479,7 @@ class HomeController extends AdminController
             $eddDate = '';
             $remark = '';
             $current_anc_id = null;
-            $ancFirst = $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
-            $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
-            $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
-            $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
-            $current_anc_id = $ancFirst->id;
-            if(empty($ancHistory))
-            {
-                $ancFirstH_o = !empty($ancFirst->h_o) ? json_decode($ancFirst->h_o) : null;
-                $ancFirstO_e = !empty($ancFirst->o_e) ? json_decode($ancFirst->o_e) : null;
-                $preg_week = !empty($ancFirstH_o->ho_details) ? $ancFirstH_o->ho_details : '';
-                $remark = !empty($ancFirstO_e->remark) ? $ancFirstO_e->remark : null;
-                $ancCreatedDate = $ancFirst->created_at;
-            }
-            else
+            if($ancHistory)
             {
                 $h_o = !empty($ancHistory->h_o) ? json_decode($ancHistory->h_o) : null;
                 $o_e = !empty($ancHistory->o_e) ? json_decode($ancHistory->o_e) : null;
@@ -500,6 +487,25 @@ class HomeController extends AdminController
                 $remark = !empty($o_e->remark) ? $o_e->remark : null;
                 $ancCreatedDate = $ancHistory->created_at;
             }
+            else
+            {
+                $ancFirst = $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
+                if($ancFirst)
+                {
+                    $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
+                    $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
+                    $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
+                    $current_anc_id = $ancFirst->id;
+                    $ancFirstH_o = !empty($ancFirst->h_o) ? json_decode($ancFirst->h_o) : null;
+                    $ancFirstO_e = !empty($ancFirst->o_e) ? json_decode($ancFirst->o_e) : null;
+                    $preg_week = !empty($ancFirstH_o->ho_details) ? $ancFirstH_o->ho_details : '';
+                    $remark = !empty($ancFirstO_e->remark) ? $ancFirstO_e->remark : null;
+                    $ancCreatedDate = $ancFirst->created_at;
+                }
+            }
+            
+            
+            
             // dd($preg_week);
             $ancAutoRemark = app('App\Http\Controllers\Admin\ANCController')->getAutoRemark($patients_id,$current_anc_id);;
             
