@@ -2832,7 +2832,7 @@
         @endif
     </div>
 @elseif(!empty($iui->study_report))
-    @if(!isset($printPreview))
+    @if(!isset($printPreview) && (!isset($isAppointmentView) || $isAppointmentView == false))
         <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" >
     @endif
         @php
@@ -2856,7 +2856,7 @@
                 <div class="col-md-12"><h4 class="text-center font-22"><u><b>TRANSVAGINAL FOLLICULAR STUDY</b></u></h4></div>
             </div>
             <div class="row follicular-table mb-3">
-                <div class="col-md-6 col-sm-6 follicular_div_1 mr-15">
+                <div class="col-md-6 col-sm-6 follicular_div_1 mr-15 text-left">
                     <div class="mb-2">
                         <span class="visit-lable">Name :- </span> 
                         <span class="visit-lable-value">{{ucwords(strtolower($iuiFirstVisit->getPatientsInfo['name']))}}</span>
@@ -2882,7 +2882,7 @@
                             <span class="visit-lable-value">{{(isset($agentData[0])) ? $agentData[0] : null}}</span>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 follicular_div_2">
+                <div class="col-md-6 col-sm-6 follicular_div_2 text-left">
                     <div class="mb-2">
                         <span class="visit-lable">UTERUS :- </span> 
                         <span class="visit-lable-value">{{!empty($iuiSecondVisit->oe->ut->ut_type) && $iuiSecondVisit->oe->ut->ut_type == 1 ? 'Normal' : 'Abnormal'}}</span>

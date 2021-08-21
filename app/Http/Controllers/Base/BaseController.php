@@ -81,6 +81,7 @@ use App\Models\CategoryNotification;
 use App\Models\IUIReport;
 use App\Models\IvfExtraVisit;
 use App\Models\InjectionManager;
+use App\Models\HtmlPage;
 
 
 
@@ -164,6 +165,7 @@ class BaseController extends Controller
         $this->IUIReport = new IUIReport;
         $this->IvfExtraVisit = new IvfExtraVisit;
         $this->InjectionManager = new InjectionManager;
+        $this->HtmlPage = new HtmlPage;
 
     }
 

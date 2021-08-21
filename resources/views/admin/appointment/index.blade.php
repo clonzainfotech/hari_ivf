@@ -563,11 +563,12 @@
                     <div class="modal-header header-bottom-border">
     
                     
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h5 class="modal-title" id="myModalLabel"></h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="modal-title" id="myModalLabel"></h5>
+                            </div>
                         </div>
-                    </div>
+                        <button type="button" class="close preview-close mb-2" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="visit-details-data">
@@ -1343,6 +1344,7 @@
             $(document).on('click','.preview-close',function(){
                 $('.visit-details-data').html('');
                 $('.preview-file-modal').modal('hide');
+                location.reload();
             })
             $(document).on('click','.preview-file',function(e){
                 e.preventDefault();
@@ -1362,7 +1364,7 @@
                 if(category == 3 || category == 4)
                 {
                     var cycleNo = $(this).data('cycleno');
-                    var iuiString = 'patient_id='+patientsId+'&history_date='+appointmentDate+'&is_appointmentView=1&cycle_no='+cycleNo;
+                    var iuiString = 'patient_id='+patientsId+'&appointment_date='+appointmentDate+'&is_appointmentView=1&cycle_no='+cycleNo;
                     getIuiHistoryData(iuiString);
                 }
                 if(category == 1 || category == 2)
@@ -1431,9 +1433,9 @@
                                 var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
                             }
                             ivfPreview = buttonHtml + data.data[i];
-                            $('.visit-details-data').html(ivfPreview);
                             ivfPreview = ivfPreview + '<div class="row sepreator"></div>';
                         }
+                        $('.visit-details-data').html(ivfPreview);
                     }
                 }).fail(function(error){
 
@@ -1452,17 +1454,14 @@
                     var previewData = '';
                     $('.visit-details-data').empty();
                     var iuiPreview = $('.visit-details-data').html();
+
                     for(i=0; i<data.data.length;i++)
                     {
-                        if(typeof data.date[i] != 'undefined')
-                        {
-                            var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
-                            var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
-                        }
-                        iuiPreview = buttonHtml + data.data[i];
-                        $('.visit-details-data').html(iuiPreview);
-                        iuiPreview = iuiPreview + '<div class="row sepreator"></div>';
+                        // iuiPreview .= data.data[i];
+                        iuiPreview = iuiPreview + data.data[i] + '<div class="row sepreator"></div>';
                     }
+                    $('.visit-details-data').html(iuiPreview);
+
                 }
             }).fail(function(error){
 

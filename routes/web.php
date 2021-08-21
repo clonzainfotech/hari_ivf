@@ -431,6 +431,15 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('inj-charge/edit/{id}','InjectionChargeController@getInjCharge');
     Route::get('inj-charge/delete/{id}','InjectionChargeController@injChargeDelete');
 
+    //html pages
+    Route::get('html-page','HtmlPageController@index');
+    Route::get('html-page/create','HtmlPageController@create');
+    Route::post('html-page/store','HtmlPageController@store');
+    Route::get('html-page/edit/{id}','HtmlPageController@edit');
+    Route::get('html-page/delete/{id}','HtmlPageController@delete');
+    Route::get('html-page/view/{slug}','HtmlPageController@view');
+
+
     Route::get('print-preview','SystemSettingController@printpreview');
     
 });

@@ -141,7 +141,7 @@
 
                     {{--system--}}
                     @if(in_array(Auth::user()->role,[1,2]))
-                    <li class="{{ Request::segment('1') == 'reference-doctor' || Request::segment('1') == 'reference-doctor-pro' || Request::segment('1') == 'category' || Request::segment('1') == 'indoorsetting' || Request::segment('1') == 'systemsetting' || Request::segment('1') == 'medicines-mapping' || Request::segment('1') == 'medicines-setting' ||  Request::segment('1') == 'injection' ? 'active open' : null || Request::segment('1') == 'charge' ? 'active open' : null || Request::segment('1') == 'inj-charge' ? 'active open' : null || Request::segment('1') == 'plan' ? 'active open' : null}}">
+                    <li class="{{ Request::segment('1') == 'reference-doctor' || Request::segment('1') == 'reference-doctor-pro' || Request::segment('1') == 'category' || Request::segment('1') == 'indoorsetting' || Request::segment('1') == 'systemsetting' || Request::segment('1') == 'medicines-mapping' || Request::segment('1') == 'medicines-setting' ||  Request::segment('1') == 'injection' ? 'active open' : null || Request::segment('1') == 'charge' ? 'active open' : null || Request::segment('1') == 'inj-charge' ? 'active open' : null || Request::segment('1') == 'plan' ? 'active open' : null || Request::segment('1') == 'html-page' ? 'active open' : null}}">
                         <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                         {{--<i class="material-icons">hotel</i>--}}
                             <span>system</span></a>
@@ -155,6 +155,7 @@
                             <li class="{{ Request::segment(1) === 'injection'|| Request::segment(1) === 'plan' || Request::segment(1) === 'injection/*' ? 'sub active open' : null }}"><a href="{{URL::to('injection')}}"><span>Injection</span></a></li>
                             <li class="{{ Request::segment(1) === 'charge' || Request::segment(1) === 'charge/*' ? 'sub active open' : null }}"><a href="{{URL::to('charge')}}"><span>Hospital Charges</span></a></li>
                             <li class="{{ Request::segment(1) === 'inj-charge' || Request::segment(1) === 'inj-charge/*' ? 'sub active open' : null }}"><a href="{{URL::to('inj-charge')}}"><span>Hormon Injection</span></a></li>
+                            <li class="{{ Request::segment(1) === 'html-page' || Request::segment(1) === 'html-page/*' ? 'sub active open' : null }}"><a href="{{URL::to('html-page')}}"><span>Html Page</span></a></li>
                         </ul>
                     </li>
                     @endif
