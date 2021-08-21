@@ -1421,7 +1421,7 @@ class AppointmentController extends AdminController
                 $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
                 $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
                         <p><span class="font-bold candor-color">Package: </span>'.(!empty($package) ? $package->package : '-').'</p>
-                        <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($TotalAmount) ? $TotalAmount : '-').'</p>
+                        <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($$package->package) ? ($package->package - $TotalAmount) : '-').'</p>
                         <p><span class="font-bold candor-color">Package Condition: </span>'.(!empty($package) ? $package->condition : '-').'</p>
                         <p><span class="font-bold candor-color">Package Remark: </span>'.(!empty($package) ? $package->remark : '-').'</p>
                         <p><span class="font-bold candor-color">Payment : </span></p>';
