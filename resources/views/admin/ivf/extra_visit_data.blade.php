@@ -78,7 +78,14 @@ $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"S
                             <span class="input-group-addon">L.M.P Date : &nbsp;</span>
                             {{Form::text("lmp[date]",!empty($lmp->date) ? \Carbon\Carbon::parse($lmp->date)->format('D d M Y') : null,['class'=>'form-control lmd-date second-visit-lmd-date'])}}
                         </div>
+                        
                         <span class="form-error-msg lmp-date-msg"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Weight : &nbsp;</span>
+                            {{Form::text('lmp[weight]',isset($lmp->weight) && !empty($lmp->weight) ? $lmp->weight : '',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                        </div>
                     </div>
                         <span class="col-md-1 p-2 lmd-date-diff"></span>
                         {{Form::hidden('lmp[lmp_date_diff]',!empty($lmp->lmp_date_diff) ? $lmp->lmp_date_diff : null,['class'=>'lmd-date-diff-val'])}}

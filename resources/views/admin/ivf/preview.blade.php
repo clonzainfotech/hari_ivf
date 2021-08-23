@@ -2295,14 +2295,14 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
                         @endphp
 
-                        @if(!empty($historyData->plan))
+                        {{-- @if(!empty($historyData->plan))
                             <tr>
                                 <th>
                                     <span class="ivf-label">Transfer Plan</span>
                                     {{$planData[$historyData->plan] }}
                                 </th>
                             </tr>
-                        @endif
+                        @endif --}}
                     </tbody>
                 </table>
                         @if($plan != 2 && $cycle == $cycle)
@@ -2818,6 +2818,20 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
             <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" >
         @endif
         @if($isTableView == '1' && $plan == 1)
+            <?php
+                $hmgDose = 0;
+                $antaDose = 0;
+                $fshDose = 0;
+                $se2Data = [];
+                $sp2Data = [];
+                $slhData = [];
+                $bloodReport = [];
+                $collectionData = [];
+                $i=0;
+                $cycle_no = count($ivfCycleData);
+                $lastHistory = $ivfCycleData[count($ivfCycleData)-1];
+                $lastHistoryData = !empty($lastHistory->description) ? json_decode($lastHistory->description) : null;
+            ?>
             <div class="row mb-5 do_print">
                 <div class="col-md-12"><h4 class="text-center font-22"><u><b>FROZEN EMBRYO TRANSFER STUDY</b></u></h4></div>
             </div>
@@ -2839,6 +2853,10 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             <span class="visit-lable">L.M.P :- </span> 
                             <span class="visit-lable-value">{{!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : null}}</span>
                     </div>
+                    <div class="mb-2">
+                        <span class="visit-lable">Weight :- </span> 
+                        <span class="visit-lable-value">{{isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : ''}}</span>
+                </div>
                 </div>
                 <div class="col-md-5 col-sm-5 follicular_div_2">
                     <div class="mb-2">
@@ -2864,20 +2882,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
             </div>
             <div class="row follicular-table mb-3">
                 <div class="col-md-12">
-                    <?php
-                        $hmgDose = 0;
-                        $antaDose = 0;
-                        $fshDose = 0;
-                        $se2Data = [];
-                        $sp2Data = [];
-                        $slhData = [];
-                        $bloodReport = [];
-                        $collectionData = [];
-                        $i=0;
-                        $cycle_no = count($ivfCycleData);
-                        $lastHistory = $ivfCycleData[count($ivfCycleData)-1];
-                        $lastHistoryData = !empty($lastHistory->description) ? json_decode($lastHistory->description) : null;
-                    ?>
+                    
                     <table class="module-report-table study-report-table mb-2">
                         <thead>
                             <tr>
@@ -3288,6 +3293,10 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
             </div>
         @endif
         @if($isTableView == '1' && $plan != 1)
+        @php 
+            $lastHistory = $ivfCycleData[count($ivfCycleData)-1];
+            $lastHistoryData = !empty($lastHistory->description) ? json_decode($lastHistory->description) : null;
+        @endphp
             {{-- {{print_r($ivfCycleData)}} --}}
             <div class="row mb-5 do_print">
                 <div class="col-md-12"><h4 class="text-center font-22"><u><b>FROZEN EMBRYO TRANSFER STUDY</b></u></h4></div>
@@ -3310,6 +3319,10 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             <span class="visit-lable">L.M.P :- </span> 
                             <span class="visit-lable-value">{{!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : null}}</span>
                     </div>
+                    <div class="mb-2">
+                        <span class="visit-lable">Weight :- </span> 
+                        <span class="visit-lable-value">{{isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : ''}}</span>
+                </div>
                     @if($plan == 3)
                         <div class="mb-2">
                             <span class="visit-lable">Semen Freezing :- </span> 
@@ -3359,10 +3372,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             </tr>
                         </thead>
                         <tbody>
-                            @php 
-                                $lastHistory = $ivfCycleData[count($ivfCycleData)-1];
-                                $lastHistoryData = !empty($lastHistory->description) ? json_decode($lastHistory->description) : null;
-                            @endphp
+                            
                             @foreach($ivfCycleData as $row)
                                 @php
                                     $historyData = json_decode($row->description);
@@ -3649,7 +3659,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             <th class="float-right">
                                 <span class="ivf-label">Visit Date:  </span>{{Carbon\Carbon::parse($ivfExtraVisit->created_at)->format('d/m/Y')}}
                                 @if($ivfPatients->weight)
-                                    <br><span class="ivf-label">Weight: </span>{{$ivfPatients->weight.' kg'}}
+                                    <br><span class="ivf-label">Weight: </span>{{isset($lmp->weight) && !empty($lmp->weight) ? $lmp->weight.' kg' : $ivfPatients->weight.' kg'}}
                                 @endif
                             </th>
                         </tr>

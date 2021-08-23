@@ -222,6 +222,7 @@
             $dualTrigger = !empty($triggerHistoryData->trigger->decapeptyl->status) ? $triggerHistoryData->trigger->decapeptyl->status : null;
             $i=0;
             $cycle_no = count($cycle);
+            $lastCycleData = json_decode($cycle[count($cycle)-1]['description']);
         @endphp
         @if($cycle_no>0 && $pStatus == 1)
             @foreach($cycle as $row)
@@ -251,6 +252,7 @@
                                 </tr>
                                 <tr>
                                     <th class="font-15"><span class="font-bold ">LMP Date: </span>{{\Carbon\Carbon::parse($historyLmddateDate)->format('D d M Y')}}</th>
+                                    <th class="font-15"><span class="font-bold ">Weight: </span>{{isset($lastCycleData->weight) && !empty($lastCycleData->weight) ? $lastCycleData->weight.' kg' : ''}}</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -516,7 +518,7 @@
                                         {{-- </div> --}}
                                     @endforeach
                                     @php
-                                        $lastCycleData = json_decode($cycle[count($cycle)-1]['description']);
+                                        
                                         $nextVisitNo = count($cycle) + 2;
                                         $prevAppointmentDate = !empty($lastCycleData->follow_up) ? \Carbon\Carbon::parse($lastCycleData->follow_up)->format('d-m-Y') : null;
                                         $currentDateDiff = \Carbon\Carbon::parse(!empty($historyLmddateDate) ? $historyLmddateDate : $cycle[count($cycle)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($prevAppointmentDate));
@@ -1288,6 +1290,15 @@
                                                     {{Form::hidden('data[is_transfer]','yes',['class'=>'is-transfer'])}}
                                                     {{Form::hidden('data[is_transfer_print]','yes')}}
                                                     <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Weight : &nbsp;</span>
+                                                                {{Form::text('data[weight]','',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                                                            </div>
+                                                            <span class="weight-by-error text-danger mb-2"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
                                                         {{-- upt --}}
                                                         <div class="col-md-1">
                                                             <label class="vertical-form-label pr-0">
@@ -1790,7 +1801,11 @@
                         </div>
                     </div>
                 @endforeach
-                
+                @php 
+                    $lastHistory = $cycle[count($cycle)-1];
+                    $lastHistoryData = !empty($lastHistory->description) ? json_decode($lastHistory->description) : null;
+                    // print_r();
+                @endphp
                 <div class="card frozen-table">
                     <div class="body">
                         <div class="col-md-12">
@@ -1825,6 +1840,10 @@
                                                 <span class="visit-lable">L.M.P :- </span> 
                                                 <span class="visit-lable-value">{{!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : null}}</span>
                                         </div>
+                                        <div class="mb-2">
+                                            <span class="visit-lable">Weight :- </span> 
+                                            <span class="visit-lable-value">{{isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : ''}}</span>
+                                        </div>
                                         @if($pStatus == 3)
                                             <div class="mb-2">
                                                 <span class="visit-lable">Semen Freezing :- </span> 
@@ -1858,6 +1877,7 @@
                                                 <span class="visit-lable-value">{{$historyEmbroyReady}}</span>
                                             </div>
                                         @endif
+                                        
                                     </div>
                                 </div>
                                 
@@ -1895,11 +1915,7 @@
                                             
                                             <tbody>
                                                 
-                                                @php 
-                                                    $lastHistory = $cycle[count($cycle)-1];
-                                                    $lastHistoryData = !empty($lastHistory->description) ? json_decode($lastHistory->description) : null;
-                                                    // print_r();
-                                                @endphp
+                                                
                                                 @foreach($cycle as $row)
                                                     @php
                                                         $historyData = json_decode($row->description);
@@ -2504,6 +2520,15 @@
                                                         {{Form::hidden('data[is_transfer]','yes',['class'=>'is-transfer'])}}
                                                         {{Form::hidden('data[is_transfer_print]','yes')}}
                                                         @if($resultValue == 0 && $isForm)
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">Weight : &nbsp;</span>
+                                                                        {{Form::text('data[weight]','',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                                                                    </div>
+                                                                    <span class="weight-by-error text-danger mb-2"></span>
+                                                                </div>
+                                                            </div>
                                                             <div class="row">
                                                                     {{-- upt --}}
                                                                     <div class="col-md-1">
@@ -4575,7 +4600,15 @@
                                 {{Form::hidden("data[is_upt]",'yes')}}
                                 {{Form::hidden('data[is_transfer]','yes',['class'=>'is-transfer'])}}
                                 {{Form::hidden('data[is_transfer_print]','yes')}}
-                                
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Weight : &nbsp;</span>
+                                            {{Form::text('data[weight]','',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                                        </div>
+                                        <span class="weight-by-error text-danger mb-2"></span>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     {{-- upt --}}
                                     <div class="col-md-1">
@@ -5844,13 +5877,13 @@
                     }, 1000);
                     valid = 0;
                 }
-                 if($('.weight').val() == ''){
-                    $('.weight-by-error').text('Please Enter Weight');
-                    $('html, body').animate({
-                        scrollTop: ($('.seen-by').offset().top - 150)
-                    }, 1000);
-                    valid = 0;
-                }
+                //  if($('.weight').val() == ''){
+                //     $('.weight-by-error').text('Please Enter Weight');
+                //     $('html, body').animate({
+                //         scrollTop: ($('.seen-by').offset().top - 150)
+                //     }, 1000);
+                //     valid = 0;
+                // }
                 var plan_transfer = $('select.plan-transfer').val();
                 if((plan_transfer != '')){
                     if($('.remark').val() == '')

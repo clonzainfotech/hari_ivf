@@ -44,6 +44,7 @@
             </div>
             <span class="seen-by-error text-danger mb-2"></span>
         </div>
+        
     </div>
     {{Form::hidden('visit',$ivf->visit,['class'=>'visit-no'])}}
     {{Form::hidden('plan_type',$ivf->plan)}}
@@ -80,6 +81,17 @@
                 </div>
             </div>
             <span class="col-md-1 p-2 history-lmp-date">Day</span>
+            <div class="col-md-1">
+                <label class="vertical-form-label pr-0">
+                    Weight :
+                </label>
+            </div>
+            <div class="col-md-3">
+            <div class="form-group">
+                {{Form::number('data[weight]',isset($ivfData->weight) && !empty($ivfData->weight) ? $ivfData->weight : null,['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+            </div>
+            <span class="weight-by-error text-danger mb-2"></span>
+        </div>
         </div>
         @php
             $vitlasClass = !empty($ivfData->le->vitals_status) && $ivfData->le->vitals_status == 'yes' ? '' : 'd-none';
@@ -1795,6 +1807,15 @@
         {{Form::hidden("data[is_upt]",'yes')}}
         {{Form::hidden('data[is_transfer]','yes',['class'=>'is-transfer'])}}
         {{Form::hidden('data[is_transfer_print]','yes')}}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-addon">Weight : &nbsp;</span>
+                    {{Form::text('data[weight]',isset($ivfData->weight) && !empty($ivfData->weight) ? $ivfData->weight : '',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                </div>
+                <span class="weight-by-error text-danger mb-2"></span>
+            </div>
+        </div>
         <div class="row">
             {{-- upt --}}
             <div class="col-md-1">
