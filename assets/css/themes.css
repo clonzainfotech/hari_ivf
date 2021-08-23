@@ -2669,7 +2669,7 @@ line-height: 6px !important;
 .unik-table.table td, .unik-table.table th
 {
     white-space: inherit !important;
-    padding: .45rem !important;
+    padding: .35rem !important;
     color: #000 !important;
 }
 .card .body .table th.text-secondary

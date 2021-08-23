@@ -546,7 +546,7 @@
                                                     {{$errors->first('second_marriage_life')}}
                                                 </span>
                                             </div> --}}
-                                            <div class="col-md-1">
+                                            {{-- <div class="col-md-1">
                                                 <label class="vertical-form-label pr-0">
                                                     UPT :
                                                 </label>
@@ -579,7 +579,7 @@
                                                         'placeholder' => 'UPT Details'
                                                     ])}}
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             @php
                                                 $showUptLabel = 'd-none';
                                                 if (!empty($oh->upt_details)) {

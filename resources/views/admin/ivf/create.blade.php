@@ -545,7 +545,7 @@
                                                         {{$errors->first('active_marriage_life')}}
                                                     </span>
                                                 </div>
-                                                <div class="col-md-1">
+                                                {{-- <div class="col-md-1">
                                                     <label class="vertical-form-label pr-0">
                                                         UPT :
                                                     </label>
@@ -569,7 +569,7 @@
                                                             Negative
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </div> 
                                                 <div class="col-md-2">
                                                     <div class="from-group">
                                                         {{Form::text('oh[upt_details]','',[
@@ -577,7 +577,7 @@
                                                             'placeholder' => 'UPT Details'
                                                         ])}}
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                                 <div class="col-md-1 d-none upt_details_label">
                                                     <label class="vertical-form-label pr-0">
                                                         Days Before

@@ -196,7 +196,16 @@
             $historyLmddateDate = null;
             $historyLmdDiff = null;
             if($LMPDate){
+            
+
                 $historyLmddateDate = \Carbon\Carbon::parse($LMPDate);
+                $now = \Carbon\Carbon::now();
+                $historyLmdDiff = $historyLmddateDate->diffInDays($now);
+                $historyLmdDiff = $historyLmdDiff + 1;
+            }
+            if($ivfSecondVisitData)
+            {
+                $historyLmddateDate = \Carbon\Carbon::parse($ivfSecondVisitData->lmp->date);
                 $now = \Carbon\Carbon::now();
                 $historyLmdDiff = $historyLmddateDate->diffInDays($now);
                 $historyLmdDiff = $historyLmdDiff + 1;
@@ -241,7 +250,7 @@
                                     <th class="font-15"><span class="font-bold ">Age: </span>{{ucwords($lastAppointment->getPatientsDetails->age)}}</th>
                                 </tr>
                                 <tr>
-                                    <th class="font-15"><span class="font-bold ">LMP Date: </span>{{\Carbon\Carbon::parse($historyLmddateDate)->format('d-m-Y')}}</th>
+                                    <th class="font-15"><span class="font-bold ">LMP Date: </span>{{\Carbon\Carbon::parse($historyLmddateDate)->format('D d M Y')}}</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -560,12 +569,11 @@
                                                 {{Form::hidden('pickup_pln',encrypt(1),['class'=>'pickup-plan'])}}
                                                 {{Form::hidden('patients_id',$patientsId,['class'=>'patients-id'])}}
                                                 {{Form::hidden('last_s_days',$sDay,['class'=>'last-s-days'])}}
-                                                {{Form::hidden('last_protocol_date',$pDate,['class'=>'last-protocol-date'])}}
+                                                {{Form::hidden('last_protocol_date',\Carbon\Carbon::parse($pDate)->format('D d M Y'),['class'=>'last-protocol-date'])}}
                                                 @if(!$isTransfer)
                                                     {{Form::hidden('data[is_transfer]','no',['class'=>'is-transfer'])}}
                                                     {{Form::hidden('data[is_transfer_print]','no')}}
-                                                   
-                                                    {{Form::hidden("data[lmp][date]",!empty($historyLmddateDate) ? \Carbon\Carbon::parse($historyLmddateDate)->format('D d M Y') : null ,['class'=>'form-control history-lmd-date','autocomplete'=>'off'])}}
+                                                    {{Form::hidden("data[lmp][date]",!empty($historyLmddateDate) ? \Carbon\Carbon::parse($historyLmddateDate)->format('D d M Y') :\Carbon\Carbon::parse($ivfSecondVisitData->lmp->date)->format('D d M Y') ,['class'=>'form-control history-lmd-date','autocomplete'=>'off'])}}
                                                     
                                                     {{Form::hidden("data[lmp][lmp_date_diff]",$historyLmdDiff,['class'=>'form-control history-lmd-date-diff','maxlength'=>3,'placeholder'=>'Date Diff'])}}
                                                     {{Form::hidden('appointment_date',$lastAppointment->date,['class'=>'last-appointment-date'])}}
@@ -5923,8 +5931,16 @@
             $(document).on('click','.transfer',function(e){
                 if($(this).is(':checked')){
                     $('.transfer-data').removeClass('d-none');
+                    var now = new Date();
+                    now.setDate(now.getDate()+15);
+                    now = moment(now).format('ddd DD MMM YYYY');
+                    $('.tranfer-follow-date').val(now);
                 }else{
                     $('.transfer-data').addClass('d-none');
+                    var now = new Date();
+                    now.setDate(now.getDate()+1);
+                    now = moment(now).format('ddd DD MMM YYYY');
+                    $('.tranfer-follow-date').val(now);
                 }
             });
 
