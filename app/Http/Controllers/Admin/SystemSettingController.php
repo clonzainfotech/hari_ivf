@@ -282,6 +282,7 @@ class SystemSettingController extends AdminController
             if($request->ajax()){
                 $status = 1;
                 $search = $request->search;
+            // $medicine = $this->Medicine->orderBy('id','DESC');
 
                 $complaintMedicines =  collect($this->ComplaintMedicine->where('type',1)->get())->groupBy('type_id');
                 if($search){
