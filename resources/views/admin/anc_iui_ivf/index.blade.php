@@ -37,21 +37,22 @@
                                     </div>
                                 </ul>
                             </div>
-                            <div class="col-md-2 checkbox">
-                                {{Form::checkbox('advanced_search','',false,[
-                                    'id'=>'cash_box',
-                                    'class'=>'advanced_search',
-                                ])}}
-                                <label for="cash_box">
-                                    Advanced Search
-                                </label>
-                            </div>
+                            
                             <div class="col-md-1">
                                 <a href="javascript:void(0);">
                                     <button class="btn btn-primary print-all m-0">
                                         Print
                                     </button>
                                 </a>
+                            </div>
+                            <div class="col-md-2 checkbox">
+                                {{Form::checkbox('advanced_search','',false,[
+                                    'id'=>'cash_box',
+                                    'class'=>'advanced_search',
+                                ])}}
+                                <label for="cash_box">
+                                    Advance Search
+                                </label>
                             </div>
                         </div>
                     </div>

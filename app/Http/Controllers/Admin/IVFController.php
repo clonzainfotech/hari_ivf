@@ -2585,7 +2585,7 @@ class IVFController extends AdminController
                     'extraVisit' => $extraVisit,
                     // 'id' => $ivfId,
                     'enc_ivf_id' => $encIvfId,
-                    'plan' => $planData[$plan],
+                    'plan' => isset($planData[$plan]) ? $planData[$plan] : '',
                     // 'type' => $type,
                     'date' => $dateValue,
                     'visitNumber'=>$visitNumber,

@@ -222,9 +222,12 @@
             $dualTrigger = !empty($triggerHistoryData->trigger->decapeptyl->status) ? $triggerHistoryData->trigger->decapeptyl->status : null;
             $i=0;
             $cycle_no = count($cycle);
-            $lastCycleData = json_decode($cycle[count($cycle)-1]['description']);
+           
         @endphp
         @if($cycle_no>0 && $pStatus == 1)
+        @php
+             $lastCycleData = json_decode($cycle[count($cycle)-1]['description']);
+        @endphp
             @foreach($cycle as $row)
                 <div class="card d-none {{'visit-card-'.$row->id}}">
                     <div class="body">
