@@ -16,8 +16,8 @@
                     <!-- Nav tabs -->
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-4"><input type="text" class="form-control daterange" placeholder="Select Date"></div>
-                            <div class="col-md-4">
+                            <div class="col-md-3"><input type="text" class="form-control daterange" placeholder="Select Date"></div>
+                            <div class="col-md-3">
                                 <ul class="nav nav-tabs padding-0">
                                     {{Form::select('patient_id',$patients,'',[
                                         'class'=>'form-control select-padding-0 patient-id',
@@ -30,12 +30,21 @@
                             <div class="col-md-3">
                                 <ul class="nav nav-tabs padding-0">
                                     <div class="input-group">
-                                        <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no">
+                                        <input type="number" class="form-control search-word" placeholder="Search by word">
                                         <span class="input-group-addon search-border">
                                             <i class="zmdi zmdi-search"></i>
                                         </span>
                                     </div>
                                 </ul>
+                            </div>
+                            <div class="col-md-2 checkbox">
+                                {{Form::checkbox('advanced_search','',false,[
+                                    'id'=>'cash_box',
+                                    'class'=>'advanced_search',
+                                ])}}
+                                <label for="cash_box">
+                                    Advanced Search
+                                </label>
                             </div>
                             <div class="col-md-1">
                                 <a href="javascript:void(0);">
@@ -46,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row mt-2 advanced-search-box d-none">
                         <div class="col-lg-4 col-md- col-sm-6">
                             {{Form::select('reference_doctor',$referenceDoctor, '',[
                                 'class'=>'form-control select-padding-0 reference-doctor',
@@ -133,7 +142,7 @@
                 qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
                 getAncIuiIvf(qstring);
             });
-            $(document).on('keyup','.search-mobile-number',function(){
+            $(document).on('keyup','.search-word',function(){
                 search = $(this).val();
                 qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
                 getAncIuiIvf(qstring);
@@ -178,6 +187,13 @@
                 qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' +categoryId;
                 getAncIuiIvf(qstring);
             });
+            $(document).on('change','.advanced_search',function(){
+                $('.advanced-search-box').addClass('d-none')
+                if($(this).prop('checked') == true)
+                {
+                    $('.advanced-search-box').removeClass('d-none');
+                }
+            })
 
             $(document).on('change', 'select.category', function () {
                 categoryId = $(this).val();

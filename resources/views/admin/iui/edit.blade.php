@@ -4597,9 +4597,12 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                 $possibleFactorData = json_decode($iuiFirstVisit->possible_case_of_infertility);
                 $possibleFactorData = !empty($possibleFactorData->infertility_type) ? $possibleFactorData->infertility_type : [];
                 $dateAndInjectionData = [];
-                $lastHistoryData = json_decode($iuiHistoryData[count($iuiHistoryData)-1]['description']);
+                
             @endphp
             @if($visitNo == 3)
+            @php
+                $lastHistoryData = json_decode($iuiHistoryData[count($iuiHistoryData)-1]['description']);
+            @endphp
             <div class=" col-md-12 follicular_table_print">
                 <div class="row mb-15 mb-5 do_print">{{--mb-15 is used in print--}}
                     <div class="col-md-12 text-center"><h4><u><b>TRANSVAGINAL FOLLICULAR STUDY</b></u></h4></div>
@@ -5614,7 +5617,6 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 {{-- @endif --}}
                                             @endforeach
                                         @endif
-                                        
                                         <div class="medicine-data"></div>
                                         {{Form::hidden('old_medicine_data',!empty($historyMedicineKey) ? implode(',',$historyMedicineKey) : null,['class'=>'old-medicine-data'])}}
                                     </td>
