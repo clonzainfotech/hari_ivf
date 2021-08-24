@@ -83,7 +83,7 @@
                         $className = '';
                     }
                 @endphp
-                <td class={{'patient_dropdown '.$className}}>&nbsp;
+                <td class="{{"patient_dropdown ".$className}}">&nbsp;
                     {{ ucwords(strtolower($row->getPatientsDetails['name'])).' '.($row->getChildNumber() ? '('.$row->getChildNumber().')' : '')}}
                     {{-- <td class="patient_dropdown ">{{ucwords(strtolower($row->getPatientsDetails['name']))}}&nbsp; --}}
                         @if(in_array($row->categoryDetails['id'],[1,2,3,4,5,6,10,13]))

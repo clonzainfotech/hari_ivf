@@ -5012,10 +5012,10 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                 @endphp
                                     {{-- nextAppoinment Data --}}
                                     @if($iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 && $prevAppointmentDate && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] != 2)
-                                    @php
-                                        $left_class_name = 'td-left-overy-'.$prevAppointmentDate.'-text';
-                                        $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
-                                    @endphp
+                                        @php
+                                            $left_class_name = 'td-left-overy-'.$prevAppointmentDate.'-text';
+                                            $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
+                                        @endphp
                                         <tr class="">
                                             {{-- <td>{{\Carbon\Carbon::parse($prevAppointmentDate)->format('d-m-Y')}}</td> --}}
                                             <td>

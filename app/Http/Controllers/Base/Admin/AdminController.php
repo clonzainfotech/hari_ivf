@@ -498,6 +498,8 @@ class AdminController extends BaseController
     public function get_category_notification(Request $request)
     {
         $now = Carbon::now()->format('Y-m-d');
+        $yester = Carbon::parse($now)->subDays(1)->format('Y-m-d');
+        $data = $this->CategoryNotification->with('getPatients')->whereDate('reminder_date','<',$yester)->delete();
         $auth_id = Auth::user()->id;
         $data = $this->CategoryNotification->with('getPatients')->whereDate('date','=',$now);
         $data = collect($data->get())

@@ -1661,13 +1661,13 @@ class ANCController extends AdminController
                 $eddPatientData = $eddPatientData->where('patients_id',$request->patient_id);
             }
             if($request->isprint == 1){
-                $eddPatientData = $eddPatientData->orderBy('id','DESC')->get();
+                $eddPatientData = $eddPatientData->orderBy('edd','ASC')->get();
                 $status = 2;
                 $viewName = 'edd_print';
             }else{
                 $status = 1;
                 $viewName = 'edd_data';
-                $eddPatientData = $eddPatientData->orderBy('id','DESC')->paginate(50);
+                $eddPatientData = $eddPatientData->orderBy('edd','ASC')->paginate(50);
             }
             return response()->json([
                 'status'=>$status,
