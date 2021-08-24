@@ -481,6 +481,10 @@ class HomeController extends AdminController
             $current_anc_id = null;
             if($ancHistory)
             {
+                $ancFirst = $this->ANC->where('patients_id',$patients_id)->where('id',$ancHistory->anc_id)->first();
+                $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
+                $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
+                $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
                 $h_o = !empty($ancHistory->h_o) ? json_decode($ancHistory->h_o) : null;
                 $o_e = !empty($ancHistory->o_e) ? json_decode($ancHistory->o_e) : null;
                 $preg_week = !empty($h_o->ho_details) ? $h_o->ho_details : '';
@@ -552,8 +556,8 @@ class HomeController extends AdminController
             {
                 $html = $html.' Placenta : '.$ancAutoRemark['placenta'];
             }
-            $data = '<p><span class="font-bold candor-color">LMP Date : </span>'.\Carbon\Carbon::parse($lmp)->format('d M Y').'</p>
-                    <p><span class="font-bold candor-color">EDD Date : </span>'.\Carbon\Carbon::parse($eddDate)->format('d M Y').'</p>
+            $data = '<p><span class="font-bold candor-color">LMP Date : </span>'.(!empty($lmp) ? \Carbon\Carbon::parse($lmp)->format('d M Y') : '-').'</p>
+                    <p><span class="font-bold candor-color">EDD Date : </span>'.(!empty($eddDate) ? \Carbon\Carbon::parse($eddDate)->format('d M Y') : '-').'</p>
                     <p><span class="font-bold candor-color">Preg. Week : </span>'.$preg_week.'</p>
                     <p><span class="font-bold candor-color">Remark : </span>'.$html.'</p>
                     <p><span class="font-bold candor-color">Last Remark : </span>'.$remark.'</p>

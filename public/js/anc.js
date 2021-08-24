@@ -1308,6 +1308,9 @@ function childData(childNo){
             "<div class='col-md-2 expired-reason-"+i+" d-none'><div class='form-group'>"+
             '<input type="text" name="p_obstratics[child][child_data]['+i+'][expired_reason]" class="form-control" placeholder="Reason">'+
             "</div></div>"+
+            "<div class='col-md-2 expired-reason-"+i+" d-none'><div class='form-group'>"+
+            '<input type="text" name="p_obstratics[child][child_data]['+i+'][expired_year]" class="form-control" placeholder="Expired Year">'+
+            "</div></div>"+
             "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Live Health Year : &nbsp;</span>"+
             '<input type="text" name="p_obstratics[child][child_data]['+i+'][live_health_year]" class="form-control">'+
             "</div></div>"+
@@ -1702,6 +1705,9 @@ function secondChildData(childNo){
             "</div></div>"+
             "<div class='col-md-2 expired-reason-second"+i+" d-none'><div class='form-group'>"+
             '<input type="text" name="p_obstratics[second_marriage][child][child_data]['+i+'][expired_reason]" class="form-control" placeholder="Reason">'+
+            "</div></div>"+
+            "<div class='col-md-2 expired-reason-second"+i+" d-none'><div class='form-group'>"+
+            '<input type="text" name="p_obstratics[second_marriage][child][child_data]['+i+'][expired_year]" class="form-control" placeholder="Expired Year">'+
             "</div></div>"+
             "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Live Health Year : &nbsp;</span>"+
             '<input type="text" name="p_obstratics[second_marriage][child][child_data]['+i+'][live_health_year]" class="form-control">'+

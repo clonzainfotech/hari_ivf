@@ -4597,6 +4597,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                 $possibleFactorData = json_decode($iuiFirstVisit->possible_case_of_infertility);
                 $possibleFactorData = !empty($possibleFactorData->infertility_type) ? $possibleFactorData->infertility_type : [];
                 $dateAndInjectionData = [];
+                $lastHistoryData = json_decode($iuiHistoryData[count($iuiHistoryData)-1]['description']);
             @endphp
             @if($visitNo == 3)
             <div class=" col-md-12 follicular_table_print">
@@ -4610,8 +4611,8 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                             <span class="visit-lable-value">{{ucwords(strtolower($iuiSecondVisit->getPatientsInfoData['name']))}}</span>
                         </div>
                         <div class="mb-3">
-                                <span class="visit-lable">AGE :- </span> 
-                                <span class="visit-lable-value">{{$iuiSecondVisit->getPatientsInfoData['age']}}</span>
+                                <span class="visit-lable">AGE / Weight :- </span> 
+                                <span class="visit-lable-value">{{$iuiSecondVisit->getPatientsInfoData['age'].' Year / '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</span>
                         </div>
                         <div class="mb-3">
                                 <span class="visit-lable">Type & Year of infertility :- </span> 
