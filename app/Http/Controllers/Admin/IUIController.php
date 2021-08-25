@@ -255,6 +255,7 @@ class IUIController extends AdminController
                 }
                 $seenBy = $request->seen_by;
                 $iui->seen_by = $seenBy;
+                $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                 if($gynecStatus == 0){
                     $iui->h_o = json_encode($request->ho);
                     $iui->c_o = json_encode($request->co);
@@ -432,6 +433,7 @@ class IUIController extends AdminController
                 if($request->visit == 2){
                     $seenBy = $request->seen_by_2;
                     $iui->seen_by = $seenBy;
+                    $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                     if(!empty($request['data']['plan']['plan_type'])){
                         $planData = $request['data']['plan']['plan_type'];
                         $planData = explode(' ', $planData);
@@ -443,11 +445,13 @@ class IUIController extends AdminController
                 if($request->visit == 3){
                     $seenBy = $request->seen_by_3;
                     $iui->seen_by = $seenBy;
+                    $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                     $msg = !empty($request['data']['ovalution']) && $request['data']['ovalution'] == 'yes' && !empty($request['data']['hcg']) && !empty($request['data']['hcg']['iui']) && !empty($request['data']['hcg']['iui']['status']) && $request['data']['hcg']['iui']['status'] == 'yes' && !empty($request['data']['hcg']['iui']['type']) ? 'IUI Done ' : 'Advise Ovalution Study ';
                 }
                 if($request->visit == 4){
                     $seenBy = $request->seen_by_4;
                     $iui->seen_by = $seenBy;
+                    $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                     $msg = !empty($request->data['result']) ? 'Result '.ucfirst($request->data['result']) : null;
                     $followupDate = !empty($request->data['date']) ? $request->data['date'] : null;
                 }
@@ -762,6 +766,7 @@ class IUIController extends AdminController
                                     $ivfHistorydata[] = [
                                         "patients_id" => $iuiHistory->patients_id,
                                         "seen_by" => $iuiHistory->seen_by,
+                                        "rmo_doctor" => $iuiHistory->rmo_doctor,
                                         "created_by" => Auth::user()->id,
                                         "plan" => 1,
                                         'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
@@ -848,6 +853,7 @@ class IUIController extends AdminController
                                                 $ivfHistorydata[] = [
                                                     "patients_id" => $iuiHistory->patients_id,
                                                     "seen_by" => $iuiHistory->seen_by,
+                                                    "rmo_doctor" => $iuiHistory->rmo_doctor,
                                                     "created_by" => Auth::user()->id,
                                                     "plan" => 1,
                                                     'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
@@ -926,6 +932,7 @@ class IUIController extends AdminController
                                         $ivfHistorydata[] = [
                                             "patients_id" => $iuiHistory->patients_id,
                                             "seen_by" => $iuiHistory->seen_by,
+                                            "rmo_doctor" => $iuiHistory->rmo_doctor,
                                             "created_by" => Auth::user()->id,
                                             "plan" => 1,
                                             'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
@@ -965,6 +972,7 @@ class IUIController extends AdminController
                                         $ivfHistorydata[] = [
                                             "patients_id" => $iuiHistory->patients_id,
                                             "seen_by" => $iuiHistory->seen_by,
+                                            "rmo_doctor" => $iuiHistory->rmo_doctor,
                                             "created_by" => Auth::user()->id,
                                             "plan" => 1,
                                             'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,

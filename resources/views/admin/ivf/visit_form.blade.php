@@ -44,6 +44,16 @@
             </div>
             <span class="seen-by-error text-danger mb-2"></span>
         </div>
+        <div class="col-md-1">
+            <label class="vertical-form-label pr-0">
+                RMO Doctor :
+            </label>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                {{Form::select('rmo_doctor',$hospitalDoctor,$ivf->rmo_doctor,['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+            </div>
+        </div>
         
     </div>
     {{Form::hidden('visit',$ivf->visit,['class'=>'visit-no'])}}

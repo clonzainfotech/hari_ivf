@@ -1024,6 +1024,16 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
             </div>
             <span class="seen-by-error text-danger mb-2"></span>
         </div>
+        <div class="col-md-1">
+            <label class="vertical-form-label pr-0">
+                RMO Doctor :
+            </label>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                {{Form::select('rmo_doctor',$hospitalDoctor,(!empty($ancId) || !empty($ancHistoryId)) ? $ancData->rmo_doctor : null,['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+            </div>
+        </div>
     </div>
     <div class="{{$class}}">
         <div class="panel-heading" role="tab" id="headingThree_1">

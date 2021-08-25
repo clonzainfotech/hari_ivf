@@ -38,6 +38,16 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         </div>
                     </div>
                 </div>
+                <div class="col-md-1">
+                    <label class="vertical-form-label pr-0">
+                        RMO Doctor :
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                    </div>
+                </div>
                 {{Form::hidden('iui_id',$iui->id)}}
                 {{Form::hidden('visit',1)}}
                 <!--1 patients basic information -->
@@ -3380,6 +3390,16 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         </div>
                         <span class="seen-by-error-2 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5">
@@ -4113,6 +4133,16 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         </div>
                         <span class="seen-by-error-4 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading" role="tab" id="headingThree_1">
@@ -4678,6 +4708,16 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                 {{Form::select('seen_by_3',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seen-by-3','placeholder'=>'Select Doctor'])}}
                             </div>
                             <span class="seen-by-error-3 text-danger mb-2"></span>
+                        </div>
+                        <div class="col-md-1 div-seen-by">
+                            <label class="vertical-form-label pr-0">
+                                RMO Doctor :
+                            </label>
+                        </div>
+                        <div class="col-md-3 div-seen-by">
+                            <div class="form-group">
+                                {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            </div>
                         </div>
                     @endif
                     <div class="col-md-12">

@@ -396,6 +396,7 @@ class IVFController extends AdminController
                     $ivf->o_h = json_encode($request->oh);
                 }
                 $ivf->seen_by = $request->seen_by;
+                $ivf->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                 $mhData = $request->mh;
                 $pastDurationDay = !empty($request['mh']['past_duration_of_day']) ? $request['mh']['past_duration_of_day'] : [];
                 $presentDay = !empty($request['mh']['present_duration_of_day']) ? $request['mh']['present_duration_of_day'] : [];
@@ -890,6 +891,7 @@ class IVFController extends AdminController
                     $ivfHistory->plan = $request->plan_type;
                     $ivfHistory->patients_id = $patientsId;
                     $ivfHistory->seen_by = $request->seen_by;
+                    $ivfHistory->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                     $ivfHistory->created_by = Auth::user()->id;
                     $ivfHistory->save();
                     $ivf = $ivfHistory;

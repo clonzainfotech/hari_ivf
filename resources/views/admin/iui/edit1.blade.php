@@ -36,6 +36,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::select('seen_by',$hospitalDoctor,isset($iui) && !empty($iui->seen_by) ? $iui->seen_by : '',['class'=>'form-control select-padding-0','placeholder'=>'Select Doctor'])}}
                         </div>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 {{Form::hidden('iui_id',$iui->id)}}
                 {{Form::hidden('visit',1)}}
@@ -3412,6 +3422,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                         <span class="seen-by-error-2 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5">
@@ -4328,6 +4348,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                         <span class="seen-by-error-3 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-2">
@@ -4935,6 +4965,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::select('seen_by_4',$hospitalDoctor,isset($iui) && !empty($iui->seen_by) ? $iui->seen_by : '',['class'=>'form-control select-padding-0 seen-by-4','placeholder'=>'Select Doctor'])}}
                         </div>
                         <span class="seen-by-error-4 text-danger mb-2"></span>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
                     </div>
                 </div>
                 <div class="panel panel-primary">

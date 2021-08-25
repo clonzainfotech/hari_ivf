@@ -431,6 +431,7 @@ class ANCController extends AdminController
                 $anc->treatment = !empty($request->treatment) ? json_encode($request->treatment) : json_encode($request->old_treatment);
                 $anc->patients_id = $patientsId;
                 $anc->seen_by = $request->seen_by;
+                $anc->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                 $anc->created_by = Auth::user()->id;
                 $anc->save();
                 $current_anc_id = $anc->id;
@@ -628,6 +629,7 @@ class ANCController extends AdminController
                 $ancHistory->usg = json_encode($usgData);
                 $ancHistory->is_gynec = $request->is_gynec;
                 $ancHistory->seen_by = $request->seen_by;
+                $ancHistory->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                 $ancHistory->created_by = Auth::user()->id;
                 $ancHistory->updated_at = Carbon::now()->format('Y-m-d');
                 $ancHistory->save();
@@ -637,7 +639,6 @@ class ANCController extends AdminController
                 $usgEddDate = $request->oe_usg_edd_date;
                 $eddDate = $request->oe_edd_date;
             }
-
             // update appointment flag
             $now = Carbon::now()->format('Y-m-d');
             $usgStatus = 0;
