@@ -78,7 +78,7 @@ class HormonController extends AdminController
     public function create(){
         try{
             $category = $this->Category->whereStatus(1)->pluck('name','id');
-            $injection = $this->InjectionCharge->where('quantity','>',0)->where('type',1)->pluck('name','id');
+            $injection = $this->InjectionCharge->where('type',1)->pluck('name','id');
             $patient = $this->OpdPatients->where(function($query) {
                 $query->whereHas('getAppointments', function($query) {
                     $query->where([
@@ -166,20 +166,20 @@ class HormonController extends AdminController
             $hormon->reference_doctor_id = $opdPatient->reference_doctor_id;
             if($hormon->charge_type == 1) {
                 $hormon->injection = $request->hinjection;
-                $injection = $this->InjectionCharge->find($request->hinjection);
-                $injection->quantity = ($injection->quantity - 1) >= 0 ? ($injection->quantity - 1) : 0;
-                $injection->save();
+                // $injection = $this->InjectionCharge->find($request->hinjection);
+                // $injection->quantity = ($injection->quantity - 1) >= 0 ? ($injection->quantity - 1) : 0;
+                // $injection->save();
                 $hormon->cycle_no = $request->cycle_no;
 
                 //Add record 
-                $injManager = $this->InjectionManager;
-                $injManager->patients_id = $request->hname;
-                $injManager->cycle_no = $request->cycle_no;
-                $injManager->type = 1;
-                $injManager->injection = $injection->name;
-                $injManager->net_price = $injection->net_price;
-                $injManager->amount = $request->hcharge;
-                $injManager->save();
+                // $injManager = $this->InjectionManager;
+                // $injManager->patients_id = $request->hname;
+                // $injManager->cycle_no = $request->cycle_no;
+                // $injManager->type = 1;
+                // $injManager->injection = $injection->name;
+                // $injManager->net_price = $injection->net_price;
+                // $injManager->amount = $request->hcharge;
+                // $injManager->save();
             }
             // dd($hormon);
             // if ($hormon->charge_type == 3) {

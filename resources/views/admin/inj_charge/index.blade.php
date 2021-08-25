@@ -121,7 +121,7 @@
                                     Quanity
                                 </div>
                                 <div class="col-md-6">
-                                    {{Form::number('quantity','',['class'=>'form-control quantity form-required','placeholder'=>' quantity','data-errorclass'=>'quantity-error'])}}
+                                    {{Form::number('quantity','',['class'=>'form-control quantity','placeholder'=>' quantity','data-errorclass'=>'quantity-error'])}}
                                 </div>
                                 <span class="form-error-msg quantity-error w-100"></span>
                             </div>
