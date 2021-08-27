@@ -80,7 +80,7 @@
 <script type="text/javascript">
  $(document).ready(function() {
         CKEDITOR.replace('description', {
-            filebrowserUploadUrl: "{{URL::to('html-page/uploadImage', ['_token' => csrf_token() ])}}",
+            filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
             filebrowserUploadMethod: 'form'
         });
 });

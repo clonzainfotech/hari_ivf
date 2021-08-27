@@ -438,7 +438,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('html-page/edit/{id}','HtmlPageController@edit');
     Route::get('html-page/delete/{id}','HtmlPageController@delete');
     Route::get('html-page/view/{slug}','HtmlPageController@view');
-    Route::post('html-page/uploadImage/{token}','HtmlPageController@upload');
+    Route::any('html-page/uploadImage','HtmlPageController@upload')->name('ckeditor.upload');
 
 
     Route::get('print-preview','SystemSettingController@printpreview');
