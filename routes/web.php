@@ -38,6 +38,7 @@ Route::get('/weeks_26-30','Admin\AppHtmlController@weeks_26_30');
 Route::get('/weeks_21-25','Admin\AppHtmlController@weeks_21_25');
 Route::get('/weeks_31-35','Admin\AppHtmlController@weeks_31_35');
 Route::get('/weeks_17-20','Admin\AppHtmlController@weeks_17_20');
+Route::get('html-page/view/{slug}','Admin\HtmlPageController@view');
 Auth::routes();
 
 Route::get('get-iui-report','Admin\IUIController@getIuiDetails');
@@ -437,7 +438,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('html-page/store','HtmlPageController@store');
     Route::get('html-page/edit/{id}','HtmlPageController@edit');
     Route::get('html-page/delete/{id}','HtmlPageController@delete');
-    Route::get('html-page/view/{slug}','HtmlPageController@view');
+    
     Route::any('html-page/uploadImage','HtmlPageController@upload')->name('ckeditor.upload');
 
 

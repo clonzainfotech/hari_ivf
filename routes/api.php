@@ -23,6 +23,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
     Route::post('/otp_verify', 'AuthApiController@otp_verify');
     Route::get('/hospital_tutorials', 'HomeController@hospital_tutorials');
     Route::get('/getQ_A', 'HomeController@getQAns');
+    Route::get('getHtmlPages','HomeController@getHtmlPages');
 
     Route::middleware('APIToken')->group(function () {
         // Logout
@@ -90,6 +91,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         Route::post('editPatientWeight','PatientController@editPatientWeight');
         Route::post('deletePatientWeight','PatientController@deletePatientWeight');
         Route::get('getPatientWeight','PatientController@getPatientWeight');
+        
     });
 
 });
