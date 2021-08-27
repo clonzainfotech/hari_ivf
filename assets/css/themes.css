@@ -2811,3 +2811,6 @@ font-size: 22px !important;
 .nav-tabs .nav-link, .nav-tabs .nav-link:hover{
     color: #000;
 }
+#appointment-table thead>tr>th{
+    font-weight: 700 !important;
+}

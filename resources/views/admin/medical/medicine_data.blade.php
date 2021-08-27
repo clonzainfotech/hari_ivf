@@ -101,13 +101,10 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                         @php
                             if(!empty($row->description)){
                                 $data = json_decode($row->description);
-                                $medicine = !empty($data->treatment) ? $data->treatment : [];
-                                // print_r($medicine);
-                                $treatment = [];
-                                if(isset($medicine->medicinedata) && !empty($medicine->medicinedata))
+                                $treatment = !empty($data->treatment) ? $data->treatment : [];
+                                if(isset($data->treatment) && !empty($data->treatment))
                                 {
-                                    $treatment = $medicine->medicinedata;
-                                    
+                                    unset($treatment->medicinedata);
                                 }
                             }else{
                                 $treatment = json_decode($row->treatment);
@@ -118,16 +115,15 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                             <div class="col-md-5 ml-2">Appointment Date :- <span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <br>
-                        {{-- <div class="medicines-table">
+                        <div class="medicines-table">
                             <table class="table m-b-0 table-hover" id="appointment-table">
                                 <thead>
                                     <tr>
-                                        <th>Medicines</th>
-                                        <th>Medicines Status</th>
-                                        <th>Dose</th>
-                                        <th>No </th>
-                                        <th>Quantity</th>
-                                        <th>Medicine Time</th>
+                                        <th class="font-weight-bold">Name</th>
+                                        <th class="font-weight-bold">Dose</th>
+                                        <th class="font-weight-bold">Timing</th>
+                                        <th class="font-weight-bold">Freq.</th>
+                                        <th class="font-weight-bold">Duration</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -206,7 +202,7 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                                     @endif
                                 </tbody>
                             </table>
-                        </div> --}}
+                        </div>
                     @endforeach
                 @else
                     <span class="m-text">No Medicine Available</span></h5>
@@ -236,11 +232,22 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                     @foreach($ivfData as $row)
                         @php
                             $treatment = null;
+                            // if(!empty($row->description)){
+                            //     $medicine = json_decode($row->description);
+                            //     $medicine = !empty($description->treatment) ? $description->treatment : [];
+                            //     if(!empty($medicine)){
+                            //         $treatment = $medicine;
+                            //     }
+                            // }else{
+                            //     $treatment = json_decode($row->treatment);
+                            //     unset($treatment->medicinedata);
+                            // }
                             if(!empty($row->description)){
-                                $medicine = json_decode($row->description);
-                                $medicine = !empty($description->treatment) ? $description->treatment : [];
-                                if(!empty($medicine)){
-                                    $treatment = $medicine;
+                                $data = json_decode($row->description);
+                                $treatment = !empty($data->treatment) ? $data->treatment : [];
+                                if(isset($data->treatment) && !empty($data->treatment))
+                                {
+                                    unset($treatment->medicinedata);
                                 }
                             }else{
                                 $treatment = json_decode($row->treatment);

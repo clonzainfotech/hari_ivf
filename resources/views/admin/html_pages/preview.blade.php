@@ -15,7 +15,12 @@
     {
       text-align: justify; 
       padding:20px;
+      font-family: poppins-regular;
     }
+@font-face {
+    font-family: poppins-regular;
+    src: url('../fonts/Poppins-Regular.ttf');
+}
   </style>
 </head>
 <body>
