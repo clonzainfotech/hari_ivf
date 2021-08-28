@@ -124,11 +124,13 @@ class IVFController extends AdminController
             $familyData = $this->AncHoHistory->where('type',3)->pluck('name','name')->toArray();
             $lastAppointment = $this->Appointment->wherePatientsId($pId)->orderBy('id','DESC')->first();
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+            $rmoDcotor = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
+
             $category = $this->Category
             ->whereStatus(1)
             ->whereNotIn('id', [7])
             ->pluck('name','id');
-            return view('admin.ivf.create',compact('hospitalDoctor','familyData','pastData','personalData','ancPatients','hoData','lastAppointment','patientsId','referenceDoctor','complaints','medicines','hospitalTime','leftOvaryData','rightOvaryData','durationOfData','category','appointmentData'));
+            return view('admin.ivf.create',compact('rmoDcotor','hospitalDoctor','familyData','pastData','personalData','ancPatients','hoData','lastAppointment','patientsId','referenceDoctor','complaints','medicines','hospitalTime','leftOvaryData','rightOvaryData','durationOfData','category','appointmentData'));
         }catch(Exception $e){
             return back();
         }
@@ -258,6 +260,8 @@ class IVFController extends AdminController
             $data['hoData'] = $hoData;
             $data['rightOvaryData'] = $rightOvaryData;
             $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+            $data['rmoDcotor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
+
             return view('admin.ivf.edit',$data);
         }catch(Exception $e){
             log::debug($e);
@@ -1721,6 +1725,7 @@ class IVFController extends AdminController
             $data['triggerHistory'] = $triggerHistory;
             $data['referenceDoctor'] = $referenceDoctor;
             $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+            $data['rmoDcotor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
             $data['investigationReport'] = $this->allInvestigationReport();
             $data['ohData'] = $ohData;
             $data['historySemenFreezing'] = !empty($historySemenFreezing) ? 'Yes' : 'No';
@@ -2162,6 +2167,7 @@ class IVFController extends AdminController
             $data['usgReportImagesData'] = json_encode($usgReportImagesData,true);
             $data['hsaReportImagesData'] = json_encode($hsaReportImagesData,true);
             $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+            $data['rmoDcotor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
             $data['semenFreezing'] = !empty($semenFreezing) ? 1 : 0;
             $data['embroyReady'] = !empty($embroyReady) ? 1 : 0;
             $data['visitData'] = View::make('admin.ivf.visit_form',$data)->render();

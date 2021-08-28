@@ -43,7 +43,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            {{Form::select('rmo_doctor',$rmoDcotor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                         </div>
                     </div>
                 </div>
@@ -3429,7 +3429,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            {{Form::select('rmo_doctor',$rmoDcotor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                         </div>
                     </div>
                 </div>
@@ -4355,7 +4355,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            {{Form::select('rmo_doctor',$rmoDcotor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                         </div>
                     </div>
                 </div>
@@ -4973,7 +4973,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('rmo_doctor',$hospitalDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            {{Form::select('rmo_doctor',$rmoDcotor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                         </div>
                     </div>
                 </div>

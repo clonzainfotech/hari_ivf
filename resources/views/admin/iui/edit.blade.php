@@ -45,7 +45,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        {{Form::select('rmo_doctor',$rmoDcotor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                     </div>
                 </div>
                 {{Form::hidden('iui_id',$iui->id)}}
@@ -3397,7 +3397,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            {{Form::select('rmo_doctor',$rmoDcotor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                         </div>
                     </div>
                 </div>
@@ -4140,7 +4140,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            {{Form::select('rmo_doctor',$rmoDcotor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                         </div>
                     </div>
                 </div>
@@ -4716,7 +4716,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         </div>
                         <div class="col-md-3 div-seen-by">
                             <div class="form-group">
-                                {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                                {{Form::select('rmo_doctor',$rmoDcotor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                             </div>
                         </div>
                     @endif

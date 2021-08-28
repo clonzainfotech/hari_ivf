@@ -92,7 +92,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {{Form::select('rmo_doctor',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                                        {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                                     </div>
                                 </div>
                             </div>

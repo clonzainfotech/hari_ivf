@@ -888,11 +888,12 @@ class ANCController extends AdminController
             $hoData = $this->getHoData();
             $lastAppointment = $this->Appointment->wherePatientsId($pId)->orderBy('id','DESC')->first();
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+            $rmoDoctor = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
             $leftOvaryData = $this->OvaryDetail->where('type',1)->pluck('name','name');
             $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
             $getTotalAncNumber = $this->getTotalAncNumber($pId);
             $weekData =  [1=>'Normal Size',2=>'Just Bulky',3=>'6 Weeks',4=>'6 - 8 Weeks',5=>'8 Weeks',6=>'8 - 10 Weeks',7=>'10 - 12 Weeks',8=>'12 Weeks',9=>'Uterus Just Palpable',10=>'14 Weeks',11=>'16 Weeks',12=>'18 Weeks',13=>'20 Weeks',14=>'22 Weeks',15=>'24 Weeks',16=>'26 Weeks',17=>'28 Weeks',18=>'30 Weeks',19=>'32 Weeks',20=>'34 Weeks',21=>'36 Weeks',22=>'Full Term'];
-            return view('admin.anc.create',compact('lastVisitLmpDate','familyData','pastData','personalData','placenta','hoData','ancPatients','patients_id','referenceDoctor','complaints','medicines','hospitalTime','isIvf','plan','frozen','transfer','durationOfData','lastAppointment','appointmentData','category','weekData','hospitalTime','hospitalDoctor','leftOvaryData','rightOvaryData','getTotalAncNumber'));
+            return view('admin.anc.create',compact('lastVisitLmpDate','familyData','pastData','personalData','placenta','hoData','ancPatients','patients_id','referenceDoctor','complaints','medicines','hospitalTime','isIvf','plan','frozen','transfer','durationOfData','lastAppointment','appointmentData','category','weekData','hospitalTime','hospitalDoctor','rmoDoctor','leftOvaryData','rightOvaryData','getTotalAncNumber'));
         }catch(Exception $e){
             return back();
         }
@@ -1260,6 +1261,7 @@ class ANCController extends AdminController
                 $data['personalData'] = $personalData;
                 $data['pastData'] = $pastData;
                 $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+                $data['rmoDoctor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
                 $data['leftOvaryData'] = $leftOvaryData;
                 $data['rightOvaryData'] = $rightOvaryData;
                 $data['ancAutoRemark'] = $this->getAutoRemark($patients,$ancCurrent->id);

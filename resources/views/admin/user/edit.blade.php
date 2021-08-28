@@ -268,11 +268,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="checkbox">
-                                {{Form::checkbox('is_mobile_view',$user->is_mobile_view,$user->is_mobile_view == 1 ? true: false,['id'=>'is_mobile_view'])}}
-                                <label for="is_mobile_view">
-                                    Mobile Preview
-                                </label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="checkbox">
+                                        {{Form::checkbox('is_mobile_view',$user->is_mobile_view,$user->is_mobile_view == 1 ? true: false,['id'=>'is_mobile_view'])}}
+                                        <label for="is_mobile_view">
+                                            Mobile Preview
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="{{'col-md-6 doctor-fields ' . $doctorFields}}">
+                                    <div class="checkbox">
+                                        {{Form::checkbox('is_rmo_doctor',$user->is_rmo_doctor,$user->is_rmo_doctor == 1 ? true: false,['id'=>'is_rmo_doctor'])}}
+                                        <label for="is_rmo_doctor">
+                                            RMO Doctor
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-sm-12">
@@ -402,7 +414,7 @@
                 });
 
             });
-            $('#is_mobile_view').click(function(){
+            $('#is_mobile_view,#is_rmo_doctor').click(function(){
                 if($(this).prop("checked") == true){
                     $(this).val(1);
                 }

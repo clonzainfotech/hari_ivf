@@ -177,6 +177,7 @@ class UserController extends AdminController
             $user->degree = $request->degree;
             $user->specialist = $request->specialist;
             $user->is_mobile_view = $request->is_mobile_view;
+            $user->is_rmo_doctor = $request->is_rmo_doctor;
 
             $achievementImages = $request->achievement;
             // dd($achievementImages);
@@ -300,6 +301,7 @@ class UserController extends AdminController
             $user->degree = $request->degree;
             $user->specialist = $request->specialist;
             $user->is_mobile_view = $request->is_mobile_view;
+            $user->is_rmo_doctor = $request->is_rmo_doctor;
 
             $achievement = [];
             $lastAchievements = [];
