@@ -451,7 +451,7 @@
                                                                             @endif
                                                                         </td>
                                                                         <td>{{$j == 1 && !empty($data->et_details) ? $data->et_details : '-'}}
-                                                                            @if (in_array('transfer',$collectionData) && $j == 1)
+                                                                            @if ($j == 1)
                                                                             <br>
                                                                                     <a href="javascript:void(0);" id="ivf_transfer_report_update" data-patient-id={{ encrypt($datarow->patients_id)}} data-cycle-no={{ encrypt($datarow->cycle_no)}} data-plan={{ encrypt($datarow->plan)}} data-visit={{ encrypt($datarow->visit)}}>
                                                                                         IVF Transfer Report
@@ -2074,9 +2074,9 @@
                                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini delete-visit-data" data-id="{{ encrypt($row->id) }}">
                                                                     <i class="zmdi zmdi-delete material-icons"></i>
                                                                 </a>
-                                                                @if(isset($historyData->is_transfer) && ($historyData->is_transfer == 'no') && !in_array('transfer',$collectionData))
+                                                                {{-- @if(isset($historyData->is_transfer) && ($historyData->is_transfer == 'no')) --}}
                                                                 <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-visit-data" data-id="{{encrypt($row->id)}}"><i class="zmdi zmdi-edit material-icons"></i></a>
-                                                                @endif
+                                                                {{-- @endif --}}
                                                                 @if((isset($historyData->hsa_report->images) && !empty($historyData->hsa_report->images)) || (isset($historyData->blood_report->image) && !empty($historyData->blood_report->image)) || (isset($historyData->usg->images) && !empty($historyData->usg->images)) || (isset($investigationData->hystroscopy->images) && !empty($investigationData->hystroscopy->images)) || (isset($investigationData->laproscopy->images) && !empty($investigationData->laproscopy->images)))
                                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{\Carbon\Carbon::parse($row->created_at)->format('d M Y')}}">
                                                                     <i class="zmdi zmdi-camera material-icons"></i>

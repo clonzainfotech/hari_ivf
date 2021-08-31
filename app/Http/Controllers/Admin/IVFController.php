@@ -2603,6 +2603,7 @@ class IVFController extends AdminController
                         $preview = 0;
                         $isTableView = 0;
                         $displayPlan = 0;
+                        $displayCycle = 0;
                         foreach($ivfVisitDate as $key => $date)
                         {
                             $ivf = $this->IVF->where('patients_id',$patientId)->where('created_at',$key)->first();
@@ -2617,7 +2618,7 @@ class IVFController extends AdminController
                             {
                                 $isIvfHistory = '2';
                                 $ivfHistory = $this->IvfHistory->where('patients_id',$patientId)->where('created_at',$key)->first();
-                                if($ivfHistory && $ivfHistory->plan != $displayPlan)//display all plan visits in one page
+                                if($ivfHistory && ($ivfHistory->plan != $displayPlan || ($ivfHistory->plan == $displayPlan && $ivfHistory->cycle_no != $displayCycle)))//display all plan visits in one page
                                 {
                                     $preview = 0;
                                 }
@@ -2681,6 +2682,7 @@ class IVFController extends AdminController
                                     $ivfCycleData = $this->IvfHistory->wherePatientsId($patientId)->whereCycleNo($ivf->cycle_no)->wherePlan($ivf->plan)->get();
                                     $isTableView = 1;
                                     $displayPlan = $ivfCycleData[0]->plan;
+                                    $displayCycle = $ivfCycleData[0]->cycle_no;
                                     $preview++;
                                 }
                                 if($preview <= 1)
