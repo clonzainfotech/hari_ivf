@@ -800,9 +800,11 @@ class ReportController extends AdminController
     // ivf payment report
     public function ivfPaymentReport(Request $request){
         try{
-            $ivfPayment = $this->IvfPayment->whereNotNull('payment')->orderBy('id','DESC');
+            $ivfPayment = $this->IvfPayment->whereNotNull('package')->orderBy('id','DESC');
             $patients = $this->getPatients();
             if($request->ajax()){
+                $ivfPayment = $this->IvfPayment->whereNotNull('package')->orderBy('id','DESC');
+                $patients = $this->getPatients();
                 if($request->date){
                     $date = explode("-",$request->date);
                     $startDate = Carbon::createFromFormat('d/m/Y', trim($date[0]))->format('Y-m-d');
@@ -814,6 +816,7 @@ class ReportController extends AdminController
                         $ivfPayment = $ivfPayment->whereBetween('created_at', [$startDate, $endDate]);
                     }
                 }
+                // dd($ivfPayment->get());
                 $patientId = $request->patient_id;
                 if($patientId){
                     $ivfPayment = $ivfPayment->where('patients_id',$patientId);
@@ -831,6 +834,7 @@ class ReportController extends AdminController
             }
             return view('admin.report.ivf_payment.index',compact('patients'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }
@@ -842,7 +846,7 @@ class ReportController extends AdminController
     */
     public function ivfRemainigPayment(Request $request){
         try{
-            $ivfPayment = $this->IvfPayment->whereNotNull('payment')->orderBy('id','DESC');
+            $ivfPayment = $this->IvfPayment->whereNotNull('package')->orderBy('id','DESC');
             $patients = $this->getPatients();            
             if($request->ajax()){
 
@@ -872,6 +876,7 @@ class ReportController extends AdminController
             }
             return view('admin.report.ivf_payment.remaining_payment',compact('patients'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }

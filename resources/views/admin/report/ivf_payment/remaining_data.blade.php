@@ -27,7 +27,8 @@
         </td> -->
         @php
             $i = 1;
-            $paymentTypeData = ['1'=>'card','2'=>'Cash'];
+            $paymentTypeData = ['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'];
+
         @endphp
         @forelse($ivfPayment as $row)
             <tr class="ivfpayment">

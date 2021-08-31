@@ -387,7 +387,7 @@
                         </th>
                     </tr>
                     @endif
-                    @if ($oe->breast->type == 'yes')
+                    @if (isset($oe->breast) && $oe->breast->type == 'yes')
                     
                     <tr>
                         <th>Breast</th>
