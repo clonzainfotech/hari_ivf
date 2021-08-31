@@ -108,7 +108,7 @@
                             <td><strong>{{!empty($iuireportData->sperm_count_post) ? $iuireportData->sperm_count_post.' mili/ml' : '-'}}</strong></td>
                         </tr>
                         <tr>
-                            <td>Total Count(mill) :</strong></td>
+                            <td>Total Count(mili) :</strong></td>
                             <td><strong>{{!empty($iuireportData->total_count_pre) ? $iuireportData->total_count_pre.' /mili' : '-'}}</strong></td>
                             <td><strong>{{!empty($iuireportData->total_count_post) ? $iuireportData->total_count_post.' /mili' : '-'}}</strong></td>
                         </tr>
