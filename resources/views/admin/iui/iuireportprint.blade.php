@@ -139,8 +139,8 @@
                         </tr>
                         <tr>
                             <td>Pus Cells / hpf :</strong></td>
-                            <td><strong>{{!empty($iuireportData->pus_cells_pre) ? $iuireportData->pus_cells_pre.' hpf' : '-'}}</strong></td>
-                            <td><strong>{{!empty($iuireportData->pus_cells_post) ? $iuireportData->pus_cells_post.' hpf' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->pus_cells_pre) ? $iuireportData->pus_cells_pre.' /hpf' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->pus_cells_post) ? $iuireportData->pus_cells_post.' /hpf' : '-'}}</strong></td>
                         </tr>
                     </tbody>
                 </table>
