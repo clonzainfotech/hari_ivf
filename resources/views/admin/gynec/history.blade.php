@@ -20,10 +20,10 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <h2><strong>Gynec Appointment</strong>
+                <strong class="pr-3">GYNEC Previous Visit</strong>
                      {{-- <small>Description text here...</small> --}}
-                    </h2>
-                    <ul class="header-dropdown col-md-3">
+                    <!-- </h2> -->
+                    <!-- <ul class="header-dropdown col-md-3">
                         <li class="w-100">
                             {{Form::select("date",$date,'',[
                                 'class'=>'form-control select-padding-0 gynec-date',
@@ -31,7 +31,25 @@
                                 'placeholder'=>'Select Date'
                             ])}}
                         </li>
-                    </ul>
+                    </ul> -->
+                    @if(count($date)>0)
+                                <?php
+                                // $date = array_reverse($date);
+                                $ii = 1;
+                                ?>
+                                @foreach($date as $k => $dt)
+                                    <?php $ij = $ii++;?>
+                                    {{Form::radio("date",$dt,'',[
+                                            'id'=>'dt_'.$ij,
+                                            'class'=>'gynec-date',
+                                        ])}}
+                                    <label class="pl-0 pr-3" for="dt_{{$ij}}">
+                                        {{\Carbon\Carbon::parse($dt)->format('d-m-Y') }}
+                                    </label>
+                                @endforeach
+                            @endif
+                    <a href="javascript:void(0)" class="preview-file mt-0"  data-id="{{$patientsId}}">Preview all</a>
+
                 </div>
                 <div class="body">
                     <div class="col-md-12 col-lg-12">
@@ -55,7 +73,33 @@
             </div>
         </div>
     </div>
+    
 @stop
+<div class="modal fade preview-file-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header header-bottom-border">
+
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="modal-title" id="myModalLabel">Gynec History</h5>
+                    </div>
+                </div>
+                    <button type="button" class="close mb-2" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="gynec-details-data">
+                    </div>
+                </div>
+
+                <div class="modal-footer footer-top-border text-right d-inline-block">
+                    <button type="button" class="btn btn-primary waves-effect" data-dismiss="modal">CLOSE</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 @section('page-script')
 <script src="{{asset('public/js/gynec.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
@@ -86,7 +130,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             gynecFormData(formData);
         });
 
-        $(document).on('change','select.gynec-date',function(e){
+        $(document).on('change','input.gynec-date',function(e){
             date = $(this).val();
             qstring = 'date='+date;
             getGynecData(qstring);
@@ -100,8 +144,68 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                 $('.'+dId).removeClass('d-none');
             }
         });
+        $(document).on('click','.preview-file',function(e){
+            e.preventDefault();
+            patientsId = $(this).data('id');
+            $('.preview-file-modal').modal('hide');
+            $('.anc-details-data').html('');
+            $('.preview-file-modal').modal('show');
+            
+            qstring = 'patient_id='+patientsId;
+            getGynecHistoryData(qstring);
+            
+        });
+        $(document).on('click','.edit-btn',function(){
+            date = $(this).data('date');
+            qstring = 'date='+date;
+            $("input:radio[name='date'][value='" + date + "']").attr('checked', 'checked');
+            $('.preview-file-modal').modal('hide');
+            getGynecData(qstring);
+        });
+
+        $(document).on('click','.print-btn',function(){
+            date = $(this).data('date');
+            qstring = 'patient_id='+patientsId+'&history_date='+date;
+            getGynecHistoryData(qstring);
+        });
     });
 
+    function getGynecHistoryData(qstring)
+    {
+        $.ajax({
+            url:'{{URL::to("get-gynec-details")}}?'+qstring,
+            type:'GET',
+            dataType:'json'
+        }).done(function(data){
+            if(data.gynec_type == 1){
+                var ancPreview = $('.gynec-details-data').html();
+                var buttonHtml = '';
+                var previewData = '';
+                for(i=0; i<data.data.length;i++)
+                {
+                    if(typeof data.date[i] != 'undefined'){
+                        var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
+                        var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
+                    }
+                   
+                        buttonHtml = ancPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a></div></div>';
+                        ancPreview = buttonHtml + data.data[i];
+                    $('.gynec-details-data').html(ancPreview);
+                    ancPreview = ancPreview + '<div class="row sepreator"></div>';
+                }
+                // console.log(ancPreview);
+            }
+            if(data.gynec_type == 2){
+                w = window.open(window.location.href, "_blank");
+                w.document.open();
+                w.document.write(data.data);
+                w.document.close();
+                w.window.print();
+            }
+        }).fail(function(error){
+
+        });
+    }
     function gynecFormData(data,next=null){
         // var isError = errorMessage();
         // if (isError == false) {

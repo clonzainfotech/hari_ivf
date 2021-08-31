@@ -1243,7 +1243,7 @@
                                                                 </div>
                                                             </div>
                                                             </div>
-                                                            <div class="col-md-4 float-right">
+                                                            <div class="col-md-6 float-right">
                                                                 <table class='unik-footer-table table m-b-0 float-right' border='1'>
                                                                     <tbody>
                                                                     <tr>
@@ -1490,8 +1490,8 @@
                         @endif
                         <div class="col-md-12">
                         @if($cycle[count($cycle)-1]['cycle_status'] == 2)
-                            <div class="col-md-6"></div>
-                            <div class="col-md-6 float-right">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-7 float-right">
                                 <table class='table table-responsive'>
                                     <tbody>
                                     <tr>

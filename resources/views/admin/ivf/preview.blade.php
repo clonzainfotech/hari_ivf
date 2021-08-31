@@ -2846,7 +2846,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
             <div class="row mb-5 do_print">
                 <div class="col-md-12"><h4 class="text-center font-22"><u><b>FROZEN EMBRYO TRANSFER STUDY</b></u></h4></div>
             </div>
-            <div class="row follicular-table mb-15 mb-5">{{--mb-15 is used in print--}}
+            <div class="row follicular-table mb-15 mb-5 text-left">{{--mb-15 is used in print--}}
                 <div class="col-md-7 col-sm-7 follicular_div_1">
                     <div class="mb-2">
                         <span class="visit-lable">Name :- </span> 
@@ -3321,7 +3321,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
             <div class="row mb-5 do_print">
                 <div class="col-md-12"><h4 class="text-center font-22"><u><b>FROZEN EMBRYO TRANSFER STUDY</b></u></h4></div>
             </div>
-            <div class="row follicular-table mb-15 mb-5">{{--mb-15 is used in print--}}
+            <div class="row follicular-table mb-15 mb-5 text-left">
                 <div class="col-md-7 col-sm-7 follicular_div_1">
                     <div class="mb-2">
                         <span class="visit-lable">Name :- </span> 
@@ -3467,7 +3467,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                     </td>
                                     <td class="">
-                                        {{(!isset($pt_view) || $pt_view != 1) ? $historyData->remark : (isset($historyData->pt_remark) ? $historyData->pt_remark : '')}}
+                                        {{(!isset($pt_view) || $pt_view != 1) ? (isset($historyData->remark) ? $historyData->remark : '') : (isset($historyData->pt_remark) ? $historyData->pt_remark : '')}}
                                         {{isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? ' Other Report: '.$historyData->investigation_extra : ''}}
 
                                     </td>

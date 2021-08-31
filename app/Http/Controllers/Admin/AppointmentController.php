@@ -173,6 +173,7 @@ class AppointmentController extends AdminController
             $isUsg = $usgStatus ? encrypt($usgStatus) : 0;
             return view('admin.appointment.index',compact('usgStatus','patientsData','category','referenceDoctor','hospitalDoctor','hospitalTime','isUsg'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }

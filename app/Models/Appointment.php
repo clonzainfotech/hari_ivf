@@ -107,7 +107,7 @@ class Appointment extends BaseModel
         if($anc){
             $childType = ['1'=>"Single",'2'=>"Twins",'3'=>"Triplets",'4'=>'Quadruple'];
             $childNumber = json_decode($anc->o_e);
-            $childNumber = $childType[$childNumber->oe_no];
+            $childNumber = isset($childNumber->oe_no) ? $childType[$childNumber->oe_no] : null;
         }
         $status = $childNumber ? $childNumber : 0;
         return $status;

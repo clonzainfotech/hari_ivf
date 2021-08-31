@@ -147,6 +147,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('gynec/create/{patientsId}/{appointmentId?}','GynecController@create');
     Route::get('gynec/history/{patientsId}/{appointmentId?}','GynecController@gynecHistory');
     Route::post('gynec','GynecController@store');
+    Route::get('get-gynec-details','GynecController@getGynecDetails');
 
     // anc route
     Route::resource('anc','ANCController');

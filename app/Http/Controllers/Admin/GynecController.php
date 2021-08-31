@@ -410,4 +410,61 @@ class GynecController extends AdminController
             }
         }
     }
+    /**
+    * Return gynec preview 
+    * @param  \Illuminate\Http\Request $nameData
+    * @return \Illuminate\Http\Response
+    */
+    public function getGynecDetails(Request $request)
+    {
+        try
+        {
+            $patient = decrypt($request->patient_id);
+            $data = [];
+            $date = [];
+            if($request->ajax())
+            {
+                if($request->history_date)
+                {
+                    $gynec_type = 2;
+                    $gynec = $this->Gynec->where('created_at',$request->history_date)->first();
+                    $surgicallyData = $this->surgicallyType()['data'];
+                    $investigationReport = $this->allInvestigationReport();
+                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData'))->render();
+                    return response()->json([
+                        'status'=> 1,
+                        'gynec_type' => $gynec_type,
+                        // 'id' => encrypt($gynec->id),
+                        'data' => $data
+                    ]);
+                }
+                else
+                {
+                    $gynec_type = 1;
+                    $gynecAll = $this->Gynec->where('patients_id',$patient)->orderBy('created_at','desc')->get();
+                    $surgicallyData = $this->surgicallyType()['data'];
+                    $investigationReport = $this->allInvestigationReport();
+                    foreach($gynecAll as $gynec)
+                    {
+                        $gynec = $this->Gynec->find($gynec->id);
+                        $date[] = $gynec->created_at;
+                        $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData'))->render();
+                    }
+                    return response()->json([
+                        'status'=>1,
+                        'date'=> $date,
+                        'gynec_type' => $gynec_type,
+                        // 'id' => encrypt($gynec->id),
+                        'data' => $data
+                    ]);
+                }
+            }
+            return ['status'=>'true'];
+        }catch(Exception $e){
+            log::debug($e);
+            abort(500);            
+        }
+        
+        
+    }
 }

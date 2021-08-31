@@ -96,7 +96,7 @@ class IUIController extends AdminController
             $cycleNoData = $this->IuiHistory->where('patients_id',$pId)->orderBY('id','DESC')->first();
             $hoData = $this->getHoData();
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
-            $rmoDoctor = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
+            $rmoDcotor = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
             $durationOfData = getDurationOfData(2)['data'];
             $cycleNo = 1;
             if($cycleNoData && $cycleNoData->visit == 4){
@@ -106,7 +106,7 @@ class IUIController extends AdminController
             ->whereStatus(1)
             ->whereNotIn('id', [7])
             ->pluck('name','id');
-            return view('admin.iui.create',compact('rmoDoctor','personalData','pastData','familyData','iuiPatients','hoData','patientsId','referenceDoctor','complaints','medicines','hospitalTime','leftOvaryData','rightOvaryData','cycleNo','durationOfData','appointmentData','category','hospitalDoctor'));
+            return view('admin.iui.create',compact('rmoDcotor','personalData','pastData','familyData','iuiPatients','hoData','patientsId','referenceDoctor','complaints','medicines','hospitalTime','leftOvaryData','rightOvaryData','cycleNo','durationOfData','appointmentData','category','hospitalDoctor'));
         }catch(Exception $e){
             return back();
         }

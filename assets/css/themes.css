@@ -2814,3 +2814,17 @@ font-size: 22px !important;
 #appointment-table thead>tr>th{
     font-weight: 700 !important;
 }
+.view-file-modal-dialog .follicular-table td,.view-file-modal-dialog .follicular-table th
+{
+    padding: 0px !important;
+    font-size: 16px;
+}
+.view-file-modal-dialog .follicular-table .visit-lable
+{
+    font-size: 16px !important;
+}
+.view-file-modal-dialog .follicular-table,.view-file-modal-dialog .follicular-table div  
+{
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+}
