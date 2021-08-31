@@ -104,13 +104,13 @@
                         </tr>
                         <tr>
                             <td>Sperm Count/ml</strong></td>
-                            <td><strong>{{!empty($iuireportData->sperm_count_pre) ? $iuireportData->sperm_count_pre.' ml' : '-'}}</strong></td>
-                            <td><strong>{{!empty($iuireportData->sperm_count_post) ? $iuireportData->sperm_count_post.' ml' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->sperm_count_pre) ? $iuireportData->sperm_count_pre.' mili/ml' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->sperm_count_post) ? $iuireportData->sperm_count_post.' mili/ml' : '-'}}</strong></td>
                         </tr>
                         <tr>
                             <td>Total Count(mill) :</strong></td>
-                            <td><strong>{{!empty($iuireportData->total_count_pre) ? $iuireportData->total_count_pre.' mill' : '-'}}</strong></td>
-                            <td><strong>{{!empty($iuireportData->total_count_post) ? $iuireportData->total_count_post.' mill' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->total_count_pre) ? $iuireportData->total_count_pre.' /mili' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->total_count_post) ? $iuireportData->total_count_post.' /mili' : '-'}}</strong></td>
                         </tr>
                         <tr>
                             <td>Total Motility(%) :</strong></td>
@@ -139,8 +139,8 @@
                         </tr>
                         <tr>
                             <td>Pus Cells / hpf :</strong></td>
-                            <td><strong>{{!empty($iuireportData->pus_cells_pre) ? $iuireportData->pus_cells_pre.' hpf' : '-'}}</strong></td>
-                            <td><strong>{{!empty($iuireportData->pus_cells_post) ? $iuireportData->pus_cells_post.' hpf' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->pus_cells_pre) ? $iuireportData->pus_cells_pre.' /hpf' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->pus_cells_post) ? $iuireportData->pus_cells_post.' /hpf' : '-'}}</strong></td>
                         </tr>
                     </tbody>
                 </table>
