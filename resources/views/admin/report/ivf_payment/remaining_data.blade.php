@@ -43,7 +43,7 @@
                 <td>{{$row->getPatientsData['mobile_number']}}</td>
                 <td><div class="{{'edit-payment package-'.$row->id}}">{{$row->package}}</div></td>
                 @php
-                    $lessamount = $row->total_payment;
+                    $lessamount = $row->package - $row->total_payment;
                 @endphp
                 <td><div>
                         @if($lessamount < 0)

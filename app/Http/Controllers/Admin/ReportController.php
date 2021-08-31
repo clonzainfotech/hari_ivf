@@ -800,7 +800,6 @@ class ReportController extends AdminController
     // ivf payment report
     public function ivfPaymentReport(Request $request){
         try{
-            $ivfPayment = $this->IvfPayment->whereNotNull('package')->orderBy('id','DESC');
             $patients = $this->getPatients();
             if($request->ajax()){
                 $ivfPayment = $this->IvfPayment->whereNotNull('package')->orderBy('id','DESC');

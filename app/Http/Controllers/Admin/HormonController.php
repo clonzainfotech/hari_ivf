@@ -57,7 +57,7 @@ class HormonController extends AdminController
                     });
                 }
                 if($request->is_print == 1){
-                    $hormon = $this->IndoorDeposit->where('charge_type', '!=', 4)->orderBy('id','DESC')->get();
+                    $hormon = $hormon->orderBy('id','DESC')->get();
                     $data['data'] = View::make('admin.appointment.hormon.preview',compact('hormon','chargeValue','patients'))->render();
                     $data['status'] = 2;
                     return response()->json($data);
@@ -201,10 +201,11 @@ class HormonController extends AdminController
             }
             $hormon->save();
             if($ivfPaymentData && $request->htype == 2){
+                $ivfPaymentData->total_payment = $ivfPaymentData->total_payment + $request->hcharge;
                 $checkTotalAmount = $this->IvfPayment->wherePatientsId($hormon->patient_id)->whereCycleNo($ivfPaymentData->cycle_no)->sum('payment');
                 $totalDeposite = $this->IndoorDeposit->wherePatientId($hormon->patient_id)->whereCycleNo($ivfPaymentData->cycle_no)->where('case_type','Credit')->sum('amount');
                 // print_r($checkTotalAmount);die();
-                $totalAmount = $totalDeposite + $request->hcharge + $ivfPaymentData->discount + $request->discount;
+                $totalAmount = $totalDeposite + $ivfPaymentData->discount + $request->discount;
                 $isCompleted = 0;
                 if($ivfPaymentData->package <= $totalAmount){
                     $isCompleted = 1;

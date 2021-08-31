@@ -41,11 +41,11 @@
                         <div class="col-md-7"></div>
 
                          <div class="">
-                             <a href="javascript:void(0);">
+                             {{-- <a href="javascript:void(0);">
                                 <button class="btn btn-primary print-ivf-remaining-payment">
                                     Print
                                 </button>
-                            </a>
+                            </a> --}}
                             <a href="{{url('ivf-payment-report')}}">
                                 <button class="btn btn-primary">
                                     Back

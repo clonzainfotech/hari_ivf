@@ -1747,10 +1747,12 @@ class IVFController extends AdminController
     public function payment_gujarati(Request $request,$patientsId,$lang){
         // $patientsId = decrypt($patientsId);
         App::setlocale($lang);
-            $patients_Id = decrypt($patientsId);
-          $patients = opd::where(['id' => $patients_Id])->first();
-          $ivfPaymentHistory = $this->IvfPayment->wherePatientsId($patients_Id)->orderBy('id','DESC')->first();
-        return view('admin.ivf.payments',['patientsId' => $patientsId,'patients' => $patients,'ivfPaymentHistory' => $ivfPaymentHistory]);
+        $patients_Id = decrypt($patientsId);
+        $patients = opd::where(['id' => $patients_Id])->first();
+        $ivfPaymentHistory = $this->IvfPayment->wherePatientsId($patients_Id)->orderBy('id','DESC')->first();
+        $opdCollection = $this->IndoorDeposit->wherePatientId($patients_Id)->whereChargeType(2)->orderBy('id','DESC')->first();
+        $is_deposite = (!empty($opdCollection)) ? 1 : 0;
+        return view('admin.ivf.payments',['patientsId' => $patientsId,'patients' => $patients,'ivfPaymentHistory' => $ivfPaymentHistory, 'is_deposite' => $is_deposite]);
     }
 
     public function payment(Request $request,$patientsId){
@@ -1840,7 +1842,7 @@ class IVFController extends AdminController
         $ivfPayment->TBPCR = $request->TBPCR; 
         $ivfPayment->PAMP = $request->PAMP; 
         $ivfPayment->ERA = $request->ERA;
-        $ivfPayment->total_payment = ($request->package - $request->payment);
+        $ivfPayment->total_payment = $request->payment;
 
         $ivfPayment->remaining_day = $request->remaining_day;
         if ($request->remaining_day == '') {

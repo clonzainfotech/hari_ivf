@@ -63,6 +63,7 @@
     
     .seperator {
         border-top: 0.5px solid #dee2e6;
+        -webkit-print-color-adjust: exact;
     }
     
     tr td th {
@@ -79,7 +80,7 @@
     <table class="table m-b-0 table-hover reference-report-table" id="reference-report-table" cellspacing="0">
         <?php 
             $i = 1;
-            $paymentTypeData = ['1'=>'card','2'=>'Cash'];
+            $paymentTypeData = ['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'];
         ?>
         <thead>
             <tr class="report-header-tr seperator">
