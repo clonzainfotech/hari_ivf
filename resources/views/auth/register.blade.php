@@ -147,7 +147,7 @@
                                 <input id="pregnate" type="checkbox" class="other_checkbox" name="reason" value="1">
                                 <label for="pregnate" class="col-form-label text-md-right mr-2">{{ __('Pragnancy') }}</label>
 
-                                <input id="noPregnate" type="checkbox" class="other_checkbox" name="reason" value="2">
+                                <input id="noPregnate" type="checkbox" class="other_checkbox" checked="" name="reason" value="2">
                                 <label for="noPregnate" class="col-form-label text-md-right mr-2">{{ __('No Pragnancy') }}</label>
 
                                 <input id="other" type="checkbox" class="other_checkbox" name="reason" value="3">

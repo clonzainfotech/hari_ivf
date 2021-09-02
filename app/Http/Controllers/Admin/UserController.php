@@ -88,6 +88,7 @@ class UserController extends AdminController
         $patient->other_reference = $request->other;
         $patient->reason = $request->reason;
         $patient->save();
+        return view('errors.thankyou');
             
     }
 

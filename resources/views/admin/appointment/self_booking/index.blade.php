@@ -101,7 +101,7 @@
 
             });
         }
-        $('.apt-approve').click(function () {
+        $(document).on('click','.apt-approve',function () {
             var patient_signup_id = $(this).data('id');
             swal({
                 title: 'Are you sure?',
