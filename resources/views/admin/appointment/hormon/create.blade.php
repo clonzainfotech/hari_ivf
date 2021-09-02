@@ -119,6 +119,26 @@
                                 {{Form::select('payment_type',['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],'',['class'=>'form-control payment-method','placeholder'=>'Select Payment Type'])}}
                                 <span class="form-error-msg payment_method_error"></span>
                             </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon unik-lbl-spn">Next Payment Date:</span>
+                                    {{Form::text('remaining_date','',[
+                                        'class'=>'form-control datetimepicker remaining_date',
+                                        'placeholder'=>'Next Payment Date',
+                                    ])}}
+                                </div>
+                                <span class="form-error-msg remaining-date-error"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon unik-lbl-spn">Next Payment Amount:</span>
+                                    {{Form::number('next_payment_amt','',[
+                                        'class'=>'form-control next_payment_amt',
+                                        'placeholder'=>'Amount',
+                                    ])}}
+                                </div>
+                                <span class="form-error-msg next_payment-amt-error"></span>
+                            </div>
                         </div>
                         <div class="row hormon-row reference-doctor">
                             <div class="col-md-6">

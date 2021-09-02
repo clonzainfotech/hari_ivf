@@ -1856,7 +1856,7 @@ class IVFController extends AdminController
             $ivfPaymentReminder->patients_id = $patientsId;
             $ivfPaymentReminder->date = carbon::parse($request->remaining_date)->format('Y-m-d');
             $ivfPaymentReminder->payment = $request->next_payment_amt;
-            $ivfPaymentReminder->category = 2;
+            $ivfPaymentReminder->category = 'IVF';
             $ivfPaymentReminder->status = 0;
             $ivfPaymentReminder->save();
         }

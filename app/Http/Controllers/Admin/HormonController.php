@@ -96,43 +96,9 @@ class HormonController extends AdminController
 
     // hormon, Indoor deposit and IVF payment data store
     public function store(Request $request){
-        // $rule = [
-        //     'hname' => 'required',
-        //     'htype' => 'required',
-        //     'hcharge' => 'required|numeric|digits_between:1,6',
-        // ];
-        // $messages = [
-        //     'hname.required' => 'The name field is required.',
-        //     'hname.min' => 'The name must be at least 2 characters.',
-        //     'hname.max' => 'The name may not be greater than 255 characters.',
-        //     'hname.regex' => 'The name format is invalid.',
-        //     'hcharge.required' => 'The charge field is required.',
-        //     'hcharge.numeric' => 'The charge field must be numeric.',
-        //     'hcharge.digits_between' => 'The charge field must be of between 1 to 6 digits.',
-        // ];
-        // if ($request->input('htype') == 1) {
-        //     $rule['hinjection'] = 'required';
-        //     $messages['hinjection.required'] = 'The injection field is required.';
-        // }
-        // if ($request->input('hreference_doctor_id') == 'other') {
-        //     $rule['doctor_name'] = 'required|regex:/(^[A-Za-z .]+$)+/|min:2|max:255';
-        //     $rule['doctor_mobile_number'] = 'required|numeric|digits:10|unique:reference_doctors,mobile_number';                
-        // }
-        
-        // $validator = Validator::make($request->all(),$rule, $messages);
-    
-        // if($validator->fails()){
-        //     return redirect()
-        //         ->back()
-        //         ->withInput()
-        //         ->withErrors($validator->errors());
-        // }
-
         try {
-            // $hormon = $this->IndoorDeposit->where('patient_id',$request->hname)->where('charge_type',$request->htype)->first();
-            // if($hormon == null){
+            $htypeData = ['1'=>'Hormon','2'=>'IVF','3'=>'IUI'];
             $hormon = $this->IndoorDeposit;        
-            // }
             if ($request->input('hreference_doctor_id') == 'other') {
                 $referenceDoctor = $this->ReferenceDoctor->where('mobile_number',$request->doctor_mobile_number)->first();
                 if($referenceDoctor == null){
@@ -213,18 +179,18 @@ class HormonController extends AdminController
                 $ivfPaymentData->save();
 
                 // Add ivf payment reminder
-                if(!empty($request->remaining_date) && !empty($request->next_payment_amt))
-                {
-                    $ivfPaymentReminder = $this->IvfPaymentReminder;
-                    $ivfPaymentReminder->patients_id = $$hormon->patient_id;
-                    $ivfPaymentReminder->date = carbon::parse($request->remaining_date)->format('Y-m-d');
-                    $ivfPaymentReminder->payment = $request->next_payment_amt;
-                    $ivfPaymentReminder->category = 2;
-                    $ivfPaymentReminder->status = 0;
-                    $ivfPaymentReminder->save();
-                }
+                
             }
-            
+            if(!empty($request->remaining_date) && !empty($request->next_payment_amt))
+            {
+                $ivfPaymentReminder = $this->IvfPaymentReminder;
+                $ivfPaymentReminder->patients_id = $hormon->patient_id;
+                $ivfPaymentReminder->date = carbon::parse($request->remaining_date)->format('Y-m-d');
+                $ivfPaymentReminder->payment = $request->next_payment_amt;
+                $ivfPaymentReminder->category = $htypeData[$request->htype];
+                $ivfPaymentReminder->status = 0;
+                $ivfPaymentReminder->save();
+            }
             $hormon->valuinword = $this->getWordOfNumber($hormon->amount);
             $depositeWord = $hormon->valuinword;
             $patientname=$this->OpdPatients->where('id',$hormon->patient_id)->first();
