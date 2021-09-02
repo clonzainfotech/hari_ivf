@@ -32,28 +32,64 @@ class UserController extends AdminController
         }
         if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
             $patientsStatus = Auth::User()->status;
-                if($patientsStatus=='1') {
-                    Session::flash('msg','Success');
-                    return redirect('/');
-                }else{
-                    Auth::logout();
-                    Session::flash('msg','Your account is not active now so please contact to administration!');
-                    return back();
-                }
+            if($patientsStatus=='1') {
+                Session::flash('msg','Success');
+                return redirect('/');
             }
-            else     {
-                Session::flash('msg','These credentials do not match our records.');
+            else
+            {
+                Auth::logout();
+                Session::flash('msg','Your account is not active now so please contact to administration!');
                 return back();
             }
-            
         }
-        // if(Auth::attempt(['email'=>$request->email,'password'=>$request->password,'status'=>1])){
-        //     
-        // }else{
-        //     Session::flash('msg','These credentials do not match our records.');
-        //     return back();
-        // }
-    
+        else     
+        {
+            Session::flash('msg','These credentials do not match our records.');
+            return back();
+        }
+            
+    }
+    // user can login 
+    public function register(Request $request){
+        $rule = [
+            'f_name' => 'required',
+            'l_name' => 'required',
+            'surname' => 'required',
+            'dob' => 'required',
+            'mobile_number' => 'nullable|numeric|unique:patients|unique:patients_signup|digits:10',
+            'other_mobile_number' => 'nullable|numeric|unique:patients|unique:patients_signup|digits:10',
+            'dob' => 'required',
+            'residence' => 'required',
+            'main_area' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(),$rule);
+
+        if($validator->fails()){
+            // dd($validator->errors());
+            return redirect()
+            ->back()
+            ->withInput()
+            ->withErrors($validator->errors());
+        }
+        $patient = $this->PatientSignup;
+        $patient->name = trim($request->f_name).' '.trim($request->l_name).' '.trim($request->surname);
+        // dd($patient->name);
+        $patient->dob = $request->dob;
+        $patient->residence = $request->residence;
+        $patient->mobile_number = $request->mobile_number;
+        $patient->other_mobile_number = $request->other_mobile_number;
+        $patient->main_area = $request->main_area;
+        $patient->city = $request->city;
+        $patient->state = $request->state;
+        $patient->reference_doctor = $request->reference_doctor;
+        $patient->reference_patient = $request->reference_patient;
+        $patient->other_reference = $request->other;
+        $patient->reason = $request->reason;
+        $patient->save();
+            
+    }
 
 
     // user can logout using this funtion

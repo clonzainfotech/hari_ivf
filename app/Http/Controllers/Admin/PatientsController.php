@@ -112,12 +112,21 @@ class PatientsController extends AdminController
     * @param  \Illuminate\Http\Request 
     * @return \Illuminate\Http\Response
     */
-    public function create(){
+    public function create(Request $request){
         try{
+            $patient = null;
+            $self_bookingId = null;
+            if($request->booking_id)
+            {
+                $self_bookingId = decrypt($request->booking_id);
+                $patient = $this->PatientSignup->select('*',DB::raw('reason as is_pregnant'))->where('id',$self_bookingId)->first();
+                // dd($patient);
+            }
             $city = $this->City->pluck('name','name');
             $state = $this->getState()['state'];
-            return view('admin.appointment.patient.edit', compact('city','state'));
+            return view('admin.appointment.patient.edit', compact('city','state','patient','self_bookingId'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }
@@ -168,6 +177,11 @@ class PatientsController extends AdminController
                 $patient->occupation=$request->occupation;
                 $patient->dob=$request->dob ? Carbon::parse($request->dob)->format('Y-m-d') : null;   
                 $patient->save();
+                if($request->self_bookingId)
+                {
+                    $user_id = Auth::user()->id;
+                    $self_booking = $this->PatientSignup->where('id',decrypt($request->self_bookingId))->update(['is_approved' => '1','approved_by'=>$user_id]);
+                }
                 if (!$request->code) {
                 $generateCode = $this->generateCode($patient->id,$patient->name);
                 $patient = $this->OpdPatients->whereId($patient->id)->first();

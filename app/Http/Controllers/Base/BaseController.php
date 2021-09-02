@@ -82,6 +82,7 @@ use App\Models\IUIReport;
 use App\Models\IvfExtraVisit;
 use App\Models\InjectionManager;
 use App\Models\HtmlPage;
+use App\Models\PatientSignup;
 
 
 
@@ -166,6 +167,7 @@ class BaseController extends Controller
         $this->IvfExtraVisit = new IvfExtraVisit;
         $this->InjectionManager = new InjectionManager;
         $this->HtmlPage = new HtmlPage;
+        $this->PatientSignup = new PatientSignup;
 
     }
 

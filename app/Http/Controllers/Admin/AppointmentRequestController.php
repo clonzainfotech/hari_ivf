@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use Exception;
 use View;
+use Log;
 
 class AppointmentRequestController extends AdminController
 {
@@ -149,4 +150,36 @@ class AppointmentRequestController extends AdminController
         $checkAppointment->save();
         return ['status'=>'true'];
     } 
+
+    /**
+    * Self Booking list return
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+    public function getSelfBookingList(Request $request)
+    {
+        try{
+            if($request->ajax()) 
+            {
+                $patients = $this->PatientSignup->where('is_approved','0');
+                if($request->search)
+                {
+                    $search = $request->search;
+                    $patients = $patients->where(function($query) use($search){
+                        $query->where('name', 'LIKE', '%'.$search.'%')
+                        ->orWhere('mobile_number', 'LIKE', '%'.$search.'%')
+                        ->orWhere('created_at', 'LIKE', '%'.$search.'%');
+                    });
+                }
+                $patients = $patients->paginate(100);
+                $data['status'] = 1;
+                $data['selfBookingList'] = View::make('admin.appointment.self_booking.data',compact('patients'))->render();
+                return $data;  
+            }
+            return view('admin.appointment.self_booking.index');
+        }catch(\Exception $e){
+            log::debug($e);
+            abort(500);
+        }
+    }
 }

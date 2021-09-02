@@ -261,4 +261,5 @@ return [
     'GOOGLE_CLIENT_SECRET' => 'eSold9YPOYmRmF_j13M1WVZo',
     'GOOGLE_REFRESH_TOKEN' => '1//04lMN1kpE8NfeCgYIARAAGAQSNwF-L9Ir_MfDBdhubB1CXFkX6moKG-x9Rcjm9AqWLU1baEFUUzPvjzW0xy67wI6-IXDLzGHO8yE',
     'GOOGLE_FOLDER_ID' => '1uK79a2YTAOW4CALT0eWgoDHtnkzkHnaX',
+    'social_reference' => ['banner','camp','youtube','insta','facebook','pamplets','call'],
 ];

@@ -16,6 +16,7 @@
                         $ivfCount = getAppointmentCount(2)['appointmentCount'];
                         $iuiCount = getAppointmentCount(3)['appointmentCount'];
                         $appointmentCount = getAppointmentCount(4)['appointmentCount'];
+                        $selfBookingCount = getSelfBookingCount();
                     @endphp
                     <div>
                         <a href="{{URL::to('/dashboard')}}" style="margin-bottom: 15px;">
@@ -38,7 +39,7 @@
 
                     {{--reception--}}
                     @if(in_array(Auth::user()->role,[1,2]))
-                    <li class="{{Request::segment(1) === 'appointment' || Request::segment(1) === 'appointment-create'|| Request::segment(1) === 'appointment-request' || Request::segment(1) === 'donor' || Request::segment(1) === 'hormon' || Request::segment(1) === 'usg-appointment' ? 'active open' : null }}">
+                    <li class="{{Request::segment(1) === 'appointment' || Request::segment(1) === 'appointment-create'|| Request::segment(1) === 'appointment-request' || Request::segment(1) === 'donor' || Request::segment(1) === 'hormon' || Request::segment(1) === 'usg-appointment' || Request::segment(1) === 'self-booking' ? 'active open' : null }}">
                         <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                         <span>RECEPTION</span></a>
                         <ul class="ml-menu" style="display: none;">
@@ -53,6 +54,9 @@
                             </li>
                             <li class="{{ Request::segment(1) === 'hormon' ? 'sub active open' : null }}">
                                 <a href="{{URL::to('hormon')}}"><span>OPD Collection</span></a>
+                            </li>
+                            <li class="{{ Request::segment(1) === 'self-booking' ? 'sub active open' : null }}">
+                                <a href="{{URL::to('self-booking')}}"><span>Self Booking ({{$selfBookingCount}})</span></a>
                             </li>
                         </ul>
                     </li>

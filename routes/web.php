@@ -45,6 +45,7 @@ Route::get('get-iui-report','Admin\IUIController@getIuiDetails');
 Route::get('get-ivf-report','Admin\IVFController@getIvfDetails');
 Route::get('get-anc-report','Admin\ANCController@getAncDetails');
 Route::post('login','Admin\UserController@login')->name('login');
+Route::post('register','Admin\UserController@register')->name('register');
 Route::get('update-lmp/{type}','Base\Admin\AdminController@updateLmp');
 Route::get('/anc/get-existed-medicine-data','Base\Admin\AdminController@getExistedMedicineData')->middleware('login');
 Route::get('get-complaint-wise-medicine','Base\Admin\AdminController@getComplaintWiseMedicine')->middleware('login');
@@ -97,6 +98,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('update-appointment-time','AppointmentController@updateTime');
     Route::get('update-appointment-date-time','AppointmentController@updateAppointmentDateAndTime');
     Route::get('get-appointment-popup-Detail','AppointmentController@getAppointmentPopUpDetail');
+    
 
     //Donor
     Route::get('donor','DonorController@index');
@@ -131,6 +133,10 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('appointment-request','AppointmentRequestController@index');
     Route::post('appointment-request/{id}/approve','AppointmentRequestController@appointmentApprove');
     Route::post('appointment-request/{id}/reject','AppointmentRequestController@appointmentReject');
+
+    //self Booking
+    Route::get('self-booking','AppointmentRequestController@getSelfBookingList');
+    
 
     // next appointment
     Route::post('next-appointment','AppointmentController@nextAppointment');
