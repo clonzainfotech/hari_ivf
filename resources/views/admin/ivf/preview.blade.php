@@ -3331,7 +3331,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     </div>
                     <div class="mb-2">
                             <span class="visit-lable">AGE :- </span> 
-                            <span class="visit-lable-value">{{$ivf->getPatientsDetails['age']}}</span>
+                            <span class="visit-lable-value">{{$ivf->getPatientsDetails['age'].' / '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</span>
                     </div>
                     <div class="mb-2">
                             <span class="visit-lable">Type & Year of infertility :- </span> 
@@ -3341,10 +3341,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             <span class="visit-lable">L.M.P :- </span> 
                             <span class="visit-lable-value">{{!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : null}}</span>
                     </div>
-                    <div class="mb-2">
-                        <span class="visit-lable">Weight :- </span> 
-                        <span class="visit-lable-value">{{isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : ''}}</span>
-                </div>
+                    
                     @if($plan == 3)
                         <div class="mb-2">
                             <span class="visit-lable">Semen Freezing :- </span> 

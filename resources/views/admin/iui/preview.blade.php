@@ -2917,10 +2917,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-2">
-                        <span class="visit-lable">Weight :- </span> 
-                        <span class="visit-lable-value"></span>
-                    </div>
+                    
                     <div class="mb-2">
                         <span class="visit-lable">CYCLE NO :- </span> 
                         <span class="visit-lable-value">{{$iui->cycle_no}}</span>

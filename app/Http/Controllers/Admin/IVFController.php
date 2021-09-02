@@ -1794,11 +1794,11 @@ class IVFController extends AdminController
             $ivfPayment = $ivfPaymentData;
         }
 
-       if ($request->cycle_type == "OD") {
-            $ivfPayment->donor_charge = $request->donor_charge;
-       }else{
-            $ivfPayment->donor_charge = null;
-       }
+        if ($request->cycle_type == "OD") {
+                $ivfPayment->donor_charge = $request->donor_charge;
+        }else{
+                $ivfPayment->donor_charge = null;
+        }
         $ivfPayment->patients_id = $patientsId;
         $ivfPayment->patient_name = $request->p_name;
         $ivfPayment->husband_name = $request->h_name;
@@ -1843,46 +1843,43 @@ class IVFController extends AdminController
         $ivfPayment->PAMP = $request->PAMP; 
         $ivfPayment->ERA = $request->ERA;
         $ivfPayment->total_payment = $request->payment;
-
-        $ivfPayment->remaining_day = $request->remaining_day;
-        if ($request->remaining_day == '') {
-           $ivfPayment->remaining_date = null;
-        }else{
-            $today = Carbon::now();
-            $next_date = Carbon::parse($today.$request->remaining_day."days")->format('Y-m-d');;
-            $ivfPayment->remaining_date = $next_date;
-        }
-
         $ivfPayment->cycle_type = $request->cycle_type;
         $ivfPayment->cycle_no = $no_cycle;
-        $ivfPayment->time = $request->time;
+        
         $ivfPayment->remark = $request->remark;
-        $ivfPayment->visit = 1;
+        
         $ivfPayment->save();  
-        // if(!$ivfPaymentData)
-        // {
-            $ivfDepositData = $this->IndoorDeposit->where('patient_id',$patientsId)->whereCycleNo($no_cycle)->first();
-            $ivfDeposit = $this->IndoorDeposit;
-            if(!$ivfDepositData)
+        // Add ivf payment reminder
+        if(!empty($request->remaining_date) && !empty($request->next_payment_amt))
+        {
+            $ivfPaymentReminder = $this->IvfPaymentReminder;
+            $ivfPaymentReminder->patients_id = $patientsId;
+            $ivfPaymentReminder->date = carbon::parse($request->remaining_date)->format('Y-m-d');
+            $ivfPaymentReminder->payment = $request->next_payment_amt;
+            $ivfPaymentReminder->category = 2;
+            $ivfPaymentReminder->status = 0;
+            $ivfPaymentReminder->save();
+        }
+        
+
+            if($request->payment > 0)
             {
-                // $ivfDeposit = $ivfDepositData;
-            //Add Indoor deposits
-                $ivfDeposit->patient_id = $patientsId;
-                $ivfDeposit->admin_id = Auth::user()->id;
-                $ivfDeposit->amount = $request->payment;
-                $ivfDeposit->total = $request->payment;
-                $ivfDeposit->discount = $request->discount;
-                $ivfDeposit->package = $request->package;
-                $ivfDeposit->charge_type = 2;
-                $ivfDeposit->case_type = 'Credit';
-                // if ($request->no_cycle == '') {
-                //     $ivfDeposit->cycle_no = 1;
-                // }
-                // else{   
-                    $ivfDeposit->cycle_no = $no_cycle;
-                // } 
-                if($request->payment > 0)
+                $ivfDepositData = $this->IndoorDeposit->where('patient_id',$patientsId)->whereCycleNo($no_cycle)->first();
+                $ivfDeposit = $this->IndoorDeposit;
+                if(!$ivfDepositData)
                 {
+                    
+                    //Add Indoor deposits
+                    $ivfDeposit->patient_id = $patientsId;
+                    $ivfDeposit->admin_id = Auth::user()->id;
+                    $ivfDeposit->amount = $request->payment;
+                    $ivfDeposit->total = $request->payment;
+                    $ivfDeposit->discount = $request->discount;
+                    $ivfDeposit->package = $request->package;
+                    $ivfDeposit->charge_type = 2;
+                    $ivfDeposit->case_type = 'Credit';
+                    
+                    $ivfDeposit->cycle_no = $no_cycle;
                     $ivfDeposit->save(); 
                 }
             }

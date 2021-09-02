@@ -83,6 +83,7 @@ use App\Models\IvfExtraVisit;
 use App\Models\InjectionManager;
 use App\Models\HtmlPage;
 use App\Models\PatientSignup;
+use App\Models\IvfPaymentReminder;
 
 
 
@@ -168,6 +169,7 @@ class BaseController extends Controller
         $this->InjectionManager = new InjectionManager;
         $this->HtmlPage = new HtmlPage;
         $this->PatientSignup = new PatientSignup;
+        $this->IvfPaymentReminder = new IvfPaymentReminder;
 
     }
 

@@ -194,7 +194,7 @@ class HormonController extends AdminController
             }
             $reference=$request->hreference_doctor_id;
             $hormon->created_at = Carbon::parse($request->date)->format('Y-m-d'.' '.date('H:i:s'));
-            $ivfPaymentData = $this->IvfPayment->wherePatientsId($hormon->patient_id)->where('visit',1)->where('is_completed',0)->orderBy('id','DESC')->first();
+            $ivfPaymentData = $this->IvfPayment->wherePatientsId($hormon->patient_id)->where('is_completed',0)->orderBy('id','DESC')->first();
             if ( $request->htype == 2) {
                 $hormon->package = (!empty($ivfPaymentData)) ? $ivfPaymentData->package : null;  
                 $hormon->cycle_no = (!empty($ivfPaymentData)) ? $ivfPaymentData->cycle_no : null;  
@@ -204,29 +204,34 @@ class HormonController extends AdminController
                 $ivfPaymentData->total_payment = $ivfPaymentData->total_payment + $request->hcharge;
                 $checkTotalAmount = $this->IvfPayment->wherePatientsId($hormon->patient_id)->whereCycleNo($ivfPaymentData->cycle_no)->sum('payment');
                 $totalDeposite = $this->IndoorDeposit->wherePatientId($hormon->patient_id)->whereCycleNo($ivfPaymentData->cycle_no)->where('case_type','Credit')->sum('amount');
-                // print_r($checkTotalAmount);die();
                 $totalAmount = $totalDeposite + $ivfPaymentData->discount + $request->discount;
                 $isCompleted = 0;
                 if($ivfPaymentData->package <= $totalAmount){
                     $isCompleted = 1;
                 }
                 $ivfPaymentData->is_completed = $isCompleted;
-                // $ivfPaymentData->discount = $ivfPaymentData->discount + $request->discount;
                 $ivfPaymentData->save();
+
+                // Add ivf payment reminder
+                if(!empty($request->remaining_date) && !empty($request->next_payment_amt))
+                {
+                    $ivfPaymentReminder = $this->IvfPaymentReminder;
+                    $ivfPaymentReminder->patients_id = $$hormon->patient_id;
+                    $ivfPaymentReminder->date = carbon::parse($request->remaining_date)->format('Y-m-d');
+                    $ivfPaymentReminder->payment = $request->next_payment_amt;
+                    $ivfPaymentReminder->category = 2;
+                    $ivfPaymentReminder->status = 0;
+                    $ivfPaymentReminder->save();
+                }
             }
+            
             $hormon->valuinword = $this->getWordOfNumber($hormon->amount);
             $depositeWord = $hormon->valuinword;
             $patientname=$this->OpdPatients->where('id',$hormon->patient_id)->first();
-            // print_r($patientname);die();
             if($request->isprint){
-                // if($request->htype == 2 && !empty($ivfPaymentData)){
-                //     $status = 1;
-                //     $ivfPayment = $ivfPaymentData;
-                //     $data = View::make('admin.ivf.payment_preview', compact('ivfPayment'))->render();
-                // }else{
+               
                     $status = 1;
                     $data = View::make('admin.appointment.hormon.hormon_preview', compact('hormon','patientname','doctor','depositeWord'))->render();
-                // }
                 return response()->json([
                     'status' => $status,
                     'data' => $data

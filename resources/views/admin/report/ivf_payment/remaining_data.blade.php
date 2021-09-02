@@ -10,9 +10,10 @@
             <th>Package</th>
             <th>Left Amount</th>
             <th>Payment Type</th>
+            <th>Payment Date</th>
+            <th>Payment Amount</th>
             <th>Condition</th>
             <th>Is Completed</th>
-            <th>Date</th>
         </tr>
     </thead>
     <tbody>
@@ -53,9 +54,10 @@
                         @endif
                  </div></td> 
                 <td><div class="{{'edit-payment payment-type-'.$row->id}}">{{ucfirst(!empty($row->payment_type) ? $paymentTypeData[$row->payment_type] : null)}}</div></td>
+                <td><div class="{{'edit-payment date-'.$row->id}}">{{\carbon\carbon::parse($row->remaining_date)->format('d-m-Y')}}</div></td>
+                <td><div class="">{{$row->next_payment_amt}}</div></td>
                 <td><div class="{{'edit-payment condition-'.$row->id}}">{{$row->condition}}</div></td>
                 <td>{{$row->is_completed == 0 ? 'No' : 'Yes'}}</td>
-                <td><div class="{{'edit-payment date-'.$row->id}}">{{$row->created_at->format('d-m-Y')}}</div></td>
             </tr>
         @empty
             <td colspan='11' class="text-center ivfpayment">No records available</td>

@@ -1875,8 +1875,8 @@
                                             <span class="visit-lable-value">{{ucwords($lastAppointment->getPatientsDetails->name)}}</span>
                                         </div>
                                         <div class="mb-2">
-                                                <span class="visit-lable">AGE :- </span> 
-                                                <span class="visit-lable-value">{{$lastAppointment->getPatientsDetails->age}}</span>
+                                                <span class="visit-lable">AGE / Weight:- </span> 
+                                                <span class="visit-lable-value">{{$lastAppointment->getPatientsDetails->age.'/ '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</span>
                                         </div>
                                         <div class="mb-2">
                                                 <span class="visit-lable">Type & Year of infertility :- </span> 
@@ -1886,10 +1886,7 @@
                                                 <span class="visit-lable">L.M.P :- </span> 
                                                 <span class="visit-lable-value">{{!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : null}}</span>
                                         </div>
-                                        <div class="mb-2">
-                                            <span class="visit-lable">Weight :- </span> 
-                                            <span class="visit-lable-value">{{isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : ''}}</span>
-                                        </div>
+                                        
                                         @if($pStatus == 3)
                                             <div class="mb-2">
                                                 <span class="visit-lable">Semen Freezing :- </span> 
