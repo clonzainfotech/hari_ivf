@@ -1343,6 +1343,14 @@
                                                             </div>
                                                             <span class="weight-by-error text-danger mb-2"></span>
                                                         </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Other Report : &nbsp;
+                                                                </span>
+                                                                {{Form::text("data[investigation_extra]",null,['class'=>'form-control'])}}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="row">
                                                         {{-- upt --}}
@@ -1388,16 +1396,7 @@
                                                         {{-- end result --}}
                                                     </div>
                                                     <br>
-                                                    <div class="row">
-                                                        <div class="col-sm-5">
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    Other Report : &nbsp;
-                                                                </span>
-                                                                {{Form::text("data[investigation_extra]",null,['class'=>'form-control'])}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    
                                                     <div class="row">
                                                         <div class="col-md-1">
                                                             <label class="vertical-form-label pr-0">
@@ -1414,9 +1413,6 @@
                                                             </div>
                                                             {{Form::hidden('data[follow_up]',\Carbon\Carbon::now()->addDays(7)->format('D d M Y'),['class'=>'t-follow-date'])}}
                                                         </div>
-                                                    </div>
-                                                    <br>
-                                                    <div class="row">
                                                         <div class="col-md-3 plan-transfer-data">
                                                             <div class="form-group">
                                                                 {{Form::select("data[plan]",$planData,'',['class'=>'form-control select-padding-0 plan-transfer','placeholder'=>'Select Plan Transfer'])}}
@@ -1435,8 +1431,8 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <br>
                                                     </div>
+                                                    
                                                     <div class="row">
                                                         <div class="col-md-1 pr-0">
                                                             <label class="vertical-form-label pr-0">
