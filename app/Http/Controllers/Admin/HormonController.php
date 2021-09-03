@@ -166,6 +166,9 @@ class HormonController extends AdminController
                 $hormon->cycle_no = (!empty($ivfPaymentData)) ? $ivfPaymentData->cycle_no : null;  
             }
             $hormon->save();
+            //update Notification
+            $ivfPaymentReminder = $this->IvfPaymentReminder->where('patients_id',$hormon->patient_id)->where('category',$htypeData[$request->htype])->whereDate('date',carbon::now()->format('Y-m-d'))->update(['status'=>1]);
+            
             if($ivfPaymentData && $request->htype == 2){
                 $ivfPaymentData->total_payment = $ivfPaymentData->total_payment + $request->hcharge;
                 $checkTotalAmount = $this->IvfPayment->wherePatientsId($hormon->patient_id)->whereCycleNo($ivfPaymentData->cycle_no)->sum('payment');
@@ -177,10 +180,8 @@ class HormonController extends AdminController
                 }
                 $ivfPaymentData->is_completed = $isCompleted;
                 $ivfPaymentData->save();
-
-                // Add ivf payment reminder
-                
             }
+            // Add ivf payment reminder
             if(!empty($request->remaining_date) && !empty($request->next_payment_amt))
             {
                 $ivfPaymentReminder = $this->IvfPaymentReminder;
@@ -374,9 +375,9 @@ class HormonController extends AdminController
     * @param  \Illuminate\Http\Request $request
     * @return \Illuminate\Http\Response
     */
-    public function hormonChangeAmount(Request $request,$hormonId){
+    public function hormonChangeAmount(Request $request){
         try{
-            $hormonId = decrypt($hormonId);
+            $hormonId = decrypt($request->hormonId);
             $hormon = $this->IndoorDeposit->whereId($hormonId)->first();
             $patientsId = $hormon->patient_id;
             $chargeType = $hormon->charge_type;
@@ -417,8 +418,22 @@ class HormonController extends AdminController
                 $hormon->case_type = $type;
                 $hormon->save();
             }
+            $checkPatients = $this->IvfPaymentReminder->where('patients_id',$hormon->patient_id)->whereDate('date',date('Y-m-d',strtotime($hormon->created_at)))->orderBy('id','DESC')->where('status',0)->first();
+            if(!empty($request->next_payment) && !empty($request->next_payment_amt) && (empty($checkPatients) || carbon::parse($request->next_payment)->format('Y-m-d') != $checkPatients->date))
+            {
+                $htypeData = ['1'=>'Hormon','2'=>'IVF','3'=>'IUI'];
+                $ivfPaymentReminder = $this->IvfPaymentReminder;
+                $ivfPaymentReminder->patients_id = $hormon->patient_id;
+                $ivfPaymentReminder->date = carbon::parse($request->next_payment)->format('Y-m-d');
+                $ivfPaymentReminder->payment = $request->next_payment_amt;
+                $ivfPaymentReminder->category = $htypeData[$request->charge_type];
+                $ivfPaymentReminder->status = 0;
+                // dd($ivfPaymentReminder);
+                $ivfPaymentReminder->save();
+            }
             return ['status'=>1];
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
             return ['status'=>2];
         }

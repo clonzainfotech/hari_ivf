@@ -77,7 +77,7 @@
                 <td>{{ $row->remark}}</td>
                 <td>
                     @if($row->checkIndorDeposit()['id'] == $row->id && $row->total != 0 && (strtotime(\Carbon\Carbon::parse($row->created_at)->format('Y-m-d')) >= strtotime(\Carbon\Carbon::now()->format('Y-m-d'))))
-                        <a href="javascript:void(0)" class="btn btn-primary btn-sm change-hormon change-hormon-{{$key}} ivf-payment-font" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}}>Change</a>
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm change-hormon change-hormon-{{$key}} ivf-payment-font" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}} data-nextpayment={{$row->getIvfPaymentReminder()['next_payment']}} data-nextpaymentdate={{$row->getIvfPaymentReminder()['next_payment_date']}}>Change</a>
                         <a href="javascript:void(0)" class="btn btn-primary btn-sm save-hormon save-hormon-{{$key}} ivf-payment-font d-none" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}}>Save</a>
                     @endif
                     <a href="javascript:void(0)" class="btn btn-primary btn-sm receipt-hormon ivf-payment-font"  data-hormon={{encrypt($row->id)}}>Print</a>

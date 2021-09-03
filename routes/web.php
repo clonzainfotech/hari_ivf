@@ -113,7 +113,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::resource('hormon','HormonController');
     Route::get('/hormon','HormonController@index');
     Route::get('hormon/delete/{id}','HormonController@delete');
-    Route::get('hormon/change-amount/{hormonId}','HormonController@hormonChangeAmount');
+    Route::post('hormon/change-amount','HormonController@hormonChangeAmount');
     Route::get('hormon/add','HormonController@create');
     Route::post('hormon/add','HormonController@store');
     Route::get('hormon/receipt/{hormonId}','HormonController@getHormonReceipt');

@@ -203,7 +203,6 @@ $menu = "";
         var main_url = window.location.href;
         let anc_url_name = main_url.split('/').pop();
         var stopNotification = '{{json_encode($stopNotification)}}';
-        console.log(stopNotification);
         var check_url = stopNotification.includes(anc_url_name);
         if (!check_url) {
             var pusher = new Pusher('{{env("MIX_PUSHER_APP_KEY")}}', {
@@ -250,7 +249,7 @@ $menu = "";
         }
         </script>
     @endif
-        <script type="text/javascript">
+    <script type="text/javascript">
         displayNotification();
         $(document).on('click','.patient-category-notification',function(){
             displayNotification();
@@ -264,23 +263,37 @@ $menu = "";
                     // var existingNotifications = notifications.html();
                     var newNotificationHtml = '';
                     var notificationsCount = 0;
-                    for(var i=0; i< data.data.length; i++)
+                    for(var i=0; i< data.data['category'].length; i++)
                     {
-                        if(data.data[i] != null)
+                        if(data.data['category'][i] != null)
                         {
                             newNotificationHtml += '<li class="category-notification notification active">'+
                             '<div class="media mb-1">'+
                             '<div class="media-left"><div class="media-object">'+
-                            ''+
                             '</div></div>'+
                             '<div class="media-body">'+
-                            '<strong class="notification-title">'+data.data[i].patient_name+'</strong><br>'+
-                            '<p class="notification-desc">'+data.data[i].date+' - '+data.data[i].message+'</p>'+
+                            '<strong class="notification-title">'+data.data['category'][i].patient_name+'</strong><br>'+
+                            '<p class="notification-desc">'+data.data['category'][i].date+' - '+data.data['category'][i].message+'</p>'+
                             '</div></div></li>';
                             notificationsCount += 1;
                         }
                     }
-                    if(data.data.length == 0)
+                    for(var i=0; i< data.data['payment'].length; i++)
+                    {
+                        if(data.data['payment'][i] != null)
+                        {
+                            newNotificationHtml += '<li class="category-notification payment-notification notification active">'+
+                            '<div class="media mb-1">'+
+                            '<div class="media-left"><div class="media-object">'+
+                            '</div></div>'+
+                            '<div class="media-body">'+
+                            '<strong class="notification-title">'+data.data['payment'][i].patient_name+'</strong><br>'+
+                            '<p class="notification-desc">'+data.data['payment'][i].date+' - <strong class="candor-color"> &#x20b9; '+data.data['payment'][i].payment+'</strong> For '+ data.data['payment'][i].category+'</p>'+
+                            '</div></div></li>';
+                            notificationsCount += 1;
+                        }
+                    }
+                    if(data.data['category'].length + data.data['payment'].length  == 0)
                     {
                         $('a.mark-all').addClass('d-none');
                         newNotificationHtml +=

@@ -459,6 +459,7 @@ class IUIController extends AdminController
                 if(!empty($request->data['result']) && $request->data['result'] == 'fail' && empty($request->iui_history_id) && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'negative')){
                     $iuiFirstVisitData = $this->IUI;
                     $iuiFirstVisitData->patients_id = $iuiPatientsData->patients_id;
+                    $iuiFirstVisitData->seen_by = ($seenBy) ? $seenBy : Auth::user()->id;
                     $iuiFirstVisitData->created_by = $iuiPatientsData->created_by;
                     $iuiFirstVisitData->patients_info = $iuiPatientsData->patients_info;
                     $iuiFirstVisitData->h_o = $iuiPatientsData->h_o;
@@ -521,6 +522,7 @@ class IUIController extends AdminController
                     }
                     $autoRemark['remark'] = "Conceived from IUI";
                     $ancData->patients_id = $patientsId;
+                    $ancData->seen_by = ($seenBy) ? $seenBy : Auth::user()->id;
                     $ancData->patients_info = $iuiPatientsData->patients_info;
                     $ancData->patients_details_ho = $iuiPatientsData->patients_details_ho;
                     $ancData->patients_obstratics = $iuiPatientsData->o_h;

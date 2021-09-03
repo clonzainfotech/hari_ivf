@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class IndoorDeposit extends BaseModel
 {
@@ -26,6 +27,17 @@ class IndoorDeposit extends BaseModel
             $id = $checkPatients->id;
         }
         return ['id'=>$id];
+    }
+    public function getIvfPaymentReminder(){
+        $date = date('Y-m-d',strtotime($this->created_at));
+        $next_payment = null;
+        $next_payment_date = null;
+        $checkPatients = IvfPaymentReminder::where('patients_id',$this->patient_id)->whereDate('date',$date)->orderBy('id','DESC')->where('status',0)->first();
+        if($checkPatients){
+            $next_payment = $checkPatients->payment;
+            $next_payment_date = $checkPatients->date;
+        }
+        return ['next_payment'=>$next_payment,'next_payment_date'=>$next_payment_date];
     }
 
     public function getReferenceDoctors(){

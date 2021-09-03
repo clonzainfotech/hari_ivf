@@ -2764,7 +2764,7 @@ li.category-notification
     background-color: #f4f4f4;
 }
 .notification-footer a{
-    border-top: 1px solid #1e5f63 !important;
+    /* border-top: 1px solid #1e5f63 !important; */
     padding-top: 5px !important;
 }
 .notification-box
@@ -2829,4 +2829,8 @@ font-size: 22px !important;
 {
     margin-bottom: 0px !important;
     margin-top: 0px !important;
+}
+.payment-notification
+{
+    border-left: 3px solid #ec3b57 !important;
 }

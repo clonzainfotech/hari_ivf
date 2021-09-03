@@ -498,11 +498,12 @@ class AdminController extends BaseController
     public function get_category_notification(Request $request)
     {
         $now = Carbon::now()->format('Y-m-d');
+        $payment = [];
         $yester = Carbon::parse($now)->subDays(1)->format('Y-m-d');
         $data = $this->CategoryNotification->with('getPatients')->whereDate('reminder_date','<',$yester)->delete();
         $auth_id = Auth::user()->id;
-        $data = $this->CategoryNotification->with('getPatients')->whereDate('date','=',$now);
-        $data = collect($data->get())
+        $category = $this->CategoryNotification->with('getPatients')->whereDate('date','=',$now);
+        $category = collect($category->get())
                     ->map(function ($query) use($auth_id){
                         $read_by = !empty($query->read_by) ? explode(',',$query->read_by) : [];
                         if(empty($query->read_by) || !in_array($auth_id,$read_by))
@@ -511,11 +512,22 @@ class AdminController extends BaseController
                             $query->date = Carbon::parse($query->date)->format('d M Y h:i a');
                             return $query;
                         }
-                        
                     });
+        if(in_array(Auth::user()->role,['1,2']))
+        {
+            $payment = $this->IvfPaymentReminder->whereDate('date',$now)->where('status',0);     
+            $payment = collect($payment->get())
+                        ->map(function ($query) 
+                        {
+                                $query->patient_name = ucWords($query->getPatientsData['name']);
+                                $query->date = Carbon::parse($query->date)->format('d M Y');
+                                return $query;
+                        });  
+        }
+        
         return response()->json([
             'status'=>1,
-            'data' => $data
+            'data' => array('category'=>$category,"payment"=>$payment)
         ]);
     }
 

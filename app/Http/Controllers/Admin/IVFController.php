@@ -695,6 +695,7 @@ class IVFController extends AdminController
                         $autoRemark = [];
                         $ancData = $this->ANC;
                         $autoRemark['remark'] = "Conceived from IVF";
+                        $ancData->seen_by = ($request->seen_by) ? $request->seen_by : Auth::user()->id;
                         $ancData->patients_id = $patientsId;
                         $ancData->patients_info = $ivfFirstVisitData->patients_info;
                         $ancData->patients_details_ho = $ivfFirstVisitData->patients_details_ho;
