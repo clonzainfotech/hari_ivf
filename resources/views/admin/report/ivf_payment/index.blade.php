@@ -45,10 +45,10 @@
             <div class="body">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-md-3">
                             <input type="text" class="form-control daterange" placeholder="Select Date">
                         </div>
-                        <div class="col-lg-3 anc">
+                        <div class="col-md-3 anc">
                             {{ Form::select('patient_id',$patients,'',[
                                 'class'=>'form-control select-padding-0 patient-id',
                                 'placeholder'=>'Select Patient',
@@ -56,13 +56,13 @@
                                 'data-live-search' => 'true'
                             ])}}
                         </div>
-                        <div class="col-md-4"></div>
-                        <div class="">
-                            <a href="{{url('ivf-payment-report/remaining_payment')}}">
+                        <div class="col-md-6 text-right">
+                        
+                            {{-- <a href="{{url('ivf-payment-report/remaining_payment')}}">
                                 <button class="btn btn-primary">
                                     Remaining Payment
                                 </button>
-                            </a>
+                            </a> --}}
                              <a href="javascript:void(0);">
                                 <button class="btn btn-primary print-ivf-payment-report">
                                     Print

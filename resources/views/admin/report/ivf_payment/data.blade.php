@@ -4,8 +4,9 @@
             <th>Sr.No</th>           
             <th>Name</th>
             <th>Cycle No</th>
-            <th>Payment</th>
             <th>Package</th>
+            <th>Left Amount</th>
+            <th>Discount</th>
             <th>Payment Type</th>
             <th>Condition</th>
             <th>Is Completed</th>
@@ -37,8 +38,9 @@
                         {{$row->cycle_no}}
                     </div>
                 </td>
-                <td><div class="{{'edit-payment payment-'.$row->id}}">{{$row->payment}}</div></td>
                 <td><div class="{{'edit-payment package-'.$row->id}}">{{$row->package}}</div></td>
+                <td><div class="">{{($row->package - $row->getTotalAmount() - $row->getTotalDiscount()) >= 0 ? $row->package - $row->getTotalAmount() - $row->getTotalDiscount() : 0}}</div></td>
+                <td><div class="">{{$row->getTotalDiscount()}}</div></td>
                 <td><div class="{{'edit-payment payment-type-'.$row->id}}">{{ucfirst(!empty($row->payment_type) ? $paymentTypeData[$row->payment_type] : null)}}</div></td>
                 
                 <td><div class="{{'edit-payment condition-'.$row->id}}">{{$row->condition}}</div></td>

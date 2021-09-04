@@ -568,22 +568,6 @@ class IUIController extends AdminController
                     }
                     $iuiPatientsData->follow_up = $followDate;
                     $iuiPatientsData->save();
-                    // $checkAppointment = $this->Appointment->wherePatientsId($patientsId)->orderBy('id','DESC')->whereDate('date','>=',$currentDate)->first();
-                    // // dd($checkAppointment);
-                    // if($checkAppointment){
-                    //     $categoryId = $checkAppointment->category_id;
-                    //     log::debug('inIUIStoreFunction');
-                    //     log::debug('inCheckAppointmentExits');
-                    //     log::debug('patientsId');
-                    //     log::debug($patientsId);
-                    //     log::debug('categoryId');
-                    //     log::debug($categoryId);
-                    //     log::debug('EndIIUIStoreFUnction');
-                    //     $checkAppointment->category_id = $this->categoryNewToOld($categoryId);
-                    //     $checkAppointment->date = $followDate;
-                    //     $checkAppointment->save();
-                    // }else{
-                        // dd('sdfsdfksf');
                         
                         $appointmentTime = null;
                         $fDate = !empty($followDate) ? Carbon::parse($followDate)->format('Y-m-d') : null;
