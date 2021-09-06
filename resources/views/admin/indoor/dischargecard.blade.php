@@ -554,8 +554,10 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        @if(in_array($bookedPatientData->getprocedure['id'],[1,2]))
-                                            <div class="row clearfix">
+                                        @php
+                                            $is_birthCertificate = in_array($bookedPatientData->getprocedure['id'],[1,2]) ? '' : 'd-none';
+                                        @endphp
+                                            <div class="{{'row clearfix '.$is_birthCertificate}}">
                                                 <div class="col-md-6">
                                                     <div class="row">
                                                         <div class="col-sm-3 unik-lbl-spn">
@@ -579,9 +581,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
-                                        
-
                                     </div>
                                 </div>
                             </div>
