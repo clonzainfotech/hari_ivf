@@ -45,6 +45,7 @@ class IndoorDeposit extends BaseModel
     }
     public function getTotalDiscount()
     {
+        $packageDis = 0;
         $discount = self::where([
             // ['id', '>=', $this->id],
             'patient_id' => $this->patient_id,
@@ -52,10 +53,30 @@ class IndoorDeposit extends BaseModel
             'charge_type' => $this->charge_type,
         ])
         ->sum('discount');
-        if ($discount) {
-            return $discount;
+        $ivfPayment = IvfPayment::where('patients_id',$this->patient_id)->where('cycle_no',$this->cycle_no)->first();
+        if($ivfPayment)
+        {
+            $packageDis = $ivfPayment->discount;
         }
-        return $discount;
+        if ($discount) {
+            return $discount + $packageDis;
+        }
+        return $discount + $packageDis;
+    }
+    public function getTotalPaidAmountIVF()
+    {
+
+        $paidAmount = self::where([
+            // ['id', '>=', $this->id],
+            'patient_id' => $this->patient_id,
+            'cycle_no' => $this->cycle_no,
+            'charge_type' => 2,
+        ])
+        ->sum('amount');
+        if ($paidAmount) {
+            return $paidAmount;
+        }
+        return $paidAmount;
     }
     public function getInjectionCharge(){
         return $this->belongsTo('App\Models\InjectionCharge','injection');

@@ -117,10 +117,19 @@ class HormonController extends AdminController
             $hormon->remark = $request->remark;
 
             $lastTotal = $this->IndoorDeposit
+            ->whereChargeTypeAndPatientId($request->htype, $request->hname)
+            ->orderBy('id', 'DESC')
+            ->value('total');
+            //for Ivf package
+            $ivfPaymentData = $this->IvfPayment->wherePatientsId($hormon->patient_id)->where('is_completed',0)->orderBy('id','DESC')->first();
+            if ( $request->htype == 2 && $ivfPaymentData) {
+                $lastTotal = $this->IndoorDeposit
                 ->whereChargeTypeAndPatientId($request->htype, $request->hname)
+                ->whereCycleNo($ivfPaymentData->cycle_no)
                 ->orderBy('id', 'DESC')
                 ->value('total');
-
+            }
+           
             $hormon->total = ($lastTotal == null) ? $hormon->amount : ($lastTotal + $hormon->amount);
             $hormon->case_type = 'Credit';
             $hormon->payment_type = $request->payment_type;
@@ -160,7 +169,7 @@ class HormonController extends AdminController
             }
             $reference=$request->hreference_doctor_id;
             $hormon->created_at = Carbon::parse($request->date)->format('Y-m-d'.' '.date('H:i:s'));
-            $ivfPaymentData = $this->IvfPayment->wherePatientsId($hormon->patient_id)->where('is_completed',0)->orderBy('id','DESC')->first();
+            
             if ( $request->htype == 2) {
                 $hormon->package = (!empty($ivfPaymentData)) ? $ivfPaymentData->package : null;  
                 $hormon->cycle_no = (!empty($ivfPaymentData)) ? $ivfPaymentData->cycle_no : null;  

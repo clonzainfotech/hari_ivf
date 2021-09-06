@@ -44,11 +44,15 @@
                 <td>{{$row->cycle_no}}</td>
                 <td>{{!empty($row->getInjectionCharge['name']) ? $row->getInjectionCharge['name'] : $row->injection}}</td>
                 <td>{{$row->amount}}</td>
-                <td><div class={{'amount-'.$key}}>{{$row->total}}</div></td>
+                <td><div class={{'amount-'.$key}}>{{($row->charge_type == 2) ? $row->getTotalPaidAmountIVF() : $row->total}}</div></td>
                 <td><div>{{$row->package - $row->getTotalDiscount()}}</div></td>
                 @php
                     $totalDiscount = $row->getTotalDiscount();
                     $lessamount = $row->package - $row->total - $totalDiscount;
+                    if($row->charge_type == 2)
+                    {
+                        $lessamount = $row->package - $row->getTotalPaidAmountIVF() - $totalDiscount;
+                    }
                 @endphp
                 <td><div>
                     @if($row->charge_type == 2)
