@@ -10,8 +10,8 @@
   <style>
     img{
       display: block !important;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: auto !important;
+      margin-right: auto !important;
     }
     body
     {
