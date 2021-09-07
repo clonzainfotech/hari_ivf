@@ -1149,11 +1149,12 @@ class IVFController extends AdminController
                 ]);
             }
             if($request->is_ivf_transfer_print) {
+                $printPreview = 1;
                 return response()->json([
                     'status' => 3,
                     'id' => $ivfId,
                     'ivf_transfer_report_id' => encrypt($transferReport->id),
-                    'data' => View::make('admin.ivf.transfer_report', compact('transferReport'))->render()
+                    'data' => View::make('admin.ivf.transfer_report', compact('transferReport','printPreview'))->render()
                 ]);
             }
             if($request->ajax()){
@@ -1968,10 +1969,11 @@ class IVFController extends AdminController
             return back();
         }
         try {
+            $printPreview = 1;
             $ivf = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->whereCycleNo($cycleNo)->get();
             $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
             $ivfReport = $this->IvfPlanReport->wherePlanAndPatientsIdAndCycleNo($plan, $patientId, $cycleNo)->first();
-            return view('admin.ivf.ivf_plan_report',compact('patientId','cycleNo','plan', 'ivfReport','lastAppointmentData','ivf'));
+            return view('admin.ivf.ivf_plan_report',compact('patientId','cycleNo','plan', 'ivfReport','lastAppointmentData','ivf','printPreview'));
 
         } catch (Exception $e) {
             abort(500);
@@ -2022,10 +2024,12 @@ class IVFController extends AdminController
 
 
             if($request->isprint){
+                $printPreview = 1;
+
                 return response()->json([
                     'status' => 1,
                     'ivf_plan_report_id' => ($ivfReport != null) ? encrypt($ivfReport->id) : null,
-                    'data' => View::make('admin.ivf.ivf_plan_report_print', compact('ivfReport'))->render()
+                    'data' => View::make('admin.ivf.ivf_plan_report_print', compact('ivfReport','printPreview'))->render()
                 ]);
             }
 
@@ -2242,7 +2246,8 @@ class IVFController extends AdminController
             $data = null;
             if ($request->is_print) {
                 $status = 2;
-                $data = View::make('admin.ivf.transfer_report', compact('transferReport'))->render();
+                $printPreview = 1;
+                $data = View::make('admin.ivf.transfer_report', compact('transferReport','printPreview'))->render();
             }
             return [
                 'status' => $status,
@@ -2521,19 +2526,18 @@ class IVFController extends AdminController
             if($request->ajax()){
                 $patientId = decrypt($request->patient_id);
                 $lastAppointmentData = $this->Appointment->wherePatientsId($patientId)->orderBy('id','DESC')->first();
-                // $ivfData = $this->IVF->wherePatientsId($patientId)->orderBy('id','DESC')->first();
-                // $ivf = $ivfData;
+                
                 $isIvfHistory = '1';
                 $plan = $request->plan;
                 $cycleNo = $request->cycle_no;
                 $visitNo = $request->visit == 'null' ? 1 : $request->visit;
                 $type = $request->type;
+                //display in reception section
                 if($request->is_appointmentView && $request->is_appointmentView == 1 && $request->visitDate && !empty($request->visitDate))
                 {
                     $ivfHistoryDate = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->where('cycle_no',$cycleNo)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$request->visitDate)->orderBy('created_at','DESC')->first();
                     if(!$ivfHistoryDate)
                     {
-
                         $ivfHistoryDate = $this->IVF->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$request->visitDate)->orderBy('created_at','DESC')->first();
                     }
 
@@ -2555,7 +2559,6 @@ class IVFController extends AdminController
                         $cycleNo = explode('_',$cycle)[1];
                         $ivfCycleData = [];
                         $ivfHistoryDate = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->where('cycle_no',$cycleNo)->orderBy('created_at','DESC')->pluck('created_at','created_at')->toArray();
-                        
                         $ivfCyclePlan = array_merge($ivfCyclePlan,$ivfHistoryDate);
                     }
                         $ivfDateData = $this->IVF->where('patients_id',$patientId)->orderBy('created_at','DESC')->first();
@@ -2566,10 +2569,15 @@ class IVFController extends AdminController
                 $ivfPatients = $this->OpdPatients->find($patientId);
                 $ivfType = 1;
                 $encIvfId = [];
+                $isIvfReport = [];
+                $extraVisit = [];
+                $dateValue = [];
+
+                //for print
                 if($request->visitDate && !empty($request->visitDate) && (!$request->is_appointmentView || $request->is_appointmentView != 1))
                 {
                     $visitDate = $request->visitDate;
-                    if(empty($request->extraVisit))
+                    if(empty($request->extraVisit) && empty($request->ivfreport))
                     {
                         $isTableView = 0;
                         $ivfCycleData = null;
@@ -2595,6 +2603,7 @@ class IVFController extends AdminController
                             // $viewAllVisit,$preview);
                         $dateValue[] = $visitDate;
                         $extraVisit[] = 0;
+                        $isIvfReport[] = 0;
                     }
                     if($request->extraVisit && $request->extraVisit == '1')
                     {
@@ -2605,6 +2614,36 @@ class IVFController extends AdminController
                         $extraVisit[] = 1;
                         $dateValue[] = $visitDate;
                         $visitNumber[] = 0;
+                        $isIvfReport[] = 0;
+
+                    }
+                    if($request->ivfreport && $request->ivfreport == '1')
+                    {
+                        $ivfReport = $this->IvfPlanReport->where('patients_id',$patientId)->where('created_at','=',$visitDate)->first();
+                        $transferReport = $this->IvfTransferReport->where('patient_id',$patientId)->where('created_at','=',$visitDate)->first();
+                        if($ivfReport)
+                        {
+                            $ivfType = 2;
+                            $pt_view = 1;
+                            $printPreview = 1;
+                            $visitNumber[] = 0;
+                            $viewAllVisit[] = View::make('admin.ivf.ivf_plan_report_print', compact('ivfReport','pt_view','printPreview'))->render();
+                            $dateValue[] = $ivfReport->created_at;
+                            $extraVisit[] = 0;
+                            $isIvfReport[] = 1;
+
+                        }
+                        if($transferReport)
+                        {
+                            $ivfType = 2;
+                            $pt_view = 1;
+                            $printPreview = 1;
+                            $viewAllVisit[] = View::make('admin.ivf.transfer_report', compact('transferReport','pt_view','printPreview'))->render();
+                            $dateValue[] = $transferReport->created_at;
+                            $visitNumber[] = 0;
+                           
+                            $isIvfReport[] = 1;
+                        }
                     }
                     
                 }
@@ -2614,7 +2653,6 @@ class IVFController extends AdminController
                     $isTableView = 0;
                     $displayPlan = 0;
                     $displayCycle = 0;
-                   
                     $isAppointmentView = true; // for bootstrap file duplication
                     foreach($ivfVisitDate as $key => $date)
                     {
@@ -2622,10 +2660,7 @@ class IVFController extends AdminController
                         $isIvfHistory = '1';
                         $ivfType = 1;
                         $isExtraVisit = 0;
-                        // if($ivf)
-                        // {
-                        //     $visitNumber[]  = 1;
-                        // }
+                        
                         if(!$ivf)
                         {
                             $isIvfHistory = '2';
@@ -2656,6 +2691,7 @@ class IVFController extends AdminController
                                     $encIvfId[] = null;
                                     $cycleArray[] = null;
                                     $planArray[] = null;
+                                    $isIvfReport[] = 0;
 
                                 }
                                 
@@ -2677,9 +2713,8 @@ class IVFController extends AdminController
                                     $encIvfId[] = null;
                                     $cycleArray[] = null;
                                     $planArray[] = null;
-
+                                    $isIvfReport[] = 0;
                                 }
-                                
                             }
                         }
                         //ivf and ivf-history visit
@@ -2700,6 +2735,43 @@ class IVFController extends AdminController
                                 $displayPlan = $ivfCycleData[0]->plan;
                                 $displayCycle = $ivfCycleData[0]->cycle_no;
                                 $preview++;
+                                //ivf pickUP report
+                                if($ivf->plan == 1 && $preview == 2)
+                                {
+                                    $ivfReport = $this->IvfPlanReport->where('patients_id',$patientId)->whereCycleNo($ivf->cycle_no)->wherePlan($ivf->plan)->first();
+                                    if($ivfReport)
+                                    {
+                                        $pt_view = 0;
+                                        $printPreview = 0;
+                                        $viewAllVisit[] = View::make('admin.ivf.ivf_plan_report_print', compact('ivfReport','pt_view','isAppointmentView','printPreview'))->render();
+                                        $cycleArray[] = $ivf->cycle_no;
+                                        $planArray[] = isset($planData[$ivf->plan]) ? $planData[$ivf->plan] : '';
+                                        $dateValue[] = $ivfReport->created_at;
+                                        $visitNumber[] = isset($ivf->visit) ? $ivf->visit : 1;
+                                        $ivfId = $ivf->id;
+                                        $encIvfId[] = encrypt($ivfId);
+                                        $isIvfReport[] = 1;
+                                    }
+                                }
+                                //ivf Transfer Report
+                                if($ivf->plan != 1 && $preview == 2)
+                                {
+                                    
+                                    $transferReport = $this->IvfTransferReport->where('patient_id',$patientId)->where('cycle_no',$ivf->cycle_no)->wherePlan($ivf->plan)->first();
+                                    if($transferReport)
+                                    {
+                                        $pt_view = 0;
+                                        $printPreview = 0;
+                                        $viewAllVisit[] = View::make('admin.ivf.transfer_report', compact('transferReport','pt_view','printPreview'))->render();
+                                        $cycleArray[] = $ivf->cycle_no;
+                                        $planArray[] = isset($planData[$ivf->plan]) ? $planData[$ivf->plan] : '';
+                                        $dateValue[] = $transferReport->created_at;
+                                        $visitNumber[] = isset($ivf->visit) ? $ivf->visit : 1;
+                                        $ivfId = $ivf->id;
+                                        $encIvfId[] = encrypt($ivfId);
+                                        $isIvfReport[] = 1;
+                                    }
+                                }
                             }
                             if($preview <= 1)
                             {
@@ -2711,29 +2783,26 @@ class IVFController extends AdminController
                                 $visitNumber[] = isset($ivf->visit) ? $ivf->visit : 1;
                                 $ivfId = $ivf->id;
                                 $encIvfId[] = encrypt($ivfId);
+                                $isIvfReport[] = 0;
                             }
                             
                         }
                         
                     }
                 }
-                
-                
-                
                 return response()->json([
                     'status'=>1,
                     'ivf_type'=>$ivfType,
                     'cycle'=>$cycleNo,
                     'status' => 1,
                     'extraVisit' => $extraVisit,
-                    // 'id' => $ivfId,
                     'enc_ivf_id' => $encIvfId,
                     'plan' => isset($planData[$plan]) ? $planData[$plan] : '',
-                    // 'type' => $type,
                     'date' => $dateValue,
                     'cycleArray' => $cycleArray,
                     'planArray' => $planArray,
                     'visitNumber'=>$visitNumber,
+                    'isIvfReport'=>$isIvfReport,
                     'data' => $viewAllVisit
                 ]);
                 
@@ -2750,8 +2819,9 @@ class IVFController extends AdminController
                     $ivfData = $this->IvfHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
                     if($ivfData)
                     {
+                        $printPreview = 1;
                         $transferReport = $this->IvfTransferReport->where('patient_id',$patientId)->where('cycle_no',$ivfData->cycle_no)->first();
-                        return view('admin.ivf.transfer_report', compact('transferReport','pt_view'));
+                        return view('admin.ivf.transfer_report', compact('transferReport','pt_view','printPreview'));
                     }
                     return 'no record available';
                 }

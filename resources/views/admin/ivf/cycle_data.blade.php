@@ -5428,10 +5428,9 @@
             $(document).on('click','.print-btn',function(e){
                 e.preventDefault();
                 var extraVisit = $(this).data('extravisit');
-                // ivfVisit = $('.next-appointment-details').data('visit');
+                var ivfreport = $(this).data('ivfreport');
                 var visitDate = $(this).data('date');
-                ivfString = 'patient_id='+ivfPId+'&cycle_no='+ivfCycleNo+'&plan='+ivfPlan+'&visitDate='+visitDate+'&is_print=1&extraVisit='+extraVisit;
-                // ivfString = 'patient_id='+ivfPId+'&cycle_no='+ivfCycleNo+'&plan='+ivfPlan+'&visit='+ivfVisit+'&is_print=1';
+                ivfString = 'patient_id='+ivfPId+'&cycle_no='+ivfCycleNo+'&plan='+ivfPlan+'&visitDate='+visitDate+'&is_print=1&extraVisit='+extraVisit+'&ivfreport='+ivfreport;
                 getIvfHistoryData(ivfString);
             });
 
@@ -6388,12 +6387,19 @@
                         {
                             buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extravisit="1">Print</a></div></div>';
                         }
+                        if(data.isIvfReport[i] == 1)
+                        {
+                            buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-3 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div>'+
+                            '<div class="col-md-3"><h5 class="modal-title rm-btn" id="myModalLabel">Plan:- <span class="ivf-appointment-plan">'+data.planArray[i]+'</span></h5></div>'+
+                            '<div class="col-md-3"><h5 class="modal-title rm-btn" id="myModalLabel">CycleNo:- <span class="ivf-appointment-plan">'+data.cycleArray[i]+'</span></h5></div>'+
+                            '<div class="col-md-3 text-right"><a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="" data-ivfreport="1">Print</a></div></div>';
+                        }
                         if(data.visitNumber[i] == 1)
                         {
                             buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div>'+
                             '<div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-visit="'+data.visitNumber[i]+'" data-id="'+data.enc_ivf_id[i]+'" data-date="'+linkDate+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="">Print</a></div></div>';
                         }
-                        else
+                        if(data.visitNumber[i] != 1 && data.isIvfReport[i] != 1)
                         {
                         buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-3 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div>'+
                         '<div class="col-md-3"><h5 class="modal-title rm-btn" id="myModalLabel">Plan:- <span class="ivf-appointment-plan">'+data.planArray[i]+'</span></h5></div>'+

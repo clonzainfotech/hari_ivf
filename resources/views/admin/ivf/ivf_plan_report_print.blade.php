@@ -14,10 +14,12 @@
 }
 .ivf-report-print {
     padding: 20px;
-    font-size: 20px;
+    font-size: 18px;
+    /* margin-top :250px; */
 }
 .doctor-info {
     padding: 50px 0;
+    display: flex;
 }
 h6 {
     text-transform: uppercase;
@@ -27,9 +29,10 @@ h6 {
 }
 .drname{
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 16px;
 }
-body {margin-top :250px;}
+
+/* body {} */
 .pick-up-table
 {
     /* width: 50% !important; */
@@ -37,6 +40,10 @@ body {margin-top :250px;}
 .pick-up-table th, .pick-up-table td
 {
     padding: .45rem !important;
+}
+.ivf-report-print .d-flex
+{
+    display: flex;
 }
 .mt-3
 {
@@ -48,7 +55,7 @@ body {margin-top :250px;}
 }
 .er_image
     {
-        width: 100%;
+        width: 130px;
         border-radius: 10%;
         -webkit-print-color-adjust: exact;
     }
@@ -57,8 +64,29 @@ body {margin-top :250px;}
         top: 40%;
         right: 35%;
         font-weight: bold;
+        -webkit-print-color-adjust: exact;
     }
+    .er-image-div
+    {
+        display: flex !important;
+    }
+.view-file-modal-dialog .ivf-report-print
+{
+    font-size: 16px !important;
+    margin-top: 0px !important
+}
+.view-file-modal-dialog .ivf-report-print .er_image
+{
+    width: 50% !important;
+}
 </style>
+@php
+    // if($isAppointmentView)
+    // {
+    //     $font_size = ""
+    // }
+@endphp
+   
 @if(isset($printPreview) && $printPreview != 0)
     @section('content')
 @endif  
@@ -69,17 +97,17 @@ body {margin-top :250px;}
     @endphp
 
     <div class="ivf-report-print">
-        <div class="row">
-            <div class="col-md-10">
+        <div class="row d-flex">
+            <div class="col-md-10 text-left">
                 <span>Patient Name:</span>
                 <strong class="p-name">{{ ucwords(strtolower($ivfReport->getPatients['name']))}}</strong>
             </div>
-            <div class="col-md-2 col-sm-2">
+            <div class="col-md-2 col-sm-2 text-right">
                 <span><strong>Age:</strong></span>
                 <span>{{!empty($ivfReport->getPatients['age']) ? $ivfReport->getPatients['age'].' Year' : '-'}}</span><br>
             </div>
         </div>
-        <div class="row">
+        <div class="row d-flex">
             @if(!empty($ivfReportData->is_donor->status) && $ivfReportData->is_donor->status == 'yes')
                 <div class="col-md-2">
                     <span>Surgery/Donor : </span>
@@ -98,12 +126,12 @@ body {margin-top :250px;}
             @endif
         </div>
 
-        <div class="row" style="padding-bottom: 20px">
-            <div class="col-md-10 col-sm-10">
+        <div class="row d-flex" style="padding-bottom: 20px">
+            <div class="col-md-8 col-sm-8 text-left">
                 <span>Indication:</span>
                 <span>{{!empty($ivfReportData->indication) ? $ivfReportData->indication : ''}}</span>
             </div>
-            <div class="col-md-2 col-sm-2">
+            <div class="col-md-4 col-sm-4 text-right">
                 <span><strong>Weight:</strong></span>
                 <span>{{!empty($ivfReport->getPatients['weight']) ? $ivfReport->getPatients['weight'].' KG' : '-'}}</span><br>
             </div>
@@ -262,10 +290,10 @@ body {margin-top :250px;}
             $baseUrl = asset('assets/images');
             // echo $baseUrl;
         @endphp
-        <div class="row mb-2">
+        <div class="row mb-2 er-image-div">
             @foreach($erImageArray as $erImage)
                 @if(getimagesize($baseUrl.'/'.$erImage.'.jpg'))
-                    <div class="col-md-2 col-sm-2 text-center">
+                    <div class="col-md-2 col-sm-2">
                         {{-- <div class="input-group"> --}}
                             <span class="mt-5 er_image_name"><strong>{{ucwords($erImage)}}</strong></span>
                             <br>
@@ -279,8 +307,9 @@ body {margin-top :250px;}
                 @endif
             @endforeach
         </div>
+        @if((isset($ivfReportData->pt_remark) && !empty($ivfReportData->pt_remark)) || !empty($ivfReportData->remark))
         <div class="row" style="padding: 20px 0">
-                <div class="col-md-12">
+                <div class="col-md-12 text-left">
                     <span class="candor-color"><strong>Remark:<strong></span>
                     @if(isset($pt_view) && $pt_view == 1)
                     <span>{{isset($ivfReportData->pt_remark) && !empty($ivfReportData->pt_remark) ? $ivfReportData->pt_remark : '-'}}</span>
@@ -289,19 +318,20 @@ body {margin-top :250px;}
                     @endif
                 </div>
         </div>
+        @endif
 
         <div class="row doctor-info">
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4">
                     <div class='drname'>{{$ivfReport->getPatients->getHospitalDoctor['name'] }}</div>
                     <div class='degree'>{{$ivfReport->getPatients->getHospitalDoctor['degree'] }}</div>
                     <div class='proffesion'>{{$ivfReport->getPatients->getHospitalDoctor['designation'] }}</div>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4">
                     <div class='drname'>Dr. juhi Dhameliya</div>
                     <div class='degree'></div>
                     <div class='proffesion'>embryologist</div>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4">
                     <div class='drname'>{{config('app.embroyologist_doctor')}}</div>
                     <div class='degree'>({{config('app.embroyologist_degree')}})</div>
                     <div class='proffesion'>embryologist</div>
