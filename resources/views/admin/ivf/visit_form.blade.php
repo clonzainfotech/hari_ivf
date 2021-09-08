@@ -410,11 +410,11 @@
                 </div>
                 <div class="{{'col-md-1 '.$semenFreezingValueData}}">
                     <div class="radio is-conceived">
-                        {{Form::radio("data[collected][frozen][type]",'yes',!empty($semenFreezing) && $semenFreezing == 'yes' ? true : false,['id'=>'progesteroneyes'])}}
+                        {{Form::radio("data[collected][frozen][type]",'yes',!empty($semenFreezing) && $semenFreezing == 1 ? true : false,['id'=>'progesteroneyes'])}}
                         <label for="progesteroneyes">
                             Yes
                         </label>
-                        {{Form::radio("data[collected][frozen][type]",'no',!empty($embroyReady) && $embroyReady == 'no' ? true : false,['id'=>'progesteroneno'])}}
+                        {{Form::radio("data[collected][frozen][type]",'no',!empty($embroyReady) && $embroyReady == 0 ? true : false,['id'=>'progesteroneno'])}}
                         <label for="progesteroneno">
                             No
                         </label>
