@@ -2157,10 +2157,12 @@ class IVFController extends AdminController
             $complaints = $this->Complaint->pluck('name','name');
             $semenFreezing = $this->IvfHistory
                                 ->wherePatientsId($data['ivf']['patients_id'])
+                                ->where('cycle_no',$data['ivf']['cycle_no'])->where('plan',$data['ivf']['plan'])
                                 ->where('description->collected->frozen->type', 'yes')
                                 ->first();
             $embroyReady = $this->IvfHistory
                                 ->wherePatientsId($data['ivf']['patients_id'])
+                                ->where('cycle_no',$data['ivf']['cycle_no'])->where('plan',$data['ivf']['plan'])
                                 ->where('description->collected->report->embroy->type', 'yes')
                                 ->first();
             $data['isTransfer'] = false;
