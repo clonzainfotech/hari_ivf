@@ -10,8 +10,18 @@
     <div class="row clearfix">
         <div class="col-md-12 p-0">
             <div class="card patients-list">
-                <div class="header">
-                    <h2><strong class="text-secondary">{{ucwords($patient->name)}}</strong></h2>
+                <div class="header d-flex">
+                    <div class="col-md-6 col-sm-6">
+                        <h2><strong class="text-secondary">{{ucwords($patient->name)}}</strong></h2>
+                    </div>
+                    <div class="col-md-6 col-sm-6 ">
+                        @if($isIvfHistory)
+                            <a href="{{URL::to('ivf/history/'.encrypt($patient->id))}}" target="_blank" class="btn btn-primary pull-right">IVF History</a>
+                        @endif
+                        @if($isAncHistory)
+                            <a href="{{URL::to('anc/history/'.encrypt($patient->id))}}" target="_blank" class="btn btn-primary pull-right">ANC History</a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
