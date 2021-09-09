@@ -1256,7 +1256,6 @@ class IVFController extends AdminController
             $pickupCycle = array_unique($ivfHistoryData->where('plan',1)->pluck('cycle_no','id')->toArray());
             if(count(array_unique($ivfHistoryData->where('plan',2)->pluck('cycle_no','id')->toArray())) > 1){
                 $fetCycle = array_unique($ivfHistoryData->where('plan',2)->pluck('cycle_no','id')->toArray());
-                dd($fetCycle);
             }else{
                 $fetCycle = array_unique($ivfHistoryData->where('plan',2)->sortByDesc('id')->pluck('cycle_no','id')->toArray());
             }
