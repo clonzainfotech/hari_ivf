@@ -1098,7 +1098,7 @@ class IVFController extends AdminController
                     $isTableView = '1';
                     $ivfCycleData = $this->IvfHistory->wherePatientsId($patientsId)->whereCycleNo($request->cycle_no)->wherePlan(!empty($data['plan']) ? $data['plan'] : $request['plan_type'])->get();
                     $ivfSecondVisit = $this->IvfHistory->where('patients_id',$patientsId)->where('plan',!empty($data['plan']) ? $data['plan'] : $request['plan_type'])->where('cycle_no',$request->cycle_no)->where('visit',2)->first();
-                        $ivfSecondVisitData = json_decode($ivfSecondVisit->description);
+                        $ivfSecondVisitData = !empty($ivfSecondVisit) ? json_decode($ivfSecondVisit->description) : null;
                         $ivfFirst = $this->IVF->wherePatientsId($patientsId)->orderBy('id','DESC')->first();
                         $lmpDate = null;
                         $uterusData = null;
@@ -1224,7 +1224,7 @@ class IVFController extends AdminController
                         $planTransfer = 2;
                     }
                 }
-                if(isset($lastIvfHistory->plan) && !empty($lastIvfHistory->plan) && $ivfHistory->visit == 2)
+                if(isset($lastIvfHistory->plan) && !empty($lastIvfHistory->plan) && $ivfHistory->visit == 2 && (!isset($lastIvfHistory->skip_cycle) || $lastIvfHistory->skip_cycle != 'yes'))
                 {
                     // $lastIvfHistory->plan = 2;
                     // $ivfHistory->description = json_encode($lastIvfHistory);
@@ -1256,6 +1256,7 @@ class IVFController extends AdminController
             $pickupCycle = array_unique($ivfHistoryData->where('plan',1)->pluck('cycle_no','id')->toArray());
             if(count(array_unique($ivfHistoryData->where('plan',2)->pluck('cycle_no','id')->toArray())) > 1){
                 $fetCycle = array_unique($ivfHistoryData->where('plan',2)->pluck('cycle_no','id')->toArray());
+                dd($fetCycle);
             }else{
                 $fetCycle = array_unique($ivfHistoryData->where('plan',2)->sortByDesc('id')->pluck('cycle_no','id')->toArray());
             }
@@ -2114,7 +2115,12 @@ class IVFController extends AdminController
             }
             if($data['ivf'])
             {
+                $isTransfer = false;
                 $description = !empty($data['ivf']) ? json_decode($data['ivf']['description']) : null;
+                if(!empty($description))
+                {
+                    $isTransfer = isset($description->is_transfer) && $description->is_transfer == 'yes' && isset($description->is_upt) && $description->is_upt == 'yes' ? true : false;
+                }
                 $investigation = json_decode($data['ivf']['investigation']);
                 $hystroscopyImages  = !empty($investigation->hystroscopy->images) ? $investigation->hystroscopy->images : null;
                 if($hystroscopyImages){
@@ -2165,7 +2171,7 @@ class IVFController extends AdminController
                                 ->where('cycle_no',$data['ivf']['cycle_no'])->where('plan',$data['ivf']['plan'])
                                 ->where('description->collected->report->embroy->type', 'yes')
                                 ->first();
-            $data['isTransfer'] = false;
+            $data['isTransfer'] = $isTransfer;
             $data['doseData'] = $doseData;
             $data['complaints'] = $complaints;
             $data['leftOvaryData'] = $leftOvaryData;
