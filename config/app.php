@@ -262,4 +262,16 @@ return [
     'GOOGLE_REFRESH_TOKEN' => '1//04lMN1kpE8NfeCgYIARAAGAQSNwF-L9Ir_MfDBdhubB1CXFkX6moKG-x9Rcjm9AqWLU1baEFUUzPvjzW0xy67wI6-IXDLzGHO8yE',
     'GOOGLE_FOLDER_ID' => '1uK79a2YTAOW4CALT0eWgoDHtnkzkHnaX',
     'social_reference' => ['banner','camp','youtube','insta','facebook','pamplets','call'],
+
+    'reject_apt_reason_en' => ["0"=>"We can't book right now as tomorrow OPD schedule is not planned yet. We contact you as soon as it planned or you can contact us on phone.",
+                                "1"=>"Thank you for your booking an appointment with us. We Will assure you to take in consultation room with Dr no booked time if you come on time. Sorry for inconvenience in advance if we can't for that if any unavoidable circumstance will be there.",
+                                "2"=>"Sorry, Your Appointment is already booked on this time"],
+    'reject_apt_reason_gu' => ["0"=>"અમે હમણાં બુકિંગ કરી શકતા નથી કારણ કે આવતીકાલે ઓપીડીનું સમયપત્રક હજુ આયોજન નથી. અમે તમારી યોજના પ્રમાણે જ તમારો સંપર્ક કરીએ છીએ અથવા તમે ફોન પર અમારો સંપર્ક કરી શકો છો.",
+                    "1"=>"અમારી સાથે એપોઇન્ટમેન્ટ બુક કરવા બદલ આભાર. જો તમે સમયસર આવો તો અમે તમને ડો.ની સાથે કન્સલ્ટેશન રૂમમાં લઈ જવાની ખાતરી આપીશું. જો કોઈ અનિવાર્ય સંજોગો હશે તો તે માટે અમે અગાઉથી અસુવિધા માટે માફ કરશો.",
+                    "2"=>"માફ કરશો, તમારી નિમણૂક આ સમયે પહેલેથી જ બુક થઈ ગઈ છે."],
+    'reject_apt_reason_hn' =>   ["0"=>"हम अभी बुकिंग नहीं कर सकते क्योंकि कल ओपीडी कार्यक्रम अभी तक योजनाबद्ध नहीं है। जैसे ही इसकी योजना होगी हम आपसे संपर्क करेंगे या आप हमसे फोन पर संपर्क कर सकते हैं।",
+                        "1"=>"हमारे साथ अपॉइंटमेंट बुक करने के लिए धन्यवाद। यदि आप समय पर आते हैं तो हम आपको डॉ के साथ परामर्श कक्ष में कोई बुक समय नहीं लेने का आश्वासन देंगे। असुविधा के लिए अग्रिम खेद है यदि हम उसके लिए नहीं कर सकते हैं यदि कोई अपरिहार्य परिस्थिति होगी।",
+                        "2"=>"क्षमा करें, इस समय आपका अपॉइंटमेंट पहले से ही बुक है"],             
+
+    
 ];

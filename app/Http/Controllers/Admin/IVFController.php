@@ -1576,7 +1576,6 @@ class IVFController extends AdminController
                                 $sDay = $protocolData[$countProtocolTable]->s_day;
                                 $pDate = $protocolData[$countProtocolTable]->date;
                             }
-                            
                         }
                     }
                     $skipPlan = (int)!empty($lastIvfHistory->plan) ? $lastIvfHistory->plan : null;

@@ -46,7 +46,7 @@
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <ul class="nav nav-tabs padding-0">
                                     <div class="input-group">
-                                        <input type="text" onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" class="form-control search" placeholder="Search...">
+                                        <input type="text" onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" class="form-control search" placeholder="Search..." readonly="readonly" onfocus="this.removeAttribute('readonly')">
                                         <span class="input-group-addon search-border">
                                             <i class="zmdi zmdi-search"></i>
                                         </span>
