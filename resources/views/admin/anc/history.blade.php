@@ -70,16 +70,13 @@
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <strong class="pr-3">ANC Previous Visit</strong>
-                            <ul class="header-dropdown col-md-12 align-right">
-                                <li class="w-50">
-                                    @if(!empty($getTotalAncNumber))
-                                    <li class="w-25">
-                                        {{Form::select("previous_anc_id",$getTotalAncNumber,'',['class'=>'form-control select-padding-0 anc_visit_id','placeholder'=>'Select Previous Anc.','data-class'=>'previous'])}}
-                                    </li>
-                                        {{-- <button class="btn btn-primary preview-file" data-class="previous" data-id="{{encrypt($firstANCData->id)}}">Previous ANC</button> --}}
-                                    @endif
-                                </li>
-                            </ul>
+                            @if(!empty($getTotalAncNumber))
+                                {{Form::select("previous_anc_id",$getTotalAncNumber,'',['class'=>'select-padding-0 anc_visit_id','placeholder'=>'Select Previous Anc.','data-class'=>'previous'])}}
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
                             @if(count($date)>0)
                                 <?php
                                 $date = array_reverse($date);
