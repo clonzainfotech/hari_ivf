@@ -923,13 +923,17 @@ class ReportController extends AdminController
         $infertilityReport = null;
         $patients = $this->getPatients();
         // $appointment = $this->Appointment->whereIn('category_id',[1,2,3,4])->where('is_procedure',0)->get();
-            $appointment = $this->IvfHistory->where('cycle_status',1)->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1);
-            if($request->report_type == 2)
-            {
-                $appointment = $this->IuiHistory->where('cycle_status',1)->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1);
-            }
+            // $appointment = $this->IvfHistory->where('cycle_status',1)->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1);
+            // $appointment = $this->IVF->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1);
+            // if($request->report_type == 2)
+            // {
+            //     // $appointment = $this->IuiHistory->where('cycle_status',1)->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1);
+            //     $appointment = $this->IUI->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1);
+            // }
             
         if($request->ajax()){
+            $patientStatus = $request->patient_status;
+            $type = $request->report_type;
             if($request->package_id){
                 $ivfPayment = $this->IvfPayment->find(decrypt($request->package_id));
                 return response()->json([
@@ -937,11 +941,15 @@ class ReportController extends AdminController
                     'infertility_data' => View::make('admin.ivf.payment_preview', compact('ivfPayment'))->render()
                 ]);
             }
+            $appointment = ($type == 2) ? $this->IuiHistory->where('visit',2)->where('cycle_status',1) : $this->IvfHistory->where('visit',2)->where('cycle_status',1);
+            if($patientStatus == 2)
+            {
+                $appointment = ($type == 2) ? $this->IUI->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1) : $this->IVF->groupBy('patients_id')->having(DB::raw('count(patients_id)'),'=',1);
+            }
             $patientId = $request->patient_id;
             if($patientId) {
                 $appointment = $appointment->where(function($query) use($patientId) {
-                    $query
-                        ->orWhereHas('getPatientsDetails', function($query) use($patientId) {
+                    $query->orWhereHas('getPatientsDetails', function($query) use($patientId) {
                             $query->where('id', $patientId);
                         });
                 });
@@ -956,17 +964,18 @@ class ReportController extends AdminController
                 });
             }
             $patientStatus = $request->patient_status;
-            if($patientStatus){
-                if($patientStatus == 1){
-                    $appointment = $appointment->where(function($query){
-                        $query->has('getPatientsDetails.getIui')->orHas('getPatientsDetails.getIvf');
-                    });
-                }else{
-                    $appointment = $appointment->where(function($query){
-                        $query->doesnthave('getPatientsDetails.getIui')->doesnthave('getPatientsDetails.getIvf');
-                    });
-                }
-            }
+            // if($patientStatus)
+            // {
+            //     if($patientStatus == 1){
+            //         $appointment = $appointment->where(function($query){
+            //             $query->has('getPatientsDetails.getIuiHistory')->orHas('getPatientsDetails.getIuiHistory');
+            //         });
+            //     }else{
+            //         $appointment = $appointment->where(function($query){
+            //             $query->doesnthave('getPatientsDetails.getIui')->doesnthave('getPatientsDetails.getIvf');
+            //         });
+            //     }
+            // }
             if($request->date){
                 $date = explode("-",$request->date);
                 $startDate = Carbon::createFromFormat('d/m/Y', trim($date[0]))->format('Y-m-d').' 00:00:00';
@@ -1708,8 +1717,6 @@ class ReportController extends AdminController
                 return $data;
             }
             return view('admin.report.hormon_injection.index',compact('injection'));
-
-
         }catch(Exception $e){
             log::debug($e);
             abort(500);

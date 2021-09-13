@@ -52,9 +52,15 @@ class OpdPatients extends BaseModel
     public function getIui(){
         return $this->hasOne('App\Models\IUI','patients_id','id');
     }
+    public function getIuiHistory(){
+        return $this->hasOne('App\Models\IuiHistory','patients_id','id');
+    }
 
     public function getIvf(){
         return $this->hasOne('App\Models\IVF','patients_id','id');
+    }
+    public function getIvfHistory(){
+        return $this->hasOne('App\Models\IvfHistory','patients_id','id');
     }
 
     public function getReviewData() {

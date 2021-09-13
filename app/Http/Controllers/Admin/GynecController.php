@@ -50,8 +50,8 @@ class GynecController extends AdminController
             $pastData = $this->AncHoHistory->where('type',2)->pluck('name','name')->toArray();
             $familyData = $this->AncHoHistory->where('type',3)->pluck('name','name')->toArray();
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
-            $isIvfHistory = !empty($this->IvfHistory->where('patients_id',$pId)->get()) ? true : false;
-            $isAncHistory = !empty($this->AncHistory->where('patients_id',$pId)->get()) ? true : false;
+            $isIvfHistory = !empty($this->IvfHistory->where('patients_id',$pId)->first()) ? true : false;
+            $isAncHistory = !empty($this->AncHistory->where('patients_id',$pId)->first()) ? true : false;
             return view('admin.gynec.create',compact('personalData','pastData','familyData','hoData','complaints','patient','medicines','patientsId','durationOfData','leftOvaryData','rightOvaryData','surgicallyData','isGynec','oe','hospitalDoctor','isIvfHistory','isAncHistory'));
         }catch(Exception $e){
             log::debug($e->getMessage());
@@ -307,8 +307,8 @@ class GynecController extends AdminController
                
                 return $data;
             }
-            $isIvfHistory = !empty($this->IvfHistory->where('patients_id',$pId)->get()) ? true : false;
-            $isAncHistory = !empty($this->AncHistory->where('patients_id',$pId)->get()) ? true : false;
+            $isIvfHistory = !empty($this->IvfHistory->where('patients_id',$pId)->first()) ? true : false;
+            $isAncHistory = !empty($this->AncHistory->where('patients_id',$pId)->first()) ? true : false;
             return view('admin.gynec.history',compact('date','patientsId','medicines','patient','isIvfHistory','isAncHistory'));
         }catch(Exception $e){
             log::debug($e);

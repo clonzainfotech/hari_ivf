@@ -11,4 +11,7 @@ class IUI extends BaseModel
     public function getPatientsInfo(){
         return $this->belongsTo('App\Models\OpdPatients','patients_id','id');
     }
+    public function getPatientsDetails(){
+        return $this->belongsTo('App\Models\OpdPatients','patients_id','id');
+    }
 }
