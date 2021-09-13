@@ -73,6 +73,9 @@
         width:  230px !important;
     }
     </style>
+    @php
+        $total = 0;
+    @endphp
     <table class="table m-b-0 table-hover referene-doctor-list" id="reference-report-table" cellspacing="0">
         <thead>
             <tr>
@@ -99,6 +102,9 @@
                     <th colspan="12" class="sub-heading">{{$key}}</th>
                 </tr>
                 @foreach($row as $item)
+                @php
+                    $total = $total + $item->amount;
+                @endphp
                     <tr>
                         <td class="data-font seperator">{{($i++).'.'}}</td>
                         <td class="data-font seperator">{{\Carbon\Carbon::parse($item->date)->format('d-m-Y')}}</td>
@@ -109,6 +115,12 @@
                 @endforeach
             @empty
                 <td colspan="4" class="text-center">No records available</td>
+                <tr>
+                    <td colspan=""></td>
+                    <td class="font-bold">Total : </td>
+                    <td class="font-bold">{{$total}}</td>
+                    <td colspan="2"></td>
+                </tr>
             @endforelse
         </tbody>
     </table>

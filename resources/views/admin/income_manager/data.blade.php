@@ -1,3 +1,6 @@
+@php
+    $total = 0;
+@endphp
 <table class="table m-b-0 table-hover" id="income-table">
     <thead>
         <tr>
@@ -14,6 +17,9 @@
     </thead>
     <tbody>
         @forelse($income as $row)
+        @php
+            $total = $total + $row->amount;
+        @endphp
             <tr data-id="{{encrypt($row->id)}}">
                 <td>{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
                 <td>{{$row->amount}}</td>
@@ -34,6 +40,12 @@
         @empty
             <td colspan='8' class="text-center">No records available</td>
         @endforelse
+        <tr>
+            <td colspan=""></td>
+            <td class="font-bold">Total : </td>
+            <td class="font-bold">{{$total}}</td>
+            <td colspan="6"></td>
+        </tr>
     </tbody>
 </table>
 <ul class="pagination pagination-primary m-b-0 deletebutton">{{$income->links()}}
