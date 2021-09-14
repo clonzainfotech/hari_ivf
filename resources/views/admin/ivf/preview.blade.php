@@ -2947,32 +2947,32 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     }
                                 @endphp
                                 @if($row->visit == 2)
-                                @php
-                                    $ivfExtraVisit = IvfExtraVisit::where('patient_id',$row->patients_id)->where('created_at','<',$row->created_at)->orderBy('id','ASC')->get();
-                                @endphp
-                                @if(!empty($ivfExtraVisit))
-                                        @foreach($ivfExtraVisit as $ivfExtra)
-                                        <tr >
-                                            <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
-                                            @if(!isset($pt_view) || $pt_view != 1)
+                                    @php
+                                        $ivfExtraVisit = IvfExtraVisit::where('patient_id',$row->patients_id)->whereCycleNo($row->cycle_no)->where('plan',$row->plan)->where('created_at','<',$row->created_at)->orderBy('id','ASC')->get();
+                                    @endphp
+                                    @if(!empty($ivfExtraVisit))
+                                            @foreach($ivfExtraVisit as $ivfExtra)
+                                            <tr >
+                                                <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                                @if(!isset($pt_view) || $pt_view != 1)
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                @endif
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            @endif
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>{{'Extra Visit'}}</td>
-                                        </tr>
-                                        @endforeach
+                                                <td>{{'Extra Visit'}}</td>
+                                            </tr>
+                                            @endforeach
+                                    @endif
                                 @endif
-                            @endif
                                 {{-- <div> --}}
                                     @if($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no')
                                         @php
@@ -3114,6 +3114,34 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 @endif
                                             @endif
                                         {{-- @endif --}}
+                                    @endif
+                                    @php
+                                        $ivfExtraVisit = IvfExtraVisit::where('patient_id',$row->patients_id)->whereCycleNo($row->cycle_no)->where('plan',$row->plan)->where('created_at','>',$row->created_at)->orderBy('id','ASC')->get();
+                                    @endphp
+                                    @if(!empty($ivfExtraVisit))
+                                            @foreach($ivfExtraVisit as $ivfExtra)
+                                            <tr >
+                                                <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{'Extra Visit'}}</td>
+                                                <td>
+                                                    <a href="{{URL::to('ivf/extra-visit/'.encrypt($patient_id).'/'.encrypt($cycleNumber).'/'.encrypt($pStatus))}}" class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
+                                                        <i class="zmdi zmdi-edit material-icons"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
                                     @endif
                                 {{-- </div> --}}
                             @endforeach
