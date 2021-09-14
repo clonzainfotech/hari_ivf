@@ -185,7 +185,7 @@
                 </div>
           </div>
         </div>
-        <div class="container" style="padding: 17px;">
+        <div class="container" style="padding: 10px;">
             <div class="copyright">
                   <p>{{$footer_2}}</p>
                     @if(!empty($hospitalAddress) && count($hospitalAddress) > 0	)
