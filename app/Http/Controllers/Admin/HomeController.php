@@ -488,7 +488,6 @@ class HomeController extends AdminController
                 $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
                 $h_o = !empty($ancHistory->h_o) ? json_decode($ancHistory->h_o) : null;
                 $o_e = !empty($ancHistory->o_e) ? json_decode($ancHistory->o_e) : null;
-                $preg_week = !empty($h_o->ho_details) ? $h_o->ho_details : '';
                 $remark = !empty($o_e->remark) ? $o_e->remark : null;
                 $ancCreatedDate = $ancHistory->created_at;
             }
@@ -503,7 +502,6 @@ class HomeController extends AdminController
                     $current_anc_id = $ancFirst->id;
                     $ancFirstH_o = !empty($ancFirst->h_o) ? json_decode($ancFirst->h_o) : null;
                     $ancFirstO_e = !empty($ancFirst->o_e) ? json_decode($ancFirst->o_e) : null;
-                    $preg_week = !empty($ancFirstH_o->ho_details) ? $ancFirstH_o->ho_details : '';
                     $remark = !empty($ancFirstO_e->remark) ? $ancFirstO_e->remark : null;
                     $ancCreatedDate = $ancFirst->created_at;
                 }
@@ -516,6 +514,7 @@ class HomeController extends AdminController
                 $diffDays = Carbon::parse($oldDate)->diffInDays($nowDate);
                 $totalDays = $diffDays;
                 $hoDate = (int)($totalDays/$days).'-'.$totalDays % $days; 
+                $preg_week =  Carbon::parse($lmp)->diffInWeeks($nowDate);
             }
             if($hoDate){
                 $hoDate = explode('-',$hoDate);
@@ -575,7 +574,7 @@ class HomeController extends AdminController
             $data = '<p><span class="font-bold candor-color">LMP Date : </span>'.(!empty($lmp) ? \Carbon\Carbon::parse($lmp)->format('d M Y') : '-').'</p>
                     <p><span class="font-bold candor-color">H/O : </span>'.(!empty($hoDate) ? $hoDate : '').'</p>
                     <p><span class="font-bold candor-color">EDD Date : </span>'.(!empty($eddDate) ? \Carbon\Carbon::parse($eddDate)->format('d M Y') : '-').'</p>
-                    <p><span class="font-bold candor-color">Preg. Week : </span>'.$preg_week.'</p>
+                    <p><span class="font-bold candor-color">Preg. Week : </span>'.(!empty($preg_week) ? $preg_week.' week' : '-').'</p>
                     <p><span class="font-bold candor-color">Remark : </span>'.$html.'</p>
                     <p><span class="font-bold candor-color">Last Remark : </span>'.$remark.'</p>
                     <p><span class="font-bold candor-color">Ref. By : </span>'.$opdPatient->getReferenceDoctor['name'].'</p>';
