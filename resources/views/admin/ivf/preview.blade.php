@@ -3135,11 +3135,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 <td></td>
                                                 <td></td>
                                                 <td>{{'Extra Visit'}}</td>
-                                                <td>
-                                                    <a href="{{URL::to('ivf/extra-visit/'.encrypt($patient_id).'/'.encrypt($cycleNumber).'/'.encrypt($pStatus))}}" class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
-                                                        <i class="zmdi zmdi-edit material-icons"></i>
-                                                    </a>
-                                                </td>
+                                                
                                             </tr>
                                             @endforeach
                                     @endif
