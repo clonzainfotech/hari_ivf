@@ -228,6 +228,7 @@
         @if($cycle_no>0 && $pStatus == 1)
         @php
              $lastCycleData = json_decode($cycle[count($cycle)-1]['description']);
+             $lastCycle = $cycle[count($cycle)-1];
         @endphp
             @foreach($cycle as $row)
                 <div class="card d-none {{'visit-card-'.$row->id}}">
@@ -377,34 +378,7 @@
                                                     @endforeach
                                             @endif
                                         @endif
-                                        @php
-                                            $ivfExtraVisit = IvfExtraVisit::where('patient_id',$row->patients_id)->whereCycleNo($cycleNumber)->where('plan',$pStatus)->where('created_at','>',$row->created_at)->orderBy('id','ASC')->get();
-                                        @endphp
-                                        @if(!empty($ivfExtraVisit))
-                                                @foreach($ivfExtraVisit as $ivfExtra)
-                                                <tr >
-                                                    <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>{{'Extra Visit'}}</td>
-                                                    <td>
-                                                        <a href="{{URL::to('ivf/extra-visit/'.encrypt($patient_id).'/'.encrypt($cycleNumber).'/'.encrypt($pStatus))}}" class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
-                                                            <i class="zmdi zmdi-edit material-icons"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                        @endif
+                                        
                                         {{-- <div> --}}
                                             @if($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no')
                                                 @php
@@ -559,6 +533,34 @@
                                             @endif
                                         {{-- </div> --}}
                                     @endforeach
+                                    @php
+                                            $ivfExtraVisit = IvfExtraVisit::where('patient_id',$lastCycle->patients_id)->whereCycleNo($cycleNumber)->where('plan',$pStatus)->where('created_at','>',$lastCycle->created_at)->orderBy('id','ASC')->get();
+                                        @endphp
+                                        @if(!empty($ivfExtraVisit))
+                                                @foreach($ivfExtraVisit as $ivfExtra)
+                                                <tr >
+                                                    <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>{{'Extra Visit'}}</td>
+                                                    <td>
+                                                        <a href="{{URL::to('ivf/extra-visit/'.encrypt($lastCycle->patients_id).'/'.encrypt($cycleNumber).'/'.encrypt($pStatus))}}" class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($lastCycle->id)}}">
+                                                            <i class="zmdi zmdi-edit material-icons"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                        @endif
                                     @php
                                         
                                         $nextVisitNo = count($cycle) + 2;

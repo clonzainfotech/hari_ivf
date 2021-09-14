@@ -3074,6 +3074,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                             $lastS_day = $row->s_day;
                                                         @endphp
                                                     @endforeach
+                                                   
                                                 @else
                                                 <tr>
                                                     <td>{{!empty($datarow->created_at) ? \Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y'):''}}</td>
@@ -3113,34 +3114,36 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 </tr>
                                                 @endif
                                             @endif
+                                            
                                         {{-- @endif --}}
                                     @endif
-                                    @php
-                                        $ivfExtraVisit = IvfExtraVisit::where('patient_id',$row->patients_id)->whereCycleNo($row->cycle_no)->where('plan',$row->plan)->where('created_at','>',$row->created_at)->orderBy('id','ASC')->get();
-                                    @endphp
-                                    @if(!empty($ivfExtraVisit))
-                                            @foreach($ivfExtraVisit as $ivfExtra)
-                                            <tr >
-                                                <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>{{'Extra Visit'}}</td>
-                                                
-                                            </tr>
-                                            @endforeach
-                                    @endif
+                                    
                                 {{-- </div> --}}
                             @endforeach
+                            @php
+                                $ivfExtraVisit = IvfExtraVisit::where('patient_id',$lastHistory->patients_id)->whereCycleNo($lastHistory->cycle_no)->where('plan',$lastHistory->plan)->where('created_at','>',$datarow->created_at)->orderBy('id','ASC')->get();
+                            @endphp
+                            @if(!empty($ivfExtraVisit))
+                                    @foreach($ivfExtraVisit as $ivfExtra)
+                                    <tr >
+                                        <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{'Extra Visit'}}</td>
+                                        
+                                    </tr>
+                                    @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
