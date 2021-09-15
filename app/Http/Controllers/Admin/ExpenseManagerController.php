@@ -17,7 +17,7 @@ class ExpenseManagerController extends AdminController
 {
 
     /**
-    * Return to expense manager index page 
+    * Return to expense manager index page
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
@@ -84,7 +84,7 @@ class ExpenseManagerController extends AdminController
     }
 
     /**
-    * Store expence manager 
+    * Store expence manager
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
@@ -104,7 +104,8 @@ class ExpenseManagerController extends AdminController
                     ->withErrors($valid->errors())
                     ->withInput();
             }
-            $expense->date = Carbon::parse($request->date)->format('Y-m-d');
+            $exdate = Carbon::parse($request->date)->format('Y-m-d');
+            $expense->date = $exdate;
             $expense->amount = $request->amount;
             $expense->payment_method = $request->payment_method;
             $expense->given_for = $request->given_for;
@@ -112,6 +113,9 @@ class ExpenseManagerController extends AdminController
             $expense->expense_category = $request->expensecategory;
             $expense->created_by = \Auth()->user()->id;
             $expense->save();
+
+            $data = [$exdate,$request->expensecategory,$request->amount,$request->payment_method,$request->given_for,$request->note,\Auth()->user()->id];
+            $this->addGoogleSheet($data);
 
             DB::commit();
             return redirect('expense-manager');
@@ -122,7 +126,7 @@ class ExpenseManagerController extends AdminController
     }
 
     /**
-    * Return on edit blade 
+    * Return on edit blade
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
@@ -146,7 +150,7 @@ class ExpenseManagerController extends AdminController
     }
 
     /**
-    * Update expence manager 
+    * Update expence manager
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
@@ -182,7 +186,7 @@ class ExpenseManagerController extends AdminController
     }
 
     /**
-    * Delete expence manager 
+    * Delete expence manager
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */

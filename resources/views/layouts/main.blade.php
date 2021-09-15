@@ -26,7 +26,7 @@ $water_mark = isset($systemSetting->water_mark) && !empty($systemSetting->water_
     @if (isset($htmlFavicon) && !empty($htmlFavicon))
         <link rel="icon" href="{{URL::to('assets/' . $htmlFavicon)}}" type="image/x-icon"> <!-- Favicon-->
     @endif
-
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <style>
         .theme-cyan .btn-primary, .w_calender .data, .dashboard-sms, .progress .progress-bar, .w_calender span+span, .dtp table.dtp-picker-days tr > td > a.selected, .dtp .p10 > a, .dtp .dtp-content .dtp-buttons button, .dtp div.dtp-date, .dtp div.dtp-time, .dtp > .dtp-content > .dtp-date-view > header.dtp-header, .btn-primary, .candor-bg-color,.pagination .page-item.active>.page-link, .pagination .page-item.active>.page-link:focus, .pagination .page-item.active>.page-link:hover{
             background-color:{{$primary}} !important;

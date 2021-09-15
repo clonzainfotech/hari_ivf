@@ -10,6 +10,7 @@ use Pusher\Pusher;
 // use Twilio\Rest\Client;
 use Carbon\Carbon;
 use Exception;
+use Revolution\Google\Sheets\Facades\Sheets;
 use View;
 use Auth;
 use Log;
@@ -470,5 +471,11 @@ class AdminController extends BaseController
             return $arr[0];
         }
         return '';
+      }
+
+      public function addGoogleSheet($data) {
+          Sheets::spreadsheet('1--KyhVNaT60VIALVRC8tIeIZ_EweqYR6P1ESy3NSVEQ')
+              ->sheet('DataSheet')
+              ->append([$data]);
       }
 }

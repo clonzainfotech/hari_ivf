@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Log;
 
-class Uploadbackup extends Command
+class UploadBackup extends Command
 {
     /**
      * The name and signature of the console command.

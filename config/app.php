@@ -57,7 +57,7 @@ return [
     'asset_url' => env('ASSET_URL', 'https://app.candorivf.com/'),
 
 
-    'collection_password' => env('COLLECTION_PASSWORD'),
+    'collection_password' => env('COLLECTION_PASSWORD', 'Jaydev@4838'),
 
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +75,6 @@ return [
     // twilio
     'TWILIO_ACCOUNT_SID'=>"ACb9ed21c22eeac6dbde553b98680fa9e3",
     'TWILIO_AUTH_TOKEN'=>"e38c7727d15e3535179475562fe17dd3",
-
     'WASSENGER_TOKEN'=>"63308ad48c244bea4864f4ec2ded350ffbcb4f5d8bd6648ca63dd1ecb2173ba7c741b12b3dcc4869",
 
     /*
