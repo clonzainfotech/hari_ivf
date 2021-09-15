@@ -394,7 +394,7 @@
                 @else
                     <div class="row">
                         <div class="seperator">
-                            Yalk Sac :
+                            Yolk Sac :
                         </div>
                         <span class="seperator">
                             {{  !empty($value->yalk_sac) ? $value->yalk_sac : null}}
@@ -1571,7 +1571,7 @@
                         <div class="row">
                             @if(!empty($value->yalk_sac))
                                 <div class="seperator">
-                                    <span class="anc-label "> Yalk Sac : </span>
+                                    <span class="anc-label "> Yolk Sac : </span>
                                     {{$value->yalk_sac}}
                                 </div>
                             @endif

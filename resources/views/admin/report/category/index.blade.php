@@ -14,7 +14,7 @@
         <div class="col-md-12">
             <div class="card patients-list">
                 <div class="header">
-                    <h2><strong>Category Reoport</strong></h2>
+                    <h2><strong>Category Report</strong></h2>
                     <ul class="header-dropdown">
                         <li>
                             <a href="javascript:void(0);">

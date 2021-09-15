@@ -555,7 +555,32 @@
                 </div>
             </div>
         </div>
-
+            
+        </div>
+        <div class="modal fade preview-file-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header header-bottom-border">
+    
+                    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="modal-title" id="myModalLabel"></h5>
+                            </div>
+                        </div>
+                        <button type="button" class="close preview-close mb-2" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="visit-details-data">
+                        </div>
+                    </div>
+    
+                    <div class="modal-footer footer-top-border text-right d-inline-block">
+                        <button type="button" class="btn btn-primary waves-effect" data-dismiss="modal">CLOSE</button>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     @stop
 @stop
@@ -1273,6 +1298,174 @@
 
             });
         }
+        // $(document).ready(function () {
+            $(document).on('click','.appoitment_content',function(){
+                // $('appointment_dropdown_content').css('display','none');
+                $('.appointment_dropdown_content').slideUp('medium');
+                var patient_id = $(this).data('ptid');
+                var appoitmentDate = $(this).data('date');
+                var appendClass = $(this).data('class');
+                var category = $(this).data('category');
+                if($(this).hasClass('dropdown-open'))
+                {
+                    $('.'+appendClass).slideUp('medium');
+                    $(this).removeClass('dropdown-open');
+                }
+                else{
+                    $(this).addClass('dropdown-open');
+                    $.ajax({
+                    url: "{{URL::to('get-appointment-popup-Detail')}}?patients_id="+patient_id+"&appoitmentDate="+appoitmentDate+"&category="+category,
+                    dataType: 'json',
+                    }).done(function(data) {
+                        $('.'+appendClass).html(data.data);
+                        
+                        // $(data.data).insertAfter($(this));
+                        // function () {
+                        $('.'+appendClass).slideDown('medium');
+                        // }, 
+                        // function () {
+                        //     $('ul.file_menu').slideUp('medium');
+                        // }
+                        
+                    }).fail(function() {
 
+                    })
+                }
+                
+                });
+           
+        // });
+            $(document).on("click", function(event){
+                var $trigger = $(".patient_dropdown");
+                if($trigger !== event.target && !$trigger.has(event.target).length){
+                    $(".appointment_dropdown_content").slideUp("fast");
+                }            
+            });
+            $(document).on('click','.preview-close',function(){
+                $('.visit-details-data').html('');
+                $('.preview-file-modal').modal('hide');
+                location.reload();
+            })
+            $(document).on('click','.preview-file',function(e){
+                e.preventDefault();
+                var category = $(this).data('category');
+                var patientsId = $(this).data('patient');
+                var appointmentDate = $(this).data('date');
+                $('.preview-file-modal').modal('hide');
+                    $('.visit-details-data').html('');
+                    $('.preview-file-modal').modal('show');
+                if(category == 5 || category == 6 || category == 10 || category == 13)
+                {
+                    var anc_id = $(this).data('id');
+                    
+                    var ancQstring = 'patient_id='+patientsId+'&anc_id='+anc_id+'&is_appointmentView=1'+'&appointmentDate='+appointmentDate;
+                    getANCHistoryData(ancQstring);
+                }
+                if(category == 3 || category == 4)
+                {
+                    var cycleNo = $(this).data('cycleno');
+                    var iuiString = 'patient_id='+patientsId+'&appointment_date='+appointmentDate+'&is_appointmentView=1&cycle_no='+cycleNo;
+                    getIuiHistoryData(iuiString);
+                }
+                if(category == 1 || category == 2)
+                {
+                    var extraVisit = $(this).data('extravisit');
+                    var ivfCycleNo = $(this).data('cycleno');
+                    var ivfPlan = $(this).data('plan');
+                    // ivfVisit = $('.next-appointment-details').data('visit');
+                    var ivfString = 'patient_id='+patientsId+'&cycle_no='+ivfCycleNo+'&plan='+ivfPlan+'&visitDate='+appointmentDate+'&is_appointmentView=1&extraVisit='+extraVisit;
+                    // ivfString = 'patient_id='+ivfPId+'&cycle_no='+ivfCycleNo+'&plan='+ivfPlan+'&visit='+ivfVisit+'&is_print=1';
+                    getIvfHistoryData(ivfString);
+                }
+            });
+            function getANCHistoryData(ancQstring)
+            {
+                $.ajax({
+                    url:'{{URL::to("get-anc-details")}}?'+ancQstring,
+                    type:'GET',
+                    dataType:'json'
+                }).done(function(data){
+                    if(data.anc_type == 1){
+                        var ancPreview = $('.visit-details-data').html();
+                        var buttonHtml = '';
+                        var previewData = '';
+                        for(i=0; i<data.data.length;i++)
+                        {
+                            if(typeof data.date[i] != 'undefined'){
+                                var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
+                                var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
+                            }
+                            
+                            ancPreview = buttonHtml + data.data[i];
+                            $('.visit-details-data').html(ancPreview);
+                            ancPreview = ancPreview + '<div class="row sepreator"></div>';
+                        }
+                    }
+                    if(data.anc_type == 2){
+                        w = window.open(window.location.href, "_blank");
+                        w.document.open();
+                        w.document.write(data.data);
+                        w.document.close();
+                        w.window.print();
+                    }
+                }).fail(function(error){
+
+                });
+            }
+            function getIvfHistoryData(ivfString){
+                $.ajax({
+                    url:'{{URL::to("get-ivf-details")}}?'+ivfString,
+                    type:'GET',
+                    dataType:'json'
+                }).done(function(data){
+                    if(data.ivf_type == 1){
+                        $('.visit-details-data').html('');
+                        var ivfPreview = $('.visit-details-data').html();
+                        var buttonHtml = '';
+                        var previewData = '';
+                        
+                        $('.ivf-appointment-plan').html(data.plan);
+                        $('.ivf-appointment-cycle-no').html(data.cycle);
+                        for(i=0; i<data.data.length;i++)
+                        {
+                            if(typeof data.date[i] != 'undefined'){
+                                var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
+                                var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
+                            }
+                            ivfPreview = buttonHtml + data.data[i];
+                            ivfPreview = ivfPreview + '<div class="row sepreator"></div>';
+                        }
+                        $('.visit-details-data').html(ivfPreview);
+                    }
+                }).fail(function(error){
+
+                });
+            }
+            function getIuiHistoryData(iuiString){
+            
+            $.ajax({
+                url:'{{URL::to("get-iui-details")}}?'+iuiString,
+                type:'GET',
+                dataType:'json'
+            }).done(function(data){
+                if(data.iui_type == 1){
+                    
+                    var buttonHtml = '';
+                    var previewData = '';
+                    $('.visit-details-data').empty();
+                    var iuiPreview = $('.visit-details-data').html();
+
+                    for(i=0; i<data.data.length;i++)
+                    {
+                        // iuiPreview .= data.data[i];
+                        iuiPreview = iuiPreview + data.data[i] + '<div class="row sepreator"></div>';
+                    }
+                    $('.visit-details-data').html(iuiPreview);
+
+                }
+            }).fail(function(error){
+
+            });
+        }
     </script>
 @stop

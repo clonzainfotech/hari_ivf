@@ -2,14 +2,12 @@
     <thead>
         <tr>             
             <th>Sr.No</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Seen By</th>
+            <th>Date/Time</th>
             <th>Arrival Time</th>
+            <th>Name</th>
+            <th>Mob. No/Code</th>
+            <th>Seen By</th>
             <th>Category</th>
-            <th>Mobile Number</th>
             <th>Remark</th>
             <th>Action</th>
             
@@ -99,10 +97,13 @@
                 @endphp
             @endif
             @php
+                $name = ucwords(strtolower($row->getPatientsDetails['name']));
+                $catname = $row->categoryDetails['name'];
                 $paymentUrl = url('ivf/payments/'.encrypt($row->patients_id));
+                $uniqId = (($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration;
             @endphp
             <tr data-id="{{encrypt($row->getPatientsDetails['id'])}}" data-type="{{$type}}" data-catname="{{$cName}}"
-                class="anc-iui-ivf-edit appointmentdata
+                class="appointment_dropdown anc-iui-ivf-edit appointmentdata
                     @if($categoryId != '4' && $categoryId != '3' && $categoryId != '1' && $categoryId != '2' && $categoryId != '17')
                         {{$row->getPatientsDetails->getAnc &&  $row->is_new_anc == 0  ? 'old-anc' : 'new-anc'}}
                     @endif
@@ -120,14 +121,18 @@
                     @endif
                     {{$isDone}} " data-apid="{{encrypt($row->id)}}">
                 <td> {{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td>{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
-                <td>{{\Carbon\Carbon::parse($row->time)->format('h:i a')}}</td>
-                <td>{{$row->getPatientsDetails['code']}}</td>
-                <td>{{ucwords(strtolower($row->getPatientsDetails['name']))}}</td>
-                <td>{{$row->getSeenBy['name']}}</td>
+                <td class="line-height">{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}<br>{{\Carbon\Carbon::parse($row->time)->format('h:i a')}}</td>
                 <td>{{$row->arrival_time}}</td>
+                <td class="patient_dropdown ">{{ucwords(strtolower($row->getPatientsDetails['name']))}}&nbsp;
+                    @if(in_array($row->categoryDetails['id'],[1,2,3,4,5,6,10,13]))
+                        <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
+                        <div class="{{'appointment_dropdown_content appointment_dropdown_content_'.$uniqId}}">
+                        </div>
+                    @endif
+                </td>
+                <td class="line-height">{{$row->getPatientsDetails['mobile_number']}}<br>{{$row->getPatientsDetails['code']}}</td>
+                <td>{{$row->getSeenBy['name']}}</td>
                 <td>{{$row->categoryDetails['name']}}</td>
-                <td>{{$row->getPatientsDetails['mobile_number']}}</td>
                <!--  <td>
                     {{$categoryName}} 
                 </td> -->
@@ -145,12 +150,18 @@
                         @endif
                     </div>
                 </td>
-
+                <td>
                 @if($row->categoryDetails['id'] == 1 || $row->categoryDetails['id'] == 2)
-                <td><a href="{{$paymentUrl}}" class="btn btn-primary btn-sm ivf-payment-font"> IVF Payment</a></td>
-                @else
-                <td></td>
+                <a href="{{$paymentUrl}}" class="btn btn-primary btn-sm ivf-payment-font"> IVF Payment</a>
                 @endif
+                @if($patient_notification['name'] == $name)
+                    <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
+                @else
+                    @if($row->arrival_time)
+                        <button class="btn btn-danger btn-sm notify-patient" value="fgdg"  onclick="callPatient('{{$name}}','{{$cName}}',this)">Call Patient</button>
+                    @endif
+                @endif
+                </td>
             </tr>
         @empty
             <td colspan='9' class="text-center">No records available</td>

@@ -21,10 +21,11 @@
             <div class="body medicine-body-padding">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <h5>Medicines Settings</h5>
                         </div>
-                        <div class="col-md-9" style="text-align: right">
+                        
+                        <div class="col-md-7 text-right">
                             <a href="{{URL::to('medicines-mapping/'.encrypt(1))}}">
                                 <button class="btn btn-primary print-sms-report">
                                     CO
@@ -42,50 +43,27 @@
                 </div>
             </div>
         </div>
-        <div class="medicines-data w-100"></div>
-            {{-- <div class="card">
+        <div class="w-100"></div>
+            <div class="card">
                 <div class="header">
-                    <h2><strong>Medicine</strong></h2>
-                    <ul class="header-dropdown">
-                        <li>
-                            <a href="{{URL::to('medicines-setting/create')}}">
-                                <button class="btn btn-primary print-sms-report">
-                                    Add
-                                </button>
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="col-md-3 text-right">
+                        <ul class="nav nav-tabs padding-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control search-medicine" placeholder="Search..." readonly="readonly" onfocus="this.removeAttribute('readonly')">
+                                <span class="input-group-addon search-border">
+                                    <i class="zmdi zmdi-search"></i>
+                                </span>
+                            </div>
+                        </ul>
+                    </div>
                 </div>
                 <div class="body">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control search-medicine" placeholder="Search...">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
-                            </div>
-                        </div>    
-                    </div>
                     <div class="tab-content m-t-10">
-                    @if(Session::has('msg'))
-                        <div class="alert alert-danger">
-                            <strong>Success!</strong> {{Session::get('msg')}}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">
-                                    <i class="zmdi zmdi-close"></i>
-                                </span>
-                            </button>
-                        </div>
-                    @endif
+                    
                         <div class="medicines-data"></div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
     </div>
     @section('modal')
         <div class="modal fade" id="medicine-modal" tabindex="-1" role="dialog">

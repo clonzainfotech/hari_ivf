@@ -10,8 +10,18 @@
     <div class="row clearfix">
         <div class="col-md-12 p-0">
             <div class="card patients-list">
-                <div class="header">
-                    <h2><strong class="text-secondary">{{ucwords($patient->name)}}</strong></h2>
+                <div class="header d-flex">
+                    <div class="col-md-6 col-sm-6">
+                        <h2><strong class="text-secondary">{{ucwords($patient->name)}}</strong></h2>
+                    </div>
+                    <div class="col-md-6 col-sm-6 ">
+                        @if($isIvfHistory)
+                            <a href="{{URL::to('ivf/history/'.encrypt($patient->id))}}" target="_blank" class="btn btn-primary pull-right">IVF History</a>
+                        @endif
+                        @if($isAncHistory)
+                            <a href="{{URL::to('anc/history/'.encrypt($patient->id))}}" target="_blank" class="btn btn-primary pull-right">ANC History</a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -949,7 +959,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-2">
                                                         <label class="vertical-form-label">
                                                             Past M/H :
                                                         </label>
@@ -997,7 +1007,7 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-md-12 text-center">
+                                                    <div class="col-md-12">
                                                         <div class="radio is-conceived">
                                                             {{Form::radio("mh[same_past]",'same','',['id'=>'same','class'=>'same'])}}
                                                             <label for="same">
@@ -1013,7 +1023,7 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-md-1 pr-0">
+                                                    <div class="col-md-2 pr-0">
                                                         <label class="vertical-form-label">
                                                             Present M/H:
                                                         </label>
@@ -1207,28 +1217,39 @@
                                         </div>
                                         <div id="oe_tab" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree_1">
                                             <div class="panel-body" id="parent">
-                                                <div class="row unmarried-data">
+                                                
+                                                <div class="row">
                                                     <div class="col-md-1 pr-0">
                                                         <label class="vertical-form-label pr-0">
-                                                            P/S :
+                                                            P/A :
                                                         </label>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="radio is-conceived">
-                                                            {{Form::radio("oe[p_s][type]",'yes','',['id'=>'ps_type_yes','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
-                                                            <label for="ps_type_yes">
+                                                            {{Form::radio("oe[p_a][type]",'yes','',['id'=>'pa_type_yes','class'=>'gynec-yes-no-status','data-type'=>'pa-details'])}}
+                                                            <label for="pa_type_yes">
                                                                 Yes
                                                             </label>
 
-                                                            {{Form::radio("oe[p_s][type]",'no',true,['id'=>'ps_type_no','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
-                                                            <label for="ps_type_no">
+                                                            {{Form::radio("oe[p_a][type]",'no',true,['id'=>'pa_type_no','class'=>'gynec-yes-no-status','data-type'=>'pa-details'])}}
+                                                            <label for="pa_type_no">
                                                                 No
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-5 ps-details d-none">
+                                                    <div class="col-md-3 pa-details d-none">
                                                         <div class="form-group">
-                                                            {{Form::text("oe[p_s][details]",'',['class'=>'form-control','placeholder'=>'Details'])}}
+                                                            {{Form::text("oe[p_a][details]",'',['class'=>'form-control','placeholder'=>'UT Details'])}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1 pr-0">
+                                                        <label class="vertical-form-label pr-0">
+                                                            Cervix :
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            {{Form::text("oe[cervix][details]",'',['class'=>'form-control','placeholder'=>'Cervix Details'])}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1251,48 +1272,39 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-5 ls-details d-none">
+                                                    <div class="col-md-3 ls-details d-none">
                                                         <div class="form-group">
                                                             {{Form::text("oe[l_s][details]",'',['class'=>'form-control','placeholder'=>'Details'])}}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row unmarried-data">
                                                     <div class="col-md-1 pr-0">
                                                         <label class="vertical-form-label pr-0">
-                                                            P/A :
+                                                            P/S :
                                                         </label>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="radio is-conceived">
-                                                            {{Form::radio("oe[p_a][type]",'yes','',['id'=>'pa_type_yes','class'=>'gynec-yes-no-status','data-type'=>'pa-details'])}}
-                                                            <label for="pa_type_yes">
+                                                            {{Form::radio("oe[p_s][type]",'yes','',['id'=>'ps_type_yes','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
+                                                            <label for="ps_type_yes">
                                                                 Yes
                                                             </label>
 
-                                                            {{Form::radio("oe[p_a][type]",'no',true,['id'=>'pa_type_no','class'=>'gynec-yes-no-status','data-type'=>'pa-details'])}}
-                                                            <label for="pa_type_no">
+                                                            {{Form::radio("oe[p_s][type]",'no',true,['id'=>'ps_type_no','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
+                                                            <label for="ps_type_no">
                                                                 No
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-5 pa-details d-none">
+                                                    <div class="col-md-3 ps-details d-none">
                                                         <div class="form-group">
-                                                            {{Form::text("oe[p_a][details]",'',['class'=>'form-control','placeholder'=>'UT Details'])}}
+                                                            {{Form::text("oe[p_s][details]",'',['class'=>'form-control','placeholder'=>'Details'])}}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-1 pr-0">
-                                                        <label class="vertical-form-label pr-0">
-                                                            Cervix :
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <div class="form-group">
-                                                            {{Form::text("oe[cervix][details]",'',['class'=>'form-control','placeholder'=>'Cervix Details'])}}
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-1 pr-0">
@@ -1310,6 +1322,33 @@
                                                             <label for="tvs_type_no">
                                                                 No
                                                             </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1 pr-0">
+                                                        <label class="vertical-form-label pr-0">
+                                                            Breast :
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="radio is-conceived">
+                                                            {{Form::radio("oe[breast][type]",'yes','',['id'=>'breast_type_yes','class'=>'gynec-yes-no-status','data-type'=>'breast-details'])}}
+                                                            <label for="breast_type_yes">
+                                                                Yes
+                                                            </label>
+                                                            {{Form::radio("oe[breast][type]",'no',true,['id'=>'breast_type_no','class'=>'gynec-yes-no-status','data-type'=>'breast-details'])}}
+                                                            <label for="breast_type_no">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3 breast-details d-none">
+                                                        <div class="form-group">
+                                                            {{Form::text("oe[breast][right]",'',['class'=>'form-control','placeholder'=>'Right'])}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3 breast-details d-none">
+                                                        <div class="form-group">
+                                                            {{Form::text("oe[breast][left]",'',['class'=>'form-control','placeholder'=>'Left'])}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1590,7 +1629,7 @@
                                                 </div>
                                                 {{-- begin Hystroscopy --}}
                                                 <div class="row">
-                                                    <div class="col-md-1 pr-0">
+                                                    <div class="col-md-2 pr-0">
                                                         <label class="vertical-form-label pr-0">
                                                             Hystroscopy :
                                                         </label>
@@ -1652,7 +1691,7 @@
 
                                             {{-- begin laproscopy  --}}
                                                 <div class="row">
-                                                    <div class="col-md-1 pr-0">
+                                                    <div class="col-md-2 pr-0">
                                                         <label class="vertical-form-label pr-0">
                                                             laproscopy :
                                                         </label>
@@ -2477,6 +2516,17 @@
                                                     <div class="col-md-4 denue-ns1-details d-none">
                                                         <div class="form-group">
                                                             {{Form::text("investigation[investigation_details][30]",'',['class'=>'form-control','placeholder'=>'Dengue NS1 Details'])}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mt-1">
+                                                    <div class="col-sm-5">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                Other Report : &nbsp;
+                                                            </span>
+                                                            {{Form::text("investigation[investigation_extra]",'',['class'=>'form-control'])}}
                                                         </div>
                                                     </div>
                                                 </div>

@@ -1308,6 +1308,9 @@ function childData(childNo){
             "<div class='col-md-2 expired-reason-"+i+" d-none'><div class='form-group'>"+
             '<input type="text" name="p_obstratics[child][child_data]['+i+'][expired_reason]" class="form-control" placeholder="Reason">'+
             "</div></div>"+
+            "<div class='col-md-2 expired-reason-"+i+" d-none'><div class='form-group'>"+
+            '<input type="text" name="p_obstratics[child][child_data]['+i+'][expired_year]" class="form-control" placeholder="Expired Year">'+
+            "</div></div>"+
             "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Live Health Year : &nbsp;</span>"+
             '<input type="text" name="p_obstratics[child][child_data]['+i+'][live_health_year]" class="form-control">'+
             "</div></div>"+
@@ -1318,6 +1321,7 @@ function childData(childNo){
             "<div class='col-md-4 child-naturally'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[child][child_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type p-ho-type" data-id="child-when-where-'+i+'">'+
+            '<option value="">Select Child status</option>'+
             '<option value="1">Naturally</option>'+
             '<option value="2">Medicine</option>'+
             '<option value="3">IUI</option>'+
@@ -1401,6 +1405,7 @@ function mtpData(mtpNo){
             "<div class='col-md-4 mtp-naturally'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[mtp][mtp_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type p-ho-type" data-id="mtp-when-where-'+i+'">'+
+            '<option value="">Select Child status</option>'+
             '<option value="1">Naturally</option>'+
             '<option value="2">Medicine</option>'+
             '<option value="3">IUI</option>'+
@@ -1482,6 +1487,7 @@ function secondMtpData(secondMtpNo){
             "<div class='col-md-4 second-mtp-naturally second-marriage-life-data'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[second_marriage][mtp][mtp_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type second-p-ho-type" data-id="second-mtp-when-where-'+i+'">'+
+            '<option value="">Select Child status</option>'+
             '<option value="1">Naturally</option>'+
             '<option value="2">Medicine</option>'+
             '<option value="3">IUI</option>'+
@@ -1558,6 +1564,7 @@ function abortionData(abortionNo){
             "<div class='col-md-4 abortion-naturally'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[abortion][abortion_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type p-ho-type" data-id="abortion-when-where-'+i+'">'+
+            '<option value="">Select Child status</option>'+
             '<option value="1">Naturally</option>'+
             '<option value="2">Medicine</option>'+
             '<option value="3">IUI</option>'+
@@ -1634,6 +1641,7 @@ function secondAbortionData(secondAbortionNo){
             "<div class='col-md-4 second-abortion-naturally second-marriage-life-data'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[second_marriage][abortion][abortion_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type second-p-ho-type" data-id="second-abortion-when-where-'+i+'">'+
+            '<option value="">Select Child Status</option>'+
             '<option value="1">Naturally</option>'+
             '<option value="2">Medicine</option>'+
             '<option value="3">IUI</option>'+
@@ -1703,6 +1711,9 @@ function secondChildData(childNo){
             "<div class='col-md-2 expired-reason-second"+i+" d-none'><div class='form-group'>"+
             '<input type="text" name="p_obstratics[second_marriage][child][child_data]['+i+'][expired_reason]" class="form-control" placeholder="Reason">'+
             "</div></div>"+
+            "<div class='col-md-2 expired-reason-second"+i+" d-none'><div class='form-group'>"+
+            '<input type="text" name="p_obstratics[second_marriage][child][child_data]['+i+'][expired_year]" class="form-control" placeholder="Expired Year">'+
+            "</div></div>"+
             "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Live Health Year : &nbsp;</span>"+
             '<input type="text" name="p_obstratics[second_marriage][child][child_data]['+i+'][live_health_year]" class="form-control">'+
             "</div></div>"+
@@ -1712,6 +1723,7 @@ function secondChildData(childNo){
             "<div class='col-md-4 second-child-naturally second-marriage-life-data'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[second_marriage][child][child_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type second-p-ho-type" data-id="second-child-when-where-'+i+'">'+
+            '<option value="">Select Child Status</option>'+
             '<option value="1">Naturally</option>'+
             '<option value="2">Medicine</option>'+
             '<option value="3">IUI</option>'+
@@ -1873,12 +1885,16 @@ function oeNumber(oeValue){
             "</div>"+
             "</div>"+
             "</div>"+
-            "<div class='row mb-2'>"+
-            "<div class='col-md-1 pr-0 extra-female-data-1 cervical-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Cervical length :</label></div>"+
-            "<div class='col-sm-2 extra-female-data-1 cervical-data-"+i+" d-none'>"+
-            "<input id='cervical_length_"+i+"' class='form-control expected_birth_weight' data-id='"+i+"' name='oe[utdata]["+i+"][cervical_length]' type='text' value=''>"+
-            "</div>"+
-            "<div class='col-md-2 pr-0 extra-female-data-1 expected-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Expected Birth Weight :</label></div>"+
+            "<div class='row mb-2'>";
+            if(i == 1)
+            {
+                oeValueData += "<div class='col-md-1 pr-0 extra-female-data-1 cervical-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Cervical length :</label></div>"+
+                "<div class='col-sm-2 extra-female-data-1 cervical-data-"+i+" d-none'>"+
+                "<input id='cervical_length_"+i+"' class='form-control expected_birth_weight' data-id='"+i+"' name='oe[utdata]["+i+"][cervical_length]' type='text' value=''>"+
+                "</div>";
+            }
+            
+            oeValueData += "<div class='col-md-2 pr-0 extra-female-data-1 expected-data-"+i+" d-none'><label class='vertical-form-label pr-0 green-lable'>Expected Birth Weight :</label></div>"+
             "<div class='col-sm-2 extra-female-data-1 expected-data-"+i+" d-none'>"+
             "<input id='expected_birth_weight_"+i+"' class='form-control expected_birth_weight' data-id='"+i+"' name='oe[utdata]["+i+"][expected_birth_weight]' type='text' value=''>"+
             "</div>"+
@@ -1895,7 +1911,7 @@ function oeNumber(oeValue){
             "</div>";
         // }else{
         oeValueData += "<div class='row female-type-data-"+i+" yalk-sac-"+i+" gsac-data-"+i+"'>"+
-            "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yalk Sac :</label></div>"+
+            "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yolk Sac :</label></div>"+
             "<div class='col-md-3'><div class='radio is-conceived'>"+
             "<input type='radio' name='oe[utdata]["+i+"][yalk_sac]' value='present' id='present_"+i+"' class='yalk_sac'><label for='present_"+i+"'>Present</label>"+
             "<input type='radio' name='oe[utdata]["+i+"][yalk_sac]' value='absent' id='absent_"+i+"' class='yalk_sac'><label for='absent_"+i+"'>Absent</label>"+

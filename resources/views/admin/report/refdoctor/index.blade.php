@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="card patients-list">
                 <div class="header">
-                    <h2><strong>Reference Doctor Reoport</strong></h2>
+                    <h2><strong>Reference Doctor Report</strong></h2>
                     <ul class="header-dropdown">
                         <li>
                             <a href="javascript:void(0);">
@@ -51,7 +51,7 @@
                                     ])}}
                                 </div>
                                 <div class="col-md-2 col-sm-2">
-                                    {{Form::select('type',['1'=>'OPD','4'=>'Indoor'],'',['class'=>'form-control select-padding-0 report-type-doctor','placeholder'=>'Select Type'])}}
+                                    {{Form::select('type',['1'=>'OPD','4'=>'Indoor','5'=>'New Patients','6'=>'Old Patients'],'',['class'=>'form-control select-padding-0 report-type-doctor','placeholder'=>'Select Type'])}}
                                 </div>
                             </div>
                         </div>

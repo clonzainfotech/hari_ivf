@@ -18,6 +18,10 @@
     #consulation{
         display: block;
     }
+    .border-top-1
+    {
+        border-top: 1px solid black;
+    }
     
 </style>
 <div class="main-print-ivf-div">
@@ -676,7 +680,7 @@
 
             <div class="row mt-5 p-2">
                 <div class="col-md-9 p-name-text">
-                    I <b>{{$ivfPayment->patient_name}}</b>  And my husband<b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> Treatment of IVF test tube baby has been started at Radha Hospital.
+                    I <b>{{$ivfPayment->patient_name}}</b>  Andddd my husband<b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> Treatment of IVF test tube baby has been started at Radha Hospital.
                 </div>
                 <div class="col-md-3 p-name-text">
                     Date : <b>{{\Carbon\Carbon::parse($ivfPayment->date)->format('d-m-Y')}}</b>  
@@ -951,6 +955,13 @@
             <!-- </div> -->
                 
             </div>
+            <h5 class="row p-2">Net Amount :</h5>
+                <div class="row">
+                    <div class="col-md-12"><span>Package : {{$ivfPayment->package}}</span></div>
+                    <div class="col-md-12"><span>Discount : {{$ivfPayment->discount}}</span></div>
+                    <div class="col-md-3 border-top-1"><span><strong>Total Amount: {{$ivfPayment->package - $ivfPayment->discount}}</strong></span></div>
+                </div>
+                <br>
             <h5 class="row p-2">Notes :</h5>
             <div class="row p-2">
                The cost of placing the second embryo (if placed) is requered

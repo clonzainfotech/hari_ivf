@@ -57,7 +57,7 @@ class HormonController extends AdminController
                     });
                 }
                 if($request->is_print == 1){
-                    $hormon = $this->IndoorDeposit->where('charge_type', '!=', 4)->orderBy('id','DESC')->get();
+                    $hormon = $hormon->orderBy('id','DESC')->get();
                     $data['data'] = View::make('admin.appointment.hormon.preview',compact('hormon','chargeValue','patients'))->render();
                     $data['status'] = 2;
                     return response()->json($data);
@@ -69,6 +69,7 @@ class HormonController extends AdminController
             }
             return view('admin.appointment.hormon.index',compact('category','referenceDoctor', 'patients'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }
@@ -77,6 +78,7 @@ class HormonController extends AdminController
     public function create(){
         try{
             $category = $this->Category->whereStatus(1)->pluck('name','id');
+            $injection = $this->InjectionCharge->where('type',1)->pluck('name','id');
             $patient = $this->OpdPatients->where(function($query) {
                 $query->whereHas('getAppointments', function($query) {
                     $query->where([
@@ -86,7 +88,7 @@ class HormonController extends AdminController
             })
             ->pluck('name','id');
             $referenceDoctor = ['other' => 'Other'] + $this->ReferenceDoctor->pluck('name','id')->toArray();
-            return view('admin.appointment.hormon.create',compact('category','referenceDoctor', 'patient'));
+            return view('admin.appointment.hormon.create',compact('category','referenceDoctor', 'patient','injection'));
         }catch(Exception $e){
             abort(500);
         }
@@ -94,43 +96,9 @@ class HormonController extends AdminController
 
     // hormon, Indoor deposit and IVF payment data store
     public function store(Request $request){
-        // $rule = [
-        //     'hname' => 'required',
-        //     'htype' => 'required',
-        //     'hcharge' => 'required|numeric|digits_between:1,6',
-        // ];
-        // $messages = [
-        //     'hname.required' => 'The name field is required.',
-        //     'hname.min' => 'The name must be at least 2 characters.',
-        //     'hname.max' => 'The name may not be greater than 255 characters.',
-        //     'hname.regex' => 'The name format is invalid.',
-        //     'hcharge.required' => 'The charge field is required.',
-        //     'hcharge.numeric' => 'The charge field must be numeric.',
-        //     'hcharge.digits_between' => 'The charge field must be of between 1 to 6 digits.',
-        // ];
-        // if ($request->input('htype') == 1) {
-        //     $rule['hinjection'] = 'required';
-        //     $messages['hinjection.required'] = 'The injection field is required.';
-        // }
-        // if ($request->input('hreference_doctor_id') == 'other') {
-        //     $rule['doctor_name'] = 'required|regex:/(^[A-Za-z .]+$)+/|min:2|max:255';
-        //     $rule['doctor_mobile_number'] = 'required|numeric|digits:10|unique:reference_doctors,mobile_number';                
-        // }
-        
-        // $validator = Validator::make($request->all(),$rule, $messages);
-    
-        // if($validator->fails()){
-        //     return redirect()
-        //         ->back()
-        //         ->withInput()
-        //         ->withErrors($validator->errors());
-        // }
-
         try {
-            // $hormon = $this->IndoorDeposit->where('patient_id',$request->hname)->where('charge_type',$request->htype)->first();
-            // if($hormon == null){
+            $htypeData = ['1'=>'Hormon','2'=>'IVF','3'=>'IUI'];
             $hormon = $this->IndoorDeposit;        
-            // }
             if ($request->input('hreference_doctor_id') == 'other') {
                 $referenceDoctor = $this->ReferenceDoctor->where('mobile_number',$request->doctor_mobile_number)->first();
                 if($referenceDoctor == null){
@@ -149,13 +117,23 @@ class HormonController extends AdminController
             $hormon->remark = $request->remark;
 
             $lastTotal = $this->IndoorDeposit
+            ->whereChargeTypeAndPatientId($request->htype, $request->hname)
+            ->orderBy('id', 'DESC')
+            ->value('total');
+            //for Ivf package
+            $ivfPaymentData = $this->IvfPayment->wherePatientsId($hormon->patient_id)->where('is_completed',0)->orderBy('id','DESC')->first();
+            if ( $request->htype == 2 && $ivfPaymentData) {
+                $lastTotal = $this->IndoorDeposit
                 ->whereChargeTypeAndPatientId($request->htype, $request->hname)
+                ->whereCycleNo($ivfPaymentData->cycle_no)
                 ->orderBy('id', 'DESC')
                 ->value('total');
-
+            }
+           
             $hormon->total = ($lastTotal == null) ? $hormon->amount : ($lastTotal + $hormon->amount);
             $hormon->case_type = 'Credit';
             $hormon->payment_type = $request->payment_type;
+            $hormon->discount = $request->discount;
             $hormon->charge_type = $request->htype;
             $opdPatient = $this->OpdPatients->find($request->hname);
             $hormon->injection = null;
@@ -163,7 +141,22 @@ class HormonController extends AdminController
             $hormon->reference_doctor_id = $opdPatient->reference_doctor_id;
             if($hormon->charge_type == 1) {
                 $hormon->injection = $request->hinjection;
+                // $injection = $this->InjectionCharge->find($request->hinjection);
+                // $injection->quantity = ($injection->quantity - 1) >= 0 ? ($injection->quantity - 1) : 0;
+                // $injection->save();
+                $hormon->cycle_no = $request->cycle_no;
+
+                //Add record 
+                // $injManager = $this->InjectionManager;
+                // $injManager->patients_id = $request->hname;
+                // $injManager->cycle_no = $request->cycle_no;
+                // $injManager->type = 1;
+                // $injManager->injection = $injection->name;
+                // $injManager->net_price = $injection->net_price;
+                // $injManager->amount = $request->hcharge;
+                // $injManager->save();
             }
+            // dd($hormon);
             // if ($hormon->charge_type == 3) {
                 
             // }
@@ -176,36 +169,45 @@ class HormonController extends AdminController
             }
             $reference=$request->hreference_doctor_id;
             $hormon->created_at = Carbon::parse($request->date)->format('Y-m-d'.' '.date('H:i:s'));
-            $ivfPaymentData = $this->IvfPayment->wherePatientsId($hormon->patient_id)->where('visit',1)->where('is_completed',0)->orderBy('id','DESC')->first();
+            
             if ( $request->htype == 2) {
                 $hormon->package = (!empty($ivfPaymentData)) ? $ivfPaymentData->package : null;  
                 $hormon->cycle_no = (!empty($ivfPaymentData)) ? $ivfPaymentData->cycle_no : null;  
             }
             $hormon->save();
+            //update Notification
+            $ivfPaymentReminder = $this->IvfPaymentReminder->where('patients_id',$hormon->patient_id)->where('category',$htypeData[$request->htype])->whereDate('date',carbon::now()->format('Y-m-d'))->update(['status'=>1]);
+            
             if($ivfPaymentData && $request->htype == 2){
+                $ivfPaymentData->total_payment = $ivfPaymentData->total_payment + $request->hcharge;
                 $checkTotalAmount = $this->IvfPayment->wherePatientsId($hormon->patient_id)->whereCycleNo($ivfPaymentData->cycle_no)->sum('payment');
-
-                // print_r($checkTotalAmount);die();
-                $totalAmount = $checkTotalAmount + $request->hcharge;
+                $totalDeposite = $this->IndoorDeposit->wherePatientId($hormon->patient_id)->whereCycleNo($ivfPaymentData->cycle_no)->where('case_type','Credit')->sum('amount');
+                $totalAmount = $totalDeposite + $ivfPaymentData->discount + $request->discount;
                 $isCompleted = 0;
                 if($ivfPaymentData->package <= $totalAmount){
                     $isCompleted = 1;
                 }
-                
+                $ivfPaymentData->is_completed = $isCompleted;
+                $ivfPaymentData->save();
+            }
+            // Add ivf payment reminder
+            if(!empty($request->remaining_date) && !empty($request->next_payment_amt))
+            {
+                $ivfPaymentReminder = $this->IvfPaymentReminder;
+                $ivfPaymentReminder->patients_id = $hormon->patient_id;
+                $ivfPaymentReminder->date = carbon::parse($request->remaining_date)->format('Y-m-d');
+                $ivfPaymentReminder->payment = $request->next_payment_amt;
+                $ivfPaymentReminder->category = $htypeData[$request->htype];
+                $ivfPaymentReminder->status = 0;
+                $ivfPaymentReminder->save();
             }
             $hormon->valuinword = $this->getWordOfNumber($hormon->amount);
             $depositeWord = $hormon->valuinword;
             $patientname=$this->OpdPatients->where('id',$hormon->patient_id)->first();
-            // print_r($patientname);die();
             if($request->isprint){
-                // if($request->htype == 2 && !empty($ivfPaymentData)){
-                //     $status = 1;
-                //     $ivfPayment = $ivfPaymentData;
-                //     $data = View::make('admin.ivf.payment_preview', compact('ivfPayment'))->render();
-                // }else{
+               
                     $status = 1;
                     $data = View::make('admin.appointment.hormon.hormon_preview', compact('hormon','patientname','doctor','depositeWord'))->render();
-                // }
                 return response()->json([
                     'status' => $status,
                     'data' => $data
@@ -382,9 +384,9 @@ class HormonController extends AdminController
     * @param  \Illuminate\Http\Request $request
     * @return \Illuminate\Http\Response
     */
-    public function hormonChangeAmount(Request $request,$hormonId){
+    public function hormonChangeAmount(Request $request){
         try{
-            $hormonId = decrypt($hormonId);
+            $hormonId = decrypt($request->hormonId);
             $hormon = $this->IndoorDeposit->whereId($hormonId)->first();
             $patientsId = $hormon->patient_id;
             $chargeType = $hormon->charge_type;
@@ -425,8 +427,22 @@ class HormonController extends AdminController
                 $hormon->case_type = $type;
                 $hormon->save();
             }
+            $checkPatients = $this->IvfPaymentReminder->where('patients_id',$hormon->patient_id)->whereDate('date',date('Y-m-d',strtotime($hormon->created_at)))->orderBy('id','DESC')->where('status',0)->first();
+            if(!empty($request->next_payment) && !empty($request->next_payment_amt) && (empty($checkPatients) || carbon::parse($request->next_payment)->format('Y-m-d') != $checkPatients->date))
+            {
+                $htypeData = ['1'=>'Hormon','2'=>'IVF','3'=>'IUI'];
+                $ivfPaymentReminder = $this->IvfPaymentReminder;
+                $ivfPaymentReminder->patients_id = $hormon->patient_id;
+                $ivfPaymentReminder->date = carbon::parse($request->next_payment)->format('Y-m-d');
+                $ivfPaymentReminder->payment = $request->next_payment_amt;
+                $ivfPaymentReminder->category = $htypeData[$request->charge_type];
+                $ivfPaymentReminder->status = 0;
+                // dd($ivfPaymentReminder);
+                $ivfPaymentReminder->save();
+            }
             return ['status'=>1];
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
             return ['status'=>2];
         }

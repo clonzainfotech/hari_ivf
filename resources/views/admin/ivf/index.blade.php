@@ -12,6 +12,7 @@
                 max-width: 800px !important;
             }
         }
+        
     </style>
 @stop
 @section('content')

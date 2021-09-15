@@ -12,4 +12,7 @@ class IVF extends BaseModel
         return $this->belongsTo('App\Models\OpdPatients','patients_id','id');
     }
 
+    public function getPatientsDetails(){
+        return $this->belongsTo('App\Models\OpdPatients','patients_id','id');
+    }
 }

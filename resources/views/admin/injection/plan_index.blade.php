@@ -93,17 +93,30 @@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <div class="col-md-3">
-                                    Plan
+                                    Plan :
                                 </div>
                                 <div class="col-md-6">
                                     {{Form::text('plan','',['class'=>'form-control plan_name form-required','placeholder'=>'Plan Name'])}}
                                 </div>
                                 <span class="form-error-msg plan-error w-100"></span>
                             </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-3">
+                                    Category :
+                                </div>
+                                <div class="col-md-6">
+                                {{Form::select('category',[''=>'Select Type','1'=>'IUI', '2'=>'IVF'],'',[
+                                    'class'=>'form-control category', 
+                                    'id' => 'category',
+                                    'data-errorclass' =>'category-error'
+                                ])}}
+                                </div>
+                                <span class="form-error-msg category-error w-100"></span>
+                            </div>
                         </div>
                         <!-- footer -->
-                        <div class="modal-footer mt-3 time-footer">
-                            <button type="button" class="btn btn-primary waves-effect plan-save">Save</button>
+                        <div class="modal-footer mt-3 time-footer float-right">
+                            <button type="button" class="btn btn-primary waves-effect plan-save mr-1">Save</button>
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -143,19 +156,23 @@
 
 
             $(document).on('click', '.print-plan', function () {
-                alert('dfd');
                 qstring = 'page='+page+'&isprint=1';
                 getPlanData(qstring);
             });
             $(document).on('click', '.plan-modal', function () {
                 var plan_name = $('.plan_name').val('');
+                var category = $('select.category').val('');
+                $('.category').selectpicker('refresh');
                 $('#plan-modal').modal('show');
             });
         });
         $(document).on('click', '.plan-edit', function () {
             injId = $(this).data('id');
             var plan_name = $('.plan_name').val('');
+            var category = $('select.category').val('');
+            $('.category').selectpicker('refresh');
             $('.plan-error').html('');
+            $('.category-error').html('');
             $.ajax({
             url: "{{URL::to('plan/edit')}}/" + injId,
             dataType: 'json',
@@ -164,6 +181,9 @@
                 {
                     $('#plan-modal').modal('show');   
                     $('.plan_name').val(data.injection.type);
+                    $('select.category').val(data.injection.category);
+            $('.category').selectpicker('refresh');
+
                 }
                 else{
 
@@ -174,11 +194,18 @@
         });
         $(document).on('click','.plan-save',function(){
             var plan_name = $('.plan_name').val();
+            var category = $('select.category').val();
             var hasNoValue = 0;
             if(plan_name == '')
             {
                 hasNoValue = 1;
-                $('.expense-error').html('All fields are required');
+                $('.expense-error').html('This field is required');
+                return false;
+            }
+            if(category == '')
+            {
+                hasNoValue = 1;
+                $('.category-error').html('This field is required');
                 return false;
             }
             if(hasNoValue == 0)
@@ -191,11 +218,11 @@
                     type: 'POST',
                     data: {
                         plan:plan_name,
+                        category:category,
                         injId:injId
                     },
                     dataType: 'json',
                 }).done(function(data) {
-                    alert(data.status);
                     if(data.status == 1)
                     {
                         $('#plan-modal').modal('hide');
@@ -205,7 +232,7 @@
                     }
                     else if(data.status == 2)
                     {
-                        $('.plan-error').html('Injection already exists');
+                        $('.plan-error').html('plan already exists');
                     }
                     else{
                         $('#plan-modal').modal('hide');

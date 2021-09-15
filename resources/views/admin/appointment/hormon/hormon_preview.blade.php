@@ -70,7 +70,7 @@
     .deposit td {
         height: 25px;
         font-size: 14px;
-        padding: 10px 10px;
+        padding: 6px 10px;
     }
 
     .all-side-border {
@@ -83,7 +83,9 @@
     }
 
 </style>
-
+@php
+    $pMethod = ['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'];
+@endphp
 <table id="print-deposit-table" class="print-deposit-table">
     <tbody>
     <tr>
@@ -145,6 +147,9 @@
                             <td>Charge Type : IUI</td>
                         </tr>
                     @endif
+                <tr>
+                    <td>Payment Type: {{!empty($hormon->payment_type) ? $pMethod[$hormon->payment_type] : null}}</td>
+                </tr>
                 <tr>
                     <td><h4>Received With Thanks From</h4></td>
                 </tr>

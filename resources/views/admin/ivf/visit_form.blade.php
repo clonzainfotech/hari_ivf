@@ -8,7 +8,7 @@
     $non_motile = $ivfReport && $ivfReport->non_motile ? json_decode($ivfReport->non_motile) : null;
     $morphology = $ivfReport && $ivfReport->morphology ? json_decode($ivfReport->morphology) : null;
     $pus_cells = $ivfReport && $ivfReport->pus_cells ? json_decode($ivfReport->pus_cells) : null;
-    $medicinesValue = $ivfData->medicinedata;
+    $medicinesValue = !empty($ivfData->medicinedata) ? $ivfData->medicinedata : null;
     $historyMedicineKey = [];
     if(!empty($medicines)){
         $historyMedicineKey = (array)$medicinesValue;
@@ -44,6 +44,17 @@
             </div>
             <span class="seen-by-error text-danger mb-2"></span>
         </div>
+        <div class="col-md-1">
+            <label class="vertical-form-label pr-0">
+                RMO Doctor :
+            </label>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                {{Form::select('rmo_doctor',$rmoDoctor,$ivf->rmo_doctor,['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+            </div>
+        </div>
+        
     </div>
     {{Form::hidden('visit',$ivf->visit,['class'=>'visit-no'])}}
     {{Form::hidden('plan_type',$ivf->plan)}}
@@ -63,10 +74,10 @@
                     <span class="input-group-addon">L.M.P Date : &nbsp;</span>
                     @php
                         // $lmpDateValue = !empty($ivfData->lmp->date) ? \Carbon\Carbon::parse($ivfData->lmp->date)->format('Y-m-d') : null;
-                        // $currentDateValue = Carbon\Carbon::now()->format('Y-m-d');
+                        $currentDateValue = Carbon\Carbon::now()->format('Y-m-d');
                         // $lmpDateDiff = $currentDateValue->diffInDays($lmpDateValue);
                         $lmpDateValue = !empty($lmpDate) ? \Carbon\Carbon::parse($lmpDate) : null;
-                        $currentDateValue = Carbon\Carbon::now();
+                        // $currentDateValue = Carbon\Carbon::now();
                         $lmpDateDiff = $lmpDateValue->diffInDays($currentDateValue);
                         $lmpDateDiff = $lmpDateDiff + 1;
                     @endphp
@@ -80,6 +91,17 @@
                 </div>
             </div>
             <span class="col-md-1 p-2 history-lmp-date">Day</span>
+            <div class="col-md-1">
+                <label class="vertical-form-label pr-0">
+                    Weight :
+                </label>
+            </div>
+            <div class="col-md-3">
+            <div class="form-group">
+                {{Form::number('data[weight]',isset($ivfData->weight) && !empty($ivfData->weight) ? $ivfData->weight : null,['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+            </div>
+            <span class="weight-by-error text-danger mb-2"></span>
+        </div>
         </div>
         @php
             $vitlasClass = !empty($ivfData->le->vitals_status) && $ivfData->le->vitals_status == 'yes' ? '' : 'd-none';
@@ -388,11 +410,11 @@
                 </div>
                 <div class="{{'col-md-1 '.$semenFreezingValueData}}">
                     <div class="radio is-conceived">
-                        {{Form::radio("data[collected][frozen][type]",'yes',!empty($semenFreezing) && $semenFreezing == 'yes' ? true : false,['id'=>'progesteroneyes'])}}
+                        {{Form::radio("data[collected][frozen][type]",'yes',!empty($semenFreezing) && $semenFreezing == 1 ? true : false,['id'=>'progesteroneyes'])}}
                         <label for="progesteroneyes">
                             Yes
                         </label>
-                        {{Form::radio("data[collected][frozen][type]",'no',!empty($embroyReady) && $embroyReady == 'no' ? true : false,['id'=>'progesteroneno'])}}
+                        {{Form::radio("data[collected][frozen][type]",'no',!empty($semenFreezing) && $semenFreezing == 0 ? true : false,['id'=>'progesteroneno'])}}
                         <label for="progesteroneno">
                             No
                         </label>
@@ -405,11 +427,11 @@
                 </div>
                 <div class="{{'col-md-2 '.$embroyReadyValueData}}">
                     <div class="radio is-conceived">
-                        {{Form::radio("data[collected][report][embroy][type]",'yes',!empty($ivfData->collected->report->embroy->type) && $ivfData->collected->report->embroy->type == 'yes' ? true : false,['id'=>'embroyyes'])}}
+                        {{Form::radio("data[collected][report][embroy][type]",'yes',!empty($embroyReady) && $embroyReady == 1 ? true : false,['id'=>'embroyyes'])}}
                         <label for="embroyyes">
                             Yes
                         </label>
-                        {{Form::radio("data[collected][report][embroy][type]",'no',!empty($ivfData->collected->report->embroy->type) && $ivfData->collected->report->embroy->type == 'no' ? true : false,['id'=>'embroyno'])}}
+                        {{Form::radio("data[collected][report][embroy][type]",'no',!empty($embroyReady) && $embroyReady == 0 ? true : false,['id'=>'embroyno'])}}
                         <label for="embroyno">
                             No
                         </label>
@@ -417,6 +439,52 @@
                 </div>
             {{-- @endif --}}
         </div>
+        @if($ivf->plan == 1)
+            <div class="row mt-3 mb-3">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            S.E2 :
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        {{Form::text("data[s_e2]",isset($ivfData->s_e2) &&!empty($ivfData->s_e2) ? $ivfData->s_e2 : '',['class'=>'form-control','placeholder'=>'S.E2'])}}
+                    </div>
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            S.LH :
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        {{Form::text("data[s_lh]",isset($ivfData->s_lh) &&!empty($ivfData->s_lh) ? $ivfData->s_lh : '',['class'=>'form-control','placeholder'=>'S.LH'])}}
+                    </div>
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            S.P2 :
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        {{Form::text("data[s_p2]",isset($ivfData->s_p2) &&!empty($ivfData->s_p2) ? $ivfData->s_p2 : '',['class'=>'form-control','placeholder'=>'S.P2'])}}
+                    </div>
+            </div>
+            <div class="row">
+                <label class="vertical-form-label pr-0">
+                    Hystroscopy During Pickup :
+                </label>
+                <div class="col-sm-2">
+                    <div class="radio is-conceived">
+                        {{Form::radio("data[during_pickup]",'yes','',['id'=>'during_pickup_yes','class'=>'during-pickup'])}}
+                        <label for="during_pickup_yes">
+                            Yes
+                        </label>
+
+                        {{Form::radio("data[during_pickup]",'no','',['id'=>'during_pickup_no','class'=>'during-pickup'])}}
+                        <label for="during_pickup_no">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+        @endif
         @php
             $hystroscopy = !empty($ivf->investigation) && isset(json_decode($ivf->investigation)->hystroscopy) ? json_decode($ivf->investigation)->hystroscopy : null;
             $hystroscopy_detail = !empty($hystroscopy->type) && $hystroscopy->type == 'yes' ? '':'d-none';
@@ -424,6 +492,7 @@
             $laproscopy_detail = !empty($laproscopy->type) && $laproscopy->type == 'yes' ? '':'d-none';
             $bloodStatus = in_array('blood',$collectionData) ? '' : 'd-none';
             $usgStatus = in_array('usg',$collectionData) ? '' : 'd-none';
+            $hsaStatus = in_array('hsa',$collectionData) ? '' : 'd-none';
         @endphp
         <div class="row mt-1">
             <div class="col-md-1 pr-0">
@@ -634,14 +703,14 @@
                 </div>
             </div>
             <div class="row mt-1">
-                {{-- <div class="col-md-2">
+                <div class="col-md-2">
                     <div class="checkbox">
                         {{Form::checkbox('data[collection][]','progesterone',!empty($progesteroneStatus) ? false : true,['id'=>'progesterone'])}}
                         <label for="progesterone">
-                            Do satrting progesterone?
+                            Progesterone supplementation?
                         </label>
                     </div>
-                </div> --}}
+                </div>
                 @if($ivf->plan == 1)
                     <div class="{{'col-md-2 progesterone_data '.$progesteroneStatus}}">
                         <label for="progesterone">
@@ -661,13 +730,14 @@
                         </div>
                     </div>
                 @endif
-                {{-- @php
+                @php
                     $class= 'progesterone_data';
                     $pTypeValue = 1;
                     if($ivf->plan == 1){
                         $class= 'progesterone_yes';
                         $pTypeValue = 0;
                     }
+                    $progesterone_date = !empty($ivfData->progesterone->type) ? $ivfData->progesterone->type : 'd-none';
                 @endphp
                 <div class="{{'col-md-2 '.$class.' '.$progesteroneStatus}}">
                     {{Form::hidden('progesterone_status','yes')}}
@@ -681,9 +751,14 @@
                             Day-5
                         </label>
                     </div>
-                </div> --}}
+                </div>
+                <div class="{{'col-md-2 progesterone_date_div ' .$progesteroneStatus}}">
+                    <div class="form-group">
+                            {{Form::text("data[progesterone_date]", !empty($ivfData->progesterone_date) ? $ivfData->progesterone_date: '',['class'=>'form-control datetimepicker progesterone_date'])}}
+                    </div>
+                </div>
             </div>
-            @if(!empty($lastIvfHistory->trigger->hcg->status) || !empty($lastIvfHistory->trigger->decapeptyl->status) || !empty($lastIvfHistory->trigger->dualtrigger->stauts))
+            {{-- @if(!empty($ivfData->trigger->hcg->status) || !empty($ivfData->trigger->decapeptyl->status) || !empty($ivfData->trigger->dualtrigger->stauts))
                 @php
                     $trigger = 'trigger';
                     $hcg = !empty($ivfData->trigger->hcg->status) ? $ivfData->trigger->hcg->status : null;
@@ -707,10 +782,11 @@
                 {{Form::hidden("data[trigger][decapeptyl][brand]",$decapeptyl_brand)}}
                 {{Form::hidden("data[trigger][dualtrigger][stauts]",$dule)}}
                 {{Form::hidden("data[trigger][update_status]",'yes')}}
-            @else
+            @else --}}
                 @php
                     $hcgStatus = !empty($ivfData->trigger->hcg->status ) && $ivfData->trigger->hcg->status == 'hcg' ? '' : 'd-none';
                     $decapeptylStatus = !empty($ivfData->trigger->decapeptyl->status) && $ivfData->trigger->decapeptyl->status == 'decapeptyl' ? '' : 'd-none';
+                    $ovutringStatus = !empty($ivfData->trigger->ovutring->status) && $ivfData->trigger->ovutring->status == 'ovutring' ? '' : 'd-none';
                 @endphp
                 @if($ivf->plan == 1)
                     {{Form::hidden("data[trigger][update_status]",'no')}}
@@ -726,88 +802,119 @@
                         <div class="{{'col-md-3 trigger '.$triggerStatus}}">
                             <div class="input-group">
                                 <span class="input-group-addon">Trigger Date: &nbsp;</span>
-                                {{Form::text("data[trigger_date]", \Carbon\Carbon::parse($ivfData->trigger_date)->format('D d M Y'), ['class'=>'form-control history-lmd-date'])}}
+                                {{Form::text("data[trigger_date]", !empty($ivfData->trigger_date) ? \Carbon\Carbon::parse($ivfData->trigger_date)->format('D d M Y') : '', ['class'=>'form-control history-lmd-date'])}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="{{'trigger ml-3 '.$triggerStatus}}">
+                        <div class="row mt-1">
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    {{Form::checkbox('data[trigger][hcg][status]','hcg',!empty($hcgStatus) ? false : true,['id'=>'hcg'])}}
+                                    <label for="hcg">
+                                        HCG
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="{{'hcgtrigger '.$hcgStatus}}">
+                                <div class="row ml-3">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Time : &nbsp;</span>
+                                            {{Form::text("data[trigger][hcg][time]",!empty($ivfData->trigger->hcg->time) ? $ivfData->trigger->hcg->time : null,['class'=>'form-control timepicker time','id'=>'hcg_time','placeholsder'=>'Brand'])}}
+                                        </div>
+                                    </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Dose : &nbsp;</span>
+                                        {{Form::text("data[trigger][hcg][dose]",!empty($ivfData->trigger->hcg->dose) ? $ivfData->trigger->hcg->dose : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Brand : &nbsp;</span>
+                                            {{Form::text("data[trigger][hcg][brand]",!empty($ivfData->trigger->hcg->brand) ? $ivfData->trigger->hcg->brand : null,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    {{Form::checkbox('data[trigger][decapeptyl][status]','decapeptyl',!empty($decapeptylStatus) ? false : true,['id'=>'decapeptyl'])}}
+                                    <label for="decapeptyl">
+                                        Decapeptyl
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="{{'decapeptyltrigger '.$decapeptylStatus}}">
+                                <div class="row ml-3">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Time : &nbsp;</span>
+                                                {{Form::text("data[trigger][decapeptyl][time]",!empty($ivfData->trigger->decapeptyl->time) ? $ivfData->trigger->decapeptyl->time : null,['class'=>'form-control timepicker time','placeholsder'=>'Brand'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Dose : &nbsp;</span>
+                                            {{Form::text("data[trigger][decapeptyl][dose]",!empty($ivfData->trigger->decapeptyl->dose) ? $ivfData->trigger->decapeptyl->dose : null,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Brand : &nbsp;</span>
+                                            {{Form::text("data[trigger][decapeptyl][brand]",!empty($ivfData->trigger->decapeptyl->brand) ? $ivfData->trigger->decapeptyl->brand : null,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    {{Form::checkbox('data[trigger][ovutring][status]','ovutring',!empty($ovutringStatus) ? false : true,['id'=>'ovutring'])}}
+                                    <label for="ovutring">
+                                        Ovutring
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="{{'ovutringtrigger '.$ovutringStatus}}">
+                                <div class="row ml-3">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Time : &nbsp;</span>
+                                                {{Form::text("data[trigger][ovutring][time]",isset($ivfData->trigger->ovutring) && !empty($ivfData->trigger->ovutring->time) ? $ivfData->trigger->ovutring->time : null,['class'=>'form-control timepicker time','placeholsder'=>'Brand'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Dose : &nbsp;</span>
+                                            {{Form::text("data[trigger][ovutring][dose]",isset($ivfData->trigger->ovutring) && !empty($ivfData->trigger->ovutring->dose) ? $ivfData->trigger->ovutring->dose : null,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Brand : &nbsp;</span>
+                                            {{Form::text("data[trigger][ovutring][brand]",isset($ivfData->trigger->ovutring) && !empty($ivfData->trigger->ovutring->brand) ? $ivfData->trigger->ovutring->brand : null,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                    {{Form::checkbox('data[trigger][dualtrigger][stauts]','dualtrigger',!empty($ivfData->trigger->dualtrigger->stauts) && $ivfData->trigger->dualtrigger->stauts == 'dualtrigger' ? true : false ,['id'=>'dualtrigger'])}}
+                                    <label for="dualtrigger">
+                                        Dule Trigger
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endif
-                <div class="{{'trigger ml-3 '.$triggerStatus}}">
-                    <div class="row mt-1">
-                        <div class="col-md-2">
-                            <div class="checkbox">
-                                {{Form::checkbox('data[trigger][hcg][status]','hcg',!empty($hcgStatus) ? false : true,['id'=>'hcg'])}}
-                                <label for="hcg">
-                                    HCG
-                                </label>
-                            </div>
-                        </div>
-                        <div class="{{'hcgtrigger '.$hcgStatus}}">
-                            <div class="row ml-3">
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Time : &nbsp;</span>
-                                        {{Form::text("data[trigger][hcg][time]",!empty($ivfData->trigger->hcg->time) ? $ivfData->trigger->hcg->time : null,['class'=>'form-control timepicker time','id'=>'hcg_time','placeholsder'=>'Brand'])}}
-                                    </div>
-                                </div>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Dose : &nbsp;</span>
-                                    {{Form::text("data[trigger][hcg][dose]",!empty($ivfData->trigger->hcg->dose) ? $ivfData->trigger->hcg->dose : null,['class'=>'form-control'])}}
-                                </div>
-                            </div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Brand : &nbsp;</span>
-                                        {{Form::text("data[trigger][hcg][brand]",!empty($ivfData->trigger->hcg->brand) ? $ivfData->trigger->hcg->brand : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-2">
-                            <div class="checkbox">
-                                {{Form::checkbox('data[trigger][decapeptyl][status]','decapeptyl',!empty($decapeptylStatus) ? false : true,['id'=>'decapeptyl'])}}
-                                <label for="decapeptyl">
-                                    Decapeptyl
-                                </label>
-                            </div>
-                        </div>
-                        <div class="{{'decapeptyltrigger '.$decapeptylStatus}}">
-                            <div class="row ml-3">
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Time : &nbsp;</span>
-                                            {{Form::text("data[trigger][decapeptyl][time]",!empty($ivfData->trigger->decapeptyl->time) ? $ivfData->trigger->decapeptyl->time : null,['class'=>'form-control timepicker time','placeholsder'=>'Brand'])}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Dose : &nbsp;</span>
-                                        {{Form::text("data[trigger][decapeptyl][dose]",!empty($ivfData->trigger->decapeptyl->dose) ? $ivfData->trigger->decapeptyl->dose : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Brand : &nbsp;</span>
-                                        {{Form::text("data[trigger][decapeptyl][brand]",!empty($ivfData->trigger->decapeptyl->brand) ? $ivfData->trigger->decapeptyl->brand : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-2">
-                            <div class="checkbox">
-                                {{Form::checkbox('data[trigger][dualtrigger][stauts]','dualtrigger',!empty($ivfData->trigger->dualtrigger->stauts) && $ivfData->trigger->dualtrigger->stauts == 'dualtrigger' ? true : false ,['id'=>'dualtrigger'])}}
-                                <label for="dualtrigger">
-                                    Dule Trigger
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
             
             @if($ivf->plan != 3 )
                 {{-- <div class="row mt-1">
@@ -839,10 +946,11 @@
                     </div>
                 </div>
             </div>
-            @if($ivf->plan != 1 && in_array('transfer',$collectionData))
+            @if(in_array('transfer',$collectionData))
                 {{Form::hidden('data[collection][]','transfer')}}
                 {{Form::hidden('data[transfer][payment]',!empty($ivfData->transfer->payment) ? $ivfData->transfer->payment : null)}}
                 {{Form::hidden('data[transfer][method]',!empty($ivfData->transfer->method) ? $ivfData->transfer->method : null)}}
+                {{Form::hidden('data[is_transfer]','yes',['class'=>'is-transfer'])}}
             @endif
         @endif
         <div class="row mt-1">
@@ -895,6 +1003,32 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-1">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    {{Form::checkbox('data[collection][]','hsa',!empty($hsaStatus) ? false : true,['id'=>'hsa'])}}
+                    <label for="hsa">
+                        HSA Report
+                    </label>
+                </div>
+            </div>
+            <div class="{{'col-md-8 hsareport '.$hsaStatus}}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">HSA report: &nbsp;</span>
+                            {{Form::text("data[usa_report][report]",!empty($ivfData->hsa_report->report) ? $ivfData->hsa_report->report : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <div class="edit-hsa-images"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         {{-- end ivf comman form --}}
         <br>
         <div class="row">
@@ -1471,12 +1605,31 @@
                     </div>
                     <br>
                 @endforeach
-               
-            @endif
-        {{-- @endif --}}
-        {{-- end pre operative data --}}
-        
-        
+                @php
+                $investigation = !empty($ivf->investigation) ? json_decode($ivf->investigation) : null;
+                @endphp
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("investigation[investigation_extra]",(!empty($investigation)) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
+            @else
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            Other Report : &nbsp;
+                        </span>
+                        {{Form::text("data[investigation_extra]",(!empty($ivfData)) && isset($ivfData->investigation_extra) && !empty($ivfData->investigation_extra) ? $ivfData->investigation_extra : null,['class'=>'form-control'])}}
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="pt-3 pb-3 pl-2"> Treatment </div>
         <div id="treatment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree_1">
             <div class="panel-body" id="parent">
@@ -1606,7 +1759,7 @@
                         @foreach($ivfData->protocol as $key=>$row)
                             @if(!empty($row->day) || !empty($row->date) || !empty($row->injection) || !empty($row->hmg) || !empty($row->hmg_brand_name) || !empty($row->fsh) || !empty($row->fsh_brand_name) || !empty($row->antagonist))
                                 <tr>
-                                    <td class='width-80'>
+                                    <td class='width-80 protocol-day'>
                                         {{Form::text("data[protocol][".$key."][day]",!empty($row->day) ? $row->day : null,['class'=>'form-control'])}}
                                     </td>
                                     <td>
@@ -1655,7 +1808,7 @@
             <div class="col-md-6">
                 <label>Remark:</label>
                 <div class="form-group">
-                    {{Form::textarea('data[remark]',!empty($ivfData->remark) ? $ivfData->remark : null, ['class' => 'form-control no-resize remark call-response','placeholder' => 'Remark','rows' => '3'])}}
+                    {{Form::textarea('data[remark]',!empty($ivfData->remark) ? $ivfData->remark : null, ['class' => 'form-control no-resize call-response','placeholder' => 'Remark','rows' => '3'])}}
                 </div>
             </div>
 
@@ -1682,10 +1835,10 @@
             @if(!empty($ivfData->plan))
                 {{Form::hidden('data[plan]',$ivfData->plan)}}
                 {{Form::hidden('data[transfer_type]',!empty($ivfData->transfer_type) ? $ivfData->transfer_type : null)}}
-            @else
+            {{-- @else
                 {{Form::hidden('data[plan]',null)}}
-            @endif
-            @if(!empty($ivfData->skip_cycle) && $ivfData->skip_cycle == 'yes')
+            @endif --}}
+            @elseif(!empty($ivfData->skip_cycle) && $ivfData->skip_cycle == 'yes')
                 {{Form::hidden('data[skip_cycle]','yes')}}
                 {{Form::hidden('data[skip_reason]',$ivfData->skip_reason)}}
                 {{Form::hidden('data[plan]',$ivfData->plan)}}
@@ -1698,21 +1851,32 @@
         {{Form::hidden('data[is_transfer]','yes',['class'=>'is-transfer'])}}
         {{Form::hidden('data[is_transfer_print]','yes')}}
         <div class="row">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-addon">Weight : &nbsp;</span>
+                    {{Form::text('data[weight]',isset($ivfData->weight) && !empty($ivfData->weight) ? $ivfData->weight : '',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                </div>
+                <span class="weight-by-error text-danger mb-2"></span>
+            </div>
+        </div>
+        <div class="row">
             {{-- upt --}}
             <div class="col-md-1">
                 <label class="vertical-form-label pr-0">
                     UPT :
                 </label>
             </div>
-
+            @php
+                $transfer = json_decode($ivfData->transfer);
+            @endphp
             <div class="col-sm-2">
                 <div class="radio is-conceived">
-                    {{Form::radio("data[transfer][upt_type]",'positive','',['id'=>'transfer-positive','class'=>'upt-type'])}}
+                    {{Form::radio("data[transfer][upt_type]",'positive',!empty($transfer) && $transfer->upt_type == 'yes' ? true : false,['id'=>'transfer-positive','class'=>'upt-type','disabled'])}}
                     <label for="transfer-positive">
                         Positive
                     </label>
 
-                    {{Form::radio("data[transfer][upt_type]",'negative','',['id'=>'transfer-negative','class'=>'upt-type'])}}
+                    {{Form::radio("data[transfer][upt_type]",'negative',!empty($transfer) && $transfer->upt_type == 'no' ? true : false,['id'=>'transfer-negative','class'=>'upt-type','disabled'])}}
                     <label for="transfer-negative">
                         Negative
                     </label>
@@ -1727,12 +1891,12 @@
 
             <div class="col-sm-2">
                 <div class="radio is-conceived">
-                    {{Form::radio("data[transfer][result_type]",'conceive','',['id'=>'transfer-conceive','class'=>'result-type'])}}
+                    {{Form::radio("data[transfer][result_type]",'conceive',!empty($transfer) && $transfer->result_type == 'yes' ? true : false,['id'=>'transfer-conceive','class'=>'result-type','disabled'])}}
                     <label for="transfer-conceive">
                         Conceive
                     </label>
 
-                    {{Form::radio("data[transfer][result_type]",'fail','',['id'=>'transfer-fail','class'=>'result-type'])}}
+                    {{Form::radio("data[transfer][result_type]",'fail',!empty($transfer) && $transfer->result_type == 'yes' ? true : false,['id'=>'transfer-fail','class'=>'result-type','disabled'])}}
                     <label for="transfer-fail">
                         Fail
                     </label>
@@ -1741,6 +1905,16 @@
             {{-- end result --}}
         </div>
         <br>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        Other Report : &nbsp;
+                    </span>
+                    {{Form::text("data[investigation_extra]",isset($ivfData->investigation_extra) && !empty($ivfData->investigation_extra) ? $ivfData->investigation_extra : null,['class'=>'form-control'])}}
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-1">
                 <label class="vertical-form-label pr-0">
@@ -1761,13 +1935,109 @@
         <div id="treatment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree_1">
             <div class="panel-body" id="parent">
                 <div class="row treatment-data" id="t_data_1">
-                    <div class="col-md-1 pr-0">
-                        <label class="vertical-form-label pr-0">
-                            Select Medicine :
-                        </label>
-                    </div>
-                    <div class="col-md-9 complain-multi">
-                        {{Form::select("treatment[medicinedata][]",$medicines,'',['class'=>'form-control co-value medicine-data co_value_data','placeholder'=>'Enter Medicine','multiple'=>true])}}
+                    <div id="treatment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree_1">
+                        <div class="panel-body" id="parent">
+                            <div class="row treatment-data" id="t_data_1">
+                                <div class="col-md-2 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Select Medicine :
+                                    </label>
+                                </div>
+            
+                                <div class="col-md-9 complain-multi medicine-picker">
+                                    {{Form::select("treatment[medicinedata][]",$medicines,$historyMedicineKey,['id'=>'treatment-medicine','class'=>'form-control co-value medicines-data','placeholder'=>'Enter Medicine'])}}
+                                </div>
+                            </div>
+                            <div class="page-loader-wrapper medicine-loader d-none">
+                                <div class="loader">
+                                    <div class="m-t-30"><img src="{{url(config('app.loader'))}}" width="48" height="48" alt="Oreo"></div>
+                                </div>
+                            </div>
+                            
+                            @if(!empty($ivfData->medicinedata))
+                                @foreach($ivfData->medicinedata as $key=>$row)
+                                <?php
+                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                $firstCharacter = substr($mId, 0, 3);
+                                $notinject = "";
+                                if($firstCharacter=="inj" || $firstCharacter=="INJ") {
+                                    $notinject = "is-inj";
+                                    $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day",'7'=>"6 hourly",'8'=>"8 hourly",'9'=>"12 hourly",'10'=>"24 hourly"];
+            
+                                }
+                                $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
+                                ?>
+                                <div class="{{'row mt-2 '.$notinject}}" data-id="{{$mId}}">
+                                    <div class='col-md-2'>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>M : </span>
+                                            {{Form::text('data[medicinedata]['.$mId.'][medicine]',ucwords($row->medicine),['class'=>'form-control','readonly'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-1 notinject'>
+                                        <div class='form-group'>
+                                            {{Form::select('data[medicinedata]['.$mId.'][quantity]',$medqty,$row->quantity,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-1 notinject'>
+                                        <div class='form-group'>
+                                            {{Form::select('data[medicinedata]['.$mId.'][quantity_2]',$medqty,@$row->quantity_2,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-1 notinject'>
+                                        <div class='form-group'>
+                                            {{Form::select('data[medicinedata]['.$mId.'][quantity_3]',$medqty,@$row->quantity_3,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-1 notinject'>
+                                        <div class='form-group'>
+                                            {{Form::select('data[medicinedata]['.$mId.'][quantity_4]',$medqty,@$row->quantity_4,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-2 notinject'>
+                                        <div class='form-group'>
+                                            {{Form::select('data[medicinedata]['.$mId.'][medicine_status]',$medicine_status,$row->medicine_status,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-2 isinject'>
+                                        <div class='form-group'>
+                                            {{Form::select('data[medicinedata]['.$mId.'][medicine_time]',$medicine_time,@$row->medicine_time,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-1'>
+                                        <div class='form-group'>
+                                            {{Form::select('data[medicinedata]['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-2'>
+                                        <div class='input-group'>
+                                            <span class='input-group-addon'>Day:</span>
+                                            {{Form::number('data[medicinedata]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-1 medicine-data-remove'>
+                                        <span class=""><i class="material-icons">close</i></span>
+                                    </div>
+                                </div>
+                                {{-- @endif --}}
+                                    {{-- <div class='row' data-id="{{$mId}}"> --}}
+                                        {{-- <div class='col-md-3'>
+                                            <div class='form-group'>
+                                                {{Form::select('data[medicinedata]['.$mId.'][medicine_time][]',["1"=>"Morning","2"=>"Afternoon","3"=>"Evening","4"=>"Night"],!empty($row->medicine_time) ? $row->medicine_time : null,['class'=>'form-control select-padding-0 dose','multiple'=>'true','title'=>'Select Medicine Time'])}}
+                                            </div>
+                                        </div> --}}
+                                        {{-- <div class='col-md-3'>
+                                            <div class='form-group'>
+                                                {{Form::select('data[medicinedata]['.$mId.'][medicine_time][]',[""=>"Select Medicine route","1"=>"IV","2"=>"IM","3"=>"SC","4"=>'Oral',"5"=>'P/V',"6"=>"P/A"],!empty($row->medicine_time) ? $row->medicine_time : null,['class'=>'form-control select-padding-0 dose','title'=>'Select Medicine Time'])}}
+                                            </div>
+                                        </div>
+                                        <div class='col-md-1 medicine-data-remove'><span class=''><i class='material-icons'>close</i></span></div> --}}
+                                    {{-- </div> --}}
+                                @endforeach
+                            @endif
+                            <div class="treatment-medicine-data"></div>
+                            {{Form::hidden('old_medicine_data',!empty($historyMedicineKey) ? implode(',',$historyMedicineKey) : null,['class'=>'old-medicine-data'])}}
+                        </div>
                     </div>
                 </div>
                 <div class="treatment-medicine-data">
@@ -1802,10 +2072,14 @@
     $('.edit-usg-images').imageUploader({
         imagesInputName: 'data[usg][images]',
     });
+    $('.edit-hsa-images').imageUploader({
+        imagesInputName: 'data[hsa_report][images]',
+    });
     var hystroscopyImages = @json($hystroscopyImagesData);
     var laproscopyImages = @json($laproscopyImagesData);
     var bloodReport = @json($bloodReportImagesData);
     var usgReport = @json($usgReportImagesData);
+    var hsaReport = @json($hsaReportImagesData);
         if(hystroscopyImages != 'null') {
             $('.edit-hystroscopy-images').imageUploader({
                 preloaded: jQuery.parseJSON(hystroscopyImages),
@@ -1833,6 +2107,15 @@
                 preloaded: jQuery.parseJSON(usgReport),
                 imagesInputName: 'data[usg][images]',
                 preloadedInputName: 'usg_old'
+
+            });
+        }
+        if(hsaReport != 'null')
+        {
+            $('.edit-hsa-images').imageUploader({
+                preloaded: jQuery.parseJSON(hsaReport),
+                imagesInputName: 'data[hsa_report][images]',
+                preloadedInputName: 'hsa_report_old'
 
             });
         }

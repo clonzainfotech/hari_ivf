@@ -86,6 +86,12 @@
         $appontmentCount = $appontmentCount->count();
         return ['appointmentCount'=>$appontmentCount];
     }
+    function getSelfBookingCount()
+    {
+        $now = date('Y-m-d');
+        $selfBookingCount = DB::table('patients_signup')->whereDate('created_at',$now)->count();
+        return $selfBookingCount;
+    }
 
     function getANCNumberToWOrd($number){
         $word = null;
@@ -116,5 +122,15 @@
             return true;
         }
         return false;
-    }   
+    }  
+    function getCity()
+    {
+        $city = DB::table('city')->orderBy('name', 'ASC')->pluck('name','name')->toArray();
+        return $city;
+    } 
+    function getState()
+    {
+        $city = DB::table('state')->orderBy('name', 'ASC')->pluck('name','id')->toArray();
+        return $city;
+    } 
 ?>

@@ -4,6 +4,7 @@
 @section('page-style')
     <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
 @stop
+
 @section('content')
     <div class="row clearfix appointment">
         <div class="col-md-12">
@@ -83,10 +84,24 @@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <div class="col-md-2 form-padding">
-                                    Reason:
+                                    Language:
                                 </div>
                                 <div class="col-md-8 form-padding">
-                                    {{Form::textarea('remark','',['class'=>'form-control remark w-inherit','placeholder'=>'Reason for Reject Appointment','rows'=>3])}}
+                                    {{Form::select('language',['en'=>'English','gu'=>'Gujarati','hn'=>'Hindi'],'',['class'=>'form-control language w-inherit'])}}
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-2 form-padding">
+                                    Reason:
+                                </div>
+                                <div class="col-md-8 form-padding reason gu d-none">
+                                    {{Form::select('remark',config('app.reject_apt_reason_gu'),'',['class'=>' select-padding-0 select-reason gu'])}}
+                                </div>
+                                <div class="col-md-8 form-padding reason en">
+                                    {{Form::select('remark',config('app.reject_apt_reason_en'),'',['class'=>'select-padding-0 select-reason en'])}}
+                                </div>
+                                <div class="col-md-8 form-padding reason hn d-none">
+                                    {{Form::select('remark',config('app.reject_apt_reason_hn'),'',['class'=>'select-padding-0 select-reason hn'])}}
                                 </div>
                             </div>
                         </div>
@@ -132,7 +147,10 @@
         });
         $('.reject-apt').click(function() {
             $('.remark-error').addClass('d-none');
-            var reason = $('.remark').val();
+            $('.language').selectpicker('refresh');
+            var lan = $('select.language').val();
+            var reason = $("select."+lan+" option:selected").text();
+            
             if(reason == '')
             {
                 $('.remark-error').removeClass('d-none');
@@ -167,6 +185,11 @@
                 
             });
         });
+        $(document).on('change','select.language',function(){
+            var lan = $(this).val();
+            $('.reason').addClass('d-none');
+            $('.reason.'+lan).removeClass('d-none');
+        })
     </script>
 
 @stop

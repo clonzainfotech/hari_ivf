@@ -548,6 +548,7 @@ class IndoorController extends AdminController
             }
             return view('admin.indoor.dischargecard',compact('surgicalNotes','patientData','medicines','hospitalDoctor','gender'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }
@@ -620,6 +621,20 @@ class IndoorController extends AdminController
             $dischargeData->report = $request->report;
             $dischargeData->complaints = $complaintData;
             $dischargeData->examination = $request->examination;
+            $birthCertificate = null;
+            $birthImage = null;
+            if(!empty($request->birth_certificate['image'])){
+                foreach($request->birth_certificate['image'] as $key=>$row){
+                    $name = $this->uploadImage($row, 'public/upload/anc/report/');
+                    $birthImage = 'public/upload/anc/report/' . $name;
+                }
+                $birthCertificate['image'] = $birthImage;
+            }
+            else{
+                $birthCertificate['image'] = $birthImage;
+            }
+            $birthCertificate['remark'] = $request->birth_certificate['remark'];
+            $dischargeData->birth_certificate = json_encode($birthCertificate);
             $dischargeData->follow_up = $request->followup;
             $dischargeData->followup_date = Carbon::parse($request->followdate)->format('Y-m-d');
             $dischargeData->save();
@@ -711,7 +726,17 @@ class IndoorController extends AdminController
             $bookid = $bookpatientdata->id;
             // $bedid = $this->IndoorBook->where('id',$bookid)->pluck('bed_id')->first();
             $bedNumber = $this->IndoorBook->with('getRoomBed')->where('id', $bookingid)->first();
-            return view('admin.indoor.dischargeedit',compact('surgicalNotes','complaint','dischargedata','patientdata','bookpatientdata','bedNumber','inchargedoctor','medicines','gender','treatmentData','givenTreatment','giventreatmentData','diagnosisData','diagnosis'));
+            $birth_certificate = !empty($dischargedata->birth_certificate) ? json_decode($dischargedata->birth_certificate) : null;
+            $birthImages = !empty($birth_certificate->image) ? (array)$birth_certificate->image : [];
+            $birthImagesData = [];
+            if($birthImages){
+                foreach($birthImages as $key=>$row){
+                    $birthImagesData[$key]['id'] = $key;
+                    $birthImagesData[$key]['src'] = url($row);
+                }
+            }
+            $birthImagesData = json_encode($birthImagesData,true);
+            return view('admin.indoor.dischargeedit',compact('surgicalNotes','complaint','dischargedata','patientdata','bookpatientdata','bedNumber','inchargedoctor','medicines','gender','treatmentData','givenTreatment','giventreatmentData','diagnosisData','diagnosis','birthImagesData'));
         } catch (Exception $exception) {
             abort(500);
         }
@@ -730,7 +755,7 @@ class IndoorController extends AdminController
 
             $discarddata = $this->IndoorDischargeCard->find(decrypt($id));
             $checkDate = $discarddata->dod_date;
-            // dd($discarddata);
+            $birth_certificate = !empty($discarddata->birth_certificate) ? json_decode($discarddata->birth_certificate)->image : null;
             $discarddata->dos_date = $request->surgerydate ? Carbon::parse($request->surgerydate)->format('Y-m-d') : null;
             $ldate = date('Y-m-d');
             // $discarddata->dod_date = $request->dischargedate ? Carbon::parse($request->dischargedate)->format('Y-m-d') : $ldate;
@@ -786,6 +811,20 @@ class IndoorController extends AdminController
             $discarddata->report = $request->report;
             $discarddata->complaints = $complaintData;
             $discarddata->examination = $request->examination;
+            $birthCertificate = null;
+            $birthImage = null;
+            if(!empty($request->birth_certificate['image'])){
+                foreach($request->birth_certificate['image'] as $key=>$row){
+                    $name = $this->uploadImage($row, 'public/upload/anc/report/');
+                    $birthImage = 'public/upload/anc/report/' . $name;
+                }
+                $birthCertificate['image'] = $birthImage;
+            }
+            else{
+                $birthCertificate['image'] = $birth_certificate;
+            }
+            $birthCertificate['remark'] = $request->birth_certificate['remark'];
+            $discarddata->birth_certificate = json_encode($birthCertificate);
             $discarddata->follow_up = $request->followup;
             $discarddata->followup_date = $request->followdate ? Carbon::parse($request->followdate)->format('Y-m-d') : null;
             $discarddata->save();
@@ -817,6 +856,7 @@ class IndoorController extends AdminController
             }
         return redirect('indoor');
         } catch (Exception $exception) {
+            log::debug($exception);
             abort(500);
         }
     }
@@ -2044,5 +2084,15 @@ class IndoorController extends AdminController
                 'status' => 0
             ]);
         }
+    }
+
+    /**
+    * Upload Birth Certificate
+    * @param  \Illuminate\Http\Request $id
+    * @return \Illuminate\Http\Response
+    */
+    public function uploadBirthCertificate(Request $request)
+    {
+        dd($request);
     }
 }

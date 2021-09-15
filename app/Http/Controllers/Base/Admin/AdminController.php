@@ -7,7 +7,6 @@ use App\Http\Controllers\Base\BaseController;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Pusher\Pusher;
-// use Twilio\Rest\Client;
 use Carbon\Carbon;
 use Exception;
 use Revolution\Google\Sheets\Facades\Sheets;
@@ -17,6 +16,10 @@ use Log;
 
 class AdminController extends BaseController
 {
+    /**
+     * @param null $pId
+     * @return Collection
+     */
     public function getPatients($pId = null) {
         $patients = $this->OpdPatients->orderBy('name','ASC');
         if(!empty($pId)){
@@ -28,6 +31,11 @@ class AdminController extends BaseController
                 return $query;
             });
     }
+
+    /**
+     * @param null $pId
+     * @return mixed
+     */
     public function getPatientsId($pId = null) {
         $patients = $this->OpdPatients;
         if(!empty($pId)){
@@ -35,13 +43,25 @@ class AdminController extends BaseController
         }
         return $patients->first();
     }
+
+    /**
+     * @return mixed
+     */
     public function getPatientscode() {
         return $this->OpdPatients->pluck('code','code');
     }
 
+    /**
+     * @return mixed
+     */
     public function getHoData() {
         return  $this->HoDetails->pluck('name','name')->toArray();
     }
+
+    /**
+     * @param $categoryId
+     * @return int
+     */
     public function categoryNewToOld($categoryId) {
         switch (true) {
             case ($categoryId == 1):
@@ -61,6 +81,11 @@ class AdminController extends BaseController
         }
         return $categoryId;
     }
+
+    /**
+     * @param $data
+     * @return array
+     */
     public function nextAppointmentData($data){
         $isProcedure = !empty($data['is_procedure']) ? 1 : 0;
         $appointmentId = decrypt($data['appointmentId']);
@@ -124,7 +149,13 @@ class AdminController extends BaseController
         return ['date'=>$date];
     }
 
-    // get hospital time and this
+    /**
+     * @param $start
+     * @param $end
+     * @param $interval
+     * @param string $format
+     * @return array
+     */
     public function appointmentTime($start, $end, $interval, $format = '24') {
         $startTime = strtotime($start);
         $endTime   = strtotime($end);
@@ -146,6 +177,9 @@ class AdminController extends BaseController
         return $times;
     }
 
+    /**
+     * @param $requestMedicine
+     */
     public function medicineData($requestMedicine){
         $medicine = $this->Medicine->pluck('name','name')->toArray();
         if(!empty($requestMedicine)){
@@ -158,6 +192,9 @@ class AdminController extends BaseController
         }
     }
 
+    /**
+     * @param $requestComplaints
+     */
     public function complaintStore($requestComplaints){
         $complaint = $this->Complaint->pluck('name','name')->toArray();
         if(!empty($requestComplaints['co_type'])){
@@ -170,6 +207,9 @@ class AdminController extends BaseController
         }
     }
 
+    /**
+     * @param $treatmentData
+     */
     public function treatmentData($treatmentData){
         // unset($treatmentData['medicinedata']);
         // foreach($treatmentData as $row){
@@ -187,6 +227,10 @@ class AdminController extends BaseController
         // }
     }
 
+    /**
+     * @param $number
+     * @return string
+     */
     public function getWordOfNumber($number)
     {
         $number = 	$number;
@@ -232,6 +276,10 @@ class AdminController extends BaseController
         return $result.' '.$points;
     }
 
+    /**
+     * @param $hoData
+     * @return bool
+     */
     public function hoData($hoData){
         $checkHoData = $this->HoDetails->where('name',$hoData)->first();
         if(!$checkHoData){
@@ -241,6 +289,11 @@ class AdminController extends BaseController
         }
         return true;
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function getExistedMedicineData(Request $request) {
         return [
             'status' => true,
@@ -248,6 +301,12 @@ class AdminController extends BaseController
         ];
     }
 
+    /**
+     * @param $request
+     * @param $data
+     * @param $numberOfData
+     * @return LengthAwarePaginator
+     */
     public function paginate($request, $data, $numberOfData) {
         $dataPagination = [];
         $currentPage = !empty($request->page) ? $request->page : 1;
@@ -258,7 +317,10 @@ class AdminController extends BaseController
         return $dataPagination->setPath($request->url());
     }
 
-
+    /**
+     * @param Request $request
+     * @return array|void
+     */
     public function getComplaintWiseMedicine(Request $request){
         try{
             $cMedicine = [];
@@ -358,6 +420,12 @@ class AdminController extends BaseController
         }
     }
 
+    /**
+     * @param $type
+     * @param $patientsId
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function patientReport($type,$patientsId,Request $request){
         try{
             $rType = decrypt($type);
@@ -388,11 +456,19 @@ class AdminController extends BaseController
         }
     }
 
+    /**
+     * @param $request
+     * @param $logType
+     * @param $response
+     */
     public function storeLog($request,$logType,$response){
         $url = $request->url();
         $parameter = $request->all();
     }
 
+    /**
+     * @return \string[][]
+     */
     public function allInvestigationReport(){
         $reportData = ['1'=>'CBC / MP','2'=>'FBS','3'=>'Urine - R','4'=>'PPBS','5'=>'ESR','6'=>'RBS','7'=>'SGPT','8'=>'HBsAg','9'=>'S.Creatinine','10'=>'HIV','11'=>'CRP','12'=>'Blood Group','13'=>'Serum Widal',
             '14'=>'TSH','15'=>'Typhidot lgM','16'=>'T3, T4, TSH','17'=>'Lipid Profile','18'=>'Vit B-12','19'=>'Tube Widal','20'=>'Vit D-3','21'=>'LFT','22'=>'ANC Profile','23'=>'RFT','24'=>'Pre oper.Profile(Major)',
@@ -401,6 +477,9 @@ class AdminController extends BaseController
         return ['reportData'=>$reportData];
     }
 
+    /**
+     * @param $type
+     */
     public function updateLmp($type){
         if($type == 1){
             $ivfHistoryPatientList = $this->IuiHistory->where('visit',2)->groupBy('patients_id')->get();
@@ -426,14 +505,20 @@ class AdminController extends BaseController
         }
     }
 
+    /**
+     * @param Request $request
+     * @throws \Pusher\PusherException
+     */
     public function patient_notification(Request $request)
     {
         $name = $request->name;
         $cat = $request->cat;
+        $title = $request->title;
         $remove_notification = $this->patientNotification->truncate();
         $patientnotify = $this->patientNotification;
         $patientnotify->name = $name ;
         $patientnotify->category = $cat;
+        $patientnotify->opd_area = $title;
         $patientnotify->save();
 
         $options = array(
@@ -450,6 +535,7 @@ class AdminController extends BaseController
         $data = [
             'name' => $patientnotify->name,
             'category' => $patientnotify->category,
+            'opd_area' => $patientnotify->opd_area,
             'id' => $patientnotify->id,
             'user' => $user
         ] ;
@@ -457,6 +543,9 @@ class AdminController extends BaseController
         $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
     }
 
+    /**
+     * @param Request $request
+     */
     public function remove_notification(Request $request)
     {
             $patientNotification = $this->patientNotification->first();
@@ -464,18 +553,86 @@ class AdminController extends BaseController
             $patientNotification->read_by = $read_by;
             $patientNotification->save();
     }
-    function string_between_two_string($str, $starting_word, $ending_word){
+
+    /**
+     * @param $str
+     * @param $starting_word
+     * @param $ending_word
+     * @return mixed|string
+     */
+    public function string_between_two_string($str, $starting_word, $ending_word){
         $arr = explode($starting_word, $str);
         if (isset($arr[1])){
             $arr = explode($ending_word, $arr[1]);
             return $arr[0];
         }
         return '';
+
       }
 
-      public function addGoogleSheet($data) {
-          Sheets::spreadsheet('1--KyhVNaT60VIALVRC8tIeIZ_EweqYR6P1ESy3NSVEQ')
-              ->sheet('DataSheet')
-              ->append([$data]);
-      }
+    /**
+     * @param $data
+     */
+    public function storeCategoryNotification($data)
+    {
+        $categoryNotification = $this->CategoryNotification;
+        $categoryNotification->patients_id = $data['patients_id'];
+        $categoryNotification->date = $data['date'];
+        $categoryNotification->reminder_date = $data['reminder_date'];
+        $categoryNotification->message = $data['message'];
+        $categoryNotification->category_id = $data['category_id'];
+        // dd($categoryNotification);
+        $categoryNotification->save();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws Exception
+     */
+    public function get_category_notification(Request $request)
+    {
+        $now = Carbon::now()->format('Y-m-d');
+        $payment = [];
+        $yester = Carbon::parse($now)->subDays(1)->format('Y-m-d');
+        $data = $this->CategoryNotification->with('getPatients')->whereDate('reminder_date','<',$yester)->delete();
+        $auth_id = Auth::user()->id;
+        $category = $this->CategoryNotification->with('getPatients')->whereDate('date','=',$now);
+        $category = collect($category->get())
+                    ->map(function ($query) use($auth_id){
+                        $read_by = !empty($query->read_by) ? explode(',',$query->read_by) : [];
+                        if(empty($query->read_by) || !in_array($auth_id,$read_by))
+                        {
+                            $query->patient_name = ucWords($query->getPatients['name']);
+                            $query->date = Carbon::parse($query->date)->format('d M Y h:i a');
+                            return $query;
+                        }
+                    });
+        if(in_array(Auth::user()->role,['1,2']))
+        {
+            $payment = $this->IvfPaymentReminder->whereDate('date',$now)->where('status',0);
+            $payment = collect($payment->get())
+                        ->map(function ($query)
+                        {
+                                $query->patient_name = ucWords($query->getPatientsData['name']);
+                                $query->date = Carbon::parse($query->date)->format('d M Y');
+                                return $query;
+                        });
+        }
+
+        return response()->json([
+            'status'=>1,
+            'data' => array('category'=>$category,"payment"=>$payment)
+        ]);
+    }
+
+    /**
+     * @param $data
+     */
+    public function addGoogleSheet($data) {
+        Sheets::spreadsheet('1--KyhVNaT60VIALVRC8tIeIZ_EweqYR6P1ESy3NSVEQ')
+            ->sheet('DataSheet')
+            ->append([$data]);
+        return true;
+    }
 }

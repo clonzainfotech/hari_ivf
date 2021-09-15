@@ -112,12 +112,21 @@ class PatientsController extends AdminController
     * @param  \Illuminate\Http\Request 
     * @return \Illuminate\Http\Response
     */
-    public function create(){
+    public function create(Request $request){
         try{
+            $patient = null;
+            $self_bookingId = null;
+            if($request->booking_id)
+            {
+                $self_bookingId = decrypt($request->booking_id);
+                $patient = $this->PatientSignup->select('*',DB::raw('reason as is_pregnant'))->where('id',$self_bookingId)->first();
+                // dd($patient);
+            }
             $city = $this->City->pluck('name','name');
             $state = $this->getState()['state'];
-            return view('admin.appointment.patient.edit', compact('city','state'));
+            return view('admin.appointment.patient.edit', compact('city','state','patient','self_bookingId'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }
@@ -168,6 +177,11 @@ class PatientsController extends AdminController
                 $patient->occupation=$request->occupation;
                 $patient->dob=$request->dob ? Carbon::parse($request->dob)->format('Y-m-d') : null;   
                 $patient->save();
+                if($request->self_bookingId)
+                {
+                    $user_id = Auth::user()->id;
+                    $self_booking = $this->PatientSignup->where('id',decrypt($request->self_bookingId))->update(['is_approved' => '1','approved_by'=>$user_id]);
+                }
                 if (!$request->code) {
                 $generateCode = $this->generateCode($patient->id,$patient->name);
                 $patient = $this->OpdPatients->whereId($patient->id)->first();
@@ -281,6 +295,7 @@ class PatientsController extends AdminController
         $ANCReports = [];
         $IVFReports = [];
         $IUIReports = [];
+        $GynecReports = [];
         $patientsDetails = $this->OpdPatients->whereId($patients)->first();
         $referenceDoctor = $this->ReferenceDoctor->pluck('name','id');
         $ancAllVisit = $this->ANC->where('patients_id',$patients)->get();
@@ -310,12 +325,14 @@ class PatientsController extends AdminController
                 $ANCReports[$reportDate]['early_scan'] = !empty($investigationHistoryReport['investigation_early_scan_type']['images']) ? $investigationHistoryReport['investigation_early_scan_type']['images'] : [];
                 $ANCReports[$reportDate]['growth_report'] = !empty($investigationHistoryReport['growth_report']['images']) ? $investigationHistoryReport['growth_report']['images'] : [];
                 $ANCReports[$reportDate]['other_report'] = !empty($investigationHistoryReport['other_report_data']['images']) ? $investigationHistoryReport['other_report_data']['images'] : [];
-                $ANCReports[$reportDate]['anc_report'] = !empty($investigationHistoryReport['anc']['images']) ? $investigationHistoryReport['usg']['images'] : [];
+                $ANCReports[$reportDate]['anc_report'] = !empty($investigationHistoryReport['anc']['images']) ? $investigationHistoryReport['anc']['images'] : [];
                 $ANCReports[$reportDate]['usg_report'] = !empty($usgHistoryReport['images']) ? $usgHistoryReport['images'] : [];
             }
         }
         $ivfAllVisit = $this->IVF->where('patients_id', $patients)->get();
         $ivfAllHistoryVisit = $this->IvfHistory->where('patients_id',$patients)->get();
+        $ivfAllExtraVisit = $this->IvfExtraVisit->where('patient_id',$patients)->get();
+
         if($ivfAllVisit)
         {
             foreach($ivfAllVisit as $ivfVisit)
@@ -326,6 +343,7 @@ class PatientsController extends AdminController
                 $IVFReports[$reportDate]['laproscopy'] = !empty($investigationReport['laproscopy']['images']) ? $investigationReport['laproscopy']['images'] : [];
                 $IVFReports[$reportDate]['hcg'] = !empty($investigationReport['hcg']['images']) ? $investigationReport['hcg']['images'] : [];
                 $IVFReports[$reportDate]['blood_report'] = !empty($investigationReport['blood_report']['image']) ? $investigationReport['blood_report']['image'] : [];
+                $IVFReports[$reportDate]['hsa_report'] = !empty($investigationReport['hsa_report']['images']) ? $investigationReport['hsa_report']['images'] : [];
 
             }
         }
@@ -341,11 +359,24 @@ class PatientsController extends AdminController
                 $IVFReports[$reportDate]['laproscopy'] = !empty($investigationHistoryReport['laproscopy']['images']) ? $investigationHistoryReport['laproscopy']['images'] : [];
                 $IVFReports[$reportDate]['blood_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['blood_report']['image']) ? $investigationHistoryData['blood_report']['image'] : [];
                 $IVFReports[$reportDate]['usg_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['usg']['images']) ? $investigationHistoryData['usg']['images'] : [];
-            
+                $IVFReports[$reportDate]['hsa_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['hsa_report']['images']) ? $investigationHistoryData['hsa_report']['images'] : [];
+                
+            }
+        }
+        if($ivfAllExtraVisit)
+        {
+            foreach($ivfAllExtraVisit as $ivfExtraVisit)
+            {
+                $reportDate = Carbon::parse($ivfExtraVisit->created_at)->format('Y-m-d H:i:s');
+                $investigationHistoryData = !empty($ivfExtraVisit->oe) ? json_decode($ivfExtraVisit->oe,true) : '';
+                // dd($investigationHistoryData);
+                // dd($investigationHistoryReport['hystroscopy']['images']);
+                $IVFReports[$reportDate]['blood_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['blood_report']['image']) ? $investigationHistoryData['blood_report']['image'] : [];
             }
         }
         $iuiAllVisit = $this->IUI->where('patients_id', $patients)->get();
         $iuiAllHistoryVisit = $this->IuiHistory->where('patients_id',$patients)->get();
+        $iuiAllExtraVisit = $this->IuiExtraVisit->where('patient_id',$patients)->get();
         if($iuiAllVisit)
         {
             foreach($iuiAllVisit as $iuiVisit)
@@ -356,6 +387,8 @@ class PatientsController extends AdminController
                 $IUIReports[$reportDate]['laproscopy'] = !empty($investigationReport['laproscopy']['images']) ? $investigationReport['laproscopy']['images'] : [];
                 $IUIReports[$reportDate]['hcg'] = !empty($investigationReport['hcg']['images']) ? $investigationReport['hcg']['images'] : [];
                 $IUIReports[$reportDate]['blood_report'] = !empty($investigationReport['blood_report']['image']) ? $investigationReport['blood_report']['image'] : [];
+                $IUIReports[$reportDate]['hsa_report'] = !empty($investigationReport['hsa_report']['images']) ? $investigationReport['hsa_report']['images'] : [];
+
             }
         }
         if($iuiAllHistoryVisit)
@@ -368,13 +401,36 @@ class PatientsController extends AdminController
                 // dd($investigationHistoryReport['hystroscopy']['images']);
                 $IUIReports[$reportDate]['blood_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['blood_report']['image']) ? $investigationHistoryData['blood_report']['image'] : [];
                 $IUIReports[$reportDate]['usg_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['usg']['images']) ? $investigationHistoryData['usg']['images'] : [];
+                $IUIReports[$reportDate]['hsa_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['hsa_report']['images']) ? $investigationHistoryData['hsa_report']['images'] : [];
                 
+            }
+        }
+        if($iuiAllExtraVisit)
+        {
+            foreach($iuiAllExtraVisit as $iuiExtraVisit)
+            {
+                $reportDate = Carbon::parse($iuiExtraVisit->created_at)->format('Y-m-d H:i:s');
+                $investigationHistoryData = !empty($iuiExtraVisit->oe) ? json_decode($iuiExtraVisit->oe,true) : '';
+                // dd($investigationHistoryData);
+                // dd($investigationHistoryReport['hystroscopy']['images']);
+                $IUIReports[$reportDate]['blood_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['blood_report']['image']) ? $investigationHistoryData['blood_report']['image'] : [];
+            }
+        }
+        $gynecAllVisit = $this->Gynec->where('patients_id', $patients)->get();
+        if($gynecAllVisit)
+        {
+            foreach($gynecAllVisit as $gynecVisit)
+            {
+                $reportDate = Carbon::parse($gynecVisit->created_at)->format('Y-m-d H:i:s');
+                $investigationReport = !empty($gynecVisit->investigation) ? json_decode($gynecVisit->investigation,true) : '';
+                $GynecReports[$reportDate]['report'] = !empty($investigationReport['report']['images']) ? $investigationReport['report']['images'] : [];
             }
         }
         // dd($IVFReports);
         krsort($ANCReports);
         krsort($IVFReports);
         krsort($IUIReports);
-        return view('admin.appointment.patient.all-reports',compact('ANCReports','IVFReports','IUIReports','patientsDetails','referenceDoctor','status'));
+        krsort($GynecReports);
+        return view('admin.appointment.patient.all-reports',compact('ANCReports','IVFReports','IUIReports','GynecReports','patientsDetails','referenceDoctor','status'));
     }
 }

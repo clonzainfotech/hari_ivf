@@ -38,12 +38,14 @@ Route::get('/weeks_26-30','Admin\AppHtmlController@weeks_26_30');
 Route::get('/weeks_21-25','Admin\AppHtmlController@weeks_21_25');
 Route::get('/weeks_31-35','Admin\AppHtmlController@weeks_31_35');
 Route::get('/weeks_17-20','Admin\AppHtmlController@weeks_17_20');
+Route::get('html-page/view/{slug}','Admin\HtmlPageController@view');
 Auth::routes();
 
 Route::get('get-iui-report','Admin\IUIController@getIuiDetails');
 Route::get('get-ivf-report','Admin\IVFController@getIvfDetails');
 Route::get('get-anc-report','Admin\ANCController@getAncDetails');
 Route::post('login','Admin\UserController@login')->name('login');
+Route::post('register','Admin\UserController@register')->name('register');
 Route::get('update-lmp/{type}','Base\Admin\AdminController@updateLmp');
 Route::get('/anc/get-existed-medicine-data','Base\Admin\AdminController@getExistedMedicineData')->middleware('login');
 Route::get('get-complaint-wise-medicine','Base\Admin\AdminController@getComplaintWiseMedicine')->middleware('login');
@@ -51,6 +53,7 @@ Route::get('get-complaint-wise-medicine','Base\Admin\AdminController@getComplain
 //patient notification
 Route::get('patient_notification','Base\Admin\AdminController@patient_notification');
 Route::get('remove_notification','Base\Admin\AdminController@remove_notification');
+Route::get('get-category-notification','Base\Admin\AdminController@get_category_notification');
 
  // report status
 Route::get('report/{type}/{patientsId}','Base\Admin\AdminController@patientReport')->middleware('login');
@@ -94,6 +97,8 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('appointment-update-remark','AppointmentController@updateRemark');
     Route::get('update-appointment-time','AppointmentController@updateTime');
     Route::get('update-appointment-date-time','AppointmentController@updateAppointmentDateAndTime');
+    Route::get('get-appointment-popup-Detail','AppointmentController@getAppointmentPopUpDetail');
+    
 
     //Donor
     Route::get('donor','DonorController@index');
@@ -108,7 +113,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::resource('hormon','HormonController');
     Route::get('/hormon','HormonController@index');
     Route::get('hormon/delete/{id}','HormonController@delete');
-    Route::get('hormon/change-amount/{hormonId}','HormonController@hormonChangeAmount');
+    Route::post('hormon/change-amount','HormonController@hormonChangeAmount');
     Route::get('hormon/add','HormonController@create');
     Route::post('hormon/add','HormonController@store');
     Route::get('hormon/receipt/{hormonId}','HormonController@getHormonReceipt');
@@ -129,6 +134,10 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('appointment-request/{id}/approve','AppointmentRequestController@appointmentApprove');
     Route::post('appointment-request/{id}/reject','AppointmentRequestController@appointmentReject');
 
+    //self Booking
+    Route::get('self-booking','AppointmentRequestController@getSelfBookingList');
+    
+
     // next appointment
     Route::post('next-appointment','AppointmentController@nextAppointment');
     Route::post('next-appointment-store','AppointmentController@nextAppointmentStore');
@@ -137,11 +146,14 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
 
     // anc iui and ivf
     Route::get('anc-iui-ivf','HomeController@ancIuiIvf');
+    Route::get('get-patient-popup-Detail','HomeController@getPatientPopUpDetail');
+
 
     // gynec route
     Route::get('gynec/create/{patientsId}/{appointmentId?}','GynecController@create');
     Route::get('gynec/history/{patientsId}/{appointmentId?}','GynecController@gynecHistory');
     Route::post('gynec','GynecController@store');
+    Route::get('get-gynec-details','GynecController@getGynecDetails');
 
     // anc route
     Route::resource('anc','ANCController');
@@ -152,14 +164,14 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
 
     // IUI Route
     Route::get('iui/create/{patientsId}/{appointmentId?}','IUIController@create');
-    Route::get('iui/extra-visit/{patientsId}','IUIController@extraVisit');
+    Route::get('iui/extra-visit/{patientsId}/{cycleNo}','IUIController@extraVisit');
     Route::post('iui/store-extra-visit','IUIController@storeExtraVisit');
     Route::get('iui/history/{patientsId}/{appointmentId?}','IUIController@iuiHistory');
     Route::get('iui','IUIController@index');
     Route::post('iui','IUIController@store');
     Route::get('iui-result','IUIController@iuiResult');
     Route::get('iui-report/{patientId}/{cycle}','IUIController@iuiReport');
-    Route::post('iui-report/{patientId}/{cycle}','IUIController@iuiReportStore');
+    Route::post('iui_report_update','IUIController@iuiReportStore');
     Route::post('iui/history/delete','IUIController@iuiHistoryDelete');
     // Route::get('iui-final-print/{patientId}/{cycle}','IUIController@iuiFinalPrint');
     Route::get('get-iui-report/{id}','IUIController@getIuiHistoryReport');
@@ -205,6 +217,8 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post(' ivf-store-payment_newui','IVFController@ivfPaymentStoreNewUi');
     Route::get('ivf-remaining-payment','ReportController@ivfRemainigPayment');
     Route::get('ivf-payment-report/remaining_payment','ReportController@remaining_payment');
+    Route::get('ivf/extra-visit/{patientsId}/{cycleNo}/{plan}','IVFController@extraVisit');
+    Route::post('ivf/store-extra-visit','IVFController@storeExtraVisit');
 
     Route::resource('expense-manager','ExpenseManagerController');
     Route::post('expense-manager','ExpenseManagerController@store');
@@ -237,6 +251,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('ca-expense-report/store','ReportController@storeCaExpense');
     Route::get('ca-expense-report/getCaExpense','ReportController@getCaExpense');
     Route::get('all-collection-report','ReportController@getAllCollectionReport');
+    Route::get('hormon-inj-report','ReportController@getHormonInjectionReport');
 
     // infertility report data
     Route::get('infertility-report','ReportController@infertilityReport');
@@ -299,6 +314,8 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
 
     Route::get('patient-detail','IndoorPatientController@index');
     Route::get('indoor/indoor_preview/{id}','IndoorController@indoor_preview');
+
+    Route::post('upload-birthCertificate','IndoorController@uploadBirthCertificate');
 
     //route for Note
     Route::post('note','NoteController@store');
@@ -413,6 +430,26 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('charge/store','HospitalChargeController@store');
     Route::get('charge/delete/{id}','HospitalChargeController@chargeDelete');
     Route::get('charge/getHospitalCharge/{id}','HospitalChargeController@getHospitalCharge');
+    //notification
+
+    Route::get('notification','CategoryNotificationController@index');
+    Route::get('notification-all-read','CategoryNotificationController@notificationAllRead');
+
+    //injection charges
+    Route::get('inj-charge','InjectionChargeController@index');
+    Route::post('inj-charge/store','InjectionChargeController@store');
+    Route::get('inj-charge/edit/{id}','InjectionChargeController@getInjCharge');
+    Route::get('inj-charge/delete/{id}','InjectionChargeController@injChargeDelete');
+
+    //html pages
+    Route::get('html-page','HtmlPageController@index');
+    Route::get('html-page/create','HtmlPageController@create');
+    Route::post('html-page/store','HtmlPageController@store');
+    Route::get('html-page/edit/{id}','HtmlPageController@edit');
+    Route::get('html-page/delete/{id}','HtmlPageController@delete');
+    
+    Route::any('html-page/uploadImage','HtmlPageController@upload')->name('ckeditor.upload');
+
 
     Route::get('print-preview','SystemSettingController@printpreview');
     

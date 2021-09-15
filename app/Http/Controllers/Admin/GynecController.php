@@ -50,7 +50,9 @@ class GynecController extends AdminController
             $pastData = $this->AncHoHistory->where('type',2)->pluck('name','name')->toArray();
             $familyData = $this->AncHoHistory->where('type',3)->pluck('name','name')->toArray();
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
-            return view('admin.gynec.create',compact('personalData','pastData','familyData','hoData','complaints','patient','medicines','patientsId','durationOfData','leftOvaryData','rightOvaryData','surgicallyData','isGynec','oe','hospitalDoctor'));
+            $isIvfHistory = !empty($this->IvfHistory->where('patients_id',$pId)->first()) ? true : false;
+            $isAncHistory = !empty($this->AncHistory->where('patients_id',$pId)->first()) ? true : false;
+            return view('admin.gynec.create',compact('personalData','pastData','familyData','hoData','complaints','patient','medicines','patientsId','durationOfData','leftOvaryData','rightOvaryData','surgicallyData','isGynec','oe','hospitalDoctor','isIvfHistory','isAncHistory'));
         }catch(Exception $e){
             log::debug($e->getMessage());
             abort(500);
@@ -204,6 +206,8 @@ class GynecController extends AdminController
         try{
             $data = [];
             $ancImagesData = [];
+            $isIvfHistory = null;
+            $isAncHistory = null;
             $pId = decrypt($patientsId);
             $patient = $this->OpdPatients->where('id',$pId)->first();
             $medicines = $this->Medicine->pluck('name','name');
@@ -285,6 +289,7 @@ class GynecController extends AdminController
                 $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
                 $surgicallyData = $this->surgicallyType()['data'];
                 // 
+                
                 $data['personalData'] = $personalData;
                 $data['familyData'] = $familyData;
                 $data['pastData'] = $pastData;
@@ -299,9 +304,12 @@ class GynecController extends AdminController
                 $data['gynecData'] = $gynec;
                 $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
                 $data['editGynec'] = View::make('admin.gynec.edit',$data)->render();
+               
                 return $data;
             }
-            return view('admin.gynec.history',compact('date','patientsId','medicines','patient'));
+            $isIvfHistory = !empty($this->IvfHistory->where('patients_id',$pId)->first()) ? true : false;
+            $isAncHistory = !empty($this->AncHistory->where('patients_id',$pId)->first()) ? true : false;
+            return view('admin.gynec.history',compact('date','patientsId','medicines','patient','isIvfHistory','isAncHistory'));
         }catch(Exception $e){
             log::debug($e);
             abort(500);
@@ -409,5 +417,62 @@ class GynecController extends AdminController
                 }
             }
         }
+    }
+    /**
+    * Return gynec preview 
+    * @param  \Illuminate\Http\Request $nameData
+    * @return \Illuminate\Http\Response
+    */
+    public function getGynecDetails(Request $request)
+    {
+        try
+        {
+            $patient = decrypt($request->patient_id);
+            $data = [];
+            $date = [];
+            if($request->ajax())
+            {
+                if($request->history_date)
+                {
+                    $gynec_type = 2;
+                    $gynec = $this->Gynec->where('created_at',$request->history_date)->first();
+                    $surgicallyData = $this->surgicallyType()['data'];
+                    $investigationReport = $this->allInvestigationReport();
+                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData'))->render();
+                    return response()->json([
+                        'status'=> 1,
+                        'gynec_type' => $gynec_type,
+                        // 'id' => encrypt($gynec->id),
+                        'data' => $data
+                    ]);
+                }
+                else
+                {
+                    $gynec_type = 1;
+                    $gynecAll = $this->Gynec->where('patients_id',$patient)->orderBy('created_at','desc')->get();
+                    $surgicallyData = $this->surgicallyType()['data'];
+                    $investigationReport = $this->allInvestigationReport();
+                    foreach($gynecAll as $gynec)
+                    {
+                        $gynec = $this->Gynec->find($gynec->id);
+                        $date[] = $gynec->created_at;
+                        $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData'))->render();
+                    }
+                    return response()->json([
+                        'status'=>1,
+                        'date'=> $date,
+                        'gynec_type' => $gynec_type,
+                        // 'id' => encrypt($gynec->id),
+                        'data' => $data
+                    ]);
+                }
+            }
+            return ['status'=>'true'];
+        }catch(Exception $e){
+            log::debug($e);
+            abort(500);            
+        }
+        
+        
     }
 }

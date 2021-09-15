@@ -58,6 +58,16 @@
                                         </div>
                                         <span class="seen-by-error text-danger mb-2"></span>
                                     </div>
+                                    <div class="col-md-1">
+                                        <label class="vertical-form-label pr-0">
+                                            RMO Doctor :
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                                        </div>
+                                    </div>
                                 </div>
                                 {{Form::hidden('visit',1)}}
                                 {{Form::hidden('patients_id',encrypt($iuiPatients->id),['class'=>'patients-id'])}}
@@ -106,7 +116,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">weight : &nbsp;</span>
-                                                    {{Form::number("weight",$iuiPatients->weight,['class'=>'form-control weight','id'=>'weight'])}}
+                                                    {{Form::text("weight",$iuiPatients->weight,['class'=>'form-control weight','id'=>'weight'])}}
                                                 </div>
                                                 <span class="form-error-msg weight-msg" id="error_weight">
                                                     {{$errors->first('weight')}}
@@ -2348,6 +2358,16 @@
                                                 </div>
                                                 
                                             </div>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            Other Report : &nbsp;
+                                                        </span>
+                                                        {{Form::text("investigation[investigation_extra]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -2457,6 +2477,30 @@
                                                         {{Form::text("h_factor[sperm_report]",'',['class'=>'form-control'])}}
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        HSA Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("investigation[hsa_report][type]",'yes','',['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_yes">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("investigation[hsa_report][type]",'no',true,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_no">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 pr-0 hsa-type d-none">
+                                                    <div class="hsa-images"></div>
+                                                </div>
+                                                
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -3105,6 +3149,24 @@
 
                                 {{Form::hidden('next_date','',['class'=>'next-date-value'])}}
                                 {{Form::hidden('next_time','',['class'=>'next-time-value'])}}
+                                <div class="row">
+                                                
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Follow Up : &nbsp;</span>
+                                                        {{Form::text("oe[follow_up]",'',['class'=>'form-control datetimepicker follow-up-date next-date '])}}
+                                                    </div>
+                                                    <span class="follow-date-msg form-error-msg"></span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Day : &nbsp;</span>
+                                                        {{Form::text("oe[follow_up_date_diff]",'',['class'=>'form-control next-day','maxlength'=>3,'placeholder'=>'Date Diff'])}}
+                                                    </div>
+                                                </div>
+
+                                                <span class="col-md-1 p-3 history-lmp-date">Day</span>
+                                            </div>
                                 <div class="col-sm-12">
                                     {{Form::submit('submit',['class'=>'btn btn-primary submit'])}}
                                     <button type="submit" class="btn btn-primary submit" value="1">Save & Preivew</button>
@@ -3311,6 +3373,9 @@
         });
         $('.blood-images').imageUploader({
             imagesInputName: 'investigation[blood_report][image]',
+        });
+        $('.hsa-images').imageUploader({
+            imagesInputName: 'investigation[hsa_report][images]',
         });
         $(document).ready(function(){
             $('.complain-multi .show-tick').addClass('d-none');

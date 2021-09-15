@@ -230,6 +230,7 @@ class MedicalController extends AdminController
             }
             return view('admin.medical.medicine',compact('patientsId','patients','categoryData'));
         }catch(Exception $e){
+            log::Debug($e);
             abort(500);
         }
     }

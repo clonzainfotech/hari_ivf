@@ -21,7 +21,7 @@ class InjectionController extends AdminController
         try{
             $planList = $this->Injection->groupBy('type')->pluck('type','type');
             if($request->ajax()) {
-                $injection = $this->Injection->orderBy('id','DESC');
+                $injection = $this->Injection->whereNotNull('name')->orderBy('id','DESC');
             
                 // search text
                 $search = $request->search;
@@ -65,6 +65,8 @@ class InjectionController extends AdminController
             if(!empty($injection))
             {
                 $data['status'] = 2;
+            return $data;
+
             }
             if(!empty($request->injId))
             {
@@ -72,19 +74,28 @@ class InjectionController extends AdminController
                 $injection = $this->Injection->where('id','=',$injId)->first();
                 $injection->name = $request->inj_name;
                 $injection->type = $request->plan;
+                $injection->category = $request->category;
+                $injection->net_price = $request->net_price;
+                $injection->quantity = $request->qty;
                 $injection->save();
                 $data['status'] = 1;
+            return $data;
+
             }
             if(empty($injection) && empty($request->injId))
             {   
                 $injection = $this->Injection;
                 $injection->name = $request->inj_name;
                 $injection->type = $request->plan;
+                $injection->category = $request->category;
+                $injection->net_price = $request->net_price;
+                $injection->quantity = $request->qty;
                 $injection->save();
                 $data['status'] = 1;
+            return $data;
+
             }
             
-            return $data;
         }catch(Exception $e){
             log::debug($e);
             abort(500);
@@ -94,7 +105,7 @@ class InjectionController extends AdminController
     // Injection delete using this function via injection id
     public function delete($id){
         try{
-            $injection = $this->Injection->find($id);
+            $injection = $this->Injection->find(decrypt($id));
             $injection->delete();
             return 'true';
         }catch(Exception $e){
@@ -244,28 +255,35 @@ class InjectionController extends AdminController
     {
         try{
 
-            $injection = !empty($request->injId) ? $this->Injection->where('type',$request->plan)->where('id','!=',decrypt($request->injId))->first() : $this->Injection->where('type',$request->plan)->first();
+            $injection = !empty($request->injId) ? $this->Injection->where('type',$request->plan)->where('category',$request->category)->where('id','!=',decrypt($request->injId))->first() : $this->Injection->where('type',$request->plan)->where('category',$request->category)->first();
+            // dd(decrypt($request->injId));
+            
             if(!empty($injection))
             {
                 $data['status'] = 2;
+                return $data;
             }
             if(!empty($request->injId))
             {
                 $injId = decrypt($request->injId);
                 $injection = $this->Injection->where('id','=',$injId)->first();
-                $injection->type = $request->plan;
-                $injection->save();
+                $injectionUpdate = $this->Injection->where('type','=',$injection->type)->update(['type' => $request->plan,'category' => $request->category]);
+                // $injection->type = $request->plan;
+                // $injection->category = $request->category;
+                // $injection->save();
                 $data['status'] = 1;
+                return $data;
             }
             if(empty($injection) && empty($request->injId))
             {   
                 $injection = $this->Injection;
                 $injection->type = $request->plan;
+                $injection->category = $request->category;
                 $injection->save();
                 $data['status'] = 1;
+                return $data;
             }
             
-            return $data;
         }catch(Exception $e){
             log::debug($e);
             abort(500);

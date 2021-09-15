@@ -120,17 +120,19 @@ class HomeController extends AdminController
             ->get();
         $newPatientData = $this->OpdPatients->paginate(100);
 
-        $appointmentData = collect($this->Appointment
-            ->where('date', $todayDate)
-            ->withCount([
-                'getPatientsDetails' => function ($query) use ($todayDate) {
-                    $query->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $todayDate);
-                }
-            ])
-            ->get());
-
-        $totalPatients = $appointmentData->sum('get_patients_details_count');
-        $totalAppointments = count($appointmentData);
+        // $appointmentData = collect($this->Appointment
+        //     ->where('date', $todayDate)
+        //     ->withCount([
+        //         'getPatientsDetails' => function ($query) use ($todayDate) {
+        //             $query->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $todayDate);
+        //         }
+        //     ])
+        //     ->get());
+        $appontmentCount = $this->Appointment->whereDate('date',$todayDate)->where('usg_status',0)->count();
+        // $totalPatients = $appointmentData->sum('get_patients_details_count');
+        $totalPatients = $this->OpdPatients->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $todayDate)->count();
+        // $totalAppointments = count($appointmentData);
+        $totalAppointments = $appontmentCount;
         $totalOpds = $this->AppointmentCharges->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $todayDate)->count();
 
         // chart data for income
@@ -428,10 +430,11 @@ class HomeController extends AdminController
                     return $data;
                 }
                 $appointment = $appointment->paginate(100);
+                $patient_notification = $this->patientNotification->first();
                 $data['status'] = 1;
                 $data['patientsData'] = $patients;
                 $data['pId'] = $request->patient_id;
-                $data['appointmentData'] = View::make('admin.anc_iui_ivf.data',compact('patients','appointment','categoryArray'))->render();
+                $data['appointmentData'] = View::make('admin.anc_iui_ivf.data',compact('patients','appointment','categoryArray','patient_notification'))->render();
                 return $data;
             }
             return view('admin.anc_iui_ivf.index',compact('appointment','categoryData','referenceDoctor','doctor','hospitalDoctor','patients'));
@@ -450,6 +453,222 @@ class HomeController extends AdminController
         $referenceDoctor = $this->ReferenceDoctor->orderBy('name','ASC')->pluck('name','id');
         $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
         return['referenceDoctor'=>$referenceDoctor,'hospitalDoctor'=>$hospitalDoctor];
+    }
+
+    /**
+    * Return PopUp detailof patient as category wise
+    * @param  \Illuminate\Http\Request $request
+    * @return \Illuminate\Http\Response
+    */
+    public function getPatientPopUpDetail(Request $request)
+    {
+        $patients_id = decrypt($request->patients_id);
+        $appoitmentDate = \Carbon\Carbon::parse($request->appoitmentDate)->format('Y-m-d');
+        $opdPatient = $this->OpdPatients->find($patients_id);
+        $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
+        $typeOfData = [1=>'Primary',2=>'Secondary'];
+        $data = '';
+        if($request->category && in_array($request->category,[5,6,10,13]))
+        {
+            $ancHistory = $this->AncHistory->where('patients_id','=',$patients_id)
+                ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)
+                ->orderBy('id','desc')
+                ->first();
+            $lmp = '';
+            $preg_week = '';
+            $eddDate = '';
+            $remark = '';
+            $current_anc_id = null;
+            $hoDate = null;
+            if($ancHistory)
+            {
+                $ancFirst = $this->ANC->where('patients_id',$patients_id)->where('id',$ancHistory->anc_id)->first();
+                $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
+                $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
+                $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
+                $h_o = !empty($ancHistory->h_o) ? json_decode($ancHistory->h_o) : null;
+                $o_e = !empty($ancHistory->o_e) ? json_decode($ancHistory->o_e) : null;
+                $remark = !empty($o_e->remark) ? $o_e->remark : null;
+                $ancCreatedDate = $ancHistory->created_at;
+            }
+            else
+            {
+                $ancFirst = $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
+                if($ancFirst)
+                {
+                    $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
+                    $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
+                    $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
+                    $current_anc_id = $ancFirst->id;
+                    $ancFirstH_o = !empty($ancFirst->h_o) ? json_decode($ancFirst->h_o) : null;
+                    $ancFirstO_e = !empty($ancFirst->o_e) ? json_decode($ancFirst->o_e) : null;
+                    $remark = !empty($ancFirstO_e->remark) ? $ancFirstO_e->remark : null;
+                    $ancCreatedDate = $ancFirst->created_at;
+                }
+            }
+            if(!empty($lmp))
+            {
+                $days = 30;
+                $oldDate = Carbon::parse($lmp)->format('Y-m-d');
+                $nowDate = Carbon::now()->format('Y-m-d');
+                $diffDays = Carbon::parse($oldDate)->diffInDays($nowDate);
+                $totalDays = $diffDays;
+                $hoDate = (int)($totalDays/$days).'-'.$totalDays % $days; 
+                $preg_week =  Carbon::parse($lmp)->diffInWeeks($nowDate);
+            }
+            if($hoDate){
+                $hoDate = explode('-',$hoDate);
+                $mon = $hoDate[0]. ' month';
+                $day = $hoDate[1]. ' day';
+                $hoDate = $mon.' '.$day;
+                // $hoData[$hoDate] = $hoDate;
+            }
+            
+            
+            // dd($preg_week);
+            $ancAutoRemark = app('App\Http\Controllers\Admin\ANCController')->getAutoRemark($patients_id,$current_anc_id);;
+            
+            $html = '';
+            
+            if($ancAutoRemark && !empty($ancAutoRemark['blood_group']) &&  (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['blood_group_date'])))
+            {
+                $html =  $html . ' Blood Group : '.$ancAutoRemark['blood_group'];
+            }
+            
+            if($ancAutoRemark && !empty($ancAutoRemark['hbsag']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hbsag_date'])))
+            {
+                $html = $html.' HBSAG : '.$ancAutoRemark['hbsag'];
+            }
+            
+            if($ancAutoRemark && !empty($ancAutoRemark['hiv']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hiv_date'])))
+            {
+                $html = $html.' HIV : '.$ancAutoRemark['hiv'];
+            }
+            if($ancAutoRemark && !empty($ancAutoRemark['vdrl']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['vdrl_date'])))
+            {
+                $html = $html.' VDRL : '.$ancAutoRemark['vdrl'];
+            }
+            if($ancAutoRemark && !empty($ancAutoRemark['late_concept']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['late_concept_date'])))
+            {
+                $html = $html.' Late Conception : Yes';
+            }
+            if($ancAutoRemark && !empty($ancAutoRemark['cesarean']))
+            {
+                $html = $html.' Previous : '.$ancAutoRemark['cesarean']. ' - LSCS';
+            }
+            if($ancAutoRemark && !empty($ancAutoRemark['position']) && ($ancAutoRemark['position'] == 'breech' || $ancAutoRemark['position'] == 'transverse' || $ancAutoRemark['position'] == 'oblique'))
+            {
+                if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['position_date']))
+                {
+                    $html = $html.' Position : '.$ancAutoRemark['position'];
+                }
+            }
+            if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly') && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['liquor_date'])))
+            {
+                $html = $html.' Liquor : '.$ancAutoRemark['liquor'];
+            }
+            if($ancAutoRemark && !empty($ancAutoRemark['placenta']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['placenta_date'])))
+            {
+                $html = $html.' Placenta : '.$ancAutoRemark['placenta'];
+            }
+            $data = '<p><span class="font-bold candor-color">LMP Date : </span>'.(!empty($lmp) ? \Carbon\Carbon::parse($lmp)->format('d M Y') : '-').'</p>
+                    <p><span class="font-bold candor-color">H/O : </span>'.(!empty($hoDate) ? $hoDate : '').'</p>
+                    <p><span class="font-bold candor-color">EDD Date : </span>'.(!empty($eddDate) ? \Carbon\Carbon::parse($eddDate)->format('d M Y') : '-').'</p>
+                    <p><span class="font-bold candor-color">Preg. Week : </span>'.(!empty($preg_week) ? $preg_week.' week' : '-').'</p>
+                    <p><span class="font-bold candor-color">Remark : </span>'.$html.'</p>
+                    <p><span class="font-bold candor-color">Last Remark : </span>'.$remark.'</p>
+                    <p><span class="font-bold candor-color">Ref. By : </span>'.$opdPatient->getReferenceDoctor['name'].'</p>';
+        }
+        if($request->category && in_array($request->category,[1,2]))
+        {
+            $ivf = $this->IVF->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+            $ml = '';
+            $no_cycle = '';
+            $plan_type = '';
+            $remark = '';
+            $package = '';
+            $current_cycle = '';
+            if($ivf)
+            {
+                $ohData = json_decode($ivf->o_h);
+                $year = !empty($ohData->first_marriage_life) ? $ohData->first_marriage_life.' year' : (!empty($ohData->second_marriage_details) ? $ohData->second_marriage_details.' year': null);
+                $ml = !empty($ohData->type_of_infertility) ? $typeOfData[$ohData->type_of_infertility].' / '.$year : 'Primary / '.$year;
+            }
+            $no_cycle = count($this->IvfHistory->where('patients_id',$patients_id)->WhereNull('description->skip_reason')->Where('description->is_transfer','=','yes')->groupBy('cycle_no')->get());
+            // dd($no_cycle); 
+            $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)->orderBy('id','desc')->first();
+            $current_cycle = $no_cycle + 1;
+            if($currentHistory)
+            {
+                $currentData = json_decode($currentHistory->description);
+                $plan_type = $planData[$currentHistory->plan];
+                $remark = !empty($currentData->remark) ? $currentData->remark : '';
+            }
+            $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
+            <p><span class="font-bold candor-color">No. Of Cycle : </span>'.$no_cycle.'</p>
+            <p><span class="font-bold candor-color">Current Cycle : </span>'.$current_cycle.'</p>
+            <p><span class="font-bold candor-color">Plan : </span>'.$plan_type.'</p>
+            <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>
+            <p><span class="font-bold candor-color">Package : </span>'.'-'.'</p>';
+        }
+        if($request->category && in_array($request->category,[3,4]))
+        {
+            $iui = $this->IUI->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+            $ml = '';
+            $no_cycle = '';
+            $plan = '';
+            $remark = '';
+            $last_cycle_plan = '';
+            $current_cycle = '';
+            if($iui)
+            {
+                $ohData = json_decode($iui->o_h);
+                $year = !empty($ohData->first_marriage_life) ? $ohData->first_marriage_life.' year' : (!empty($ohData->second_marriage_details) ? $ohData->second_marriage_details.' year': null);
+                $ml = !empty($ohData->type_of_infertility) ? $typeOfData[$ohData->type_of_infertility].' / '.$year : 'Primary / '.$year;
+                
+            }
+            $iuiFirstVisit = $this->IUI->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)->orderBy('id','desc')->first();
+            if($iuiFirstVisit)
+            {
+                $iuiFirstVisitOh = json_decode($iuiFirstVisit->o_h);
+                $remark = !empty($iuiFirstVisitOh->remark) ? $iuiFirstVisitOh->remark : '';
+            }
+            $no_cycle = count($this->IuiHistory->where('patients_id',$patients_id)->WhereNotNull('description->result')->groupBy('cycle_no')->get());
+            // $current_cycle = $no_cycle + 1;
+            $currentHistory = $this->IuiHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)
+            ->orderBy('id','desc')
+            ->first();
+            $iuiSecondVisit = $this->IuiHistory->where('patients_id',$patients_id)->where('visit',2)->orderBy('id','desc')->first();
+            if($iuiSecondVisit)
+            {
+                $iuiSecondVisitData = json_decode($iuiSecondVisit->description);
+                $current_cycle = $iuiSecondVisit->cycle_no;
+                $lastCycle = $this->IuiHistory->where('patients_id',$patients_id)->where('visit',2)->where('cycle_no',($current_cycle-1))->first();
+                if($lastCycle)
+                {
+                    $lastCycleVisitData = json_decode($lastCycle->description);
+                    $last_cycle_plan = !empty($lastCycleVisitData->plan->plan_type) ? $lastCycleVisitData->plan->plan_type : null;
+                }
+            
+                $plan = !empty($iuiSecondVisitData->plan->plan_type) ? $iuiSecondVisitData->plan->plan_type : null;
+            }
+            if($currentHistory)
+            {
+                $currentData = json_decode($currentHistory->description);
+                $remark = !empty($currentData->remark) ? $currentData->remark : '';
+            }
+            $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
+            <p><span class="font-bold candor-color">No. Of Cycle : </span>'.$no_cycle.'</p>
+            <p><span class="font-bold candor-color">Current Cycle : </span>'.$current_cycle.'</p>
+            <p><span class="font-bold candor-color">Plan : </span>'.$plan.'</p>
+            <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>
+            <p><span class="font-bold candor-color"> Last Cycle Plan: </span>'.$last_cycle_plan.'</p>';
+        }
+        
+        return response()->json([
+            'status'=>1,
+            'data' => $data
+        ]);                   
     }
 
 }

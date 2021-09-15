@@ -75,6 +75,16 @@ use App\Models\CaExpense;
 use App\Models\BankDetail;
 use App\Models\PatientToken;
 use App\Models\HospitalCharge;
+use App\Models\PatientMemory;
+use App\Models\PatientWeight;
+use App\Models\CategoryNotification;
+use App\Models\IUIReport;
+use App\Models\IvfExtraVisit;
+use App\Models\InjectionManager;
+use App\Models\HtmlPage;
+use App\Models\PatientSignup;
+use App\Models\IvfPaymentReminder;
+
 
 
 class BaseController extends Controller
@@ -151,7 +161,16 @@ class BaseController extends Controller
         $this->BankDetail = new BankDetail;
         $this->PatientToken = new PatientToken;
         $this->HospitalCharge = new HospitalCharge;
-        
+        $this->PatientMemory = new PatientMemory;
+        $this->PatientWeight = new PatientWeight;
+        $this->CategoryNotification = new CategoryNotification;
+        $this->IUIReport = new IUIReport;
+        $this->IvfExtraVisit = new IvfExtraVisit;
+        $this->InjectionManager = new InjectionManager;
+        $this->HtmlPage = new HtmlPage;
+        $this->PatientSignup = new PatientSignup;
+        $this->IvfPaymentReminder = new IvfPaymentReminder;
+
     }
 
     // remove image form our server

@@ -65,6 +65,16 @@
                                     </div>
                                     <span class="seen-by-error text-danger mb-2"></span>
                                 </div>
+                                <div class="col-md-1">
+                                    <label class="vertical-form-label pr-0">
+                                        RMO Doctor :
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{Form::select('rmo_doctor',$rmoDoctor,$ivf->rmo_doctor,['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                                    </div>
+                                </div>
                             </div>
                             {{Form::hidden('ivf_id', null, ['id' => 'ivf_id'])}}
                             {{Form::hidden('donor[is_donors]', !empty($donar) && !empty($donar->is_donors) ? $donar->is_donors : 0 )}}
@@ -111,7 +121,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">weight : &nbsp;</span>
-                                                    {{Form::number("weight",$ivf->getPatientsInfoData->weight,['class'=>'form-control weight','id'=>'weight'])}}
+                                                    {{Form::text("weight",$ivf->getPatientsInfoData->weight,['class'=>'form-control weight','id'=>'weight'])}}
                                                 </div>
                                                 <span class="form-error-msg weight">
                                                     {{$errors->first('weight')}}
@@ -546,7 +556,7 @@
                                                     {{$errors->first('second_marriage_life')}}
                                                 </span>
                                             </div> --}}
-                                            <div class="col-md-1">
+                                            {{-- <div class="col-md-1">
                                                 <label class="vertical-form-label pr-0">
                                                     UPT :
                                                 </label>
@@ -579,7 +589,7 @@
                                                         'placeholder' => 'UPT Details'
                                                     ])}}
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             @php
                                                 $showUptLabel = 'd-none';
                                                 if (!empty($oh->upt_details)) {
@@ -2818,6 +2828,16 @@
                                                 <div class="blood-images"></div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        Other Report : &nbsp;
+                                                    </span>
+                                                    {{Form::text("investigation[investigation_extra]",isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null,['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2927,6 +2947,34 @@
                                                     {{Form::text("h_factor[sperm_report]",!empty($husbandFactor->sperm_report) ? $husbandFactor->sperm_report : null,['class'=>'form-control'])}}
                                                 </div>
                                             </div>
+                                        </div>
+                                        @php
+                                                $hsaReportClass = !empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'yes' ? true : false;
+                                                $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                                        @endphp
+                                        <div class="row">
+                                            <div class="col-md-1 pr-0">
+                                                <label class="vertical-form-label pr-0">
+                                                    HSA Report :
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("investigation[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                    <label for="hsa_type_yes">
+                                                        Yes
+                                                    </label>
+
+                                                    {{Form::radio("investigation[hsa_report][type]",'no',!empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                    <label for="hsa_type_no">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                                                <div class="hsa-images"></div>
+                                            </div>
+                                            
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -3412,7 +3460,7 @@
                                                     </label>
                                                 </div>
                                             <div class="col-md-9 complain-multi medicine-picker">
-                                                {{Form::select("treatment[medicinedata][]",$medicines,$medicineKey,['id'=>'treatment-medicine','class'=>'form-control co-value medicine medicine-co','multiple'=>true])}}
+                                                {{Form::select("treatment[medicinedata][]",$medicines,$medicineKey,['id'=>'treatment-medicine','class'=>'form-control co-value medicine medicine-co',"placeholder"=>'select Medicine'])}}
                                             </div>
                                         </div><br>
                                         <div class="page-loader-wrapper medicine-loader d-none">
@@ -3632,10 +3680,14 @@
         $('.blood-images').imageUploader({
             imagesInputName: 'investigation[blood_report][image]',
         });
+        $('.hsa-images').imageUploader({
+            imagesInputName: 'investigation[hsa_report][images]',
+        });
         var hystroscopyImages = @json($hystroscopyImagesData);
         var hcgImages = @json($hcgImagesData);
         var laproscopyImages = @json($laproscopyImagesData);
         var bloodReportImages = @json($bloodReportImagesData);
+        var hsaReportImages = @json($hsaReportImagesData);
         $(document).ready(function(){
             if(hystroscopyImages != 'null') {
                 $('.hystroscopy-images').imageUploader({
@@ -3663,6 +3715,13 @@
                     preloaded: jQuery.parseJSON(bloodReportImages),
                     imagesInputName: 'investigation[blood_report][image]',
                     preloadedInputName: 'blood_report_old'
+                });
+            }
+            if(hsaReportImages != 'null') {
+                $('.hsa-images').imageUploader({
+                    preloaded: jQuery.parseJSON(hsaReportImages),
+                    imagesInputName: 'investigation[hsa_report][images]',
+                    preloadedInputName: 'hsa_report_old'
                 });
             }
             $('.complain-multi .show-tick').addClass('d-none');
@@ -3713,6 +3772,10 @@
             var file_data = $('input[name="investigation[blood_report][image][]"]')[0].files;
             for (var i = 0; i < file_data.length; i++) {
                 data.append("investigation[blood_report][image][]", file_data[i]);
+            }
+            var file_data = $('input[name="investigation[hsa_report][images][]"]')[0].files;
+            for (var i = 0; i < file_data.length; i++) {
+                data.append("investigation[hsa_report][images][]", file_data[i]);
             }
             
             $('.seen-by-error').text('');

@@ -96,6 +96,7 @@ class IUIController extends AdminController
             $cycleNoData = $this->IuiHistory->where('patients_id',$pId)->orderBY('id','DESC')->first();
             $hoData = $this->getHoData();
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+            $rmoDoctor = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
             $durationOfData = getDurationOfData(2)['data'];
             $cycleNo = 1;
             if($cycleNoData && $cycleNoData->visit == 4){
@@ -105,7 +106,7 @@ class IUIController extends AdminController
             ->whereStatus(1)
             ->whereNotIn('id', [7])
             ->pluck('name','id');
-            return view('admin.iui.create',compact('personalData','pastData','familyData','iuiPatients','hoData','patientsId','referenceDoctor','complaints','medicines','hospitalTime','leftOvaryData','rightOvaryData','cycleNo','durationOfData','appointmentData','category','hospitalDoctor'));
+            return view('admin.iui.create',compact('rmoDoctor','personalData','pastData','familyData','iuiPatients','hoData','patientsId','referenceDoctor','complaints','medicines','hospitalTime','leftOvaryData','rightOvaryData','cycleNo','durationOfData','appointmentData','category','hospitalDoctor'));
         }catch(Exception $e){
             return back();
         }
@@ -145,18 +146,21 @@ class IUIController extends AdminController
             $gynecStatus = 0;
             $bloodOldImages = [];
             $usgOldImages = [];
+            $hsaOldImages = [];
             if($request->visit == 1){
                 $iui = $this->IUI;
                 $investigationData = $request->investigation;
                 $hystroscopyOldImages = [];
                 $laproscopyOldImages = [];
                 $hcgOldImages = [];
+                $hsaOldImages = [];
                 
                 if($request->iui_id){
                     $this->getImagesData('hystroscopy_old','iui',$request->iui_id,$request->hystroscopy_old ? $request->hystroscopy_old : [-1]);
                     $this->getImagesData('laproscopy_old','iui',$request->iui_id,$request->laproscopy_old ? $request->laproscopy_old : [-1]);
                     $this->getImagesData('hcg_old','iui',$request->iui_id,$request->hcg_old ? $request->hcg_old : [-1]);
                     $this->getImagesData('blood_report_old','iui',$request->iui_id,$request->blood_report_old ? $request->blood_report_old : [-1]);
+                    $this->getImagesData('hsa_report_old','iui',$request->iui_id,$request->hsa_report_old ? $request->hsa_report_old : [-1]);
                     $iui = $iui->where('id',$request->iui_id)->first();
                     if(!empty($iui->investigation)){
                         $oldInvestigationData = json_decode($iui->investigation);
@@ -165,6 +169,7 @@ class IUIController extends AdminController
                             $laproscopyOldImages = !empty($oldInvestigationData->laproscopy->images) ? (array)$oldInvestigationData->laproscopy->images : [];
                             $hcgOldImages = !empty($oldInvestigationData->hcg->images) ? (array)$oldInvestigationData->hcg->images : [];
                             $bloodOldImages = !empty($oldInvestigationData->blood_report->image) ? (array)$oldInvestigationData->blood_report->image : [];
+                            $hsaOldImages = !empty($oldInvestigationData->hsa_report->images) ? (array)$oldInvestigationData->hsa_report->images : [];
                         }
                     }
                 }
@@ -204,6 +209,15 @@ class IUIController extends AdminController
                 }else{
                     $investigationData['blood_report']['image'] = $bloodOldImages;
                 }
+                if(!empty($request['investigation']['hsa_report']['images'])){
+                    foreach($request['investigation']['hsa_report']['images'] as $key=>$row){
+                        $name = $this->uploadImage($row, 'public/upload/iui/report/');
+                        $hsaImagesData[] = 'public/upload/iui/report/' . $name;
+                    }
+                    $investigationData['hsa_report']['images'] = array_merge($hsaImagesData,$hsaOldImages);
+                }else{
+                    $investigationData['hsa_report']['images'] = $hsaOldImages;
+                }
                 if(!empty($request['p_detailes']['personal_history_history_type'])){
                     $this->storeIUIHoData($request['p_detailes']['personal_history_history_type'],1);
                 }
@@ -242,6 +256,7 @@ class IUIController extends AdminController
                 }
                 $seenBy = $request->seen_by;
                 $iui->seen_by = $seenBy;
+                $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                 if($gynecStatus == 0){
                     $iui->h_o = json_encode($request->ho);
                     $iui->c_o = json_encode($request->co);
@@ -314,6 +329,32 @@ class IUIController extends AdminController
                 //     $this->medicineData($request->treatment['medicinedata']);
                 //     $this->treatmentData($request->treatment);
                 // }
+                $followupDate = !empty($request->oe['follow_up']) ? $request->oe['follow_up'] : null;
+                $appointmentTime = null;
+                        $fDate = !empty($followupDate) ? Carbon::parse($followupDate)->format('Y-m-d') : null;
+                        if($fDate){
+                            $requestData = new \Illuminate\Http\Request();
+                            $requestData->replace(['date' => $fDate,'status'=>true]);
+                            $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
+                            if(!empty($nextAppontment['time']) || $nextAppontment['time'] == 0){
+                                $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
+                                $appointmentTime = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
+                                $followupDate = !empty($nextAppontment['date']) ? $nextAppontment['date'] : $followDate;
+                            }
+                        }
+                        // $checkAppointment = $this->Appointment->wherePatientsId($patientsId)->whereDate('date',$followDate)->orderBy('id','DESC')->first();
+                        $appointment = $this->Appointment->where('patients_id',$patientsId)->orderBy('id','DESC')->first();
+                        if($appointment){
+                            if(!empty($request->data['ivf']) && $request->data['ivf'] == 'yes')
+                            {
+                                $appointmentData['category'] = 1;
+                            }
+                            $appointmentData['appointmentId'] = encrypt($appointment->id);
+                            $appointmentData['date'] = $followupDate;
+                            $appointmentData['time'] = $appointmentTime;
+                            $nextAppointment = $this->nextAppointmentData($appointmentData);
+                        }
+
                 $iui->treatment = !empty($request->treatment) ? json_encode($request->treatment) : json_encode($request->old_treatment);
                 // patients data update from iui
                 $patients = $this->OpdPatients->find($patientsId);
@@ -355,6 +396,7 @@ class IUIController extends AdminController
                     {
                         $this->getImagesData('blood_report_old','iui_history',$request->iui_history_id,$request->blood_report_old ? $request->blood_report_old : [-1]);
                         $this->getImagesData('usg_old','iui_history',$request->iui_history_id,$request->usg_old ? $request->usg_old : [-1]);
+                        $this->getImagesData('hsa_report_old','iui_history',$request->iui_history_id,$request->hsa_report_old ? $request->hsa_report_old : [-1]);
                         $iui = $iui->where('id',$request->iui_history_id)->first();
                     }
                 }
@@ -392,6 +434,7 @@ class IUIController extends AdminController
                 if($request->visit == 2){
                     $seenBy = $request->seen_by_2;
                     $iui->seen_by = $seenBy;
+                    $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                     if(!empty($request['data']['plan']['plan_type'])){
                         $planData = $request['data']['plan']['plan_type'];
                         $planData = explode(' ', $planData);
@@ -403,17 +446,20 @@ class IUIController extends AdminController
                 if($request->visit == 3){
                     $seenBy = $request->seen_by_3;
                     $iui->seen_by = $seenBy;
+                    $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                     $msg = !empty($request['data']['ovalution']) && $request['data']['ovalution'] == 'yes' && !empty($request['data']['hcg']) && !empty($request['data']['hcg']['iui']) && !empty($request['data']['hcg']['iui']['status']) && $request['data']['hcg']['iui']['status'] == 'yes' && !empty($request['data']['hcg']['iui']['type']) ? 'IUI Done ' : 'Advise Ovalution Study ';
                 }
                 if($request->visit == 4){
                     $seenBy = $request->seen_by_4;
                     $iui->seen_by = $seenBy;
+                    $iui->rmo_doctor = !empty($request->rmo_doctor) ? $request->rmo_doctor : null;
                     $msg = !empty($request->data['result']) ? 'Result '.ucfirst($request->data['result']) : null;
                     $followupDate = !empty($request->data['date']) ? $request->data['date'] : null;
                 }
                 if(!empty($request->data['result']) && $request->data['result'] == 'fail' && empty($request->iui_history_id) && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'negative')){
                     $iuiFirstVisitData = $this->IUI;
                     $iuiFirstVisitData->patients_id = $iuiPatientsData->patients_id;
+                    $iuiFirstVisitData->seen_by = ($seenBy) ? $seenBy : Auth::user()->id;
                     $iuiFirstVisitData->created_by = $iuiPatientsData->created_by;
                     $iuiFirstVisitData->patients_info = $iuiPatientsData->patients_info;
                     $iuiFirstVisitData->h_o = $iuiPatientsData->h_o;
@@ -433,7 +479,7 @@ class IUIController extends AdminController
                     $iuiFirstVisitData->created_at = Carbon::now()->addSeconds(120)->format('Y-m-d H:i:s');
                     $iuiFirstVisitData->save();
                 }
-                if(!empty($request->data['result']) && $request->data['result'] == 'consive' && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'positive')){
+                if(!empty($request->data['result']) && $request->data['result'] == 'consive'){
                     $ancData = $this->ANC;
                     $autoRemark = [];
                     
@@ -445,8 +491,39 @@ class IUIController extends AdminController
                     $iui_mh_data->lmd_date_diff = !empty($iuiSecondVisitData->lmp->lmp_date_diff) ? $iuiSecondVisitData->lmp->lmp_date_diff : '';
                     $iui_mh_data->edd = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->addMonths(9)->addDays(7)->format('Y-m-d') : '';
                     $iuiPatientsData->m_h = json_encode($iui_mh_data);
-                    $autoRemark['remark'] = "Conceived from IUI";
+                    if(!empty($iuiPatientsData->h_o))
+                    {
+                        $hoData = json_decode($iuiPatientsData->h_o);
+                        $hoDetails = $hoData->ho_details;
+                        $hoDetails = strtolower($hoDetails);
+                        $hoMonth = str_replace('month', '-', $hoDetails);
+                        if(strpos($hoDetails,'months') !== false || strpos($hoDetails,'days') !== false){
+                            $hoDetails = str_replace('s', '', $hoMonth);
+                        }else{
+                            $hoDetails = $hoMonth;
+                        }
+                        if(strpos($hoDetails,'day') !== false){
+                            $hoDetails = str_replace('day', '', $hoDetails);
+                        }
+                        $hoDetails = str_replace(' ', '', $hoDetails);
+                        $hoMonth = explode('-',$hoDetails);
+                        $hoMonthData = !empty($hoMonth[0]) ? $hoMonth[0] : 0;
+                        // dd($hoMonthData);
+                        $hoDay = !empty($hoMonth[1]) ? $hoMonth[1] : 0;
+                        $days = 30;
+                        $monthDays = ((int)$hoMonthData * (int)$days) + (int)str_replace(' ', '', $hoDay);
+                        $oldDate = Carbon::parse(!empty($iuiSecondVisitData->lmp->date) ? $iuiSecondVisitData->lmp->date : date('Y-m-d'))->format('Y-m-d');
+                        $nowDate = Carbon::now();
+                        $diffDays = Carbon::parse($oldDate)->diffInDays($nowDate);
+                        $totalDays = $monthDays + $diffDays;
+                        $hoData->ho_details = (int)($totalDays/$days).' month '.$totalDays % $days.' day';
+                        // $hoDetails->ho_details =  $hoDetails;
+                        $iuiPatientsData->h_o = json_encode($hoData);
+                    }
+                    $ho_type = ['1'=>'Naturally','2'=>'Medicine','3'=>'IUI'];
+                    $autoRemark['remark'] = "Conceived with ".(isset($request->data['ho_type']) && !empty($request->data['ho_type']) ? $ho_type[$request->data['ho_type']]: '');
                     $ancData->patients_id = $patientsId;
+                    $ancData->seen_by = ($seenBy) ? $seenBy : Auth::user()->id;
                     $ancData->patients_info = $iuiPatientsData->patients_info;
                     $ancData->patients_details_ho = $iuiPatientsData->patients_details_ho;
                     $ancData->patients_obstratics = $iuiPatientsData->o_h;
@@ -492,22 +569,6 @@ class IUIController extends AdminController
                     }
                     $iuiPatientsData->follow_up = $followDate;
                     $iuiPatientsData->save();
-                    // $checkAppointment = $this->Appointment->wherePatientsId($patientsId)->orderBy('id','DESC')->whereDate('date','>=',$currentDate)->first();
-                    // // dd($checkAppointment);
-                    // if($checkAppointment){
-                    //     $categoryId = $checkAppointment->category_id;
-                    //     log::debug('inIUIStoreFunction');
-                    //     log::debug('inCheckAppointmentExits');
-                    //     log::debug('patientsId');
-                    //     log::debug($patientsId);
-                    //     log::debug('categoryId');
-                    //     log::debug($categoryId);
-                    //     log::debug('EndIIUIStoreFUnction');
-                    //     $checkAppointment->category_id = $this->categoryNewToOld($categoryId);
-                    //     $checkAppointment->date = $followDate;
-                    //     $checkAppointment->save();
-                    // }else{
-                        // dd('sdfsdfksf');
                         
                         $appointmentTime = null;
                         $fDate = !empty($followDate) ? Carbon::parse($followDate)->format('Y-m-d') : null;
@@ -556,6 +617,7 @@ class IUIController extends AdminController
                     $description = json_decode($iui->description);
                     $bloodOldImages = !empty($description->blood_report->image) ? (array)$description->blood_report->image : [];
                     $usgOldImages = !empty($description->usg->images) ? (array)$description->usg->images : [];
+                    $hsaOldImages = !empty($description->hsa_report->images) ? (array)$description->hsa_report->images : [];
                 }
                 if(!empty($request['data']['blood_report']['image'])){
                     foreach($request['data']['blood_report']['image'] as $key=>$row){
@@ -569,12 +631,22 @@ class IUIController extends AdminController
                 if(!empty($request['data']['usg']['images'])){
                     foreach($request['data']['usg']['images'] as $key=>$row){
                         $name = $this->uploadImage($row, 'public/upload/iui/report/');
-                        $uegImagesData[] = 'public/upload/iui/report/' . $name;
+                        $usgImagesData[] = 'public/upload/iui/report/' . $name;
                     }
-                    $data['usg']['images'] = array_merge($uegImagesData,$usgOldImages);
+                    $data['usg']['images'] = array_merge($usgImagesData,$usgOldImages);
                 }else{
                     $data['usg']['images'] = $usgOldImages;
                 }
+                if(!empty($request['data']['hsa_report']['images'])){
+                    foreach($request['data']['hsa_report']['images'] as $key=>$row){
+                        $name = $this->uploadImage($row, 'public/upload/iui/report/');
+                        $hsaImagesData[] = 'public/upload/iui/report/' . $name;
+                    }
+                    $data['hsa_report']['images'] = array_merge($hsaImagesData,$hsaOldImages);
+                }else{
+                    $data['hsa_report']['images'] = $hsaOldImages;
+                }
+               
                 $iui->description = json_encode($data);
                 if(!empty($request->data['oe']['ovary']['right']['details']) || !empty($request->data['oe']['ovary']['left']['details'])){
                     $rightData = !empty($request->data['oe']['ovary']['right']['details']) ? $request->data['oe']['ovary']['right']['details'] : [];
@@ -596,7 +668,7 @@ class IUIController extends AdminController
                     $lastIui = $this->IUI->wherePatientsIdAndCycleNo($patientsId, $request->cycle_no)->first();
                     $lastIUIHistory = $this->IuiHistory->wherePatientsIdAndCycleNo($patientsId, $request->cycle_no)->get();
                     $iuiSecondVisit = $this->IuiHistory->where('patients_id',$patientsId)->whereCycleNo($request->cycle_no)->where('visit',2)->first();
-                    $iuiSecondVisitData = json_decode($iuiSecondVisit->description);
+                    $iuiSecondVisitData = !empty($iuiSecondVisit) ? json_decode($iuiSecondVisit->description) : null;
                     
                     $checkIvf = $this->IVF->wherePatientsId($lastIui->patients_id)->first();
                     $ivf = (!$checkIvf) ? $this->IVF : $this->IVF->wherePatientsId($lastIui->patients_id)->first();
@@ -615,7 +687,7 @@ class IUIController extends AdminController
                     $ivf->plan_management = $lastIui->plan_management;
                     $ivf->possible_case_of_infertility = $lastIui->possible_case_of_infertility;
                     $ivf->treatment = $lastIui->treatment;
-                    $ivf->lmp_date = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->format('Y-m-d') : '';
+                    $ivf->lmp_date = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->format('Y-m-d') : Carbon::parse(!empty($request->data['lmp']['date']) ? $request->data['lmp']['date'] : date('y-m-d'))->format('Y-m-d');
                     $ivf->save();
                     if($lastIUIHistory)
                     {
@@ -625,6 +697,7 @@ class IUIController extends AdminController
                         $lastivfHistory = $lastCycleNo->last();
                         $ivfVisit = 2;
                         $third_visit_Skey = 1;
+                        $ivfHistorydata = [];
                         foreach($lastIUIHistory as $iuiHistory)
                         {
                             $iuiData = json_decode($iuiHistory->description);
@@ -681,6 +754,7 @@ class IUIController extends AdminController
                                     $ivfHistorydata[] = [
                                         "patients_id" => $iuiHistory->patients_id,
                                         "seen_by" => $iuiHistory->seen_by,
+                                        "rmo_doctor" => $iuiHistory->rmo_doctor,
                                         "created_by" => Auth::user()->id,
                                         "plan" => 1,
                                         'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
@@ -767,6 +841,7 @@ class IUIController extends AdminController
                                                 $ivfHistorydata[] = [
                                                     "patients_id" => $iuiHistory->patients_id,
                                                     "seen_by" => $iuiHistory->seen_by,
+                                                    "rmo_doctor" => $iuiHistory->rmo_doctor,
                                                     "created_by" => Auth::user()->id,
                                                     "plan" => 1,
                                                     'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
@@ -845,6 +920,7 @@ class IUIController extends AdminController
                                         $ivfHistorydata[] = [
                                             "patients_id" => $iuiHistory->patients_id,
                                             "seen_by" => $iuiHistory->seen_by,
+                                            "rmo_doctor" => $iuiHistory->rmo_doctor,
                                             "created_by" => Auth::user()->id,
                                             "plan" => 1,
                                             'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
@@ -884,6 +960,7 @@ class IUIController extends AdminController
                                         $ivfHistorydata[] = [
                                             "patients_id" => $iuiHistory->patients_id,
                                             "seen_by" => $iuiHistory->seen_by,
+                                            "rmo_doctor" => $iuiHistory->rmo_doctor,
                                             "created_by" => Auth::user()->id,
                                             "plan" => 1,
                                             'cycle_no' => !empty($lastivfHistory) ? $lastivfHistory->cycle_no + 1 : 1,
@@ -910,7 +987,7 @@ class IUIController extends AdminController
             }
             
             if($request->visit == 4){
-                if(isset($request->data['upt_type']) && $request->data['upt_type'] == 'weak_positive')
+                if(isset($request->data['upt_type']) && $request->data['upt_type'] == 'weak_positive' && $request->data['result'] == 'fail')
                 {
                     $iui->cycle_status = 1;
                 }
@@ -934,16 +1011,65 @@ class IUIController extends AdminController
             }
             $iui->created_at = !empty($iui->created_at) ? $iui->created_at : Carbon::now()->format('Y-m-d H:i:s');
             $iui->created_by = Auth::user()->id;
+            // dd($iui);
+            if($request->iui_history_id)
+            {
+                $editIvf = $this->IuiHistory->find($request->iui_history_id);
+                $editIvfData = !empty($editIvf) ? json_decode($editIvf->description) : null;
+                $checkIui = !empty($editIvfData) && !empty($editIvfData->hcg->type) && $editIvfData->hcg->type == 'yes' && $editIvfData->hcg->iui->status == 'yes' ? true : false;
+                $notifyDate = $iuiDtae = Carbon::parse($editIvf->created_at)->format('Y-m-d');
+                $category_Id = !empty($request->category) ? $request->category : 4;
+                if($checkIui)
+                {
+                    $notify = $this->CategoryNotification->where('patients_id',$patientsId)->where('category_id',$category_Id)->whereDate('created_at',$notifyDate)->first();
+                    if(!empty($editIvfData) && !empty($editIvfData->hcg_date))
+                    {
+                        $cDate = \Carbon\Carbon::parse(!empty($editIvfData->hcg_date) ? $editIvfData->hcg_date : null)->format('Y-m-d') .' '.$editIvfData->hcg->time;
+                        $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i');
+                        $iuiDtae = Carbon::parse($iuiDtaeAndTime)->format('Y-m-d');
+                        if(Carbon::parse($notify->date)->format('Y-m-d H:i') == $iuiDtaeAndTime)
+                        {
+                            $cDate = \Carbon\Carbon::parse(!empty($request->data['hcg_date']) ? $request->data['hcg_date'] : null)->format('Y-m-d') .' '.$request->data['hcg']['time'];
+                            $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i');
+                            $iuiDtae = Carbon::parse($cDate)->format('Y-m-d');
+                            $notify->date = $iuiDtaeAndTime;
+                            $notify->reminder_date = Carbon::parse($iuiDtaeAndTime)->subDays(1)->format('Y-m-d');
+                            $notify->save();
+                        }
+                        if($request->data['hcg']['iui']['status'] == 'no')
+                        {
+                            $notify->delete();
+                        }
+                    }
+                }
+            }
             $iui->save();
             $now = Carbon::now()->format('Y-m-d');
-            $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1]);
+            if(!$request->iui_history_id && !$request->iui_id)
+            {
+                $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1]);
+                if(!empty($request->data['hcg']['type']) && $request->data['hcg']['type'] == 'yes' && !empty($request->data['hcg']['time']) && $request->data['hcg']['iui']['status'] == 'yes')
+                {
+                    $categoryPatientData = [];
+                    $iui->hcg_time = $this->getTimeStatus(Carbon::parse($request->data['hcg']['time'])->format('g:i a'))['timeStatus'];
+                    $cDate = \Carbon\Carbon::parse(!empty($request->data['hcg_date']) ? $request->data['hcg_date'] : null)->format('Y-m-d') .' '.$request->data['hcg']['time'];
+                    $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i');
+                    $iuiDtae = Carbon::parse($cDate)->format('Y-m-d');
+                    $categoryPatientData['patients_id'] = $patientsId;
+                    $categoryPatientData['date'] = $iuiDtaeAndTime;
+                    $categoryPatientData['reminder_date'] = Carbon::parse($iuiDtaeAndTime)->subDays(1)->format('Y-m-d');
+                    $categoryPatientData['message'] = "Coming for IUI";
+                    $categoryPatientData['category_id'] = !empty($request->category) ? $request->category : 4;
+                    $nextAppontment = $this->storeCategoryNotification($categoryPatientData);
+                }
+            }
+            
             if(!$request->iui_history_id && !$request->iui_id && $msg){
                 $seenBy = getSeenByDoctor($seenBy);
                 $patient = $this->OpdPatients->find($patientsId);
                 $fDate = $fDate ? date('d M Y',strtotime($fDate)) : null;
-                // $this->SmsManager::sendReferenceDoctor($msg,$seenBy->name,$fDate,$patientsId);
+                $this->SmsManager::sendReferenceDoctor($msg,$seenBy->name,$fDate,$patientsId);
             }
-
             if($request->isprint == 1 || $request->isprint == 2 || $request->isprint == 6){
                 if($request->isprint == 2){
                     $iui->hcg_time = $this->getTimeStatus(Carbon::parse($request->data['hcg']['time'])->format('g:i a'))['timeStatus'];
@@ -988,7 +1114,13 @@ class IUIController extends AdminController
                     'data' => View::make('admin.iui.preview', compact('investigationReport','iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData'))->render()
                 ]);
             }
-
+            if(isset($request->is_iui_report) && $request->is_iui_report == 'yes' && $request->isprint == 8)
+            {
+                return response()->json([
+                    'status' => 8,
+                    'data' => View::make('admin.iui.iuireportprint', compact('iuiReport'))->render()
+                ]);
+            }
             if(isset($request->is_iui_deposit_print) && $request->is_iui_deposit_print == 4){
                 $currentDeposit = $this->IndoorDeposit->wherePatientIdAndChargeType($patientsId, 1)->orderBy('id', 'DESC')->value('total');
                 $iuiBill = $this->IuiBill;
@@ -1123,6 +1255,7 @@ class IUIController extends AdminController
             $laproscopyImagesData = [];
             $bloodImagesData = [];
             $usgImagesData = [];
+            $hsaImagesData = [];
             $follicle = null;
             $iuiThirdVisitData = null;
 
@@ -1134,7 +1267,7 @@ class IUIController extends AdminController
             $inducingInjectionData = $this->inducingInjection()['inj'];
             $medicines = $this->Medicine->pluck('name','name');
             //check if patients is transfer on another plan
-            $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_status',2)->orderBy('created_at','desc')->first();
+            $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_no',$iui->cycle_no)->where('cycle_status',2)->orderBy('created_at','desc')->first();
             if($iuiHistoryData)
             {
                 
@@ -1188,7 +1321,7 @@ class IUIController extends AdminController
                         $planType = !empty($historyData->plan->plan_type) ? $historyData->plan->plan_type : null;
 
                         if($planType){
-                            $planData = $planData->where('type',$planType);
+                            $planData = $planData->where('type',$planType)->where('category',1);
                         }
                         $iuiHistoryId = $iuiHistory->id;
                         $historyLmp = !empty($historyData->lmp) ? $historyData->lmp : null;
@@ -1221,7 +1354,7 @@ class IUIController extends AdminController
                     $oldDate = $request->iui_date;
                 }
 
-                $planData = $planData->whereNotNull('name')->pluck('name','name')->toArray();
+                $planData = $planData->where('category',1)->whereNotNull('name')->pluck('name','name')->toArray();
                 $patientsInfo = json_decode($iui->patients_info);
                 $ho = json_decode($iui->h_o);
                 $co = json_decode($iui->c_o);
@@ -1242,7 +1375,7 @@ class IUIController extends AdminController
                 $complaints = $this->Complaint->pluck('name','name');
                 $leftOvaryData = $this->OvaryDetail->where('type',1)->pluck('name','name');
                 $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
-                $planType = $this->Injection->pluck('type','type');
+                $planType = $this->Injection->where('category',1)->pluck('type','type');
                 $hoData = $this->getHoData();
 
                 if(!empty($iuiThirdVisit)) {
@@ -1293,11 +1426,19 @@ class IUIController extends AdminController
                             $bloodImagesData[$key]['src'] = url($row);
                         }
                     }
+                    $hsaImages = isset($investigation->hsa_report) && !empty($investigation->hsa_report->images) ? $investigation->hsa_report->images : null;
+                    if($hsaImages){
+                        foreach($hsaImages as $key=>$row){
+                            $hsaImagesData[$key]['id'] = $key;
+                            $hsaImagesData[$key]['src'] = url($row);
+                        }
+                    }
                 }
                 if($description)
                 {
                     $bloodImages = !empty($description->blood_report->image) ? $description->blood_report->image : null;
                     $usgImages = !empty($description->usg->images) ? $description->usg->images : null;
+                    $hsaImages = !empty($description->hsa_report->images) ? $description->hsa_report->images : null;
                     // dd($description->blood_report->image);
                     if($bloodImages){
                         foreach($bloodImages as $key=>$row){
@@ -1309,6 +1450,12 @@ class IUIController extends AdminController
                         foreach($usgImages as $key=>$row){
                             $usgImagesData[$key]['id'] = $key;
                             $usgImagesData[$key]['src'] = url($row);
+                        }
+                    }
+                    if($hsaImages){
+                        foreach($hsaImages as $key=>$row){
+                            $hsaImagesData[$key]['id'] = $key;
+                            $hsaImagesData[$key]['src'] = url($row);
                         }
                     }
                 }
@@ -1343,6 +1490,7 @@ class IUIController extends AdminController
                 $data['laproscopyImages'] = json_encode($laproscopyImagesData);
                 $data['bloodImages'] = json_encode($bloodImagesData);
                 $data['usgImages'] = json_encode($usgImagesData);
+                $data['hsaImages'] = json_encode($hsaImagesData);
                 $data['ho'] = $ho;
                 $data['co'] = $co;
                 $data['mh'] = $mh;
@@ -1395,6 +1543,7 @@ class IUIController extends AdminController
                 $data['iuiThirdVisit'] = $iuiThirdVisit;
                 $data['iuiHistoryData'] = collect($this->IuiHistory->wherePatientsId(decrypt($patientsId))->whereCycleNo($cycleNo)->get());
                 $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+                $data['rmoDoctor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
                 $data['iui_completed'] = $iui_completed;
                 if(($request->iuihistorydate) || ($request->iui_visit_id))
                 {
@@ -1406,10 +1555,14 @@ class IUIController extends AdminController
                 }
                 return $data;
             }
+            $iuiReport = null;
+            $iuiReportStatus = null;
             $iuifourthVisit = $this->IuiHistory->wherePatientsIdAndVisit($id, 4)->whereCycleNo($cycleNo)->where('cycle_status',2)->orderBy('id', 'DESC')->first();
             $iuiFirstVisitData = $this->IUI->wherePatientsId($id)->orderBy('id','DESC')->first();
+            $iuiReport = $this->IUIReport->wherePatientsId($id)->whereCycleNo($cycleNo)->orderBy('id','DESC')->first();
+            $iuiReportStatus = $this->IuiHistory->wherePatientsId($id)->whereCycleNo($cycleNo)->where('description->hcg->iui->status','yes')->first();
             $cycleData = $this->IUI->wherePatientsId($id)->orderBy('cycle_no','asc')->pluck('cycle_no','cycle_no')->toArray();
-            $view = view('admin.iui.history',compact('medicines','patientsId','hospitalTime','date','iuiCycleNo','iuiCurrentCycleNo','iui','iuiFirstVisitData','cycleData','referenceDoctor'));
+            $view = view('admin.iui.history',compact('medicines','patientsId','hospitalTime','date','iuiCycleNo','iuiCurrentCycleNo','iui','iuiFirstVisitData','cycleData','referenceDoctor','iuiReport','iuiReportStatus'));
            //display old iui visit when patients is tranfer from iui to ANC or IVf
             if(($iuifourthVisit)){
                 $ivfTransfer = $this->IVF->wherePatientsId($id)->where('created_at','>=',$iuifourthVisit->created_at)->first();
@@ -1427,7 +1580,7 @@ class IUIController extends AdminController
     }
 
     public function getPlanData($type){
-        $planData = $this->Injection->where('type',$type)->whereNotNull('name')->pluck('name','name');
+        $planData = $this->Injection->where('type',$type)->where('category',1)->whereNotNull('name')->pluck('name','name');
         return ['planData'=>$planData];
     }
 
@@ -1593,61 +1746,60 @@ class IUIController extends AdminController
     }
 
     // store the IUI report to cycle wise if exist the report then update data otherwise new entry add
-    public function iuiReportStore(Request $request, $patientId,$cycleNo) {
+    public function iuiReportStore(Request $request) {
         try{
-            $iuiReport = $this->IUIReport;
-            $iuiReportData = $iuiReport->where('patients_id', decrypt($patientId))->first();
-
-            if(!empty($iuiReportData)){
-                $iuiReport= $iuiReport->find($iuiReportData->id);
-                $iuiReport->donor_name = $request->donorname;
-                $iuiReport->donor_age = $request->donorage;
-                $iuiReport->indication =$request->indication;
-                $data = $request->data;
-
-                if(!empty($request->data['ovum']['erphoto'])) {
-                    $imagePath = 'public/upload/iui/er';
-                    $iuiReportData = Json_decode($iuiReport->description);
-                    // $this->removeImage($iuiReportData->ovum->erphoto);
-                    $image = $request->data['ovum']['erphoto'];
-                    $imageName = $this->uploadImage($image, $imagePath);
-                    $data['ovum']['erphoto'] = $imagePath .'/'. $imageName;
-                }
-
-                $iuiReport->description = json_encode($data);
-                $iuiReport->remark =$request->remark;
+            // $iuiReport = $this->IUIReport;
+            $patientId = decrypt($request->iui_report_patient_id);
+            $cycle_no = decrypt($request->iui_report_cycle_no);
+            $iuiReport = $this->IUIReport->where('patients_id',$patientId)->where('cycle_no',$cycle_no)->first();
+            if(!$iuiReport)
+            {
+                $iuiReport = $this->IUIReport;
             }
-            else {
-                $iuiReport->patients_id = decrypt($patientId);
-                $iuiReport->donor_name = $request->donorname;
-                $iuiReport->donor_age = $request->donorage;
-                $iuiReport->cycle_no = decrypt($cycleNo);
-                $iuiReport->indication =$request->indication;
-                $data = $request->data;
-                if(!empty($request->data['ovum']['erphoto'])){
-                    $imagePath = 'public/upload/iui/er';
-                    $picture = $request->data['ovum']['erphoto'];
-                    $imageName = $this->uploadImage($picture, $imagePath);
-                    $data['ovum']['erphoto'] = $imagePath.'/'.$imageName;
+            $iuiReport->patients_id = $patientId;
+            $iuiReport->cycle_no = $cycle_no;
+            $iuiReport->description = json_encode($request->iui_report);
+            $iuiReport->save();
+            $appointmentTime = null;
+            $followDate = !empty($request->iui_report['follow_up']) ? date('Y-m-d',strtotime($request->iui_report['follow_up'])) : null;
+            $fDate = !empty($followDate) ? Carbon::parse($followDate)->format('Y-m-d') : null;
+            if($fDate)
+            {
+                $requestData = new \Illuminate\Http\Request();
+                $requestData->replace(['date' => $fDate,'status'=>true]);
+                $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
+                if(!empty($nextAppontment['time']) || $nextAppontment['time'] == 0){
+                    $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
+                    $appointmentTime = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
+                    $followDate = !empty($nextAppontment['date']) ? $nextAppontment['date'] : $followDate;
                 }
-                $iuiReport->description = json_encode($data);
-                $iuiReport->remark = $request->remark;
+                $appointment = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
+                if($appointment){
+                    $appointmentData['appointmentId'] = encrypt($appointment->id);
+                    $appointmentData['date'] = $followDate;
+                    $appointmentData['time'] = $appointmentTime;
+                    $nextAppointment = $this->nextAppointmentData($appointmentData);
+                }
             }
-
-            //   dd($iuiReport);
-              $iuiReport->save();
-
-            if($request->isprint){
+            $iuiReport = $this->IUIReport->where('patients_id',$patientId)->where('cycle_no',$cycle_no)->first();
+            if($request->isprint == 2){
                 return response()->json([
-                    'status' => 1,
+                    'status' => 2,
                     'data' => View::make('admin.iui.iuireportprint', compact('iuiReport'))->render()
                 ]);
             }
-
-            }catch(Exception $e){
-                abort(500);
-                return ['status'=>'false'];
+            else
+            {
+                return response()->json([
+                    'status' => 1,
+                    'data' => 0
+                ]);
             }
+        }catch(Exception $e){
+            abort(500);
+            log::Debug($e);
+            return ['status'=>'false'];
+        }
     }
 
     // get images for investigation tab
@@ -1657,6 +1809,10 @@ class IUIController extends AdminController
         }
         if($type == 'iui_history'){
             $iui = $this->IuiHistory->find($id);
+        }
+        if($type == 'iui_extra_visit'){
+            // dd($id);
+            $iui = $this->IuiExtraVisit->find($id);
         }
         if(!empty($iui->investigation)){
             $iuiInvestigation = json_decode($iui->investigation);
@@ -1711,11 +1867,46 @@ class IUIController extends AdminController
                     }
                 }
             }
+            if($reportType == 'blood_report_old'){
+                $iuiData = !empty($iuiInvestigation->blood_report) ? $iuiInvestigation->blood_report : [];
+                if(!empty($iuiData)){
+                    $bloodImages = $this->getBloodImagesKey($iuiData,$data)['key'];
+                    if(!empty($bloodImages)){
+                        foreach($bloodImages as $row){
+                            $this->removeImage($iuiData->image[$row]);
+                            unset($iuiData->image[$row]);
+                        }
+                        $iuiArray = (array)$iuiData->image;
+                        $iuiArrayData = array_values($iuiArray);
+                        $iuiData->image =  $iuiArrayData;
+                        $iuiInvestigation->blood_report = $iuiData;
+                        $iui->investigation = $iuiInvestigation;
+                    }
+                }
+            }
+            if($reportType == 'hsa_report_old'){
+                $iuiData = !empty($iuiInvestigation->hsa_report) ? $iuiInvestigation->hsa_report : [];
+                if(!empty($iuiData)){
+                    $hsaImages = $this->getImagesKey($iuiData,$data)['key'];
+                    if(!empty($hsaImages)){
+                        foreach($hsaImages as $row){
+                            $this->removeImage($iuiData->images[$row]);
+                            unset($iuiData->images[$row]);
+                        }
+                        $iuiArray = (array)$iuiData->images;
+                        $iuiArrayData = array_values($iuiArray);
+                        $iuiData->images =  $iuiArrayData;
+                        $iuiInvestigation->hsa_report = $iuiData;
+                        $iui->investigation = $iuiInvestigation;
+                    }
+                }
+            }
             $iui->investigation = json_encode($iuiInvestigation);
             $iui->save();
         }
-        if($reportType == 'blood_report_old'){
-            if($type == 'iui_history')
+        if($type == 'iui_history')
+        {
+            if($reportType == 'blood_report_old')
             {
                 $iuiDescription = json_decode($iui->description);
                 $iuiData = !empty($iuiDescription->blood_report) ? $iuiDescription->blood_report : [];
@@ -1734,15 +1925,9 @@ class IUIController extends AdminController
                     }
                 }
                 // dd($iuiDescription);
-                $iui->description = json_encode($iuiDescription);
-                $iui->save();
+                
             }
-            
-            
-        }
-        if($reportType == 'usg_old'){
-            if($type == 'iui_history')
-            {
+            if($reportType == 'usg_old'){
                 $iuiDescription = json_decode($iui->description);
                 $iuiData = !empty($iuiDescription->usg) ? $iuiDescription->usg : [];
                 if(!empty($iuiData)){
@@ -1759,7 +1944,56 @@ class IUIController extends AdminController
                         $iui->description = $iuiDescription;
                     }
                 }
-                $iui->description = json_encode($iuiDescription);
+                // $iui->description = json_encode($iuiDescription);
+                // $iui->save();
+            }
+            if($reportType == 'hsa_report_old')
+            {
+                $iuiDescription = json_decode($iui->description);
+                $iuiData = !empty($iuiDescription->hsa_report) ? $iuiDescription->hsa_report : [];
+                if(!empty($iuiData)){
+                    $hsa_reportImages = $this->getImagesKey($iuiData,$data)['key'];
+                    if(!empty($hsa_reportImages)){
+                        foreach($hsa_reportImages as $row){
+                            $this->removeImage($iuiData->images[$row]);
+                            unset($iuiData->images[$row]);
+                        }
+                        $iuiArray = (array)$iuiData->images;
+                        $iuiArrayData = array_values($iuiArray);
+                        $iuiData->images =  $iuiArrayData;
+                        $iuiDescription->hsa_report = $iuiData;
+                        $iui->description = $iuiDescription;
+                    }
+                }
+                // dd($iuiDescription);
+                
+            }
+            $iui->description = json_encode($iuiDescription);
+            $iui->save();
+        }
+        if($type == 'iui_extra_visit')
+        {
+            if($reportType == 'extraVisit_blood_report_old')
+            {
+                $iuiInvestigation = !empty($iui->oe) ? json_decode($iui->oe) : null;
+                $iuiData = !empty($iuiInvestigation->blood_report) ? $iuiInvestigation->blood_report : [];
+                if(!empty($iuiData)){
+                    $blood_reportImages = $this->getBloodImagesKey($iuiData,$data)['key'];
+                    // dd($blood_reportImages);
+                    if(!empty($blood_reportImages)){
+                        foreach($blood_reportImages as $row){
+                            $this->removeImage($iuiData->image[$row]);
+                            unset($iuiData->image[$row]);
+                        }
+                        $iuiArray = (array)$iuiData->image;
+                        $iuiArrayData = array_values($iuiArray);
+                        $iuiData->image =  $iuiArrayData;
+                        $iuiInvestigation->blood_report = $iuiData;
+                        $iui->oe = $iuiInvestigation;
+                    }
+                }
+                // dd($ivf->oe);
+                $iui->oe = json_encode($iuiInvestigation);
                 $iui->save();
             }
         }
@@ -1806,7 +2040,7 @@ class IUIController extends AdminController
     }
 
     // fetch data to extra visit of IUI
-    public function extraVisit(Request $request,$id){
+    public function extraVisit(Request $request,$id,$cycleNo){
         try{
             $pId = decrypt($id);
             $iuiPatients = $this->OpdPatients->find($pId);
@@ -1815,22 +2049,38 @@ class IUIController extends AdminController
             $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
             $medicines = $this->Medicine->pluck('name','name');
             $iuiHistoryDate = $this->IuiExtraVisit->where('patient_id',$pId)->pluck('created_at','created_at')->toArray();
+            $cycle_no = decrypt($cycleNo);
+            $bloodReportImages = null;
+            $bloodReportImagesData = [];
+            $bloodReportImagesArray = [];
             if($request->ajax()){
                 $iuiHistoryData = null;
                 $date = $request->date;
+                
                 $status = 0;
                 if($date){
                     $iuiHistoryData = $this->IuiExtraVisit->where('created_at',$date)->first();
                     if($iuiHistoryData){
+                        $oe = json_decode($iuiHistoryData->oe);
+                        $bloodReportImages = !empty($oe->blood_report->image) ? $oe->blood_report->image : null;
+                        if($bloodReportImages){
+                            foreach($bloodReportImages as $key=>$row){
+                                $bloodReportImagesData[$key]['id'] = $key;
+                                $bloodReportImagesData[$key]['src'] = url($row);
+                            }
+                            
+                        }
                         $status = 1;
                     }
                 }
+                $bloodReportImagesArray = json_encode($bloodReportImagesData,true);
                 $data['status'] = 1;
-                $data['extra_visit_data'] = View::make('admin.iui.extra_visit_data',compact('iuiHistoryData','complaints','leftOvaryData','rightOvaryData','medicines','iuiPatients'))->render();
+                $data['extra_visit_data'] = View::make('admin.iui.extra_visit_data',compact('bloodReportImagesArray','iuiHistoryData','complaints','leftOvaryData','rightOvaryData','medicines','iuiPatients'))->render();
                 return $data;
             }
-            return view('admin.iui.extra_visit',compact('iuiPatients','iuiHistoryDate','medicines'));
+            return view('admin.iui.extra_visit',compact('iuiPatients','iuiHistoryDate','medicines','cycle_no'));
         }catch(Exception $e){
+            log::Debug($e);
             abort(500);
         }
     }
@@ -1839,6 +2089,8 @@ class IUIController extends AdminController
     public function storeExtraVisit(Request $request){
         try{
             $patientId = decrypt($request->patient_id);
+            $cycle_no = decrypt($request->cycle_no);
+            $iuiPatients = $this->OpdPatients->find($patientId);
             if(!empty($request->oe['ovary']['right']['details']) || !empty($request->oe['ovary']['left']['details'])){
                 $rightData = !empty($request->oe['ovary']['right']['details']) ? $request->oe['ovary']['right']['details'] : [];
                 $leftData = !empty($request->oe['ovary']['left']['details']) ? $request->oe['ovary']['left']['details'] : [];
@@ -1857,13 +2109,33 @@ class IUIController extends AdminController
             //     $this->treatmentData($request->treatment);
             // }
             $iuiExtraVisit = $this->IuiExtraVisit;
+            $bloodReportOldImages = [];
+            $bloodReport = [];
             if($request->iui_extra_visit_id){
                 $iuiExtraVisit = $this->IuiExtraVisit->find(decrypt($request->iui_extra_visit_id));
+                if($iuiExtraVisit)
+                {
+                    $oe = !empty($iuiExtraVisit->oe) ? json_decode($iuiExtraVisit->oe) : null;
+                    $this->getImagesData('extraVisit_blood_report_old','iui_extra_visit',$iuiExtraVisit->id,$request->extraVisit_blood_report_old ? $request->extraVisit_blood_report_old : [-1]);
+                    $bloodReportOldImages = !empty($oe->blood_report->image) ? (array)$oe->blood_report->image : [];
+                }
+            }
+            $iuiExtraVisitOe = $request->oe;
+            if(!empty($request->oe['blood_report']['image'])){
+                foreach($request->oe['blood_report']['image'] as $key=>$row){
+                    $name = $this->uploadImage($row, 'public/upload/iui/blood/');
+                    $bloodReport[] = 'public/upload/iui/blood/' . $name;
+                }
+                $iuiExtraVisitOe['blood_report']['image'] = array_merge($bloodReport,$bloodReportOldImages);
+            }
+            else{
+                $iuiExtraVisitOe['blood_report']['image'] = $bloodReportOldImages;
             }
             $iuiExtraVisit->patient_id = $patientId;
+            $iuiExtraVisit->cycle_no = $cycle_no;
             $iuiExtraVisit->co = json_encode($request->co);
             $iuiExtraVisit->lmp = json_encode($request->lmp);
-            $iuiExtraVisit->oe = json_encode($request->oe);
+            $iuiExtraVisit->oe = json_encode($iuiExtraVisitOe);
             $iuiExtraVisit->treatment = json_encode($request->treatment);
             $iuiExtraVisit->save();
 
@@ -1871,9 +2143,10 @@ class IUIController extends AdminController
             $appointmentFlag = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update(['is_done'=>1]);
             $followupDate = !empty($request->oe['follow_up']) ? $request->oe['follow_up'] : null;
             $appointmentTime = null;
-            $followDate = date('Y-m-d',strtotime($followupDate));
+            $followDate = !empty($followupDate) ? date('Y-m-d',strtotime($followupDate)) : null;
             $fDate = !empty($followDate) ? Carbon::parse($followDate)->format('Y-m-d') : null;
             if($fDate){
+                
                 $requestData = new \Illuminate\Http\Request();
                 $requestData->replace(['date' => $fDate,'status'=>true]);
                 $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
@@ -1890,9 +2163,24 @@ class IUIController extends AdminController
                     $nextAppointment = $this->nextAppointmentData($appointmentData);
                 }
             }
-            Session::flash('msg','Record has been successfully added.');
-            return ['status'=>1,'id'=>$iuiExtraVisit->id];
-        }catch(Exception $e){
+            $isExtraVisit = 1;
+            if($request->isprint == 1)
+            {
+                return [
+                    'status'=>2,
+                    'id'=>$iuiExtraVisit->id,
+                    'preview' => View::make('admin.iui.preview',compact('iuiExtraVisit','iuiPatients','isExtraVisit'))->render()
+                ];
+
+            }
+            else{
+                Session::flash('msg','Record has been successfully added.');
+                return ['status'=>1,'id'=>$iuiExtraVisit->id];
+            }
+            
+        }catch(Exception $e)
+        {
+            log::Debug($e);
             abort(500);
         }
     }
@@ -1901,6 +2189,7 @@ class IUIController extends AdminController
     public function getIuiDetails(Request $request){
         try{
             $inducingInjectionData = $this->inducingInjection()['inj'];
+            $investigationReport = $this->allInvestigationReport();
             $currentdate = Carbon::now()->format("d-m-y");
             $iuiFirstVisit = null;
             $iuiSecondVisit = null;
@@ -1908,70 +2197,209 @@ class IUIController extends AdminController
             $iuiHistoryData = null;
             if($request->ajax()){
                 $patientId = decrypt($request->patient_id);
-                $iuiHistoryFirstVisit = $this->IuiHistory->where('patients_id',$patientId)->orderBy('id','asc')->first();
+                $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
+                // $iuiHistorylastVisit = $this->IuiHistory->where('patients_id',$patientId)->orderBy('id','asc')->first();
                 $type = 1;
                 $cycle = $request->cycle_no;
-                $iuiData = $this->IUI->where('patients_id',$patientId)->where('cycle_no',$cycle)->orderBy('id','DESC')->first();
-                $date = $request->appointment_date;
+                $iuiAllData = $this->IUI->where('patients_id',$patientId)->orderBy('id','ASC')->get();
+                // $date = $request->appointment_date;
                 $historyDate = $request->history_date;
-                if($date){
-                    $iuiType = 1;
-                    if($iuiHistoryFirstVisit && $request->type == 1 && $request->status == 1){
-                        $date = $iuiHistoryFirstVisit->created_at;
-                        $type = 2;
+                $iuiPatients = $this->OpdPatients->find($patientId);
+                $viewAllVisit = [];
+                $dateValue = [];
+                $table_view = [];
+                $extraVisit = [];
+                $extraVisitDisplay = false;
+                $isAppointmentView = false;
+                // dd($request->cycle_no);
+                if(isset($request->cycle_no) && !empty($request->cycle_no))
+                {
+                    $iuiVisitDate = [];
+                    if($request->is_appointmentView && $request->is_appointmentView == 1)
+                    {
+                        $isAppointmentView = true;
                     }
-                    if($request->type == 2 && $request->status == 1){
-
-                        $type = 2;
-                        $iuiHistoryVisit = $this->IuiHistory->where('patients_id',$patientId)->where('cycle_no',$cycle)->where('created_at','>',$date);
-                        if($request->is_first == 1){
-                            $iuiHistoryVisit = $iuiHistoryVisit->orderBy('id','DESC');
+                        $iuiHistoryDate = $this->IuiHistory->where('patients_id',$patientId)->orderBy('created_at','DESC')->where('cycle_no',$cycle)->pluck('cycle_no','created_at')->toArray();
+                        $iuiDateData = $this->IUI->where('patients_id',$patientId)->orderBy('created_at','DESC')->where('cycle_no',$cycle)->first();
+                        $iuiDate = [Carbon::parse($iuiDateData->created_at)->format('Y-m-d H:i:s')=>$cycle];
+                        
+                        $iuiVisitDate = array_merge($iuiHistoryDate,$iuiDate);
+                        $iuiFirstVisit = $iuiDateData;
+                        
+                        $iuiHistoryData = collect($this->IuiHistory->wherePatientsId($patientId)->whereCycleNo($cycle)->get());
+                        $iuiSecondVisit = $iuiHistoryData->where('visit',2)->first();
+                        if($iuiSecondVisit){
+                            $iuiSecondVisit = json_decode($iuiSecondVisit->description);
                         }
-                        $iuiHistoryVisit = $iuiHistoryVisit->first();
-                        $date = $iuiHistoryVisit->created_at;
-                        $iuiData = $iuiHistoryVisit;
-                    }
-                    if($request->status == 2){
-
-                        $iuiHistoryVisit = $this->IuiHistory->where('patients_id',$patientId)->where('cycle_no',$cycle)->where('created_at','<',$date)->orderBy('id','DESC')->first();
-                        if($iuiHistoryVisit){
-                            $iuiData = $iuiHistoryVisit;
-                        }
-                        $date = $iuiData->created_at;
-                    }
+                        // dd($iuiVisitDate);
                     
                 }
-                if($historyDate){
-
+                //all IUI cycle wise
+                else
+                {
+                    $iuiVisitDate = [];
+                    $iuiDateData = $this->IUI->where('patients_id',$patientId)->first();
+                    $iuiDate = [Carbon::parse($iuiDateData->created_at)->format('Y-m-d H:i:s')=>Carbon::parse($iuiDateData->created_at)->format('Y-m-d H:i:s')];
+                    $iuiVisitDate = array_merge($iuiDate,$iuiVisitDate);
+                     $iuiFirstVisit = $iuiDateData;
+                    foreach($iuiAllData as $key => $iui_all_data)
+                    {
+                        $iuiHistoryDate = $this->IuiHistory->where('patients_id',$patientId)->orderBy('created_at','DESC')->where('cycle_no',$iui_all_data->cycle_no)->pluck('cycle_no','created_at')->toArray();
+                        // $iuiDateData = $this->IUI->where('patients_id',$patientId)->orderBy('created_at','DESC')->where('cycle_no',$iui_all_data->cycle_no)->first();
+                        // $iuiDate = [Carbon::parse($iuiDateData->created_at)->format('Y-m-d H:i:s')=>$iui_all_data->cycle_no];
+                        // $iuiVisits = array_merge($iuiHistoryDate,$iuiDate);
+                        $iuiVisitDate = array_merge($iuiHistoryDate,$iuiVisitDate);
+                        // $iuiFirstVisit = $iuiDateData;
+                        
+                    }
+                    
+                    // dd($iuiVisitDate);
+                }
+                
+                if($historyDate)
+                {
                     $iuiType = 2;
                     $iuiData = $this->IUI->where('patients_id',$patientId)->where('created_at','=',$historyDate)->first();
                     if(!$iuiData){
                         $iuiData = $this->IuiHistory->where('patients_id',$patientId)->where('created_at','=',$historyDate)->first();
+                        if($iuiData && $iuiData->visit > 2)
+                        {
+                            $iuiData->study_report = true;
+                        }
+                    }
+                    $iui = $iuiData;
+                    if(!empty($request->extra_visit))
+                    {
+                        $isExtraVisit = 1;
+                        $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$patientId)->where('created_at','=',$historyDate)->first();
+                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('iuiPatients','iuiExtraVisit','isExtraVisit'))->render();
+                    }
+                    else
+                    {
+                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport'))->render();
+                    }
+                    
+                }
+                else{
+                    $preview = 0;
+                    $isTable_view = false;
+                    $isAppointmentView = true;
+                    $displayCycle = 0;
+                    foreach($iuiVisitDate as $key => $value)
+                    {
+                        $iuiType = 1;
+                        $iuiExtra = null;
+                        $isExtraVisit = 0;
+                        
+                        $iuiHistoryData = collect($this->IuiHistory->wherePatientsId($patientId)->whereCycleNo($value)->get());
+                        $iuiSecondVisit = $iuiHistoryData->where('visit',2)->first();
+                        if($iuiSecondVisit){
+                            $iuiSecondVisit = json_decode($iuiSecondVisit->description);
+                        }
+                        $iuiData = $this->IUI->where('patients_id',$patientId)->where('created_at','=',$key)->first();
+                        if($iuiData)
+                        {
+                            $preview = 0;
+                            $isTable_view = false;
+                            
+                        }
+                        if(empty($iuiData))
+                        {
+                            $iuiData = $this->IuiHistory->where('patients_id',$patientId)->where('cycle_no',$value)->where('created_at','=',$key)->orderBy('id','DESC')->first();
+                            if($displayCycle != $value)
+                            {
+                                $preview = 0;
+                            }
+                            if($iuiData && ($iuiData->visit == 3 || $iuiData->visit == 4 || $iuiData->visit == 2))
+                            {
+                                $displayCycle = $value;
+                                $iuiData->study_report = true;
+                                $isTable_view = true;
+                                $preview++;
+                            }
+                        }
+                        $iuiThirdVisit = $this->IuiHistory->wherePatientsId($patientId)->where('cycle_no',$value)->where('created_at',$key)->where('visit',3)->where('description->ovalution','yes')->first();
+                        if($iuiThirdVisit){
+                            $iuiThirdVisit = json_decode($iuiThirdVisit->description);
+                        }
+                        $iui = $iuiData;
+                        //find extra visit after 1st visit
+                        $firstVisit = $this->IUI->where('patients_id',$patientId)->where('cycle_no',$value)->where('created_at','=',$key)->first();
+                        if($firstVisit)
+                        {
+                            $iuiExtra = $this->IuiExtraVisit->where('patient_id',$patientId)->where('cycle_no',$value)->where('created_at','>',$firstVisit->created_at)->get();
+                            if(!empty($iuiExtra))
+                            {
+                                foreach($iuiExtra as $iuiExtraVisit)
+                                {
+                                    $isExtraVisit = 1; 
+                                    $isTable_view = false;
+                                    $iui->study_report = false;
+                                    $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','iuiExtraVisit','iuiPatients','isExtraVisit','isAppointmentView'))->render();
+                                    $dateValue[] = $iuiExtraVisit->created_at;
+                                    $table_view[] = $isTable_view;
+                                    $extraVisit[] = 1;
+                                }
+                            }
+                        }
+                        if($preview == 1 || $preview == 0) //display only one time  table view
+                        {
+                            $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','isAppointmentView'))->render();
+                            $dateValue[] = $key;
+                            $table_view[] = $isTable_view;
+                            $extraVisit[] = 0;
+                        }
+                        //for add extra visit after ovalution start
+                        
+                        $lastThirdVisit = $this->IuiHistory->wherePatientsId($patientId)->where('cycle_no',$value)->where('visit',3)->where('created_at','=',$key)->where('description->ovalution','yes')->first();
+                        if($lastThirdVisit)
+                        {
+                            $iuiExtra = $this->IuiExtraVisit->where('patient_id',$patientId)->where('cycle_no',$value)->where('created_at','>',$lastThirdVisit->created_at)->get();
+                            if(!empty($iuiExtra))
+                            {
+                                foreach($iuiExtra as $iuiExtraVisit)
+                                {
+                                    $isExtraVisit = 1; 
+                                    $isTable_view = false;
+                                    $iui->study_report = false;
+                                    $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','iuiExtraVisit','iuiPatients','isExtraVisit','isAppointmentView'))->render();
+                                    $dateValue[] = $iuiExtraVisit->created_at;
+                                    $table_view[] = $isTable_view;
+                                    $extraVisit[] = 1;
+
+                                }
+                                
+                            }
+                        }
+                        
                     }
                 }
-                $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
-                $iui = $iuiData;
-                $investigationReport = $this->allInvestigationReport();
+                
                 
                 return response()->json([
                     'status' => 1,
-                    'visit' => $iui->visit ? $iui->visit : 1,
-                    'cycle' => $iui->cycle_no,
+                    // 'visit' => $iui->visit ? $iui->visit : 1,
+                    // 'cycle' => $iui->cycle_no,
                     'type' => $type,
                     'iui_type' => $iuiType,
-                    'date' => Carbon::parse($date)->format('Y-m-d H:i:s'),
-                    'id' => $iuiData->id,
-                    'data' => View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport'))->render()
+                    'date' => $dateValue,
+                    'table_view' => $table_view,
+                    'extraVisit' => $extraVisit,
+                    // 'id' => $iuiData->id,
+                    'data' => $viewAllVisit
                 ]);
             }else{
                 // this code is use for api to generet report
                 $investigationReport = $this->allInvestigationReport();
                 $historyDate = $request->date;
+                $patients_remark = null;
                 $patientId = decrypt($request->patient_id);
+                $iuiPatients = $this->OpdPatients->find($patientId);
                 $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
                 $iuiData = $this->IUI->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
                 $iuiFirstVisit = $this->IUI->wherePatientsId($patientId)->first();
                 $getcycleNo = $this->IuiHistory->wherePatientsId($patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                $patient_view = 1;
                 if($iuiData)
                 {
                     $patientInfo = json_decode($iuiData->patients_info);
@@ -2010,13 +2438,21 @@ class IUIController extends AdminController
                         $iuiData->study_report = true;
                     }
                 }
-                if(!$iuiData){
+                $isExtraVisit = 0;
+                $iuiExtraVisit = null;
+                if($request->is_extraVisit == 1)
+                {
+                    $isExtraVisit = 1;
+                    $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                    $oe = !empty($iuiExtraVisit) ? json_decode($iuiExtraVisit->oe) : null;
+                    $patients_remark = !empty($oe) && isset($oe->pt_remark) ? $oe->pt_remark : '';
+                }
+                if(!$iuiData && empty($iuiExtraVisit)){
                     return 'no record available';
                 }
                 $iui = $iuiData;
                 $printPreview = 1;
-                // dd($iui);
-                return view('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview','patients_remark'));
+                return view('admin.iui.preview', compact('patient_view','iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview','patients_remark','isExtraVisit','iuiExtraVisit','iuiPatients','isAppointmentView'));
             }
         }catch(Exception $e){
             log::Debug($e);
@@ -2058,6 +2494,7 @@ class IUIController extends AdminController
             $description = !empty($iui->description) ? json_decode($iui->description) : null;
             $data['blood_report'] = !empty($description->blood_report) && !empty($description->blood_report->image)  ? (array)$description->blood_report->image : [];
             $data['usg'] = !empty($description->usg) && !empty($description->usg->images)  ? (array)$description->usg->images : [];
+            $data['hsa_report'] = !empty($description->hsa_report) && !empty($description->hsa_report->images)  ? (array)$description->hsa_report->images : [];
             return response()->json([
                 'status' => 1,
                 'data' => $data
@@ -2085,6 +2522,7 @@ class IUIController extends AdminController
                 $iuiData->plan->follow_up = $newDate;
             }
             $iuiData->new_follow_up = $newDate;
+            $iuiData->follow_up = $newDate;
             $iui->description = json_encode($iuiData);
             $iui->save();
             return ['status'=>true];

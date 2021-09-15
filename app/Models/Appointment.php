@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Base\BaseModel;
 use Carbon\Carbon;
 use App\Models\IvfHistory;
+use App\Http\Controllers\Admin\ANCController;
 
 class Appointment extends BaseModel
 {
@@ -106,7 +107,7 @@ class Appointment extends BaseModel
         if($anc){
             $childType = ['1'=>"Single",'2'=>"Twins",'3'=>"Triplets",'4'=>'Quadruple'];
             $childNumber = json_decode($anc->o_e);
-            $childNumber = $childType[$childNumber->oe_no];
+            $childNumber = isset($childNumber->oe_no) ? $childType[$childNumber->oe_no] : null;
         }
         $status = $childNumber ? $childNumber : 0;
         return $status;
@@ -122,5 +123,39 @@ class Appointment extends BaseModel
             $status = 1;
         }
         return $status;
+    }
+    public function getIVFHistory(){
+        $ivf = IvfHistory::where('patients_id',$this->patients_id)->where('cycle_status','!=',2)->whereNotIn('plan',[1,2])->orderBy('created_at','desc')->first();
+        $embroyReady = '';
+        $semen_Freezing = '';
+        if($ivf)
+        {
+            $ivfHistoryFreezing = IvfHistory::where('patients_id',$ivf->patients_id)
+                        ->where('cycle_no',$ivf->cycle_no)
+                        ->where('plan',$ivf->plan)
+                        ->where('description->collected->frozen->type', 'yes')
+                        ->orderBy('created_at','desc')
+                        ->first();
+            $ivfHistoryEmbroy = IvfHistory::where('patients_id',$this->patients_id)
+                        ->where('cycle_no',$ivf->cycle_no)
+                        ->where('plan',$ivf->plan)
+                        ->where('description->collected->report->embroy->type', 'yes')
+                        ->orderBy('created_at','desc')
+                        ->first();
+            $ivfTranferReport = IvfTransferReport::where('patient_id',$this->patients_id)
+                            ->where('cycle_no',$ivf->cycle_no)
+                            ->where('plan',$ivf->plan)
+                            ->orderBy('created_at','desc')
+                            ->first();
+            if($ivfHistoryFreezing && empty($ivfTranferReport))
+            {
+                $semen_Freezing = 'yes';
+            }
+            if($ivfHistoryEmbroy && empty($ivfTranferReport))
+            {
+                $embroyReady = 'yes';
+            }
+        }
+        return['frozen'=>$semen_Freezing,'embroy' => $embroyReady];
     }
 }

@@ -48,13 +48,7 @@
             <td>{{$row->categoryDetails['name']}}</td>
             <td><div class="text-wrraping">{{$row->remark}}</div></td>
             <td><a href="{{URL::to('report/'.encrypt(1).'/'.encrypt($row->patients_id))}}" class="btn btn-primary btn-sm">Report</a>
-                @if($patient_notification['name'] == $name)
-                    <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
-                @else
-                    @if($row->arrival_time)
-                        <button class="btn btn-danger btn-sm notify-patient" id=""   onclick="callPatient('{{$name}}','IUI')">Call Patient</button>
-                    @endif
-                @endif
+                
             </td>
         </tr>
     @empty

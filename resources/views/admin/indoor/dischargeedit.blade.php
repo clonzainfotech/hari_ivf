@@ -4,6 +4,7 @@
 
 @section('page-style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
+    <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet">
 
 @stop
 @section('content')
@@ -20,6 +21,19 @@
                                     Back
                                 </button>
                             </a>
+                        </li>
+                        <li>
+                            @php
+                                $birthCertificate = !empty($dischargedata->birth_certificate) ? json_decode($dischargedata->birth_certificate): null;
+                                $birth_image = !empty($birthCertificate) ? $birthCertificate->image : null;
+                            @endphp
+                            @if(!empty($birth_image) && in_array($dischargedata->getIndoorBook->getprocedure['id'],[1,2,11]))
+                            <a href="{{URl::to($birth_image)}}" target="_blank">
+                                <button class="btn btn-primary">
+                                    Birth Certificate
+                                </button>
+                            </a>
+                            @endif
                         </li>
                     </ul>
                 </div>
@@ -253,18 +267,6 @@
                                                 {{$errors->first('rxtreatment')}}
                                                 </span>
                                             </div>
-                                            {{-- <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Summary:</span>
-                                                    {{Form::text('summary',!empty($dischargedata->summary) ? $dischargedata->summary : null, [
-                                                        'class'=>'form-control summary',
-                                                        'placeholder'=>'Summary'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                    {{$errors->first('summary')}}
-                                                </span>
-                                            </div> --}}
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-sm-2 unik-lbl-spn">
@@ -315,19 +317,6 @@
                                             </div>
                                         </div>
                                         <div class="row clearfix">
-                                            {{-- <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">HPE:</span>
-                                                    {{Form::text('hpe',!empty($dischargedata->hpe) ? $dischargedata->hpe : null, [
-                                                        'class'=>'form-control hpe',
-                                                        'placeholder'=>'HPE',
-                                                        'required'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                    {{$errors->first('hpe')}}
-                                                </span>
-                                            </div> --}}
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-sm-1 unik-lbl-spn">
@@ -347,19 +336,6 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Report:</span>
-                                                    {{Form::text('report',!empty($dischargedata->report) ? $dischargedata->report : null, [
-                                                        'class'=>'form-control report',
-                                                        'placeholder'=>'Reort',
-                                                        'required'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                    {{$errors->first('report')}}
-                                                </span>
-                                            </div> --}}
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-sm-2 unik-lbl-spn">
@@ -404,18 +380,6 @@
                                             </div>
                                         </div>
                                         <div class="row clearfix mt-4">
-                                            {{-- <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Admission Vitals:</span>
-                                                    {{Form::text('vitals',!empty($dischargedata->admission_vitals) ? $dischargedata->admission_vitals : null, [
-                                                        'class'=>'form-control vitals',
-                                                        'placeholder'=>'Admission Vitals'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                    {{$errors->first('vitals')}}
-                                                </span>
-                                            </div> --}}
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-sm-3 unik-lbl-spn">
@@ -435,18 +399,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Examination:</span>
-                                                    {{Form::text('examination',!empty($dischargedata->examination) ? $dischargedata->examination : null, [
-                                                        'class'=>'form-control examination',
-                                                        'placeholder'=>'Systemic Examination'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                    {{$errors->first('examination')}}
-                                                </span>
-                                            </div> --}}
+                                            
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-sm-2 unik-lbl-spn">
@@ -468,18 +421,6 @@
                                             </div>
                                         </div>
                                         <div class="row clearfix">
-                                            {{-- <div class="col-md-9">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Clinical Summary:</span>
-                                                    {{Form::text('clinicalsummary',!empty($dischargedata->clinical_summary) ? $dischargedata->clinical_summary : null, [
-                                                        'class'=>'form-control clinicalsummary',
-                                                        'placeholder'=>'Clinical Summary'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                {{$errors->first('clinicalsummary')}}
-                                                </span>
-                                            </div> --}}
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-sm-3 unik-lbl-spn">
@@ -539,18 +480,6 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-md-9">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Vital on Discharge:</span>
-                                                    {{Form::text('dischargevital',!empty($dischargedata->vital_on_discharge) ? $dischargedata->vital_on_discharge : null, [
-                                                        'class'=>'form-control dischargevital',
-                                                        'placeholder'=>'Vital on Discharge'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                {{$errors->first('dischargevital')}}
-                                                </span>
-                                            </div> --}}
                                              <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon unik-lbl-spn">Follow Up:</span>
@@ -577,24 +506,33 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        {{-- <div class="row clearfix">
-                                            <div class="col-md-9">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Condition on Discharge : &nbsp;</span>
-                                                    {{Form::text('condition',!empty($dischargedata->cond_on_discharge) ? $dischargedata->cond_on_discharge : null, [
-                                                        'class'=>'form-control condition',
-                                                        'placeholder'=>'Condition on Discharge'
-                                                    ])}}
+                                        @php
+                                            $is_birthCertificate = in_array($dischargedata->getIndoorBook->getprocedure['id'],[1,2,11]) ? '' : 'd-none';
+                                        @endphp
+                                            <div class="{{'row clearfix '.$is_birthCertificate}}">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-3 unik-lbl-spn">
+                                                            <label>Birth Certificate :</label>        
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <div class="birth-images">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <span class="form-error-msg">
-                                                {{$errors->first('condition')}}
-                                                </span>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-3 unik-lbl-spn">
+                                                            <label>Birth Remark :</label>        
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            {{Form::textarea("birth_certificate[remark]",!empty($dischargedata->birth_certificate) ? json_decode($dischargedata->birth_certificate)->remark : null,['class'=>'form-control',"rows"=>2,"placeholder"=>"Birth Remark"])}}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-3">
-
-                                            </div>
-                                        </div> --}}
-
                                     </div>
                                 </div>
                             </div>
@@ -668,6 +606,7 @@
         $.fn.selectpicker.Constructor.DEFAULTS.iconBase = 'zmdi';
         $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';
     </script>
+    <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
 
     <script>
         var dischargeId = '';
@@ -696,7 +635,17 @@
                 }
             }
         });
+        $('.birth-images').imageUploader({
+            imagesInputName: 'birth_certificate[image]',
+            maxFiles : 1,
+        });
+        var birthImagesData = @json($birthImagesData);
+        $('.birth-images').imageUploader({
+                preloaded: jQuery.parseJSON(birthImagesData),
+                imagesInputName: 'birth_certificate[image]',
+                preloadedInputName: 'birth_report_old'
 
+            });
         $('.code').keypress(function(e) {
             code = $(this).val();
             var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -708,12 +657,13 @@
         $(document).on('click','.submit',function(e) {
                 e.preventDefault();
                 $('.discharge-save').attr("disabled", true);
-                var discharge = $('#discharge-form').serialize();
+                var discharge = new FormData($("#discharge-form")[0]);
+                
 
                 dischargeId = $('#discharge_id').val();
         
                 if (this.value == 1) {
-                    discharge = discharge + '&isprint=1';
+                    discharge.append('isprint',1);
                 }
                 dischargeFormData(discharge);
         });
@@ -741,10 +691,16 @@
                 return false;
             }
             $.ajax({
+                     headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     url: "{{URL::to('indoor/discardupdate/')}}" + '/' + dischargeId,
                     type: 'POST',
                     dataType: 'json',
                     data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                 }).done(function(data){
                     var url = "{{URL::to('/indoor')}}";
                     if (data.status == 1){

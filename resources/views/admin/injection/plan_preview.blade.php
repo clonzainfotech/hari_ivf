@@ -67,6 +67,9 @@
         padding: 12px 12px;
     }
     </style>
+    @php
+    $category = ['1'=>'IUI','2'=>'IVF'];
+@endphp
     <table class="table m-b-0 table-hover category-list" id="category-table" cellspacing="0">
         <thead>
             <tr>
@@ -82,6 +85,7 @@
             <tr class="report-header-tr seperator">
                 <th class="report-header-tr-th">Sr No</th>
                 <th class="report-header-tr-th">Plan</th>
+                <th class="report-header-tr-th">Category</th>
             </tr>
         </thead>
         <tbody>
@@ -89,6 +93,7 @@
                 <tr>
                     <td class="data-font seperator">{{($i++).'.'}}</td>
                     <td class="data-font seperator">{{$row->type }}</td>
+                    <td class="data-font seperator">{{isset($category[$row->category]) ? $category[$row->category] : ''}}</td>
                 </tr>
             @empty
                 <td colspan="2" class="text-center">No records available</td>

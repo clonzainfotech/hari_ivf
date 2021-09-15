@@ -36,6 +36,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::select('seen_by',$hospitalDoctor,isset($iui) && !empty($iui->seen_by) ? $iui->seen_by : '',['class'=>'form-control select-padding-0','placeholder'=>'Select Doctor'])}}
                         </div>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$rmoDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 {{Form::hidden('iui_id',$iui->id)}}
                 {{Form::hidden('visit',1)}}
@@ -80,7 +90,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">weight : &nbsp;</span>
-                                        {{Form::number("weight",$iui->getPatientsInfo->weight,['class'=>'form-control weight','id'=>'weight'])}}
+                                        {{Form::text("weight",$iui->getPatientsInfo->weight,['class'=>'form-control weight','id'=>'weight'])}}
                                     </div>
                                     <span class="form-error-msg weight"></span>
                                 </div>
@@ -1944,69 +1954,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             </div>
                             {{-- end hcg  --}}
                             <br>
-                            {{-- <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            CBC : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[cbc]",!empty($investigation->cbc) ? $investigation->cbc : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Urine : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[urine]",!empty($investigation->urine) ? $investigation->urine : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            RBS : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[rbs]",!empty($investigation->rbs) ? $investigation->rbs : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            HIV : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[hiv]",!empty($investigation->hiv) ? $investigation->hiv : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Hbs Ag : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[hbs_ag]",!empty($investigation->hbs_ag) ? $investigation->hbs_ag : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Date : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[date_1]",!empty($investigation->date_1) ? \Carbon\Carbon::parse($investigation->date_1)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
-                                    </div>
-                                </div>
-                            </div>
-                            <br> --}}
-
-                            <div class="row">
-                                {{-- <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            TSH : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[tsh]",!empty($investigation->tsh) ? $investigation->tsh : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div> --}}
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">
@@ -2592,6 +2541,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="blood-images"></div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Other Report : &nbsp;
+                                        </span>
+                                        {{Form::text("investigation[investigation_extra]",isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2699,6 +2658,41 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                             Sperm Report : &nbsp;
                                         </span>
                                         {{Form::text("h_factor[sperm_report]",!empty($husbandFactor->sperm_report) ? $husbandFactor->sperm_report : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                            </div>
+                            @php
+                                    $hsaReportClass = !empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'yes' ? true : false;
+                                    $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                            @endphp
+                            <div class="row">
+                                <div class="col-md-1 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        HSA Report :
+                                    </label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="radio is-conceived">
+                                        {{Form::radio("investigation[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                        <label for="hsa_type_yes">
+                                            Yes
+                                        </label>
+
+                                        {{Form::radio("investigation[hsa_report][type]",'no',!empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                        <label for="hsa_type_no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                                    <div class="hsa-images"></div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        {{Form::textarea("h_factor[remark]",!empty($husbandFactor->remark) ? $husbandFactor->remark : null,['class'=>'form-control remark','placeholder'=>'Remark','rows'=>'5'])}}
                                     </div>
                                 </div>
                             </div>
@@ -3428,6 +3422,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                         <span class="seen-by-error-2 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$rmoDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5">
@@ -3464,6 +3468,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 {{Form::hidden('data[lmp][lmp_date_diff]',$lmdDiff,['class'=>'lmd-date-diff-val'])}}
                                 {{Form::hidden('visit',2,['class'=>'visit-value'])}}
                                 {{Form::hidden('iui_history_id',$iuiHistoryId, ['id' => 'iui_history_id'])}}
+                                <div class="">
+                                    <label class="vertical-form-label">
+                                        Weight :
+                                    </label>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <div class="form-group">
+                                        {{Form::text('data[weight]',isset($historyData->weight) && !empty($historyData->weight) ? $historyData->weight : null,['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                                    </div>
+                                </div>
                                 {{-- {{ Form::hidden('iui_id', null, ['id' => 'iui_id']) }} --}}
                             </div>
                         </div>
@@ -4027,6 +4041,44 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="data-blood-images"></div>
                     </div>
                 </div>
+                @php
+                        $hsaReportClass = !empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'yes' ? true : false;
+                        $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                @endphp
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            HSA Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[hsa_report][type]",'no',!empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                        <div class="data-hsa-images"></div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
                 <!-- {{-- 4 .Remark --}} -->
                 <div class="row">
                     <div class="col-md-6">
@@ -4296,6 +4348,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                         <span class="seen-by-error-3 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$rmoDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-2">
@@ -4338,9 +4400,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 </div>
                 <br>
                 <br>
+                <div class="row">
                 @if(!$iuiHistoryId)
-                
-                    <div class="col-md-1">
+                    <div class="">
                         <label class="vertical-form-label pr-0">
                             Inducing Date :
                         </label>
@@ -4375,7 +4437,19 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                     </div>
                     {{Form::hidden('data[last_appointment_date]',!empty($historyData->last_appointment_date) ? $historyData->last_appointment_date : null)}}
+                    
                 @endif
+                    <div class="">
+                        <label class="vertical-form-label">
+                            Weight :
+                        </label>
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="form-group">
+                            {{Form::text('data[weight]',isset($historyData->weight) && !empty($historyData->weight) ? $historyData->weight : null,['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                        </div>
+                    </div>
+                </div>
                 @php
                     $vitlasClass = !empty($historyData->le->vitals_status) && $historyData->le->vitals_status == 'yes' ? '' : 'd-none';
                 @endphp
@@ -4796,7 +4870,45 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="{{'col-md-8 pr-0 blood-type '.$usgReportClassName}}">
                         <div class="data-usg-images"></div>
                     </div>
-                </div>         
+                </div>     
+                @php
+                        $hsaReportClass = !empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'yes' ? true : false;
+                        $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                @endphp
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            HSA Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[hsa_report][type]",'no',!empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                        <div class="data-hsa-images"></div>
+                    </div>
+                    
+                </div>  
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>  
                 <div class="row">
                     <div class="col-md-6">
                         <div class="input-group">
@@ -4854,6 +4966,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                         <span class="seen-by-error-4 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$rmoDoctor,isset($iui) && !empty($iui->rmo_doctor) ? $iui->rmo_doctor : '',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading" role="tab" id="headingThree_1">
@@ -4870,7 +4992,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 </div>
                                 <div class="col-md-4 child-naturally">
                                     <div class="form-group">
-                                        {{Form::select("data[ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI'],!empty($historyData->ho_type) ? $historyData->ho_type : null,['class'=>'form-control select-padding-0 child-ho-type p-ho-type','placeholder'=>'Select Follow Up case of'])}}
+                                        {{Form::select("data[ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI'],!empty($historyData->ho_type) ? $historyData->ho_type : null,['class'=>'form-control select-padding-0 child-ho-type p-ho-type'])}}
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <label class="vertical-form-label">
+                                        Weight :
+                                    </label>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <div class="form-group">
+                                        {{Form::text('data[weight]',isset($historyData->weight) && !empty($historyData->weight) ? $historyData->weight : null,['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
                                     </div>
                                 </div>
                             </div>
@@ -5344,8 +5476,46 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="{{'col-md-8 pr-0 blood-type '.$bloodReportClassName}}">
                         <div class="data-blood-images"></div>
                     </div>
+                </div>
+                @php
+                        $hsaReportClass = !empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'yes' ? true : false;
+                        $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                @endphp
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            HSA Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[hsa_report][type]",'no',!empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                        <div class="data-hsa-images"></div>
+                    </div>
+                    
                 </div>     
-                 <div class="row">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6 mt-3">
                         <div class="input-group">
                             <span class="input-group-addon">
@@ -5414,11 +5584,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
         $('.blood-images').imageUploader({
             imagesInputName: 'investigation[blood_report][image]',
         });
+        $('.hsa-images').imageUploader({
+            imagesInputName: 'investigation[hsa_report][images]',
+        });
         $('.data-blood-images').imageUploader({
             imagesInputName: 'data[blood_report][image]',
         });
         $('.data-usg-images').imageUploader({
             imagesInputName: 'data[usg][images]',
+        });
+        $('.data-hsa-images').imageUploader({
+            imagesInputName: 'data[hsa_report][images]',
         });
         $(document).on('click', '.add-row', function() {
             addRow();

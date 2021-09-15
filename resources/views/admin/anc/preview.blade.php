@@ -40,6 +40,7 @@
     $treatment = !empty($ancData->treatment) ? json_decode($ancData->treatment) : null;
     $remark=!empty($previousAnc->o_e) ? json_decode($previousAnc->o_e) : null;
     $blood=!empty($previousAnc->investigation) ? json_decode($previousAnc->investigation) : null;
+    $ancCreatedDate = (!empty($ancData)) ? $ancData->created_at : null;
     $contraceptionData = ['barrier_method'=>'Barrier Method','cu_t'=>'Cu - T','tl_done'=>'TL Done ','occipill'=>'Occipill','other_contraception'=>'Other'];
     $utsizearray = ["Normal Size","Just Bulky","6 Weeks","6-8 Weeks","8 Weeks","8-10 Weeks","10-12 Weeks"];
     $utsizearray1 = ["12 Weeks","Uterus Just Palpable","14 Weeks","16 Weeks","18 Weeks","20 Weeks","22 Weeks","24 Weeks","26 Weeks","28 Weeks","30 Weeks","32 Weeks","34 Weeks","36 Weeks","Full Term"];
@@ -56,8 +57,10 @@
     $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
     $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
     $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
+    $terminationtype = ['Delivery'=>"Delivery",
+                        'Obseravation'=>"Obseravation",
+                        'Operation'=>"Operation"];
 @endphp
-
 <style type="text/css">
     .module-report-table {
         text-align: left;
@@ -107,7 +110,21 @@
     {
         border:none !important;
     }
-    @page { margin-top : 200px; margin-left : 100px;}
+    span.admission-detail
+    {
+        display: block;
+        width: 250px;
+        word-break: break-word;
+    }
+    .font-bold
+    {
+        font-weight : 600 !important;
+    }
+    .text-center
+    {
+        text-align: center !important;
+    }
+    /* @page { margin-top :200px; margin-left : 100px;} */
     
 </style>
 @if(isset($printPreview) && $printPreview != 0)
@@ -115,18 +132,14 @@
 @endif  
 <div class="main-print-anc-div mb-5">
     @if(isset($anc_print) && $anc_print== '3')
+    <style>
+        @page { margin-top : 10px; margin-bottom : 80px;}
+    </style>
         <div class="ivf-print-data">
             <div class="row mb-2 patient-detail">
                 <div class="col-md-12">
                     @if(@$usg->termination_type && !empty($usg->termination_type))
-                        <?php
-                            $terminationtype = ['Delivery'=>"Delivery",
-                                'Dilation and Curettage'=>"Dilation and Curettage",
-                                'Threatened Abotion'=>"Threatened Abotion",
-                                'Obseravation'=>"Obseravation",
-                                'Ectopic Pregency'=>"Ectopic Pregency",
-                                'Fever'=>"Fever"];
-                        ?>
+                        
                         <strong>{{isset($terminationtype[$usg->termination_type]) ? ucwords(strtolower('Admission for '.$terminationtype[$usg->termination_type])) : ''}}</strong>
                     @endif
                 </div>
@@ -159,19 +172,22 @@
                             }
                         @endphp
                     @endif
-                    @if(!empty($usg->termination_detail))
-                        <span>Admission Detail : </span><span> {{$usg->termination_detail.(isset($tremination_term) ? ' - '.$tremination_term : '')}}</span>
+                    @if(!empty($usg->termination_detail) || isset($tremination_term))
+                        <span class="admission-detail"><strong>Admission Detail : </strong></span><span> {{$usg->termination_detail.(isset($tremination_term) ? ' - '.$tremination_term : '')}}</span>
                     @endif
                 </div>
             </div>
         </div>
     @else
+    <style>
+        @page { margin-top : 200px; margin-left : 100px;}
+    </style>
         <div class="{{'panel panel-primary print-panle-primary '.(isset($printPreview) && $printPreview == 1 ? 'watermark' : '')}}">
             <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
                 <tbody>
                     <tr>
                         <th style="padding-bottom: 30px;">Name: {{ucwords(strtolower($patients->name))}}
-                            @if (!empty($oe->oe_no) && (in_array($oe->oe_no, ['1', '2'])) && (!empty($oe->oe_child_type) && array_key_exists($oe->oe_child_type, $childType)))
+                            @if (!empty($oe->oe_no) && (!in_array($oe->oe_no, ['1'])) && (!empty($oe->oe_child_type) && array_key_exists($oe->oe_child_type, $childType)))
                                 <br>
                                     {{ $childType[$oe->oe_child_type] }}
                             @endif
@@ -343,7 +359,7 @@
                         @else
                             <tr>
                                 <th>
-                                    Yalk Sac :
+                                    Yolk Sac :
                                 </th>
                                 <td>
                                     {{  !empty($value->yalk_sac) ? $value->yalk_sac : null}}
@@ -667,43 +683,43 @@
                 @if($ho)
                     <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
                         <tbody>
+                            @if(isset($oe->pt_remark) && !empty($oe->pt_remark) && isset($patient_preview) && $patient_preview == 1)
+                                <tr>
+                                        <th class="text-danger">
+                                            <span class="anc-label ">Remark :</span>
+                                            {{$oe->pt_remark}}
+                                        </th>
+                                </tr>
+                            @endif
+                            @if(!isset($patient_preview) || $patient_preview != 1)
                             <tr>
-                                @if(isset($patients_remark))
-                                    @if($patients_remark == 1 && !empty($oe->remark))
+                                @if(!empty($oe->remark))
                                     <th class="text-danger">
                                         <span class="anc-label ">O/E Remark :</span>
                                         {{$oe->remark}}
                                     </th>
-                                    @endif
-                                @else
-                                    @if(!empty($oe->remark))
-                                    <th class="text-danger">
-                                        <span class="anc-label ">O/E Remark :</span>
-                                        {{$oe->remark}}
-                                    </th>
-                                    @endif
                                 @endif
                             </tr>
                             <tr>
                                 <th class="text-danger">
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['blood_group']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['blood_group']) &&  (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['blood_group_date'])))
                                         <span class="anc-label ">*Blood Group:</span>
                                             {{$ancAutoRemark['blood_group']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['hbsag']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['hbsag']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hbsag_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*HBSAG:</span>
                                             {{$ancAutoRemark['hbsag']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['hiv']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['hiv']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hiv_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*HIV:</span>
                                             {{$ancAutoRemark['hiv']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['vdrl']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['vdrl']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['vdrl_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*VDRL:</span>
                                             {{$ancAutoRemark['vdrl']}}
                                     @endif
                                     
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['late_concept']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['late_concept']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['late_concept_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Late Conception:</span>
                                         Yes
                                     @endif
@@ -712,20 +728,24 @@
                                             {{$ancAutoRemark['cesarean']. ' - LSCS'}}
                                     @endif
                                     @if($ancAutoRemark && !empty($ancAutoRemark['position']) && ($ancAutoRemark['position'] == 'breech' || $ancAutoRemark['position'] == 'transverse' || $ancAutoRemark['position'] == 'oblique'))
-                                        <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Position:</span>
+                                        @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['position_date']))    
+                                            <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Position:</span>
                                             {{$ancAutoRemark['position']}}
+                                        @endif
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly'))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly') && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['liquor_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Liquor:</span>
                                             {{$ancAutoRemark['liquor']}}
                                     @endif
-                                    @if($ancAutoRemark && !empty($ancAutoRemark['placenta']))
+                                    @if($ancAutoRemark && !empty($ancAutoRemark['placenta']) && (empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['placenta_date'])))
                                         <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Placenta:</span>
                                             {{$ancAutoRemark['placenta']}}
                                     @endif
                                     
                                     </th>
                             </tr>
+                            @endif
+
                             <tr>
                                 <th>
                                     <span class="anc-label">H/O: </span>
@@ -786,6 +806,10 @@
                 @php
                     $noValueData = [];
                     $secondNoValueData = [];
+                    $ancFirst_mh_date = isset($ancFirstVisitData) ? json_decode($ancFirstVisitData->m_h) : null;
+                    $ancFirstlmdDate = !empty($ancFirst_mh_date->last_menstrual_date) ? \Carbon\Carbon::parse($ancFirst_mh_date->last_menstrual_date)->format('d/m/Y'): null;
+                    $ancFirsteddDate = !empty($ancFirst_mh_date->edd) ? \Carbon\Carbon::parse($ancFirst_mh_date->edd)->format('D d M Y') : null;
+                    $ancFirstusgEddDate = !empty($ancFirst_mh_date->usg_edd) ? \Carbon\Carbon::parse($ancFirst_mh_date->usg_edd)->format('D d M Y'): null;
                 @endphp
                 @if($patientsObstratics)
                     <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table '.$class}}">
@@ -795,12 +819,12 @@
                                     <div class="panel-title header-print-title">Obstetric History</div>
                                 </td>
                             </tr>
-                            @if(!empty($patientsObstratics->marriage_life))
+                            @if(!empty($patientsObstratics->first_marriage_life))
                                 <tr>
-                                    @if(!empty($patientsObstratics->marriage_life))
+                                    @if(!empty($patientsObstratics->first_marriage_life))
                                         <th>
                                             <span class="anc-label ">Marriage Life :</span>
-                                            {{$patientsObstratics->marriage_life}}
+                                            {{$patientsObstratics->first_marriage_life}}
                                         </th>
                                     @endif
                                 </tr>
@@ -812,6 +836,7 @@
                                             <span class="anc-label ">H/O :</span>
                                             @php
                                                 $hoValue = null;
+                                                $ho_term_details = '';
                                                 if(!empty($row->ho_term)){
                                                     $hoValue.= $row->ho_term  == 'full' ? 'FT' : 'Pre Term';
                                                 }
@@ -832,7 +857,7 @@
                                                         $hoValue.= '/Live';
                                                     }
                                                     if($row->ho_birth_type == 'stil_birth'){
-                                                        $hoValue.= '/StilBirth';
+                                                        $hoValue.= '/Stil Birth';
                                                     }
                                                     if($row->ho_birth_type == 'expired'){
                                                         $hoValue.= '/Expired';
@@ -861,8 +886,9 @@
                                                         }
                                                     }
                                                 }
+                                                $ho_term_details = isset($row->ho_term_details) && !empty($row->ho_term_details) ? ' - '.$row->ho_term_details : '';
                                             @endphp
-                                            {{$hoValue}}
+                                            {{$hoValue.$ho_term_details}}
                                         </th>
                                     </tr>
                                 @endforeach
@@ -958,7 +984,7 @@
                                     $noValueData[] = ' MTP';
                                 @endphp
                             @endif
-                            @if(empty($patientsObstratics->abortion_no) || empty($patientsObstratics->abortion->when_where))
+                            @if(empty($patientsObstratics->abortion_no))
                                 @php
                                     $noValueData[] = ' Abortion';
                                 @endphp
@@ -1020,13 +1046,13 @@
                                     $noValueData[] = '';
                                 @endphp
                             @endif
-                            {{-- @if(!empty($noValueData))
+                            @if(!empty($noValueData))
                                 <tr>
                                     <th>
                                         {{'No H/O '.implode(',',$noValueData)}}
                                     </th>
                                 </tr>
-                            @endif --}}
+                            @endif
                             @if (isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes')
                                 <tr>
                                     <th class=" w-300">
@@ -1051,6 +1077,7 @@
                                             <span class="anc-label ">H/O :</span>
                                             @php
                                                 $secondHoValue = null;
+                                                $second_ho_term_details = '';
                                                 if(!empty($row->ho_term)){
                                                     $secondHoValue.= $row->ho_term  == 'full' ? 'FT' : 'Pre Term';
                                                 }
@@ -1068,13 +1095,13 @@
                                                 }
                                                 if(!empty($row->ho_birth_type)){
                                                     if($row->ho_birth_type == 'live_health'){
-                                                        $secondHoValue.= '/L';
+                                                        $secondHoValue.= '/Live';
                                                     }
                                                     if($row->ho_birth_type == 'stil_birth'){
-                                                        $secondHoValue.= '/StilBirth';
+                                                        $secondHoValue.= '/Stil Birth';
                                                     }
                                                     if($row->ho_birth_type == 'expired'){
-                                                        $secondHoValue.= '/E';
+                                                        $secondHoValue.= '/Expired';
                                                         if($row->expired_reason){
                                                             $secondHoValue.= '('.$row->expired_reason.')';
                                                         }
@@ -1099,9 +1126,11 @@
                                                             $secondHoValue.= ' '.$row->when_where;
                                                         }
                                                     }
+                                                    $second_ho_term_details = isset($row->ho_term_details) && !empty($row->ho_term_details) ? ' - '.$row->ho_term_details : '';
+                                                    
                                                 }
                                             @endphp
-                                            {{$secondHoValue}}
+                                            {{$secondHoValue.$second_ho_term_details}}
                                         </th>
                                     </tr>
                                 @endforeach
@@ -1229,13 +1258,13 @@
                                 @endphp
                             @endif
                             <br>
-                            {{-- @if(!empty($secondNoValueData) && !empty($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && ('No '.implode(',',$noValueData)!='No H/O '.implode(',',$secondNoValueData)))
+                            @if(!empty($secondNoValueData) && !empty($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && ('No '.implode(',',$noValueData)!='No H/O '.implode(',',$secondNoValueData)))
                                 <tr>
                                     <th>
                                         {{'No H/O '.implode(',',$secondNoValueData)}}
                                     </th>
                                 </tr>
-                            @endif --}}
+                            @endif
                             @if(!empty($patientsObstratics->remark))
                                 <tr>
                                     <th>
@@ -1331,6 +1360,7 @@
                                 </tr>
                             @endif
                             @php
+                                
                                 $lmddate = !empty($mh->last_menstrual_date) ? \Carbon\Carbon::parse($mh->last_menstrual_date)->format('d/m/Y') : null;
                                 $date = !empty($mh->edd) ? \Carbon\Carbon::parse($mh->edd)->format('D d M Y') : null;
                                 $usgDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
@@ -1360,7 +1390,31 @@
                         </tbody>
                     </table>
                 @endif
-
+                @if($ancFirst_mh_date && $isFirstVisit == false)
+                    <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
+                        @if($ancFirstlmdDate)
+                        <tr>
+                            <th>
+                                <span class="anc-label lmd-lable">Last Menstrual Date : </span>{{$ancFirstlmdDate}}
+                            </th>
+                        </tr>
+                        @endif
+                        @if($ancFirsteddDate)
+                        <tr>
+                            <th>
+                                <span class="anc-label lmd-lable">Expected Date of Delivery : </span> {{$ancFirsteddDate}}
+                            </th>
+                        </tr>
+                        @if($ancFirstusgEddDate)
+                        <tr>
+                            <th>
+                                <span class="anc-label lmd-lable">Corrected USG EDD :</span> {{$ancFirstusgEddDate}}
+                            </th>
+                        </tr>
+                            @endif
+                        @endif
+                    </table>
+                @endif
                 @php
                     $pHistoryStatus = false;
                     $pastHistoryStatus = false;
@@ -1483,7 +1537,7 @@
                                             {{ !empty($oe->oe_type) && $oe->oe_type == 'tvs' ? 'TVS' : 'PA'  }}
                                         @endif
 
-                                        @if (!empty($oe->oe_no) && (in_array($oe->oe_no, ['1', '2'])))
+                                        @if (!empty($oe->oe_no) && (!in_array($oe->oe_no, ['1'])))
                                             @if (!empty($oe->oe_child_type) && array_key_exists($oe->oe_child_type, $childType))
                                                 {{ ' | ' . $childType[$oe->oe_child_type] }}
                                             @endif
@@ -1621,6 +1675,7 @@
                                                         @endif
                                                     @endif
                                                     @if(@$value->oe_ut_sac_1 && $value->oe_ut_sac_1>=13)
+                                                    <br>
                                                         @php
                                                             $instra = "પેટમાં કે કમરમાં થોડી થોડી વારે દુખાવો આવે એટલે કે ડિલિવરીનો દુખાવો હોય, ખુન પડે, પાણી પડે કે બાળકો ઓછું ફરકે તો હોસ્પિટલ તાત્કાલિક તપાસ માટે આવવું.";
                                                         @endphp
@@ -2083,12 +2138,7 @@
                             <tr>
                                 <th>
                                     <?php
-                                    $terminationtype = ['Delivery'=>"Delivery",
-                                        'Dilation and Curettage'=>"Dilation and Curettage",
-                                        'Threatened Abotion'=>"Threatened Abotion",
-                                        'Obseravation'=>"Obseravation",
-                                        'Ectopic Pregency'=>"Ectopic Pregency",
-                                        'Fever'=>"Fever"];
+                                    
                                         if(isset($terminationtype[$usg->termination_type]))
                                         {
                                             echo 'Admission for '.$terminationtype[$usg->termination_type].!empty($usg->termination_detail) ? ' - '.$usg->termination_detail : '';
@@ -2280,7 +2330,7 @@
                             @if(!empty($patientsInvestigation->investigation_extra))
                                 <tr >
                                     <th>
-                                        <span class="anc-label ">Extra :</span>
+                                        <span class="anc-label ">Other Report :</span>
                                         {{$patientsInvestigation->investigation_extra}}
                                     </th>
                                 </tr>
@@ -2384,15 +2434,15 @@
                         </tbody>
                     </table>
                 @endif
-
+                    <br>
                 @if(!empty($usgStatus) && $usgStatus == 1 && \Carbon\Carbon::parse($oe->follow_up)->format('Y-m-d') > date('Y-m-d'))
-                    <h5>{{"ફરીવાર સોનોગ્રાફી માટે ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર સોનોગ્રાફી માટે ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                 @elseif(isset($oe->follow_up) && !empty($oe->follow_up))
-                    <h5>{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                 @elseif($isNextAppointment == 1)
-                    <h4>{{"ફરીવાર ".\Carbon\Carbon::parse($nextAppointmentDate)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                    <h4 class="lmd-lable font-bold text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($nextAppointmentDate)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
                 @endif
-                <h6>{{$instra}}</h6>
+                <h6 class="lmd-lable font-bold text-center">{{$instra}}</h6>
             @endif
         </div>
     @endif

@@ -1,12 +1,14 @@
-@extends('layouts.printpreview')
+@extends(isset($printPreview) && $printPreview == 1 ? 'layouts.printpreview' : 'layouts.printPreviewBlank')
 @section('page-style')
 @stop
-@section('content')
+@if(isset($printPreview) && $printPreview != 0)
+    @section('content')
+@endif 
 {{-- <html lang="en"> --}}
     {{-- <head> --}}
         {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> --}}
         <style>
-            .module-report-table {
+            .ivf-transfer-report .module-report-table {
                 text-align: left;
                 width: 100%;
             }
@@ -16,10 +18,10 @@
             .p-name{
                 font-size: 18px;
             }
-            .table thead th {
+            .ivf-transfer-report .table thead th {
                 border-bottom: 2px solid black !important;
             }
-            .table-bordered td, .table-bordered th {
+            .ivf-transfer-report .table-bordered td, .table-bordered th {
                 border: 1px solid black !important;
             }
             .pl-10
@@ -37,11 +39,11 @@
             {
                 float: right;
             }
-            .font-bold
+            .ivf-transfer-report .font-bold
             {
-                font-weight: bold;
+                font-weight: bold !important;
             }
-            .module-report-table>tbody>tr>td, .module-report-table>tbody>tr>th, .module-report-table>thead>tr>td, .module-report-table>thead>tr>th
+            .ivf-transfer-report .module-report-table>tbody>tr>td, .ivf-transfer-report .module-report-table>tbody>tr>th, .ivf-transfer-report .module-report-table>thead>tr>td,.ivf-transfer-report .module-report-table>thead>tr>th
             {
                 border: none !important;
             }
@@ -49,15 +51,13 @@
                 color: #1e5f63;
                 -webkit-print-color-adjust: exact;
             }
-            .module-report-table
+            .ivf-transfer-report .module-report-table
             {
                 margin-bottom: 10px !important;
             }
         </style>
-    {{-- </head> --}}
-    {{-- <body> --}}
-        {{-- <div class="container-fluid"> --}}
-            <div class="row content watermark">
+    
+            <div class="row content watermark ivf-transfer-report">
                 
                 <div class="col-sm-12">
                     <h3 class="text-center"><u>IVF REPORT</u></h3>
@@ -74,28 +74,12 @@
                             </th>
                             <th>
                             <th class="pb-1 float-right ivf-label">
-                                <span class="pb-1 ivf-label">Age :</span> {{ !empty($transferReport->getPatient['age']) ? $transferReport->getPatient['age'] : '-' }}<br>
-                                <span class="pb-1 ivf-label">Weight :</span> {{ !empty($transferReport->getPatient['weight']) ?$transferReport->getPatient['weight'] : '-' }}
+                                <span class="pb-1 ivf-label">Age :</span> {{ !empty($transferReport->getPatient['age']) ? $transferReport->getPatient['age'].' Year' : '-' }}<br>
+                                <span class="pb-1 ivf-label">Weight :</span> {{ !empty($transferReport->getPatient['weight']) ?$transferReport->getPatient['weight'].' Kg' : '-' }}
                             </th>
                         </tr>
                     </tbody>
                 </table>
-                {{-- <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <strong>Indication :</strong>
-                        </div>
-                        <div class="col-sm-6">
-                            
-                        </div>
-                        <div class="col-sm-2">
-                            
-                        </div>
-                        <div class="col-sm-2">
-                            
-                        </div>
-                    </div>
-                </div> --}}
                 <table class="table table-bordered mt-2 transfer-table">
                    
                     <thead>
@@ -129,8 +113,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4">
-                                <span>Embryos Transferred Report : </span>
+                            <td>Embryos Transferred Report</td>
+                            <td colspan="3">
                                 @if(!empty($transferReport->embryos_transferred_image))
                                 <img src="{{url($transferReport->embryos_transferred_image)}}" height="100" width="100">
                                 @endif
@@ -138,47 +122,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                {{-- <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th colspan="4" class="text-center">Embryo Transfer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Pick up  Date</td>
-                            <td>{{ !empty($transferReport->pickup_date) ? Carbon\Carbon::parse($transferReport->pickup_date)->format('D d-M-Y') : '-' }}</td>
-                            <td>Simulation Protocol</td>
-                            <td>{{ !empty($transferReport->simulation_protocol) ? $transferReport->simulation_protocol : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Total OCC</td>
-                            <td>{{ !empty($transferReport->total_occ) ? $transferReport->total_occ : '-' }}</td>
-                            <td>Mll</td>
-                            <td>{{ !empty($transferReport->mll) ? $transferReport->mll : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Ml</td>
-                            <td>{{ !empty($transferReport->ml) ? $transferReport->ml : '-' }}</td>
-                            <td>GV</td>
-                            <td>{{ !empty($transferReport->gv) ? $transferReport->gv : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Oocyte Quality</td>
-                            <td>{{ !empty($transferReport->oocycle_quality) ? $transferReport->oocycle_quality : '-' }}</td>
-                            <td>Sperm Quality</td>
-                            <td>{{ !empty($transferReport->sperm_quality) ? $transferReport->sperm_quality : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Fertilization Procedure</td>
-                            <td colspan="3">{{ !empty($transferReport->fertilization_procedure) ? $transferReport->fertilization_procedure : '-' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Remark</td>
-                            <td colspan="3">{{ !empty($transferReport->remark) ? $transferReport->remark : '-' }}</td>
-                        </tr>
-                    </tbody>
-                </table> --}}
                 
                 <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
                     <tbody>
@@ -208,4 +151,7 @@
         {{-- </div> --}}
     {{-- </body> --}}
 {{-- </html> --}}
-@endsection
+@if(isset($printPreview) && $printPreview != 0)
+
+    @endsection
+@endif

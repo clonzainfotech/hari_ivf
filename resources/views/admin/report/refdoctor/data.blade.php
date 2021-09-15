@@ -31,7 +31,7 @@
                 $doctorName = (strtolower(substr($refdoctor, 0, 3)) == 'dr.') ? ucwords(strtolower(substr($refdoctor, 3))) : ucwords(strtolower($refdoctor));
             @endphp
             <tr class="refdocdata">
-                <td colspan="6" class="sub-headline">{{ strtolower($refdoctor) != 'benner' ? 'Dr. ' . $doctorName : $doctorName}}</td>
+                <td colspan="6" class="sub-headline">{{ !in_array(strtolower($refdoctor),config('app.social_reference')) ? 'Dr. ' . $doctorName : $doctorName}}</td>
             </tr>
             @php $totalNetAmount = 0; @endphp
             @foreach ($rowList as $row)

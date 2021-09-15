@@ -47,28 +47,52 @@ td{
 .label-table
 {
     border: 1px solid;
-    /* padding: 4% 45%;
-    padding-bottom:3%;
-    padding-top: 3%;  */
     padding-left: 5%;
     border-radius: 25px;
-    width: 136%;
+    width: 100%;
     height: 223px;
     -ms-transform: rotate(20deg);
     transform: rotate(90deg);
-    margin: 60% 0px;
-    font-size: 20px;
+    margin: 60% 0;
+    -webkit-print-color-adjust: exact;
+}
+.label-table .row {
+    align-items: center;
+    height: 223px;
+}
+@media print {
+    .label-table
+    {
+        border: 1px solid;
+        padding-left: 5%;
+        border-radius: 25px;
+        width: 100%;
+        height: 223px;
+        -ms-transform: rotate(20deg);
+        transform: rotate(90deg);
+        margin: 60% 0;
+        -webkit-print-color-adjust: exact;
+    }
+    .font-7
+    {
+        font-size: 60px;
+        width: 1300px;
+    }
 }
 .font-7
 {
-    font-size: 4.5em;
+    font-size: 60px;
     font-weight: bold;
+    -webkit-print-color-adjust: exact;
+    width: 1300px;
+    overflow: hidden;
 }
 .pro_name
 {
     margin-left: 20px;
     font-weight: bold;
     font-size: 24px;
+    -webkit-print-color-adjust: exact;
 }
 /* width: 50%;
     height: auto;
@@ -80,9 +104,10 @@ td{
 <div class="label-table">
     @php
         $namePart = explode(' ',$label_name);
+        $lastName = isset($namePart[2]) ? $namePart[2] : '';
 
     @endphp
-    <div class="row"><span class="font-7">{{ucwords(strtolower($namePart[0].' '.(!empty($namePart[1][0]) ?$namePart[1][0].'.' : '' ).' '.$namePart[2]))}}<sub class="pro_name">({{$procedure_name}})</sub></span></div>
+    <div class="row"><p class="font-7">{{ucwords(strtolower($namePart[0].' '.(isset($namePart[1]) && !empty($namePart[1]) ? $namePart[1][0].'.' : '' ).' '.$lastName))}}<sub class="pro_name">({{$procedure_name}})</sub></p></div>
 </div>
 @else
 

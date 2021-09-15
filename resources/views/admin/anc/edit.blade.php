@@ -23,7 +23,7 @@
         $injectionNo = 9;
         $ancId = $ancData->id;
     }
-
+    $ancCreatedDate = (!empty($ancId) || !empty($ancHistoryId)) ? $ancData->created_at : null;
     $previousAncRemark = isset($previousAncRemark->remark) && !empty($previousAncRemark->remark) ? $previousAncRemark->remark : null;
     if(!empty($previousAnc->id)){
         $preId=$previousAnc->id;
@@ -48,11 +48,8 @@
     $terminationtype = [
         ''=>"Select Reason",
         'Delivery'=>"Delivery",
-        'Dilation and Curettage'=>"Dilation and Curettage",
-        'Threatened Abotion'=>"Threatened Abotion",
         'Obseravation'=>"Obseravation",
-        'Ectopic Pregency'=>"Ectopic Pregency",
-        'Fever'=>"Fever"];
+        'Operation'=>"Operation"];
     $selectAttr = (!empty($ancId) || !empty($ancHistoryId)) ? 'disabled' : '-';
 
     $childStatusType = 'd-none';
@@ -93,57 +90,73 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
     @endif
     <h5 class="autoRemark">
         @if($ancAutoRemark && !empty($ancAutoRemark['blood_group']))
+        @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['blood_group_date']))
             &nbsp;&nbsp;&nbsp;*Blood Group:
             <small>
                 {{$ancAutoRemark['blood_group']}}
             </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['hbsag']))
-            &nbsp;&nbsp;&nbsp;*HBSAG:
-            <small>
-                {{$ancAutoRemark['hbsag']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hbsag_date']))
+                &nbsp;&nbsp;&nbsp;*HBSAG:
+                <small>
+                    {{$ancAutoRemark['hbsag']}}
+                </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['hiv']))
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['hiv_date']))
             &nbsp;&nbsp;&nbsp;*HIV:
             <small>
                 {{$ancAutoRemark['hiv']}}
             </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['vdrl']))
-            &nbsp;&nbsp;&nbsp;*VDRL:
-            <small>
-                {{$ancAutoRemark['vdrl']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['vdrl_date']))   
+                &nbsp;&nbsp;&nbsp;*VDRL:
+                <small>
+                    {{$ancAutoRemark['vdrl']}}
+                </small>
+            @endif
         @endif
         
         @if($ancAutoRemark && !empty($ancAutoRemark['late_concept']))
-            &nbsp;&nbsp;&nbsp;*Late Conception:
-            <small>Yes</small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['late_concept_date']))
+                &nbsp;&nbsp;&nbsp;*Late Conception:
+                <small>Yes</small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['cesarean']))
-            &nbsp;&nbsp;&nbsp;*Previous:
-            <small>
-                {{$ancAutoRemark['cesarean']. ' - LSCS'}}
-            </small>
+                &nbsp;&nbsp;&nbsp;*Previous:
+                <small>
+                    {{$ancAutoRemark['cesarean']. ' - LSCS'}}
+                </small>
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['position']) && ($ancAutoRemark['position'] == 'breech' || $ancAutoRemark['position'] == 'transverse' || $ancAutoRemark['position'] == 'oblique'))
-            &nbsp;&nbsp;&nbsp;*Position:
-            <small>
-                {{$ancAutoRemark['position']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['position_date']))
+                &nbsp;&nbsp;&nbsp;*Position:
+                <small>
+                    {{$ancAutoRemark['position']}}
+                </small>
+            @endif 
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly'))
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['liquor_date']))
             &nbsp;&nbsp;&nbsp;*Liquor:
             <small>
                 {{$ancAutoRemark['liquor']}}
             </small>
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['placenta']))
-            &nbsp;&nbsp;&nbsp;*Placenta:
-            <small>
-                {{$ancAutoRemark['placenta']}}
-            </small>
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['placenta_date']))
+                &nbsp;&nbsp;&nbsp;*Placenta:
+                <small>
+                    {{$ancAutoRemark['placenta']}}
+                </small>
+            @endif
         @endif
         
     </h5>
@@ -410,7 +423,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         <div class="{{'row yalk-sac-'.$key.' fefal-reduction-' . $key}}">
                             <div class="col-md-1 pr-0">
                                 <label class="vertical-form-label pr-0">
-                                    Yalk Sac :
+                                    Yolk Sac :
                                 </label>
                             </div>
                             <div class="col-sm-3">
@@ -913,7 +926,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12"><span class="font-12 text-danger">*If check Patient's Reamrk then remark is display in  patient's Application*</span></div>
+                <div class="col-md-12"><span class="font-12 text-danger">*If Add Patient's Reamrk then remark is display in  patient's Application*</span></div>
             </div>
             <div class="panel panel-primary">
                 <div class="panel-heading" role="tab" id="headingThree_1">
@@ -1011,6 +1024,16 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
             </div>
             <span class="seen-by-error text-danger mb-2"></span>
         </div>
+        <div class="col-md-1">
+            <label class="vertical-form-label pr-0">
+                RMO Doctor :
+            </label>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                {{Form::select('rmo_doctor',$rmoDoctor,(!empty($ancId) || !empty($ancHistoryId)) ? $ancData->rmo_doctor : null,['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+            </div>
+        </div>
     </div>
     <div class="{{$class}}">
         <div class="panel-heading" role="tab" id="headingThree_1">
@@ -1052,7 +1075,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">weight : &nbsp;</span>
-                            {{Form::number("p_info[weight]",$ancData->getPatients['weight'],['class'=>'form-control weight','id'=>'weight'])}}
+                            {{Form::text("p_info[weight]",$ancData->getPatients['weight'],['class'=>'form-control weight','id'=>'weight'])}}
                         </div>
                         <span class="form-error-msg weight">
                             {{$errors->first('weight')}}
@@ -1187,7 +1210,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         <div class="col-md-2">
                             <div class="input-group">
                                 <span class="input-group-addon">Weight : &nbsp;</span>
-                                {{Form::number("ho[weight]",!empty($ho->weight) ? $ho->weight  : (!empty(json_decode($ancData->patients_info)->weight) ? json_decode($ancData->patients_info)->weight : $ancData->getPatients['weight']),['class'=>'form-control weight-2','id'=>'weight'])}}
+                                {{Form::text("ho[weight]",!empty($ho->weight) ? $ho->weight  : (!empty(json_decode($ancData->patients_info)->weight) ? json_decode($ancData->patients_info)->weight : $ancData->getPatients['weight']),['class'=>'form-control weight-2','id'=>'weight'])}}
                             </div>
                             <span class="form-error-msg weight">
                                     {{$errors->first('weight')}}
@@ -1310,7 +1333,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Since : &nbsp;</span>
-                            {{Form::text("co[since]",!empty($co->since) ? $co->since : null,['class'=>'form-control'])}}
+                            {{Form::text("co[since]",!empty($co->since) && (!empty($ancHistoryId) || !empty($ancId)) ? $co->since : null,['class'=>'form-control'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('since')}}
@@ -2288,7 +2311,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">EDD : &nbsp;</span>
                             @php
                                 $date = !empty($mh->edd) ? \Carbon\Carbon::parse($mh->edd)->format('D d M Y') : null;
-                                $usgEddDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
+                                // $usgEddDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
                             @endphp
                             {{Form::text("mh[edd]",$date,['class'=>'form-control date edd-date','disabled'])}}
                         </div>
@@ -2300,7 +2323,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-4">
                         <div class="input-group edd-week-data">
                             <span class="input-group-addon">USG EDD : &nbsp;</span>
-                            {{Form::text("mh[usg_edd]",$usgEddDate,['class'=>'form-control datetimepicker usg-edd-date'])}}
+                            {{Form::text("mh[usg_edd]",!empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null,['class'=>'form-control datetimepicker usg-edd-date'])}}
                         </div>
                     </div>
                 </div>
@@ -2416,6 +2439,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         if(!empty($oe->late_data) && !empty($oe->late_data->late_concept) && $oe->late_data->late_concept == 'Yes' && !empty($oe->late_data->late_concept_week)){
                             $msgClass = '';
                         }
+                        // print_r($usgEddDate);
                     @endphp
                     {{-- @if(!empty($oe->late_concept) && $oe->late_concept == 1)       --}}
                     <span class="{{'text-danger week-message '.$msgClass}}">Late Conception</span>
@@ -2433,6 +2457,9 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         @if(!empty($usgEddDate))
                             &nbsp&nbsp<span class="lmd-text">{{'( USG EDD Date: ' .\Carbon\Carbon::parse($usgEddDate)->format('d-m-Y') . ' ) ' }}</span>
                             {{Form::hidden('oe_usg_edd_date',\Carbon\Carbon::parse($usgEddDate)->format('d-m-Y'))}}
+                        @endif
+                        @if(!empty($utersWeek) && empty($ancHistoryId) && empty($ancId))
+                            &nbsp&nbsp<span class="lmd-text">{{'(Approx Uters Week: ' .$utersWeek . ' week) ' }}</span>
                         @endif
                     @endif
                 </a></h4>
@@ -2468,7 +2495,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <span class="col-md-1 p-2">MMHG</span>
                 </div>
 
-                @if(!empty($oe->utdata))
+                @if(!empty($oe->utdata) || empty($oe->utdata))
                     <div class="row female-type-data fefal-reduction-1 d-none">
                         <div class="col-md-12 col-sm-12">
                             <div class="radio is-conceived">
@@ -2645,7 +2672,6 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         </div>
                     </div>
                 </div>
-                
                 <div class="row">
                     <div class="col-md-1 pr-0">
                         <label class="vertical-form-label pr-0">
@@ -2986,7 +3012,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                     <div class="{{'row female-type-data-'.$key.' yalk-sac-'.$key.' fefal-reduction-' . $key.' '. $yalkData.' gsac-data-'.$key.' '.$utWeekStatus2}}">
                                         <div class="col-md-1 pr-0">
                                             <label class="vertical-form-label pr-0">
-                                                Yalk Sac :
+                                                Yolk Sac :
                                             </label>
                                         </div>
                                         <div class="col-sm-3">
@@ -3009,7 +3035,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                {{Form::text("oe[utdata][".$key."][yalk_sac_size]",!empty(@$value->yalk_sac_size) ? @$value->yalk_sac_size: '',['class'=>'form-control','placeholder'=>'Yalk Sac Size'])}}
+                                                {{Form::text("oe[utdata][".$key."][yalk_sac_size]",!empty(@$value->yalk_sac_size) ? @$value->yalk_sac_size: '',['class'=>'form-control','placeholder'=>'Yolk Sac Size'])}}
                                             </div>
                                         </div>
                                         <div class="{{'col-md-1 pr-0 fefal-pole-data-'.$key .' '. $fefalData}}">
@@ -3079,14 +3105,16 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                     </div>
                                     {{-- Cervical--}}
                                     <div class="row">
+                                        @if($key == 1)
                                         <div class="col-md-1 pr-0 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
                                             <label class="vertical-form-label pr-0 green-lable">
                                                 Cervical length :
                                             </label>
                                         </div>
                                         <div class="col-sm-2 extra-female-data-{{$key}} cervical-data-{{$key}} d-none">
-                                            {{Form::number("oe[utdata][".$key."][cervical_length]",@$value->cervical_length && !empty($value->cervical_length) ? $value->cervical_length:'',['id'=>'cervical_length','class'=>'form-control cervical_length','data-id'=>1])}}
+                                            {{Form::text("oe[utdata][".$key."][cervical_length]",@$value->cervical_length && !empty($value->cervical_length) ? $value->cervical_length:'',['id'=>'cervical_length','class'=>'form-control cervical_length','data-id'=>1])}}
                                         </div>
+                                        @endif
                                         <div class="col-md-2 pr-0 extra-female-data-{{$key}} expected-data-{{$key}} d-none">
                                             <label class="vertical-form-label pr-0 green-lable">
                                                 Expected Birth Weight :
@@ -3387,7 +3415,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                
 
                 <div class="row">
-                    <div class="col-md-2 checkbox">
+                    {{-- <div class="col-md-2 checkbox">
                         {{Form::checkbox('oe[is_patient_remark]',!empty($oe->is_patient_remark) && $oe->is_patient_remark == '1' ? '1' : '0',!empty($oe->is_patient_remark) && $oe->is_patient_remark == 1 ? true : false,[
                             'id'=>'is_patient_remark',
                             'class'=>'anc-remark'
@@ -3395,15 +3423,20 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         <label for="is_patient_remark">
                           Patient's Remark
                         </label>
+                    </div> --}}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{Form::textarea('oe[pt_remark]', isset($oe->pt_remark) && !empty($oe->pt_remark) ? $oe->pt_remark : null, ['class'=>'form-control no-resize remark','placeholder'=>'Patient Remark','rows'=>'2'])}}
+                        </div>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-6">
                         <div class="form-group">
                             {{Form::textarea('oe[remark]', !empty($oe->remark) ? $oe->remark : null, ['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12"><span class="font-12 text-danger">*If check Patient's Reamrk then remark is display in  patient's Application*</span></div>
+                    <div class="col-md-12"><span class="font-12 text-danger">*If Add Patient's Reamrk then remark is display in  patient's Application*</span></div>
                 </div>
             </div>
         </div>
@@ -4360,12 +4393,12 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     </div>
                     <div class="col-sm-2">
                         <div class="{{'radio is-conceived investigation-report'}}">
-                            {{Form::radio("investigation[other_report_type]",'yes',!empty($patientsInvestigation->other_report_type) && $patientsInvestigation->other_report_type == 'yes' ? true : false,['id'=>'other_report_type_yes','class'=>'other-report-type'])}}
+                            {{Form::radio("investigation[other_report_type]",'yes',(!empty($ancHistoryId) || !empty($ancId)) && !empty($patientsInvestigation->other_report_type) && $patientsInvestigation->other_report_type == 'yes' ? true : false,['id'=>'other_report_type_yes','class'=>'other-report-type'])}}
                             <label for="other_report_type_yes">
                                 Yes
                             </label>
 
-                            {{Form::radio("investigation[other_report_type]",'no',!empty($patientsInvestigation->other_report_type) && $patientsInvestigation->other_report_type == 'no' ? true : false,['id'=>'other_report_type_no','class'=>'other-report-type'])}}
+                            {{Form::radio("investigation[other_report_type]",'no',(!empty($ancHistoryId) || !empty($ancId)) && !empty($patientsInvestigation->other_report_type) && $patientsInvestigation->other_report_type == 'no' ? true : false,['id'=>'other_report_type_no','class'=>'other-report-type'])}}
                             <label for="other_report_type_no">
                                 No
                             </label>
@@ -4423,7 +4456,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-sm-5">
                         <div class="input-group">
                             <span class="input-group-addon">
-                                Extra : &nbsp;
+                                Other Report : &nbsp;
                             </span>
                             {{Form::text("investigation[investigation_extra]",!empty($patientsInvestigation->investigation_extra) ? $patientsInvestigation->investigation_extra : null,['class'=>'form-control'])}}
                         </div>

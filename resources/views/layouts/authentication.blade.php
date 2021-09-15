@@ -81,6 +81,7 @@
         @stack('before-scripts')
         <script src="{{ asset('assets/bundles/libscripts.bundle.js') }}"></script>    
         <script src="{{ asset('assets/bundles/vendorscripts.bundle.js') }}"></script>
+        
         @stack('after-scripts')
     </body>
 </html>

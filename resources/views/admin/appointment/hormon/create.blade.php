@@ -46,22 +46,36 @@
                             </div>
                         </div>
                         <div class="row hormon-row hinjection-data">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon unik-lbl-spn">Injection : &nbsp;</span>
-                                    {{Form::text('hinjection','',[
-                                        'class'=>'form-control hinjection',
-                                        'placeholder'=>'Injection',
-                                        'id'=>'injection'
-                                    ])}}
-                                </div>
+                            <div class="col-md-6">
+                                    {{Form::select('hinjection',$injection,'',[
+                                    'class'=>'form-control hinjection',
+                                    'placeholder'=>'Select Injection',
+                                    'id'=>'injection',
+                                    'data-live-search'=>'true',
+                                ])}}
                                 <span class="form-error-msg injection">
                                     {{$errors->first('hinjection')}}
                                 </span>
                             </div>
+                            <div class="col-md-6 hinjection-data">
+                                <div class="input-group">
+                                    <span class="input-group-addon unik-lbl-spn">Cycle No : &nbsp;</span>
+                                    {{Form::number('cycle_no','',[
+                                        'class'=>'form-control cycle_no',
+                                        'placeholder'=>'Cycle No',
+                                        'maxlength' => 6,
+                                        'onpaste' => 'return false',
+                                        'min' => 1,
+                                        'id'=>'cycle_no'
+                                    ])}}
+                                </div>
+                                <span class="form-error-msg cycle_no">
+                                    {{$errors->first('cycle_no')}}
+                                </span>
+                            </div>
                         </div>
                         <div class="row hormon-row mt-18">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Charge : &nbsp;</span>
                                     {{Form::text('hcharge','',[
@@ -78,7 +92,20 @@
                                     {{$errors->first('hcharge')}}
                                 </span>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4 ivf-data">
+                                <div class="input-group">
+                                    <span class="input-group-addon unik-lbl-spn">Discount : &nbsp;</span>
+                                    {{Form::number('discount','',[
+                                        'class'=>'form-control discount',
+                                        'placeholder'=>'Charge',
+                                        'maxlength' => 6,
+                                        'onpaste' => 'return false',
+                                        'min' => 1,
+                                        'id'=>'discount'
+                                    ])}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Date:</span>
                                     {{Form::text('date',\Carbon\Carbon::now()->format('l d M Y'),[
@@ -88,140 +115,31 @@
                                 </div>
                                 <span class="form-error-msg date-error"></span>
                             </div>
-                        </div>
-
-                        <div class="row ">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 {{Form::select('payment_type',['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],'',['class'=>'form-control payment-method','placeholder'=>'Select Payment Type'])}}
                                 <span class="form-error-msg payment_method_error"></span>
                             </div>
-                            <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-addon unik-lbl-spn">Remaining Day : &nbsp;</span>
-                                {{Form::number('remaining_day','',['class'=>'form-control','placeholder'=>'Enter Only Day',])}}
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon unik-lbl-spn">Next Payment Date:</span>
+                                    {{Form::text('remaining_date','',[
+                                        'class'=>'form-control datetimepicker remaining_date',
+                                        'placeholder'=>'Next Payment Date',
+                                    ])}}
+                                </div>
+                                <span class="form-error-msg remaining-date-error"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon unik-lbl-spn">Next Payment Amount:</span>
+                                    {{Form::number('next_payment_amt','',[
+                                        'class'=>'form-control next_payment_amt',
+                                        'placeholder'=>'Amount',
+                                    ])}}
+                                </div>
+                                <span class="form-error-msg next_payment-amt-error"></span>
                             </div>
                         </div>
-                        </div>
-                       <!--  <div class="row">
-                            <div class="form-group col-md-6">
-                                {{Form::select('payment_type',['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],'',['class'=>'form-control payment-method','placeholder'=>'Select Payment Type'])}}
-                                <span class="form-error-msg payment_method_error"></span>
-                            </div>
-                        </div> -->
-                        {{-- <div class="row hormon-row hcategory-data">
-                            <div class="col-md-12">
-                                {{Form::select('hcategory',$category,'',[
-                                    'class'=>'form-control hormon-width-100 plr-0 hcategory',
-                                    'placeholder'=>'Select Category',
-                                    'id'=>'hcategory'
-                                ])}}
-                                <span class="form-error-msg hcategory">
-                                    {{$errors->first('hcategory')}}
-                                </span>
-                            </div>
-                        </div> --}}
-
-                        {{-- <div class="row ivf-data">
-                            <div class="form-group col-md-6">
-                                {{Form::text('h_name','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Husband Name',
-                                ])}}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{Form::number('sonography_charge','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Sonography Charge',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                        </div>
-
-                        <div class="row ivf-data">
-                            <div class="form-group col-md-6">
-                                {{Form::number('ivf_lab_charge','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'IVF Lab Charge',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{Form::number('icsi_ivf_charge','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'ICSI - IVF',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                        </div>
-                        
-                        <div class="row ivf-data">
-                            <div class="form-group col-md-6">
-                                {{Form::number('embryo_transfer_charge','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Embryo Transfer',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{Form::number('embryo_freezing','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Embryo Freezing',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                        </div>
-                        
-                        <div class="row ivf-data">
-                            <div class="form-group col-md-6">
-                                {{Form::number('hystrocopy','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Hystrocopy',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{Form::number('donor_charge','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Donor Charge',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                        </div>
-                        
-                        <div class="row ivf-data">
-                            <div class="form-group col-md-6">
-                                {{Form::number('medical_medicines','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Medical Medicines',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{Form::number('anesthescis_doctor','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Anaithesia Charge ',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                        </div>
-                        
-                        <div class="row ivf-data">
-                            <div class="form-group col-md-6">
-                                {{Form::number('blood_report','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Blood Report',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {{Form::number('tesa_pesa','',[
-                                    'class'=>'form-control col-md-12',
-                                    'placeholder'=>'Tesa Pesa Charge',
-                                    'min' => 0
-                                ])}}
-                            </div>
-                        </div> --}}
-
                         <div class="row hormon-row reference-doctor">
                             <div class="col-md-6">
                                 {{Form::select('hreference_doctor_id', $referenceDoctor, '', [
@@ -434,6 +352,7 @@
             var htype=document.getElementById('htype').value;
             var injection=document.getElementById('injection').value;
             var hcharge=document.getElementById('hcharge').value;
+            var cycle_no=document.getElementById('cycle_no').value;
             var hreference_doctor=document.getElementById('hreference-doctor').value;
             var doctor=document.getElementById('doctor').value;
             var doctor_mobile=document.getElementById('doctor_mobile').value;
@@ -457,7 +376,13 @@
                     valid = 0;
                     $('.injection').text('The injection field is required.');
                 }
+                if(cycle_no == '')
+                {
+                    valid = 0;
+                    $('.cycle_no').text('The type field is required.');
+                }
             }
+            
             if (hcharge == '') {
                 valid = 0;
                 $('.hchargeerror').text('The charge field is required.');
@@ -521,6 +446,8 @@
                             w.document.write(data.data);
                             w.document.close();
                             w.window.print();
+                            var url = '{{URL::to("hormon")}}';
+                            window.location.href = url;
                         }
                     });
                 }

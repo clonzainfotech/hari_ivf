@@ -1,17 +1,4 @@
-<div class="card">
-    <div class="body">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-5">
-                    <h5>Medicines</h5>
-                </div>
-                <div class="col-md-7"></div>
-                <div class="col-md-3">
-                </div>
-            </div>    
-            <div class="row">
-            </div>
-            <br>
+
             <table class="table m-b-0 table-hover">
                 <thead>
                     <tr>     
@@ -76,11 +63,8 @@
                             </td>
                         </tr>
                     @empty
-                        <td colspan='4' class="text-center">No records available</td>
+                        <td colspan='9' class="text-center">No records available</td>
                     @endforelse
                 </tbody>
             </table>
-        </div>
-    </div>
     {{$medicine->links()}}
-</div>

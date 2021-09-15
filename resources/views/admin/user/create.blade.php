@@ -234,6 +234,14 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-6 doctor-fields">
+                                <div class="checkbox">
+                                    {{Form::checkbox('is_rmo_doctor',0,'',['id'=>'is_rmo_doctor'])}}
+                                    <label for="is_rmo_doctor">
+                                        RMO Doctor
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
@@ -258,7 +266,7 @@
             time: false,
             weekStart: 1
         });
-        $('#is_mobile_view').click(function(){
+        $('#is_mobile_view, #is_rmo_doctor').click(function(){
             if($(this).prop("checked") == true){
                 $(this).val(1);
             }

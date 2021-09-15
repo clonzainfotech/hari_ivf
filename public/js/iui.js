@@ -80,7 +80,11 @@ $(document).ready(function () {
     });
 
     $(document).on('change', 'select.oe_ovary_left_details', function (e) {
-        var textboxName = 'oe[ovary][left][updated_details][]';
+        var textboxName = 'data[ovary][left][updated_details][]';
+        if($(this).data('type') == 'oe')
+        {
+            var textboxName = 'oe[ovary][left][updated_details][]';
+        }
         if (typeof ($(this).data('id')) !== 'undefined') {
             var textboxName = 'data[oe][ovary][left][updated_details][]';
         }
@@ -121,7 +125,11 @@ $(document).ready(function () {
     });
 
     $(document).on('change', 'select.oe_ovary_right_details', function (e) {
-        var textboxName = 'oe[ovary][right][updated_details][]';
+        var textboxName = 'data[ovary][right][updated_details][]';
+        if($(this).data('type') == 'oe')
+        {
+            var textboxName = 'oe[ovary][right][updated_details][]';
+        }
         if (typeof ($(this).data('id')) !== 'undefined') {
             var textboxName = 'data[oe][ovary][right][updated_details][]';
         }
@@ -527,6 +535,7 @@ $(document).ready(function () {
             var date = moment(newDate).format('dddd DD MMMM YYYY');
             $('.follow-up-date').val(date);
             $('.iui-deposit-print').removeClass('d-none');
+            
             isOvalution = true;
         }
         complaintWiseMedicines(covalue,2,mType,'',false,false,isOvalution);
@@ -1437,7 +1446,7 @@ function oeNumber(oeValue) {
             "</div>";
         // }else{
         oeValueData += "<div class='row d-none yalk-sac-" + i + "'>" +
-            "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yalk Sac :</label></div>" +
+            "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yolk Sac :</label></div>" +
             "<div class='col-md-3'><div class='radio is-conceived'>" +
             "<input type='radio' name='oe[utdata][" + i + "][yalk_sac]' value='present' id='present_" + i + "' class='yalk_sac'><label for='present_" + i + "'>Present</label>" +
             "<input type='radio' name='oe[utdata][" + i + "][yalk_sac]' value='absent' id='absent_" + i + "' class='yalk_sac'><label for='absent_" + i + "'>Absent</label>" +
@@ -1787,6 +1796,7 @@ function iuiYesNoStatus(value, dType) {
     $('.' + dType + '-' + 'abnormal').addClass('d-none');
     if (value == 'yes') {
         $('.' + dType).removeClass('d-none');
+
     }
 }
 

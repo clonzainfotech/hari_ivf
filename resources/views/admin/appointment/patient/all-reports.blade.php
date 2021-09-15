@@ -36,9 +36,9 @@
                         @endphp
                         <h2><strong class="text-secondary"> {{ucwords($patientsDetails->name)}}</strong>{{' care of '.$careOf}}</h2>
                     </div>
-                    <div class="col-md-6 text-right">
+                    {{-- <div class="col-md-6 text-right">
                         <a href="{{url()->previous()}}" class="btn btn-primary m-n2">Back</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -50,12 +50,14 @@
 				$ancReport = '';
 				$ivfReport = '';
 				$iuiReport = '';
+				$gynecReport = '';
 			}
 			else 
 			{
 				$ancReport = !empty($status) && $status == 'anc' ? '' : 'd-none';
 				$ivfReport = !empty($status) && $status == 'ivf' ? '' : 'd-none';
 				$iuiReport = !empty($status) && $status == 'iui' ? '' : 'd-none';
+				$gynecReport = !empty($status) && $status == 'gynec' ? '' : 'd-none';
 			}
 			
 		@endphp
@@ -191,6 +193,9 @@
 													case 'usg_report':
 														$report_name = 'Usg Report';
 														break;
+													case 'hsa_report':
+														$report_name = 'HSA Report';
+														break;
 													}
 												@endphp
 												@if(!empty($value))
@@ -280,6 +285,86 @@
 													case 'usg_report':
 														$report_name = 'Usg Report';
 														break;
+													case 'hsa_report':
+														$report_name = 'HSA Report';
+														break;
+													}
+												@endphp
+												@if(!empty($value))
+													@foreach($value as $image)
+													@php
+                                                    
+                                                        $imageType = '';
+                                                        if(is_file($image))
+                                                        {
+														    $imageType = mime_content_type($image);   
+                                                        }
+													@endphp
+													@if($imageType == "application/pdf" && !empty($imageType))     
+													<li data-responsive="{{asset($image)}}" data-iframe="true" data-src="{{asset($image)}}"
+													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
+														<a href="{{asset($image)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{asset('public/images/default-pdf.png')}}">
+															<div class="demo-gallery-poster">
+																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+															</div>
+														</a>
+														<div class="content"><h6 class="candor-color">{{$report_name}}</h6><p>{{$date}}</p></div>
+													</li>
+													@endif
+													@if(($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" )&& !empty($imageType))     
+														<li data-responsive="{{asset($image)}}" data-src="{{asset($image)}}"
+														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
+															<a href="" class="mb-1">
+																<img class="img-responsive" src="{{asset($image)}}">
+																<div class="demo-gallery-poster">
+																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
+																</div>
+															</a>
+															<div class="content"><h6 class="candor-color">{{$report_name}}</h6><p>{{$date}}</p></div>
+														</li>
+														@endif
+													@endforeach
+												@endif
+											@endforeach
+										@endforeach
+                                    @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="{{'col-md-12 '.$gynecReport}}">
+            <div class="card">
+                <div class="header">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <strong class="pr-3">Gynec Reports</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="cont">
+                            <div class="page-head">
+                                <div class="demo-gallery">
+                                    <ul id="lightgallery4">
+                                    @if($GynecReports)
+										@foreach($GynecReports as $key => $reports)
+											@php
+											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
+											@endphp
+											@foreach($reports as $report => $value)
+												@php
+													switch($report)
+													{
+													case 'report':
+														$report_name = 'Report';
+														break;
+													
 													}
 												@endphp
 												@if(!empty($value))
@@ -346,6 +431,7 @@
     lightGallery(document.getElementById('lightgallery1'))
     lightGallery(document.getElementById('lightgallery2'))
     lightGallery(document.getElementById('lightgallery3'))
+    lightGallery(document.getElementById('lightgallery4'))
 	
   </script>
 </body>

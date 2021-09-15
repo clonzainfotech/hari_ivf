@@ -85,6 +85,16 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                     </div>
                                     <span class="seen-by-error text-danger mb-2"></span>
                                 </div>
+                                <div class="col-md-1">
+                                    <label class="vertical-form-label pr-0">
+                                        RMO Doctor :
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- patients basic information -->
@@ -1531,7 +1541,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             <div class="row yalk-sac-1 female-type-data-1 gsac-data-1">
                                                 <div class="col-md-1 pr-0">
                                                     <label class="vertical-form-label pr-0">
-                                                        Yalk Sac :
+                                                        Yolk Sac :
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-3">
@@ -1554,7 +1564,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
-                                                        {{Form::text("oe[utdata][1][yalk_sac_size]",'',['class'=>'form-control','placeholder'=>'Yalk Sac Size'])}}
+                                                        {{Form::text("oe[utdata][1][yalk_sac_size]",'',['class'=>'form-control','placeholder'=>'Yolk Sac Size'])}}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1 pr-0 gsac-data-1 fefal-pole-data-1 d-none">
@@ -1655,7 +1665,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-2 extra-female-data-1 cervical-data-1 d-none">
-                                                    {{Form::number("oe[utdata][1][cervical_length]",'',['id'=>'cervical_length','class'=>'form-control cervical_length','data-id'=>1])}}
+                                                    {{Form::text("oe[utdata][1][cervical_length]",'',['id'=>'cervical_length','class'=>'form-control cervical_length','data-id'=>1])}}
                                                 </div>
                                                 <div class="col-md-2 pr-0 extra-female-data-1 expected-data-1 d-none">
                                                     <label class="vertical-form-label pr-0 green-lable">
@@ -1971,7 +1981,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-2 checkbox">
+                                            {{-- <div class="col-md-2 checkbox">
                                                 {{Form::checkbox('oe[is_patient_remark]','0','',[
                                                     'id'=>'is_patient_remark',
                                                     'class'=>'anc-remark'
@@ -1979,8 +1989,13 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                 <label for="is_patient_remark">
                                                   Patient's Remark
                                                 </label>
+                                            </div> --}}
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{Form::textarea('oe[pt_remark]', null, ['class'=>'form-control no-resize remark','placeholder'=>'Patient Remark','rows'=>'2'])}}
+                                                </div>
                                             </div>
-                                            <div class="col-md-8">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     {{Form::textarea('oe[remark]', null, ['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
                                                 </div>
@@ -3247,11 +3262,8 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                     $terminationtype = [
                                                         ''=>"Select Reason",
                                                         'Delivery'=>"Delivery",
-                                                        'Dilation and Curettage'=>"Dilation and Curettage",
-                                                        'Threatened Abotion'=>"Threatened Abotion",
                                                         'Obseravation'=>"Obseravation",
-                                                        'Ectopic Pregency'=>"Ectopic Pregency",
-                                                        'Fever'=>"Fever"];
+                                                        'Operation'=>"Operation"];
                                                     ?>
                                                     {{Form::select("usg[termination_type]",$terminationtype,(@$usg->termination_type) && !empty($usg->termination_type) ? $terminationtype[$usg->termination_type]: null,['class'=>'form-control'])}}
                                                 </div>

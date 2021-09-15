@@ -23,6 +23,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
     Route::post('/otp_verify', 'AuthApiController@otp_verify');
     Route::get('/hospital_tutorials', 'HomeController@hospital_tutorials');
     Route::get('/getQ_A', 'HomeController@getQAns');
+    Route::get('getHtmlPages','HomeController@getHtmlPages');
 
     Route::middleware('APIToken')->group(function () {
         // Logout
@@ -62,7 +63,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         Route::get('ourdoctor','UserController@ourDoctor');
       
         Route::get('about-us','UserController@aboutUs');
-        // Route::post('get_patient_report','UserController@get_patient_report');
+        Route::get('get_patient_report','PatientController@get_patient_report');
 
         // Route::get('notification','NotificationController@index' );
 
@@ -76,6 +77,23 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
         Route::get('all-appointment','AppointmentController@allAppointment');
         Route::post('get_medicines','MedicineController@get_medicines');
+
+        //patient's memory
+        
+        Route::post('addPatientMemory','PatientController@addPatientMemory');
+        Route::post('editPatientMemory','PatientController@editPatientMemory');
+        Route::post('deletePatientMemory','PatientController@deletePatientMemory');
+        Route::get('getPatientMemory','PatientController@getPatientMemory');
+
+        //patient's weight list
+        
+        Route::post('addPatientWeight','PatientController@addPatientWeight');
+        Route::post('editPatientWeight','PatientController@editPatientWeight');
+        Route::post('deletePatientWeight','PatientController@deletePatientWeight');
+        Route::get('getPatientWeight','PatientController@getPatientWeight');
+
+        //patient's USG images
+        Route::get('getPatientUsgImageList','PatientController@getPatientUsgImageList');
     });
 
 });

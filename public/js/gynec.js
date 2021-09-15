@@ -1664,7 +1664,7 @@ $(document).ready(function(){
                             "</div>";
         // }else{
             oeValueData += "<div class='row d-none yalk-sac-"+i+"'>"+
-                                "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yalk Sac :</label></div>"+
+                                "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yolk Sac :</label></div>"+
                                 "<div class='col-md-3'><div class='radio is-conceived'>"+
                                     "<input type='radio' name='oe[utdata]["+i+"][yalk_sac]' value='present' id='present_"+i+"' class='yalk_sac'><label for='present_"+i+"'>Present</label>"+
                                     "<input type='radio' name='oe[utdata]["+i+"][yalk_sac]' value='absent' id='absent_"+i+"' class='yalk_sac'><label for='absent_"+i+"'>Absent</label>"+

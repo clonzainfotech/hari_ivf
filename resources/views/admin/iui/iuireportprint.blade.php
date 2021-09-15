@@ -1,215 +1,179 @@
-<link rel="stylesheet" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}">
-
-<style>
-    .drname {
-    font-weight: 500;
-    text-transform: uppercase;
-}
-.degree {
-    font-weight: 500;
-    text-transform: uppercase;
-    font-size: 12px;
-}
-.proffesion {
-    font-weight: 500;
-    text-transform: uppercase;
-}
-.iui-report-print {
-    padding: 20px;
-}
-    .doctor-info {
-        padding: 50px 0;
-    }
-    h6 {
-        text-transform: uppercase;
-    }
-</style>
-@php
-$iuireportData = json_decode($iuiReport->description);    
-// dd($iuireportData->ovum->erphoto);
-@endphp
-<div class="iui-report-print">
-<div class="row">
-    <div class="col-md-10">
-        <span>Patient Name:</span>
-    <span>{{$iuiReport->getPatients['name']}}</span>
-    </div>
-    <div class="col-md-2">
-        <span>Age:</span>
-        <span>{{$iuiReport->getPatients['age']}}</span>
-    </div>
-</div>
-
-<div class="row pb-4">
-    <div class="col-md-12">
-        <span>Indication:</span>
-        <span>{{!empty($iuiReport->indication) ? $iuiReport->indication : ''}}</span>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <div><h6><strong>stimulation:</strong></h6></div>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-6">
-       <div>
-           <span>Protocol:</span>
-           <span>{{!empty($iuireportData->simulation->protocol) ? $iuireportData->simulation->protocol : ''}}</span>
-       </div>
-       <div>
-            <span>Injection:</span>
-            <span>{{!empty($iuireportData->simulation->injection) ? $iuireportData->simulation->injection : ''}}</span>       
-        </div>
-        <div>
-            <span>Antagonist:</span>
-            <span>{{!empty($iuireportData->simulation->antagonist) ? $iuireportData->simulation->antagonist : ''}}</span>
-        </div>
-        <div>
-            <span>Stimulation days:</span>
-            <span>{{!empty($iuireportData->simulation->simulation_days) ? $iuireportData->simulation->simulation_days : ''}}</span>
-        </div>
-    </div>
-
-    <div class="col-md-6" style="border-left: 1px solid">
-        <div>
-            <span>Trigger:</span>
-            <span>{{!empty($iuireportData->simulation->trigger->trigger) ? $iuireportData->simulation->trigger->trigger : ''}}</span>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <span>Date:</span>
-                <span>{{!empty($iuireportData->simulation->trigger->date) ? $iuireportData->simulation->trigger->date : ''}}</span>  
-            </div>
-            <div class="col-md-6">
-                <span>Time:</span>
-                <span>{{!empty($iuireportData->simulation->trigger->time) ? $iuireportData->simulation->trigger->time : ''}}</span>
-            </div>   
-         </div>
-         
-         <div>
-             <span>Total ACF:</span>
-             <span>{{!empty($iuireportData->simulation->totalacf) ? $iuireportData->simulation->totalacf : ''}}</span>
-         </div>
-
-         <div class="row">
-            <div class="col-md-6">
-                <span>Rt:</span>
-                <span>{{!empty($iuireportData->simulation->rt) ? $iuireportData->simulation->rt : ''}}</span>  
-            </div>
-            <div class="col-md-6">
-                <span>Lt:</span>
-                <span>{{!empty($iuireportData->simulation->lt) ? $iuireportData->simulation->lt : ''}}</span>
-            </div>   
-         </div>
-         <div>
-             <span>ET:</span>
-             <span>{{!empty($iuireportData->simulation->et) ? $iuireportData->simulation->et : ''}}</span>
-         </div>
-
-         <div class="row">
-            <div class="col-md-6">
-                <span>sp2:</span>
-                <span>{{!empty($iuireportData->simulation->sp2) ? $iuireportData->simulation->sp2 : ''}}</span>  
-            </div>
-            <div class="col-md-6">
-                <span>Date:</span>
-                <span>{{!empty($iuireportData->simulation->sp2date) ? $iuireportData->simulation->sp2date : ''}}</span>
-            </div>   
-         </div>
-         
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div><h6><strong>Ovum pick up:</strong></h6></div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-6">
-                    <span>Date:</span>
-                    <span>{{!empty($iuireportData->ovum->date) ? $iuireportData->ovum->date : ''}}</span>
+@extends('layouts.printpreview')
+@section('page-style')
+@stop
+@section('content')
+{{-- <html lang="en"> --}}
+    {{-- <head> --}}
+        {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> --}}
+        <style>
+            .module-report-table {
+                margin-top: -16px;
+                text-align: left;
+                width: 100%;
+            }
+            td, th{
+                padding: 1px 0px 4px 0px;
+            }
+            .p-name{
+                font-size: 18px;
+            }
+            .table thead th {
+                border-bottom: 2px solid black !important;
+            }
+            .table-bordered td, .table-bordered th {
+                border: 1px solid black !important;
+                padding: 5px !important;
+            }
+            .pl-10
+            {
+                padding-left: 5rem;
+            }
+            .ivf-label{
+                font-weight: normal;
+            }
+            .text-center
+            {
+             text-align: center;
+            }
+            .float-right
+            {
+                float: right;
+            }
+            .font-bold
+            {
+                font-weight: bold;
+            }
+            .module-report-table>tbody>tr>td, .module-report-table>tbody>tr>th, .module-report-table>thead>tr>td, .module-report-table>thead>tr>th
+            {
+                
+                border: none !important;
+            }
+            h3{
+                color: #1e5f63;
+                -webkit-print-color-adjust: exact;
+            }
+            .module-report-table
+            {
+                margin-bottom: 10px !important;
+            }
+        </style>
+        @php
+        $iuireportData = json_decode($iuiReport->description);    
+        // dd($iuireportData->ovum->erphoto);
+        @endphp
+    {{-- </head> --}}
+    {{-- <body> --}}
+        {{-- <div class="container-fluid"> --}}
+            <div class="row content watermark">
+                
+                <div class="col-sm-12">
+                    <h3 class="text-center"><u>IUI REPORT</u></h3>
                 </div>
-                <div class="col-md-6">
-                    <span>Time:</span>
-                    <span>{{!empty($iuireportData->ovum->time) ? $iuireportData->ovum->time : ''}} </span>
-                </div>
+                
+                
+                <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
+                    <tbody>
+                        <tr>
+                            <th>
+                                <span class="pb-1 ivf-label">Name : <span><span class="pb-1 font-bold ivf-label">{{ ucwords(strtolower($iuiReport->getPatients['name']))}}</span>
+                                <br>
+                                <span class="pb-1 ivf-label">Age : </span>{{!empty($iuiReport->getPatients['age']) ? $iuiReport->getPatients['age'].' Year' : '-'}}
+                            </th>
+                            <th>
+                            <th class="pb-1 float-right ivf-label">
+                                <span class="pb-1 ivf-label">Date :</span> <span class="pb-1 font-bold ivf-label">{{\Carbon\Carbon::parse($iuiReport->created_at)->format('d-m-Y')}}</span><br>
+                                <span class="pb-1 ivf-label">Reason :</span> <span class="pb-1 font-bold ivf-label"> {{!empty($iuireportData->reason) ? $iuireportData->reason : '-'}}</span>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered mt-2 transfer-table">
+                   
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Pre-wash</th>
+                            <th>Post-wah</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Volume:</td>
+                            <td><strong>{{!empty($iuireportData->volume_pre) ? $iuireportData->volume_pre.' ml' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->volume_post) ? $iuireportData->volume_post.' ml' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Sperm Count/ml</strong></td>
+                            <td><strong>{{!empty($iuireportData->sperm_count_pre) ? $iuireportData->sperm_count_pre.' mili/ml' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->sperm_count_post) ? $iuireportData->sperm_count_post.' mili/ml' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Total Count(mili) :</strong></td>
+                            <td><strong>{{!empty($iuireportData->total_count_pre) ? $iuireportData->total_count_pre.' mili' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->total_count_post) ? $iuireportData->total_count_post.' mili' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Total Motility(%) :</strong></td>
+                            <td><strong>{{!empty($iuireportData->total_motility_pre) ? $iuireportData->total_motility_pre.' %' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->total_motility_post) ? $iuireportData->total_motility_post.' %' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Actively Motile(%) :</strong></td>
+                            <td><strong>{{!empty($iuireportData->actively_motile_pre) ? $iuireportData->actively_motile_pre.' %' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->actively_motile_post) ? $iuireportData->actively_motile_post.' %' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Sluggishly Motile(%) :</strong></td>
+                            <td><strong>{{!empty($iuireportData->sluggishly_motile_pre) ? $iuireportData->sluggishly_motile_pre.' %' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->sluggishly_motile_post) ? $iuireportData->sluggishly_motile_post.' %' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Non-Motile(%) :</strong></td>
+                            <td><strong>{{!empty($iuireportData->non_motile_pre) ? $iuireportData->non_motile_pre.' %' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->non_motile_post) ? $iuireportData->non_motile_post.' %' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Normal Morphology(%) :</strong></td>
+                            <td><strong>{{!empty($iuireportData->normal_morphology_pre) ? $iuireportData->normal_morphology_pre.' %' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->normal_morphology_post) ? $iuireportData->normal_morphology_post.' %' : '-'}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Pus Cells / hpf :</strong></td>
+                            <td><strong>{{!empty($iuireportData->pus_cells_pre) ? $iuireportData->pus_cells_pre.' /hpf' : '-'}}</strong></td>
+                            <td><strong>{{!empty($iuireportData->pus_cells_post) ? $iuireportData->pus_cells_post.' /hpf' : '-'}}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
+                    <tbody>
+                        @php
+                            $todayDate = Carbon\Carbon::Now();
+                        @endphp
+                        <tr>
+                            <th><span class="pb-1 ivf-label"><strong>Remark : </strong>{{!empty($iuireportData->remark) ? $iuireportData->remark : '-'}} </span></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="pb-1 ivf-label">Follow Up Date : {{Carbon\Carbon::parse(!empty($iuireportData->follow_up) ? $iuireportData->follow_up : null)->format('D d M Y')}}</span><br>
+                                <span class="pb-1 ivf-label">Best Of Luck</span>
+                            </th>
+                            <th>
+                                <span class="pb-1 ivf-label">{{config('app.doctor') }}</span>
+                                <br>
+                                <span class="pb-1 ivf-label">Chief Consultant</span>
+                            </th>
+                            <th>
+                            <th class="pb-1 float-right ivf-label text-center">
+                                <span class="pb-1 ivf-label">Dr. Bhavna Borkhataria</span>
+                                <br>
+                                <span class="pb-1 ivf-label">Embryologist</span>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <span>ER Photo:</span>
-                    @php
-                     $erPhoto = !empty($iuireportData->ovum->erphoto) ? $iuireportData->ovum->erphoto : null;    
-                    @endphp
-                <span><img src="{{asset($erPhoto)}}" alt="" height="100px" width="100px"></span>
-                </div>
-            </div>
-
-            <div>
-                <span>Total OCC:</span>
-                <span>{{!empty($iuireportData->ovum->totalocc) ? $iuireportData->ovum->totalocc : ''}}</span>
-            </div>
-        </div>
-        <div class="col-md-6" style="border-left: 1px solid">
-            <div><strong>Semen Report:</strong>
-            <span>{{!empty($iuireportData->ovum->semenreport) ? $iuireportData->ovum->semenreport : ''}}</span>
-            </div>
-
-            <div>
-                <span>Count:</span>
-                <span>{{!empty($iuireportData->ovum->count) ? $iuireportData->ovum->count : ''}}</span>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <span>Total Motility:</span>
-                    <span>{{!empty($iuireportData->ovum->motility) ? $iuireportData->ovum->motility : ''}}</span>
-                </div>
-                <div class="col-md-6">
-                    <span>Active:</span>
-                    <span>{{!empty($iuireportData->ovum->active) ? $iuireportData->ovum->active : ''}}</span>
-                </div>
-            </div>
-
-            <div>
-                <span>Sperm Morphology (ICSI):</span>
-                <span>{{!empty($iuireportData->ovum->sperm) ? $iuireportData->ovum->sperm : ''}}</span>
-            </div>
-
-            <div class="row p-4">
-                <span><strong>Oocyte Quality:</strong></span>
-                <span>{{!empty($iuireportData->ovum->quality ? $iuireportData->ovum->quality : '')}}</span>
-            </div>
-        </div>   
-     </div>
-
-     <div class="row p-4">
-         <div class="col-md-12">
-             <span>Remark:</span>
-             <span>{{!empty($iuiReport->remark) ? $iuiReport->remark : ''}}</span>
-         </div>
-     </div>
-
-    <div class="row doctor-info">
-        <div class="col-md-6">
-            <div class='drname'>{{config('app.doctor') }}</div>
-            <div class='degree'>(M.B., D.G.O)</div>
-            <div class='proffesion'>Chief consultant</div>
-        </div>
-        <div class="col-md-6">
-            <div class='drname'>bhavna borkhataria</div>
-            <div class='degree'>(M.Sc., ph.D.)</div>
-            <div class='proffesion'>embryologist</div>
-        </div>
-    </div>
-
-</div>
+        {{-- </div> --}}
+    {{-- </body> --}}
+{{-- </html> --}}
+@endsection

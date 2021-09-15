@@ -1,9 +1,10 @@
 @php
 use App\Models\IuiHistory;
+use App\Models\IuiExtraVisit;
 $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
-$medicine_status = ['' => 'Select Medicine Status','1'=>'જમ્યા પછી','2'=>'જમ્યા પહેલાં','3'=>'માસિકની જગ્યાએ મુકવી'];
-$medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
-$dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day"];
+        $medicine_status = ['' => 'Select Medicine Status','1'=>'જમ્યા પછી','2'=>'જમ્યા પહેલાં','3'=>'માસિકની જગ્યાએ મુકવી'];
+        $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
+        $dose = ['' => 'Select Dose',"1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
 @endphp
 {{-- <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet"/> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -35,6 +36,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="form-group">
                             {{Form::select('seen_by',$hospitalDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select Doctor'])}}
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <label class="vertical-form-label pr-0">
+                        RMO Doctor :
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                     </div>
                 </div>
                 {{Form::hidden('iui_id',$iui->id)}}
@@ -80,7 +91,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">weight : &nbsp;</span>
-                                        {{Form::number("weight",$iui->getPatientsInfo->weight,['class'=>'form-control weight','id'=>'weight'])}}
+                                        {{Form::text("weight",$iui->getPatientsInfo->weight,['class'=>'form-control weight','id'=>'weight'])}}
                                     </div>
                                     <span class="form-error-msg weight"></span>
                                 </div>
@@ -1940,69 +1951,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             </div>
                             {{-- end hcg  --}}
                             <br>
-                            {{-- <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            CBC : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[cbc]",!empty($investigation->cbc) ? $investigation->cbc : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Urine : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[urine]",!empty($investigation->urine) ? $investigation->urine : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            RBS : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[rbs]",!empty($investigation->rbs) ? $investigation->rbs : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            HIV : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[hiv]",!empty($investigation->hiv) ? $investigation->hiv : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Hbs Ag : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[hbs_ag]",!empty($investigation->hbs_ag) ? $investigation->hbs_ag : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Date : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[date_1]",!empty($investigation->date_1) ? \Carbon\Carbon::parse($investigation->date_1)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
-                                    </div>
-                                </div>
-                            </div>
-                            <br> --}}
-
-                            <div class="row">
-                                {{-- <div class="col-md-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            TSH : &nbsp;
-                                        </span>
-                                        {{Form::text("investigation[tsh]",!empty($investigation->tsh) ? $investigation->tsh : null,['class'=>'form-control'])}}
-                                    </div>
-                                </div> --}}
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">
@@ -2561,6 +2511,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Other Report : &nbsp;
+                                        </span>
+                                        {{Form::text("investigation[investigation_extra]",isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                            </div>
                             
                         </div>
                     </div>
@@ -2672,10 +2632,38 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                             </div>
+                            @php
+                                    $hsaReportClass = !empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'yes' ? true : false;
+                                    $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                            @endphp
+                            <div class="row">
+                                <div class="col-md-1 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        HSA Report :
+                                    </label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="radio is-conceived">
+                                        {{Form::radio("investigation[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                        <label for="hsa_type_yes">
+                                            Yes
+                                        </label>
+
+                                        {{Form::radio("investigation[hsa_report][type]",'no',!empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                        <label for="hsa_type_no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                                    <div class="hsa-images"></div>
+                                </div>
+                                
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        {{Form::textarea("h_factor[remark]",!empty($husbandFactor->remark) ? $husbandFactor->remark : null,['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                                        {{Form::textarea("h_factor[remark]",!empty($husbandFactor->remark) ? $husbandFactor->remark : null,['class'=>'form-control remark','placeholder'=>'Remark','rows'=>'5'])}}
                                     </div>
                                 </div>
                             </div>
@@ -3321,7 +3309,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     $notinject = "";
                                     if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                         $notinject = "is-inj";
-                                        $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day",'7'=>"6 hourly",'8'=>"8 hourly",'9'=>"12 hourly",'10'=>"24 hourly"];
 
                                     }
                                     $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
@@ -3403,6 +3390,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                         <span class="seen-by-error-2 text-danger mb-2"></span>
                     </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5">
@@ -3410,7 +3407,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
-                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
+                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id).'/'.encrypt($cycleNo))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
                     </div>
                 </div>
                 @if($remark && !$iuiHistoryId)
@@ -3440,6 +3437,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 {{Form::hidden('visit',2,['class'=>'visit-value'])}}
                                 {{Form::hidden('iui_history_id',$iuiHistoryId, ['id' => 'iui_history_id'])}}
                                 {{-- {{ Form::hidden('iui_id', null, ['id' => 'iui_id']) }} --}}
+                                <div class="col-md-1 text-right">
+                                    <label class="vertical-form-label">
+                                        Weight :
+                                    </label>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <div class="form-group">
+                                        {{Form::text('data[weight]','',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                                    </div>
+                                    <span class="weight-by-error text-danger mb-2"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3885,8 +3893,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     $notinject = "";
                                     if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                         $notinject = "is-inj";
-                                        $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day",'7'=>"6 hourly",'8'=>"8 hourly",'9'=>"12 hourly",'10'=>"24 hourly"];
-
                                     }
                                     $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
                                     ?>
@@ -4002,6 +4008,43 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="data-blood-images"></div>
                     </div>
                 </div>
+                @php
+                        $hsaReportClass = !empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'yes' ? true : false;
+                        $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
+                @endphp
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            HSA Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[hsa_report][type]",'yes',$hsaReportClass,['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[hsa_report][type]",'no',!empty($historyData->hsa_report) && !empty($historyData->hsa_report->type) && $historyData->hsa_report->type == 'no' ? true : false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 hsa-type '.$hsaReportClassName}}">
+                        <div class="data-hsa-images"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
                 <!-- {{-- 4 .Remark --}} -->
                 <div class="row">
                     <div class="col-md-12">
@@ -4043,7 +4086,15 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     {{Form::hidden('data[lmp][lmp_date_diff]',$lmpDataDiff,['class'=>'lmd-date-diff-val'])}}
             @endif
             @if($visitNo == 4)
-                <h3>Today : {{\Carbon\Carbon::now()->format('d M Y')}}</h3>
+                <div class="row">
+                    <div class="col-md-5">
+                        <h3>Today : {{\Carbon\Carbon::now()->format('d M Y')}}</h3>
+                    </div>
+                    <div class="col-md-5"></div>
+                    <div class="col-md-2 text-right">
+                        <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id).'/'.encrypt($cycleNo))}}" class="btn btn-primary btn-ivf-report">Extra Visit</a>
+                    </div>
+                </div>
                 @if($remark && !$iuiHistoryId)
                     <span class="remark-text m-0">Remark: {{$remark}}</span>
                     <br>
@@ -4081,6 +4132,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::select('seen_by_4',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seen-by-4','placeholder'=>'Select Doctor'])}}
                         </div>
                         <span class="seen-by-error-4 text-danger mb-2"></span>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="vertical-form-label pr-0">
+                            RMO Doctor :
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                        </div>
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -4120,7 +4181,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 @endphp
                                 <div class="col-md-4 child-naturally">
                                     <div class="form-group">
-                                        {{Form::select("data[ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI'],$follow_up_case,['class'=>'form-control select-padding-0 child-ho-type p-ho-type','placeholder'=>'Select Follow Up case of'])}}
+                                        {{Form::select("data[ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI'],$follow_up_case,['class'=>'form-control select-padding-0 follow-up-case child-ho-type p-ho-type'])}}
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <label class="vertical-form-label">
+                                        Weight :
+                                    </label>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <div class="form-group">
+                                        {{Form::text('data[weight]','',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
                                     </div>
                                 </div>
                             </div>
@@ -4486,6 +4557,40 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="data-blood-images"></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            HSA Report :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[hsa_report][type]",'yes','',['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_yes">
+                                Yes
+                            </label>
+
+                            {{Form::radio("data[hsa_report][type]",'no',false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                            <label for="hsa_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-md-8 pr-0 hsa-type d-none'}}">
+                        <div class="data-hsa-images"></div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Other Report : &nbsp;
+                            </span>
+                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-md-6 mt-3">
                         <div class="input-group">
@@ -4522,8 +4627,12 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 $possibleFactorData = json_decode($iuiFirstVisit->possible_case_of_infertility);
                 $possibleFactorData = !empty($possibleFactorData->infertility_type) ? $possibleFactorData->infertility_type : [];
                 $dateAndInjectionData = [];
+                
             @endphp
             @if($visitNo == 3)
+            @php
+                $lastHistoryData = json_decode($iuiHistoryData[count($iuiHistoryData)-1]['description']);
+            @endphp
             <div class=" col-md-12 follicular_table_print">
                 <div class="row mb-15 mb-5 do_print">{{--mb-15 is used in print--}}
                     <div class="col-md-12 text-center"><h4><u><b>TRANSVAGINAL FOLLICULAR STUDY</b></u></h4></div>
@@ -4535,8 +4644,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="visit-lable-value">{{ucwords(strtolower($iuiSecondVisit->getPatientsInfoData['name']))}}</span>
                         </div>
                         <div class="mb-3">
-                                <span class="visit-lable">AGE :- </span> 
-                                <span class="visit-lable-value">{{$iuiSecondVisit->getPatientsInfoData['age']}}</span>
+                                <span class="visit-lable">AGE / Weight :- </span> 
+                                <span class="visit-lable-value">{{$iuiSecondVisit->getPatientsInfoData['age'].' Year / '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</span>
                         </div>
                         <div class="mb-3">
                                 <span class="visit-lable">Type & Year of infertility :- </span> 
@@ -4571,7 +4680,13 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 </div>
                                 <div class="col-md-10 pl-15">
                                     <div class="mb-2">R :- {{!empty($iuiSecondVisitData->oe->ovary->right->afcs) ? $iuiSecondVisitData->oe->ovary->right->afcs : null}} / RF :- {{!empty($iuiSecondVisitData->oe->ovary->right->residual_follicale) ? $iuiSecondVisitData->oe->ovary->right->residual_follicale : null}}</div>
-                                    <div>L :- {{!empty($iuiSecondVisitData->oe->ovary->left->afcs) ? $iuiSecondVisitData->oe->ovary->left->afcs : null}} / RF :- {{!empty($iuiSecondVisitData->oe->ovary->left->residual_follicale) ? $iuiSecondVisitData->oe->ovary->left->residual_follicale : null}}</div>
+                                    @if(!empty($iuiSecondVisitData->oe->ovary->right->details))
+                                        <div class="mb-2">Right Detail :- {{implode(',',$iuiSecondVisitData->oe->ovary->right->details)}}</div>
+                                    @endif
+                                    <div class="mb-2">L :- {{!empty($iuiSecondVisitData->oe->ovary->left->afcs) ? $iuiSecondVisitData->oe->ovary->left->afcs : null}} / RF :- {{!empty($iuiSecondVisitData->oe->ovary->left->residual_follicale) ? $iuiSecondVisitData->oe->ovary->left->residual_follicale : null}}</div>
+                                    @if(!empty($iuiSecondVisitData->oe->ovary->left->details))
+                                        <div class="mb-2">Left Detail :- {{implode(',',$iuiSecondVisitData->oe->ovary->left->details)}}</div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -4582,19 +4697,31 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-1 div-seen-by">
-                        <label class="vertical-form-label pr-0">
-                            Seen By:
-                        </label>
-                    </div>
-                    <div class="col-md-3 div-seen-by">
-                        <div class="form-group">
-                            {{Form::select('seen_by_3',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seen-by-3','placeholder'=>'Select Doctor'])}}
+                    @if($iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] != 2)
+                        <div class="col-md-1 div-seen-by">
+                            <label class="vertical-form-label pr-0">
+                                Seen By:
+                            </label>
                         </div>
-                        <span class="seen-by-error-3 text-danger mb-2"></span>
-                    </div>
+                        <div class="col-md-3 div-seen-by">
+                            <div class="form-group">
+                                {{Form::select('seen_by_3',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seen-by-3','placeholder'=>'Select Doctor'])}}
+                            </div>
+                            <span class="seen-by-error-3 text-danger mb-2"></span>
+                        </div>
+                        <div class="col-md-1 div-seen-by">
+                            <label class="vertical-form-label pr-0">
+                                RMO Doctor :
+                            </label>
+                        </div>
+                        <div class="col-md-3 div-seen-by">
+                            <div class="form-group">
+                                {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
+                            </div>
+                        </div>
+                    @endif
                     <div class="col-md-12">
-                        <table class="table follicular-table table-bordered">
+                        <table class="table follicular-table table-bordered table-responsive">
                             <thead>
                                 <tr>
                                     <th style="width:8% !important;">Date</th>
@@ -4620,6 +4747,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     }
                                     $hcgDataArray = [];
                                 @endphp
+
                                
                                 @foreach($iuiHistoryData as $key=>$row)
                                     @if($row->visit != 4)
@@ -4645,6 +4773,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                             $dateAndInjectionData = [];
                                             $iuiData = [];
                                             $inducingDateArray = [];
+                                            $iuiExtraVisit = null;
                                             if(!empty($prevAppointmentDate)){
                                                 $appointmentDate = $prevAppointmentDate;
                                             }
@@ -4721,19 +4850,44 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 @endif
                                             @endforeach
                                         @endif
+                                        @if($row->visit == 2)
+                                            @php
+                                                $iuiExtraVisit = IuiExtraVisit::where('patient_id',$row->patients_id)->where('created_at','<',$row->created_at)->orderBy('id','ASC')->get();
+                                            @endphp
+                                            @if(!empty($iuiExtraVisit))
+                                                    @foreach($iuiExtraVisit as $iuiExtra)
+                                                    <tr >
+                                                        <td>{{\Carbon\Carbon::parse($iuiExtra->created_at)->format('d-m-Y')}}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>{{'Extra Visit'}}</td>
+                                                        <td>
+                                                            <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id).'/'.encrypt($cycleNo))}}" class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
+                                                                <i class="zmdi zmdi-edit material-icons"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                            @endif
+                                        @endif
                                         <tr >
                                             <td>{{$createdAt}}</td>
                                             <td>{{$diff}}</td>
                                             <td class="{{$right_class_name}}" id="{{$row->id}}">
                                                 @if($row->visit != 1)
                                                     @php
-                                                        if(!empty($data->hcg) && ($data->hcg->type == 'yes' || $data->hcg->iui->status == 'yes'))
-                                                        {
-                                                            $hcgDataArray[] = (array)$data->hcg;
-                                                        }
+                                                    if((!empty($data->hcg->type) && $data->hcg->type == 'yes') || !empty($data->ovalution) && $data->ovalution == 'yes')
+                                                    {
+                                                        $hcgDataArray[] = (array)$data->hcg;
+                                                    }
                                                     @endphp
                                                     @if($row->visit == 2)
                                                         {{!empty($iuiSecondVisitData->oe->ovary->right->afcs) ? $iuiSecondVisitData->oe->ovary->right->afcs : null}}
+                                                        <!-- {{!empty($iuiSecondVisitData->oe->ovary->right->details) ? implode(',',$iuiSecondVisitData->oe->ovary->right->details) : null}} -->
                                                         {{!empty($iuiSecondVisitData->oe->ovary->right->residual_follicale) ? '/ RF : '.$iuiSecondVisitData->oe->ovary->right->residual_follicale : null}}
                                                     @else
                                                         {{!empty($data->ovary->ovary_type->right->details) ? $data->ovary->ovary_type->right->details : ''}}
@@ -4792,7 +4946,11 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                             <td>
                                                 {{isset($vascularity_of_endo[$row->vascularity_of_endo]) ? $vascularity_of_endo[$row->vascularity_of_endo] : null}}
                                             </td>
-                                            <td class="editStudyReport">{{!empty($data->remark) ? $data->remark : ''}}</td>
+                                            <td class="editStudyReport">
+                                                {{!empty($data->remark) ? $data->remark : ''}}
+                                        {{isset($data->investigation_extra) && !empty($data->investigation_extra) ? ' Other Report :'.$data->investigation_extra : ''}}
+
+                                            </td>
                                             <td class="editStudyReport text-center">
                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini delete-iui-history" data-id="{{ encrypt($row->id) }}">
                                                     <i class="zmdi zmdi-delete material-icons"></i>
@@ -4800,13 +4958,13 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 <a class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
                                                     <i class="zmdi zmdi-edit material-icons"></i>
                                                 </a>
-                                                @if((isset($data->blood_report->image) && !empty($data->blood_report->image)) || (isset($data->usg->images) && !empty($data->usg->images)))
+                                                @if((isset($data->hsa_report->images) && !empty($data->hsa_report->images)) || (isset($data->blood_report->image) && !empty($data->blood_report->image)) || (isset($data->usg->images) && !empty($data->usg->images)))
                                                 
                                                 <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{\Carbon\Carbon::parse($row->created_at)->format('d M Y')}}">
                                                     <i class="zmdi zmdi-camera material-icons"></i>
                                                 </a>
                                                 @endif
-                                        </td>
+                                            </td>
                                         </tr>
                                         @if(!empty($dateAndInjectionData))
                                             @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
@@ -4859,6 +5017,29 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 @endif
                                             @endforeach
                                         @endif
+                                        @if(!empty($data->ovalution) && $data->ovalution == 'yes')
+                                            @php
+                                                $iuiExtraVisit = IuiExtraVisit::where('patient_id',$row->patients_id)->where('created_at','>',$row->created_at)->orderBy('id','ASC')->get();
+                                            @endphp
+                                            @if(!empty($iuiExtraVisit))
+                                                    @foreach($iuiExtraVisit as $iuiExtra)
+                                                    <tr >
+                                                        <td>{{\Carbon\Carbon::parse($iuiExtra->created_at)->format('d-m-Y')}}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>{{'Extra Visit'}}</td>
+                                                        <td>
+                                                            <a href="{{URL::to('iui/extra-visit/'.encrypt($iui->patients_id).'/'.encrypt($cycleNo))}}" class="btn btn-icon btn-neutral candor-color btn-icon-mini edit-iui-data" data-id="{{encrypt($row->id)}}">
+                                                                <i class="zmdi zmdi-edit material-icons"></i>
+                                                            </a>
+                                                    </tr>
+                                                    @endforeach
+                                            @endif
+                                        @endif
                                     @endif
                                 @endforeach
                                 
@@ -4873,10 +5054,10 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 @endphp
                                     {{-- nextAppoinment Data --}}
                                     @if($iuiHistoryData[count($iuiHistoryData)-1]['visit'] != 4 && $prevAppointmentDate && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] != 2)
-                                    @php
-                                        $left_class_name = 'td-left-overy-'.$prevAppointmentDate.'-text';
-                                        $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
-                                    @endphp
+                                        @php
+                                            $left_class_name = 'td-left-overy-'.$prevAppointmentDate.'-text';
+                                            $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
+                                        @endphp
                                         <tr class="">
                                             {{-- <td>{{\Carbon\Carbon::parse($prevAppointmentDate)->format('d-m-Y')}}</td> --}}
                                             <td>
@@ -4936,15 +5117,13 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     @php
                                                     $iui_decription =  json_decode($row->description);
                                                     @endphp
-                                                    @if(((!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes' || $iui_decription->hcg->iui->status == 'yes')) || (!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes')) || ($row->visit == 4))
+                                                    
+                                                    @if(((!empty($iui_decription->hcg) && ($iui_decription->hcg->type == 'yes')) || (!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes')) || ($row->visit == 4))
                                                     <tr>
                                                         <td>
                                                             @if(!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date))
                                                                 {{\Carbon\Carbon::parse($iui_decription->hcg_date)->format('d-m-Y')}}
                                                             
-                                                            @elseif(!empty($iui_decription->hcg->iui->status) && $iui_decription->hcg->iui->status == 'yes' && !empty($iui_decription->hcg_date))
-                                                                {{\Carbon\Carbon::parse($iui_decription->hcg_date.' '.$iui_decription->hcg->time)->addHours(36)->format('d-m-Y')}}
-                                                        
                                                             @elseif($row->visit == 4 && !empty($iui_decription->result))
                                                                 {{\Carbon\Carbon::parse($iui_decription->date)->format('d-m-Y')}}
                                                         
@@ -4953,17 +5132,45 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                             @endif
                                                         </td>
                                                         <td>
-                                                                {{!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date) ? 'YES ': ''}}
-                                                                {{-- {{$row->visit == 4 && !empty($iui_decription->result) ? $iui_decription->date : ''}} --}}
-                                                                {{-- {{(!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes') ? \Carbon\Carbon::parse($row->created_at)->format('d/m/Y') : ''}} --}}
+                                                            {{!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date) ? 'YES /': ''}}
+                                                            @php
+                                                            $hcgInjectionData = [];
+                                                                if(!empty($iui_decription->hcg->injection->data)){
+                                                                    $hcgInjection = [1=>'IUI HCG 5000',2=>'IUI HCG 10000',3=>'INJ 2 DECA',4=>'INJ 1 DECA',5=>'INJ Pitocin'] ;
+                                                                    array_filter($iui_decription->hcg->injection->data,function($value) use($hcgInjection,&$hcgInjectionData){
+                                                                        $hcgInjectionData[$value]=$hcgInjection[$value];
+                                                                    });
+                                                                }
+                                                            @endphp
+                                                            {{implode(',',$hcgInjectionData)}}
                                                         </td>
-                                                        <td>
-                                                                {{!empty($iui_decription->hcg->iui->status) && $iui_decription->hcg->iui->status == 'yes' && !empty($iui_decription->hcg_date) ? 'YES ' : ''}}
-                                                        </td>
+                                                        <td></td>
                                                         <td>{{!empty($iui_decription->no_follicle) ? $iui_decription->no_follicle : ''}}</td>
                                                         <td>{{(!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes') ? 'YES' : ''}}</td>
                                                         <td>{{($row->visit == 4 && !empty($iui_decription->result)) ? ($iui_decription->result == 'consive' ? 'Conceived' : 'Fail') : ''}}</td>
                                                     </tr>
+                                                    @endif
+                                                    @if(!empty($iui_decription->hcg) && ($iui_decription->hcg->iui->status == 'yes'))
+                                                        <tr>
+                                                            <td>
+                                                               
+                                                                @if(!empty($iui_decription->hcg->iui->status) && $iui_decription->hcg->iui->status == 'yes' && !empty($iui_decription->hcg_date))
+                                                                    @php
+                                                                        $cDate = \Carbon\Carbon::parse(!empty($iui_decription->hcg_date) ? $iui_decription->hcg_date : null)->format('d-m-Y') .' '.$iui_decription->hcg->time;
+                                                                        $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('d-m-Y');
+                                                                    @endphp
+                                                                    {{$iuiDtaeAndTime}}
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                                    {{!empty($iui_decription->hcg->iui->status) && $iui_decription->hcg->iui->status == 'yes' && !empty($iui_decription->hcg_date) ? 'YES ' : ''}}
+                                                            </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
                                                     @endif
                                                 @endforeach
                                             </tbody>
@@ -5077,7 +5284,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         </label>
                                                     </div>
                                                 </div>
-                                                
+                                                <div class="">
+                                                    <label class="vertical-form-label">
+                                                        Weight :
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-3 ">
+                                                    <div class="form-group">
+                                                        {{Form::text('data[weight]','',['class'=>'form-control weight','placeholder'=>'Enter Weight'])}}
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row child-no-box">
                                                 <div class="col-md-1 pr-0">
@@ -5208,7 +5424,43 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     <div class="data-usg-images"></div>
                                                 </div>
                                             </div>
+                                        
                                             <div class="row child-no-box">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        HSA Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("data[hsa_report][type]",'yes','',['id'=>'hsa_type_yes','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_yes">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("data[hsa_report][type]",'no',false,['id'=>'hsa_type_no','class'=>'hsa-type iui-yes-no-status','data-type'=>'hsa-type'])}}
+                                                        <label for="hsa_type_no">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="{{'col-md-8 pr-0 hsa-type d-none'}}">
+                                                    <div class="data-hsa-images"></div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row child-no-box">
+                                                {{-- <div class="row"> --}}
+                                                    <div class="col-md-4">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">
+                                                                Other Report : &nbsp;
+                                                            </span>
+                                                            {{Form::text("data[investigation_extra]",isset($historyData->investigation_extra) && !empty($historyData->investigation_extra) ? $historyData->investigation_extra : null,['class'=>'form-control'])}}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                {{-- </div> --}}
                                                 <div class="col-md-1">
                                                     <label class="vertical-form-label pr-0">
                                                         Follow Up :
@@ -5246,7 +5498,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </table>
                         
                         <h4 class=""><u>Medicine:</u></h4>
-                        <table class="table follicular-table table-bordered ">
+                        <table class="table follicular-table table-bordered table-responsive">
                             <thead>
                                 <tr>
                                     <th class="font-bold"> Date</th>
@@ -5359,8 +5611,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 $notinject = "";
                                                 if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                                     $notinject = "is-inj";
-                                                    $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week",'4'=>"Stat",'5'=>"SOS",'6'=>"Alternate Day",'7'=>"6 hourly",'8'=>"8 hourly",'9'=>"12 hourly",'10'=>"24 hourly"];
-
                                                 }
                                                 $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
                                                 ?>
@@ -5419,7 +5669,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 {{-- @endif --}}
                                             @endforeach
                                         @endif
-                                        
                                         <div class="medicine-data"></div>
                                         {{Form::hidden('old_medicine_data',!empty($historyMedicineKey) ? implode(',',$historyMedicineKey) : null,['class'=>'old-medicine-data'])}}
                                     </td>
@@ -5438,19 +5687,21 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
             </div> {{--end follicular-print--}}
             
             @endif
-            <div class="col-sm-12 div-btn">
-                {{Form::submit('Submit',['class'=>'btn btn-primary submit'])}}
-                @if($visitNo == 2 || $visitNo == 4)
-                    <button type="submit" class="btn btn-primary submit" value="1">Save & Preivew</button>
-                @endif
-                @if($visitNo == 3)
-                    <button type="submit" class="btn btn-primary final-iui submit" value="6">Follicular Study Report</button>
-                    <button type="button" class="btn btn-primary follicular-print d-none" value="7">Follicular Study Print</button>
-                @endif
-                <button type="submit" class="btn btn-primary iui-print submit d-none" value="2">IUI Print</button>
-                <button type="button" class="btn btn-primary iui-deposit-print d-none" value="3">IUI Bill</button>
-                <a href="{{URL::to('iui')}}" class="btn btn-default">Cancel</a>
-            </div>
+            @if(($visitNo == 2 || $visitNo == 4 ) || ($visitNo == 3 && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] != 2))
+                <div class="col-sm-12 div-btn">
+                    {{Form::submit('Submit',['class'=>'btn btn-primary submit'])}}
+                    @if($visitNo == 2 || $visitNo == 4)
+                        <button type="submit" class="btn btn-primary submit" value="1">Save & Preivew</button>
+                    @endif
+                    @if($visitNo == 3)
+                        <button type="submit" class="btn btn-primary final-iui submit" value="6">Follicular Study Report</button>
+                        <button type="button" class="btn btn-primary follicular-print d-none" value="7">Follicular Study Print</button>
+                    @endif
+                    <button type="submit" class="btn btn-primary iui-print submit d-none" value="2">IUI Print</button>
+                    <button type="button" class="btn btn-primary iui-deposit-print d-none" value="3">IUI Bill</button>
+                    <a href="{{URL::to('iui')}}" class="btn btn-default">Cancel</a>
+                </div>
+            @endif
         {{Form::close()}}
     </div>
     <script type="text/javascript">
@@ -5476,6 +5727,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
         });
         $('.data-usg-images').imageUploader({
             imagesInputName: 'data[usg][images]',
+        });
+        $('.data-hsa-images').imageUploader({
+            imagesInputName: 'data[hsa_report][images]',
         });
         $(document).on('click', '.add-row', function() {
             addRow();

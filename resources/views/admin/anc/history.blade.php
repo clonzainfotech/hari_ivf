@@ -50,7 +50,7 @@
                         <h2><strong class="text-secondary"> {{ucwords($ancPatients->name)}}</strong>{{' care of '.$careOf}}</h2>
                     </div>
                     <div class="col-md-6">
-                        <a href="{{URL::to('get-all-report/'.encrypt($ancData->getPatients['id']).'?status=anc')}}" class="btn btn-primary pull-right">View Reports</a>
+                        <a href="{{URL::to('get-all-report/'.encrypt($ancData->getPatients['id']).'?status=anc')}}" target="_blank" class="btn btn-primary pull-right">View Reports</a>
                         @if($isConceivedIUI)
                             <a href="{{URL::to('iui/history/'.encrypt($ancData->getPatients['id']))}}" target="_blank" class="btn btn-primary pull-right">IUI History</a>
                         @endif
@@ -70,16 +70,13 @@
                     <div class="row">
                         <div class="col-md-12 col-lg-12">
                             <strong class="pr-3">ANC Previous Visit</strong>
-                            <ul class="header-dropdown col-md-12 align-right">
-                                <li class="w-50">
-                                    @if(!empty($getTotalAncNumber))
-                                    <li class="w-25">
-                                        {{Form::select("previous_anc_id",$getTotalAncNumber,'',['class'=>'form-control select-padding-0 anc_visit_id','placeholder'=>'Select Previous Anc.','data-class'=>'previous'])}}
-                                    </li>
-                                        {{-- <button class="btn btn-primary preview-file" data-class="previous" data-id="{{encrypt($firstANCData->id)}}">Previous ANC</button> --}}
-                                    @endif
-                                </li>
-                            </ul>
+                            {{-- @if(!empty($getTotalAncNumber)) --}}
+                                {{Form::select("previous_anc_id",$getTotalAncNumber,'',['class'=>'select-padding-0 anc_visit_id float-right','placeholder'=>'Select Previous Anc.','data-class'=>'previous'])}}
+                            {{-- @endif --}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
                             @if(count($date)>0)
                                 <?php
                                 $date = array_reverse($date);
@@ -226,7 +223,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
     var ancQstring = '';
     var status = '1';
     var type = '1';
-    var ancStatus = 'current';
+    var ancCycleStatus = 'current';
     var anc_id = '';
     $(document).ready(function(){
         $(window).keydown(function(event){
@@ -274,7 +271,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             anc_id = $(this).val();
             if(anc_id != '')
             {
-                ancStatus = $(this).data('class');
+                ancCycleStatus = $(this).data('class');
                 $('.preview-file-modal').modal('hide');
                 $('.anc-details-data').html('');
                 $('.preview-file-modal').modal('show');
@@ -287,7 +284,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         $(document).on('click','.preview-file',function(e){
             e.preventDefault();
             anc_id = $(this).data('id');
-            ancStatus = $(this).data('class');
+            ancCycleStatus = $(this).data('class');
             $('.preview-file-modal').modal('hide');
             $('.anc-details-data').html('');
             $('.preview-file-modal').modal('show');
@@ -678,14 +675,12 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                         var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
                         var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
                     }
-                    if(ancStatus == 'current')
+                    if(ancCycleStatus == 'current')
                     {
                         buttonHtml = ancPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a></div></div>';
-
                     }
                     else{
                         buttonHtml = ancPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a></div></div>';
-
                     }
                     ancPreview = buttonHtml + data.data[i];
                     $('.anc-details-data').html(ancPreview);

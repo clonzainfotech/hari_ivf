@@ -39,6 +39,7 @@
                         $isDone = 'is-done';
                     }
                 }
+                $uniqId = (($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration;
                 // && !empty($row->arrival_time)
             @endphp
             <tr data-id="{{encrypt($row->id)}}" data-next="{{$row->next_appointment}}" class="{{'appointmentdata '.$isDone}}">
@@ -82,8 +83,15 @@
                         $className = '';
                     }
                 @endphp
-                <td class={{$className}}>
+                <td class="{{"patient_dropdown ".$className}}">&nbsp;
                     {{ ucwords(strtolower($row->getPatientsDetails['name'])).' '.($row->getChildNumber() ? '('.$row->getChildNumber().')' : '')}}
+                    {{-- <td class="patient_dropdown ">{{ucwords(strtolower($row->getPatientsDetails['name']))}}&nbsp; --}}
+                        @if(in_array($row->categoryDetails['id'],[1,2,3,4,5,6,10,13]))
+                            <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
+                            <div class="{{'appointment_dropdown_content appointment_dropdown_content_'.$uniqId}}">
+                            </div>
+                        @endif
+                    {{-- </td> --}}
                 </td>
                 <td>{{$row->getPatientsDetails['mobile_number']}}</td>
                 <td>{{ucfirst($row->categoryDetails['name'])}}</td>

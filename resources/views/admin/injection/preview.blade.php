@@ -83,6 +83,8 @@
                 <th class="report-header-tr-th">Sr No</th>
                 <th class="report-header-tr-th">Plan</th>
                 <th class="report-header-tr-th">Injection</th>
+                <th class="report-header-tr-th">Net Price</th>
+                <th class="report-header-tr-th">Quantity</th>
             </tr>
         </thead>
         <tbody>
@@ -91,6 +93,8 @@
                     <td class="data-font seperator">{{($i++).'.'}}</td>
                     <td class="data-font seperator">{{$row->type}}</td>
                     <td class="data-font seperator">{{$row->name}}</td>
+                    <td class="data-font seperator">{{$row->net_price}}</td>
+                    <td class="data-font seperator">{{$row->quantity}}</td>
                 </tr>
             @empty
                 <td colspan="3" class="text-center">No records available</td>

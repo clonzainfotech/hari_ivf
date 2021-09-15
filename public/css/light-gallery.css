@@ -101,7 +101,7 @@
   display: block;
   overflow: hidden;
   position: relative;
-  float: left;
+  /* float: left; */
 }
 
 .demo-gallery > ul > li a > img {

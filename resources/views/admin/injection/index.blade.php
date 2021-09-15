@@ -51,7 +51,7 @@
                             <div class="col-md-4">
                                 <ul class="nav nav-tabs padding-0">
                                     <div class="input-group">
-                                        <input type="text" class="form-control search" placeholder="Search...">
+                                        <input type="text" class="form-control search" placeholder="Search..."  readonly="readonly" onfocus="this.removeAttribute('readonly')">
                                         <span class="input-group-addon search-border">
                                             <i class="zmdi zmdi-search"></i>
                                         </span>
@@ -126,6 +126,28 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt-2">
+                            <div class="form-group col-md-12">
+                                <div class="col-md-3">
+                                    Net Price
+                                </div>
+                                <div class="col-md-6">
+                                    {{Form::number('net_price','',['class'=>'form-control net_price form-required','placeholder'=>'Net Price'])}}
+                                </div>
+                                <span class="form-error-msg netPrice-error w-100"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div class="col-md-3">
+                                    Quantity
+                                </div>
+                                <div class="col-md-6">
+                                    {{Form::number('quantity','',['class'=>'form-control quantity form-required','placeholder'=>'Quantity'])}}
+                                </div>
+                                <span class="form-error-msg quantity-error w-100"></span>
+                            </div>
+                        </div>
                         <!-- footer -->
                         <div class="modal-footer mt-3 time-footer">
                             <button type="button" class="btn btn-primary waves-effect inj-save">Save</button>
@@ -161,7 +183,7 @@
             });
 
             $(document).on('click','.injection-delete',function(){
-                caExpenseId = $(this).data('id');
+                injId = $(this).data('id');
                 showConfirmMessage();
             });
             $(document).on('change','select.select_plan',function(){
@@ -177,13 +199,6 @@
                 getInjectionData(qstring);
             });
 
-            $(document).on('dblclick', '#injection-table tbody tr', function(event) {
-                var caExpenseId = $(this).data('id');
-                if(typeof(caExpenseId) !== 'undefined'){
-                    var url = 'injection/'+caExpenseId+'/edit';
-                    window.location.href = url;
-                }
-            });
 
             $(document).on('click', '.print-injection', function () {
                 qstring = 'page='+page+'&search='+search+'&plan='+plan+'&isprint=1';
@@ -191,6 +206,8 @@
             });
             $(document).on('click', '.inj-modal', function () {
                 var inj_name = $('.inj_name').val('');
+                var qty = $('.quantity').val('');
+                var net_price = $('.net_price').val('');
                 var plan_name = $('select.plan_name').val('');
                 $('.plan_name').selectpicker('refresh');
                 $('#inj-modal').modal('show');
@@ -200,7 +217,11 @@
             injId = $(this).data('id');
             var inj_name = $('.inj_name').val('');
             var plan_name = $('select.plan_name').val('');
+            var qty = $('.quantity').val('');
+            var net_price = $('.net_price').val('');
             $('.inj-error').html('');
+            $('.netPrice-error').html('');
+            $('.quantity-error').html('');
             $.ajax({
             url: "{{URL::to('injection/edit')}}/" + injId,
             dataType: 'json',
@@ -209,6 +230,8 @@
                 {
                     $('#inj-modal').modal('show');   
                     $('.inj_name').val(data.injection.name);
+                    $('.quantity').val(data.injection.quantity);
+                    $('.net_price').val(data.injection.net_price);
                     $('select.plan_name').val(data.injection.type);
                     $('.plan_name').selectpicker('refresh');
                 }
@@ -223,11 +246,25 @@
             var inj_name = $('.inj_name').val();
             var plan_name = $('select.plan_name').val();
             $('.plan_name').selectpicker('refresh');
+            var qty = $('.quantity').val();
+            var net_price = $('.net_price').val();
             var hasNoValue = 0;
             if(inj_name == '' || inj_name == '')
             {
                 hasNoValue = 1;
                 $('.expense-error').html('All fields are required');
+                return false;
+            }
+            if(qty == '')
+            {
+                hasNoValue = 1;
+                $('.quantity-error').html('All fields are required');
+                return false;
+            }
+            if(net_price == '')
+            {
+                hasNoValue = 1;
+                $('.netPrice-error').html('All fields are required');
                 return false;
             }
             if(hasNoValue == 0)
@@ -241,6 +278,8 @@
                     data: {
                         inj_name: inj_name,
                         plan:plan_name,
+                        qty:qty,
+                        net_price:net_price,
                         injId:injId
                     },
                     dataType: 'json',
@@ -294,19 +333,21 @@
                 confirmButtonText: "Yes, delete it!",
                 closeOnConfirm: false
             }, function () {
-                removeCaExpense();
+                removeInjection();
                 $('.showSweetAlert').hide();
-                location.reload();
+                // location.reload();
                 // swal("Deleted!", "Your category has been deleted.", "success");
             });
         }
         // remove category
-        function removeCaExpense(){
+        function removeInjection(){
             $.ajax({
-                url: "{{URL::to('ca-expense/delete')}}"+'/'+caExpenseId,
+                url: "{{URL::to('injection/delete')}}"+'/'+injId,
                 dataType: 'json',
             }).done(function(data) {
                 getInjectionData(qstring);
+                location.reload();
+
             }).fail(function() {
 
             });

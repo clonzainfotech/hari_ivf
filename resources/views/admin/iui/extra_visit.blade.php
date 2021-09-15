@@ -4,6 +4,7 @@
 
 @section('page-style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
+    <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet">
     <style>
         .table td, .table th{
             padding: .35rem !important;
@@ -70,7 +71,7 @@
             <div class="card">
                 <div class="header">
                     <h2><strong>IUI Appointment</strong></h2>
-                    <ul class="header-dropdown col-md-7">
+                    <ul class="header-dropdown col-md-6 text-right">
                         <li class="w-50">
                             {{Form::select("date",$iuiHistoryDate,'',['class'=>'form-control select-padding-0 iui-date','placeholder'=>'Select Date'])}}
                         </li>
@@ -95,8 +96,10 @@
                                     {{-- appned form data --}}
                                 </div>
                                 {{Form::hidden('patient_id',encrypt($iuiPatients->id),['class'=>'patient-id'])}}
+                                {{Form::hidden('cycle_no',encrypt($cycle_no),['class'=>'cycle-no'])}}
                                 <div class="col-sm-12">
                                     {{Form::submit('submit',['class'=>'btn btn-primary submit'])}}
+                                    <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
                                     <a href="{{URL::to('iui')}}" class="btn btn-default">Cancel</a>
                                 </div>
                             {{Form::close()}}    
@@ -125,7 +128,8 @@
             
             $(document).on('click','.submit',function(e){
                 e.preventDefault();
-                $(this).attr('disabled',true);
+                
+                $('.submit').attr('disabled',true);
                 var iuiFormData = new FormData($(".extra-iui-form")[0]);
                 if(this.value==1){
                     iuiFormData.append('isprint', 1);
@@ -156,13 +160,27 @@
                 if(data.status == '1'){
                     window.location.href = "{{URL::to('iui')}}";
                 }
+                else if(data.status == '2')
+                {
+                    w = window.open(window.location.href, "_blank");
+                    w.document.open();
+                    w.document.write(data.preview);
+                    w.document.close();
+                    setTimeout(function () {
+                        w.window.print();
+                    }, 300);
+                }
+                else{
+                    
+                }
             });
         }
 
         function getIuiData(qstring){
             var pId = $('.patient-id').val();
+            var cycleNo = $('.cycle-no').val();
             $.ajax({
-                url: "{{URL::to('iui/extra-visit')}}"+'/'+pId+'?'+qstring,
+                url: "{{URL::to('iui/extra-visit')}}"+'/'+pId+'/'+cycleNo+'?'+qstring,
                 dataType: 'json',
                 type:'GET',
             }).done(function(data){

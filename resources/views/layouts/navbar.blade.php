@@ -5,6 +5,7 @@ if (is_file(Auth::user()->profile_picture))
 $file = url(Auth::user()->profile_picture);
 }
 @endphp
+    
 <style type="text/css">
 
 </style>
@@ -39,7 +40,7 @@ $file = url(Auth::user()->profile_picture);
         @if(in_array(Auth::user()->role,[1,2,3,6,7,8]))
             <li class="nav-menu-font"><a href="{{URL::to('testimonials')}}" class="{{ Request::segment(1) === 'testimonials' ? 'active open' : null }}"><span>Testimonials</span></a></li>
         @endif
-
+          
         <li class="float-right mt-1 dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="lgn-usr-name">
@@ -77,5 +78,32 @@ $file = url(Auth::user()->profile_picture);
                 </div>
             {{ Form::close() }}
         </li>
+        <li class="nav-item mt-1 dropdown float-right">
+            <a class="nav-link candor-color " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bell notify" data-count="0"><span class="button__badge notification-count"></span></i>
+            </a>
+            <div class="dropdown-menu slideDown">
+                <div class="head candor-color font-bold notification-head">
+                    <div class="col-lg-12 col-sm-12 col-12 mb-1">
+                        <span>Notifications (<span class="notification-count"></span>)</span>
+                        <a href="{{URL::to('notification-all-read')}}" class="float-right candor-color mark-all">Mark all as read</a>
+                    </div>
+                </div>
+                <ul class="notification-menu">
+                    {{-- <li class="head candor-color font-bold notification-head">
+                        
+                    </li>
+                    <li class="footer text-center notification-footer">
+                        <a href="{{URL::to('notification')}}" class="font-bold candor-color">View All</a>
+                    </li> --}}
+                </ul>
+                <div class="footer text-center notification-footer">
+                    <div class="col-lg-12 col-sm-12 col-12 p-2">
+                        <a href="{{URL::to('notification')}}" class="font-bold candor-color">View All</a>
+                    </div>
+                </div>
+            </div>
+        </li>
     </ul>
 </nav>
+

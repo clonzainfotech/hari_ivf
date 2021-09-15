@@ -63,6 +63,8 @@
     
     .seperator {
         border-top: 0.5px solid #dee2e6;
+        -webkit-print-color-adjust: exact;
+
     }
     
     tr td th {

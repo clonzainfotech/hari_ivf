@@ -2,7 +2,7 @@
     .print-opd-table, .opd-header, .opd-receipt, .opd-data{
         font-family: 'Montserrat', Arial, Tahoma, sans-serif;
         width: 100%;
-        margin-top: 50px;
+        /* margin-top: 50px; */
     }
     .opd-header,.opd-data{
         border: 1px solid #ddd;
@@ -14,18 +14,20 @@
     }
     .opd-address{
         text-align: center;
-        height: 45px;
+        height: 35px;
     }
     .opd-receipt{
         background-color: #ddd;
     }
     .opd-receipt-th{
-        height: 45px;
+        height: 35px;
         font-size: 18px;
-        font-weight: 900;
+        font-weight: 800;
     }
     .ttc{
         text-transform: capitalize;
+        font-weight: 500 !important;
+        font-size: 16px !important;
     }
     .opd-left{
         text-align: left;
@@ -34,7 +36,7 @@
         text-align: right;
     }
     .opd-data{
-        padding: 10px 10px 40px;
+        padding: 10px 10px 0px;
         margin-top: 0px;
     }
     .opd-data-header{
@@ -67,10 +69,11 @@
         margin-top: 5px;
     }
     .patients-name{
-        font-weight: normal !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
     }
     .p-name{
-        font-size: 14px !important;
+        font-size: 18px !important;
     }
 </style>
 
@@ -119,7 +122,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th class="opd-left opd-receipt-th p-name" colspan="2">Name : <span class="patients-name">{{$appointmentCharges->getAppointment->getPatientsDetails['name']}}</span></th>
+                            <th class="opd-left opd-receipt-th p-name" colspan="2">Name : <span class="patients-name">{{ucWords(strtolower($appointmentCharges->getAppointment->getPatientsDetails['name']))}}</span></th>
                         </tr>
                         <tr>
                             <th colspan="2" class="opd-left opd-receipt-th ttc">Received With Thanks From {{$appointmentCharges->getUser['name']}}</th>
@@ -180,7 +183,7 @@
                         <tr>
                             <th colspan="2" class="opd-right opd-for-radha">For {{strtoupper(config('app.hospitalname1'))}}</th>
                         </tr>
-                    <tbody>
+                    </tbody>
                 </table>
             </td>
         </tr>

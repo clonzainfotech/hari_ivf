@@ -173,6 +173,7 @@ class AppointmentController extends AdminController
             $isUsg = $usgStatus ? encrypt($usgStatus) : 0;
             return view('admin.appointment.index',compact('usgStatus','patientsData','category','referenceDoctor','hospitalDoctor','hospitalTime','isUsg'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }
@@ -748,6 +749,7 @@ class AppointmentController extends AdminController
                     if(!empty($anc)) {
                         $anc_oe_data = json_decode($anc->o_e);
                         $anc_oe_data->follow_up = Carbon::parse($newFollowUpDate)->format('D d M Y');
+                        $anc_oe_data->new_follow_up = Carbon::parse($newFollowUpDate)->format('Y-m-d');
                         
                         $anc->o_e = json_encode($anc_oe_data);
                         $anc->save();
@@ -759,6 +761,8 @@ class AppointmentController extends AdminController
                         {
                             $anc_oe_data = json_decode($ancHistory->o_e);
                             $anc_oe_data->follow_up = Carbon::parse($newFollowUpDate)->format('D d M Y');
+                            $anc_oe_data->new_follow_up = Carbon::parse($newFollowUpDate)->format('Y-m-d');
+
                             
                             $ancHistory->o_e = json_encode($anc_oe_data);
                             $ancHistory->save();
@@ -1325,5 +1329,151 @@ class AppointmentController extends AdminController
 
     public function storeReferenceDoctorPro($data){
 
+    }
+    /**
+    * Return PopUp detailof patient as category wise
+    * @param  \Illuminate\Http\Request $request
+    * @return \Illuminate\Http\Response
+    */
+    public function getAppointmentPopUpDetail(Request $request)
+    {
+        try
+        {
+
+            $patients_id = decrypt($request->patients_id);
+            $appoitmentDate = \Carbon\Carbon::parse($request->appoitmentDate)->format('Y-m-d');
+            $opdPatient = $this->OpdPatients->find($patients_id);
+            $data = '';
+            $payment = '';
+            $pMethod = ['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'];
+            $charge = ['1'=>'Hormon','2'=>'IVF','3'=>'IUI'];
+            $opdCollecions = $this->IndoorDeposit->where('patient_id',$patients_id)->get();
+            $TotalAmount = 0;
+            foreach($opdCollecions as $opdCollecion)
+            {
+                $payment_date = \Carbon\Carbon::parse($opdCollecion->created_at)->format('d-m-Y');
+                if($opdCollecion->charge_type)
+                {
+                    $TotalAmount += $opdCollecion->amount;
+                }
+                $payment .= '<p>'.$payment_date.' | '.$opdCollecion->amount.' &#x20b9; | '.(!empty($opdCollecion->injection) ? $opdCollecion->injection : '').' | '.(isset($charge[$opdCollecion->charge_type]) ? $charge[$opdCollecion->charge_type] : '-') .' | '.(isset($pMethod[$opdCollecion->payment_type]) ? $pMethod[$opdCollecion->payment_type] : '-').' | '.(!empty($opdCollecion->remark) ? 'Remark : '.$opdCollecion->remark : '').'</p>';
+            }
+            if($request->category && in_array($request->category,[5,6,10,13]))
+            {
+                $report = '';
+                $investigationReport = $this->allInvestigationReport();
+                $investigationData = [];
+                $investigationValueDetails = [];
+                $investigationReport = $investigationReport['reportData'];
+                $ancHistory = $this->AncHistory->where('patients_id','=',$patients_id)
+                    ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)
+                    ->orderBy('id','desc')
+                    ->first();
+                    $ancId = !empty($ancHistory) ? $ancHistory->anc_id : null;    
+                    if(!$ancHistory)
+                    {
+                        $ancHistory= $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
+                        $ancId = !empty($ancHistory) ? $ancHistory->id : null;
+                    }
+                    if($ancHistory)
+                    {
+                        $investigation = !empty($ancHistory->investigation) ? json_decode($ancHistory->investigation) : null;
+                        $data = !empty($investigation->investigation_data) ? $investigation->investigation_data : [];
+                        if(isset($investigation->investigation_details))
+                        {
+                            $investigationValueData = (array)$investigation->investigation_details;
+                            foreach($data as $key => $value){
+                                if(!empty($investigationValueData[$value])){
+                                    $investigationValueDetails[$investigationReport[$value]] = $investigationValueData[$value];
+                                }else{
+                                    $investigationData[] = $investigationReport[$value];
+                                }
+                            }
+                        }
+                    }
+                    
+                    $report = !empty($investigationData) ? implode(', ',$investigationData) : '';
+                    $report .= !empty($investigation) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? ', '.$investigation->investigation_extra : '';
+                    $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
+                        <button class="btn btn-primary preview-file" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="'.encrypt($ancId).'" data-patient = "'.$request->patients_id.'">Visit</button>';
+            }
+            if($request->category && in_array($request->category,[1,2]))
+            {
+                $report = '';
+                $ivfId = null;
+                $plan = '';
+                $cycle_no = '';
+                $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->orderBy('id','desc')->first();
+                if($currentHistory)
+                {
+                    $ivfData = !empty($currentHistory) ? json_decode($currentHistory->description) : null;
+                    $report .= !empty($ivfData) && isset($ivfData->investigation_extra) && !empty($ivfData->investigation_extra) ? ', '.$ivfData->investigation_extra : '';
+                    $plan = $currentHistory->plan;
+                    $cycle_no = $currentHistory->cycle_no;
+                }
+                $ivfFirst = $this->IVF->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->first();
+                if(!$ivfFirst)
+                {
+                    $investigation = !empty($ivfFirst) ? json_decode($ivfFirst->investigation) : null;
+                    $report .= !empty($investigation) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? ', '.$investigation->investigation_extra : '';
+                }
+                $isExtraVisit = $this->IvfExtraVisit->where('patient_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->orderBy('id','desc')->first();
+                $extraVisit = !empty($isExtraVisit) ? '1' : '';
+                if($isExtraVisit)
+                {
+                    $extraOeData = json_decode($isExtraVisit->oe);
+                    $report .= !empty($extraOeData) && isset($extraOeData->investigation_extra) ? $extraOeData->investigation_extra : '';
+                }
+                $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+                $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
+                        <p><span class="font-bold candor-color">Package: </span>'.(!empty($package) ? $package->package : '-').'</p>
+                        <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($package->package) ? ($package->package - $TotalAmount) : '-').'</p>
+                        <p><span class="font-bold candor-color">Package Condition: </span>'.(!empty($package) ? $package->condition : '-').'</p>
+                        <p><span class="font-bold candor-color">Package Remark: </span>'.(!empty($package) ? $package->remark : '-').'</p>
+                        <p><span class="font-bold candor-color">Payment : </span></p>';
+                $data .= $payment;   
+                $data .= '<button class="btn btn-primary preview-file" data-plan="'.$plan.'" data-cycleno="'.$cycle_no.'" data-extravisit="'.$extraVisit.'" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="" data-patient = "'.$request->patients_id.'">Visit</button>';
+            }
+            if($request->category && in_array($request->category,[3,4]))
+            {
+                $report = '';
+                $cycle_no = '';
+                $currentHistory = $this->IuiHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->first();
+                if($currentHistory)
+                {
+                    $cycle_no = $currentHistory->cycle_no;
+                    $ivfData = !empty($currentHistory) ? json_decode($currentHistory->description) : null;
+                    $report .= !empty($ivfData) && isset($ivfData->investigation_extra) && !empty($ivfData->investigation_extra) ? ', '.$ivfData->investigation_extra : '';
+                }
+                $iuiFirst = $this->IUI->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->first();
+                if($iuiFirst)
+                {
+                    $cycle_no = $iuiFirst->cycle_no;
+                    $investigation = !empty($iuiFirst) ? json_decode($iuiFirst->investigation) : null;
+                    $report .= !empty($investigation) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? ', '.$investigation->investigation_extra : '';
+                }
+                $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+                $isExtraVisit = $this->IuiExtraVisit->where('patient_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->orderBy('id','desc')->first();
+                $extraVisit = !empty($isExtraVisit) ? '1' : '';
+                if($isExtraVisit)
+                {
+                    $extraOeData = json_decode($isExtraVisit->oe);
+                    $report .= !empty($extraOeData) && isset($extraOeData->investigation_extra) ? $extraOeData->investigation_extra : '';
+                }
+                $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
+                        <p><span class="font-bold candor-color">Payment : </span></p>';
+                $data .= $payment;   
+                $data .= '<button class="btn btn-primary preview-file" data-cycleno="'.$cycle_no.'" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="" data-patient = "'.$request->patients_id.'">Visit</button>';
+
+            }
+            return response()->json([
+                'status'=>1,
+                'data' => $data
+            ]);  
+        }
+        catch(Exception $e)
+        {
+            log::Debug($e);
+        }
     }
 }

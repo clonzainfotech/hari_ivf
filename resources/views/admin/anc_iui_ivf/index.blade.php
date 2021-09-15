@@ -16,8 +16,8 @@
                     <!-- Nav tabs -->
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-4"><input type="text" class="form-control daterange" placeholder="Select Date"></div>
-                            <div class="col-md-4">
+                            <div class="col-md-3"><input type="text" class="form-control daterange" placeholder="Select Date"></div>
+                            <div class="col-md-3">
                                 <ul class="nav nav-tabs padding-0">
                                     {{Form::select('patient_id',$patients,'',[
                                         'class'=>'form-control select-padding-0 patient-id',
@@ -30,13 +30,14 @@
                             <div class="col-md-3">
                                 <ul class="nav nav-tabs padding-0">
                                     <div class="input-group">
-                                        <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no">
+                                        <input type="number" class="form-control search-word" placeholder="Search by word">
                                         <span class="input-group-addon search-border">
                                             <i class="zmdi zmdi-search"></i>
                                         </span>
                                     </div>
                                 </ul>
                             </div>
+                            
                             <div class="col-md-1">
                                 <a href="javascript:void(0);">
                                     <button class="btn btn-primary print-all m-0">
@@ -44,9 +45,18 @@
                                     </button>
                                 </a>
                             </div>
+                            <div class="col-md-2 checkbox">
+                                {{Form::checkbox('advanced_search','',false,[
+                                    'id'=>'cash_box',
+                                    'class'=>'advanced_search',
+                                ])}}
+                                <label for="cash_box">
+                                    Advance Search
+                                </label>
+                            </div>
                         </div>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row mt-2 advanced-search-box d-none">
                         <div class="col-lg-4 col-md- col-sm-6">
                             {{Form::select('reference_doctor',$referenceDoctor, '',[
                                 'class'=>'form-control select-padding-0 reference-doctor',
@@ -133,7 +143,7 @@
                 qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
                 getAncIuiIvf(qstring);
             });
-            $(document).on('keyup','.search-mobile-number',function(){
+            $(document).on('keyup','.search-word',function(){
                 search = $(this).val();
                 qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
                 getAncIuiIvf(qstring);
@@ -178,6 +188,13 @@
                 qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' +categoryId;
                 getAncIuiIvf(qstring);
             });
+            $(document).on('change','.advanced_search',function(){
+                $('.advanced-search-box').addClass('d-none')
+                if($(this).prop('checked') == true)
+                {
+                    $('.advanced-search-box').removeClass('d-none');
+                }
+            })
 
             $(document).on('change', 'select.category', function () {
                 categoryId = $(this).val();
@@ -292,5 +309,48 @@
 
             });
         }
+        // $(document).ready(function () {
+            $(document).on('click','.appoitment_content',function(){
+                // $('appointment_dropdown_content').css('display','none');
+                $('.appointment_dropdown_content').slideUp('medium');
+                var patient_id = $(this).data('ptid');
+                var appoitmentDate = $(this).data('date');
+                var appendClass = $(this).data('class');
+                var category = $(this).data('category');
+                if($(this).hasClass('dropdown-open'))
+                {
+                    $('.'+appendClass).slideUp('medium');
+                    $(this).removeClass('dropdown-open');
+                }
+                else{
+                    $(this).addClass('dropdown-open');
+                    $.ajax({
+                    url: "{{URL::to('get-patient-popup-Detail')}}?patients_id="+patient_id+"&appoitmentDate="+appoitmentDate+"&category="+category,
+                    dataType: 'json',
+                    }).done(function(data) {
+                        $('.'+appendClass).html(data.data);
+                        
+                        // $(data.data).insertAfter($(this));
+                        // function () {
+                        $('.'+appendClass).slideDown('medium');
+                        // }, 
+                        // function () {
+                        //     $('ul.file_menu').slideUp('medium');
+                        // }
+                        
+                    }).fail(function() {
+
+                    })
+                }
+                
+                });
+           
+        // });
+        $(document).on("click", function(event){
+            var $trigger = $(".patient_dropdown");
+            if($trigger !== event.target && !$trigger.has(event.target).length){
+                $(".appointment_dropdown_content").slideUp("fast");
+            }            
+        });
     </script>
 @stop

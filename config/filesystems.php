@@ -71,6 +71,12 @@ return [
             'refreshToken' => config('app.GOOGLE_REFRESH_TOKEN'),
             'folderId' => config('app.GOOGLE_FOLDER_ID'),
         ],
+        'ckeditor' => [
+            'driver' => 'local',
+            'root' => public_path('/'),
+            'url' => '/',
+            'visibility' => 'public',
+        ],
 
     ],
 

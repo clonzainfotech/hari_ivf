@@ -4,6 +4,8 @@
         <th>Sr No</th>
         <th>Plan</th>
         <th>Name</th>
+        <th>Net Price</th>
+        <th>Quantity</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -15,6 +17,8 @@
             <td>{{ ((($injection->currentPage() - 1 ) * $injection->perPage() ) + $loop->iteration) . '.' }}</td>
             <td><span class="list-name">{{ ucfirst($row->type) }}</span></td>
             <td><span class="list-name">{{ ucfirst($row->name) }}</span></td>
+            <td><span class="list-name">{{ $row->net_price }}</span></td>
+            <td><span class="list-name">{{ $row->quantity }}</span></td>
             <td>
                 <a href="#" class="a-color">
                     <button class="btn btn-icon btn-neutral candor-color btn-icon-mini injection-edit" data-id="{{encrypt($row->id)}}">

@@ -11,6 +11,7 @@
             <th>Amount</th>
             <th>Total</th>
             <th>package</th>
+            {{-- <th>Total Disc.</th> --}}
             <th>Left Amount</th>
             <th>Category</th>
             <th>Reference Doctor Name</th>
@@ -41,12 +42,17 @@
                 <td>{{((($hormon->currentPage() - 1 ) * $hormon->perPage() ) + $loop->iteration) . '.'}}</td>
                 <td>{{ucwords(strtolower($row->getPatients['name']))}}</td>
                 <td>{{$row->cycle_no}}</td>
-                <td>{{$row->injection}}</td>
+                <td>{{!empty($row->getInjectionCharge['name']) ? $row->getInjectionCharge['name'] : $row->injection}}</td>
                 <td>{{$row->amount}}</td>
-                <td><div class={{'amount-'.$key}}>{{$row->total}}</div></td>
-                <td><div>{{$row->package}}</div></td>
+                <td><div class={{'amount-'.$key}}>{{($row->charge_type == 2) ? $row->getTotalPaidAmountIVF() : $row->total}}</div></td>
+                <td><div>{{$row->package - $row->getTotalDiscount()}}</div></td>
                 @php
-                    $lessamount = $row->package - $row->total;
+                    $totalDiscount = $row->getTotalDiscount();
+                    $lessamount = $row->package - $row->total - $totalDiscount;
+                    if($row->charge_type == 2)
+                    {
+                        $lessamount = $row->package - $row->getTotalPaidAmountIVF() - $totalDiscount;
+                    }
                 @endphp
                 <td><div>
                     @if($row->charge_type == 2)
@@ -75,7 +81,7 @@
                 <td>{{ $row->remark}}</td>
                 <td>
                     @if($row->checkIndorDeposit()['id'] == $row->id && $row->total != 0 && (strtotime(\Carbon\Carbon::parse($row->created_at)->format('Y-m-d')) >= strtotime(\Carbon\Carbon::now()->format('Y-m-d'))))
-                        <a href="javascript:void(0)" class="btn btn-primary btn-sm change-hormon change-hormon-{{$key}} ivf-payment-font" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}}>Change</a>
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm change-hormon change-hormon-{{$key}} ivf-payment-font" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}} data-nextpayment={{$row->getIvfPaymentReminder()['next_payment']}} data-nextpaymentdate={{$row->getIvfPaymentReminder()['next_payment_date']}}>Change</a>
                         <a href="javascript:void(0)" class="btn btn-primary btn-sm save-hormon save-hormon-{{$key}} ivf-payment-font d-none" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}}>Save</a>
                     @endif
                     <a href="javascript:void(0)" class="btn btn-primary btn-sm receipt-hormon ivf-payment-font"  data-hormon={{encrypt($row->id)}}>Print</a>

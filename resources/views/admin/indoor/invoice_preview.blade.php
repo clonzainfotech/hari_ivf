@@ -162,7 +162,7 @@
                         @if ($invoice->room_charge_amt > 0)
                             <tr>
                                 <td colspan="2" class="all-side-border">Room + Nursing Charges</td>
-                                <td class="all-side-border">{{ (!empty($invoice->room_charge_desc)) ? ucwords(strtolower($invoice->room_charge_desc)).' X '.$invoice->getBookedBed->getRoomType['price'] : null }} </td>
+                                <td class="all-side-border">{{ (!empty($invoice->room_charge_desc)) && !empty($invoice->getBookedBed->getRoomType['price']) ? ucwords(strtolower($invoice->room_charge_desc)).' X '.$invoice->getBookedBed->getRoomType['price'] : ucwords(strtolower($invoice->room_charge_desc)) }} </td>
                                 <td class="all-side-border text-right">{{ $invoice->room_charge_amt }} </td>
                             </tr>
                         @endif
@@ -176,7 +176,7 @@
                         @if ($invoice->visit_charges_amt > 0)
                             <tr>
                                 <td colspan="2" class="all-side-border">Visit Charges</td>
-                                <td class="all-side-border">{{ (!empty($invoice->visit_charges_desc)) ? ucwords(strtolower($invoice->visit_charges_desc)).' X '.$invoice->getBookedBed->getRoomType['dr_visit_charge'] : null }} </td>
+                                <td class="all-side-border">{{ (!empty($invoice->visit_charges_desc)) && !empty($invoice->getBookedBed->getRoomType['dr_visit_charge']) ? ucwords(strtolower($invoice->visit_charges_desc)).' X '.$invoice->getBookedBed->getRoomType['dr_visit_charge'] : ucwords(strtolower($invoice->visit_charges_desc)) }} </td>
                                 <td class="all-side-border text-right">{{ $invoice->visit_charges_amt }} </td>
                             </tr>
                         @endif

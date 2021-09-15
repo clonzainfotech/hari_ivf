@@ -60,6 +60,8 @@ $water_mark = isset($systemSetting->water_mark) && !empty($systemSetting->water_
         .is-done{
             background-color: <?php echo $after_visits ?> !important;
         }
+
+    
     </style>
     <title>@yield('title') {{ !empty($title) ? ' - ' . $title : null }}</title>
     <meta name="description" content="@yield('meta_description', config('app.name'))">
@@ -81,6 +83,8 @@ $water_mark = isset($systemSetting->water_mark) && !empty($systemSetting->water_
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/themes.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{URL::to('public/css/bootstrap-notifications.min.css')}}">
+    
 
 </head>
 <?php
@@ -143,17 +147,46 @@ $menu = "";
 <script src="https://cdn.rawgit.com/dubrox/Multiple-Dates-Picker-for-jQuery-UI/master/jquery-ui.multidatespicker.js"></script>
 <link href="https://cdn.rawgit.com/dubrox/Multiple-Dates-Picker-for-jQuery-UI/master/jquery-ui.multidatespicker.css" rel="stylesheet"/>
 <link href="https://code.jquery.com/ui/1.12.1/themes/pepper-grinder/jquery-ui.css" rel="stylesheet"/>
+{{-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> --}}
 
 <script type="text/javascript">
-    $(document).on('click','.notify-patient',function(){
-        $(this).parent().html("reuqest send!");
+    // $(document).on('click','.notify-patient',function(){
+    //     $(this).parent().html("reuqest send!");
 
-    });
-    function callPatient(name, cat) {
-        $.ajax({
-            url:"{{url('patient_notification')}}",
-            data:{name:name,cat:cat},
+    // });
+    function callPatient(name, cat, e) {
+        // $(this).removeClass('notify-patient');
+        swal({
+                title: "OPD Area",
+                text: "Enter OPD",
+                type: "input",
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'Send',
+                showCancelButton: true,
+                animation: "slide-from-top",
+                closeOnConfirm: false,
+                html: true,
+            },
+            function(title){
+                if (title === false)
+                {
+                    return false;
+                }
+                if (title === "") {
+                    swal.showInputError("Please enter OPD area!");
+                    return false;
+                }
+                else
+                {
+                    swal("Thank You!", "", "success");
+                    $(e).parent().html("reuqest send!");
+                    $.ajax({
+                        url:"{{url('patient_notification')}}",
+                        data:{name:name,cat:cat,title:title},
+                    });
+                }
         });
+        
     }
 </script>
 @stack('after-scripts')
@@ -169,7 +202,7 @@ $menu = "";
     <script type="text/javascript">
         var main_url = window.location.href;
         let anc_url_name = main_url.split('/').pop();
-        var stopNotification = <?php echo json_encode($stopNotification) ?>;
+        var stopNotification = '{{json_encode($stopNotification)}}';
         var check_url = stopNotification.includes(anc_url_name);
         if (!check_url) {
             var pusher = new Pusher('{{env("MIX_PUSHER_APP_KEY")}}', {
@@ -190,7 +223,7 @@ $menu = "";
             }
             swal({
                     title: "<span class='callpatient-name'>"+data.name+"<span>",
-                    text: "<h6 class = 'callpatient-category'>"+data.user+" CALLING FOR "+data.category + "</h6>",
+                    text: "<h6 class = 'callpatient-category'>"+data.user+" CALLING FOR "+data.category + "</h6><br><h6>Area : "+data.opd_area+"</h6>",
                     type: "warning",
                     confirmButtonColor: '#DD6B55',
                     confirmButtonText: 'Yes',
@@ -214,8 +247,73 @@ $menu = "";
 
             });
         }
+        </script>
+    @endif
+    <script type="text/javascript">
+        displayNotification();
+        $(document).on('click','.patient-category-notification',function(){
+            displayNotification();
+        });
+        function displayNotification()
+        {
+            $.ajax({
+                    url: "{{url('get-category-notification')}}",
+                    dataType: 'json',
+                }).done(function(data) {
+                    // var existingNotifications = notifications.html();
+                    var newNotificationHtml = '';
+                    var notificationsCount = 0;
+                    for(var i=0; i< data.data['category'].length; i++)
+                    {
+                        if(data.data['category'][i] != null)
+                        {
+                            newNotificationHtml += '<li class="category-notification notification active">'+
+                            '<div class="media mb-1">'+
+                            '<div class="media-left"><div class="media-object">'+
+                            '</div></div>'+
+                            '<div class="media-body">'+
+                            '<strong class="notification-title">'+data.data['category'][i].patient_name+'</strong><br>'+
+                            '<p class="notification-desc">'+data.data['category'][i].date+' - '+data.data['category'][i].message+'</p>'+
+                            '</div></div></li>';
+                            notificationsCount += 1;
+                        }
+                    }
+                    for(var i=0; i< data.data['payment'].length; i++)
+                    {
+                        if(data.data['payment'][i] != null)
+                        {
+                            newNotificationHtml += '<li class="category-notification payment-notification notification active">'+
+                            '<div class="media mb-1">'+
+                            '<div class="media-left"><div class="media-object">'+
+                            '</div></div>'+
+                            '<div class="media-body">'+
+                            '<strong class="notification-title">'+data.data['payment'][i].patient_name+'</strong><br>'+
+                            '<p class="notification-desc">'+data.data['payment'][i].date+' - <strong class="candor-color"> &#x20b9; '+data.data['payment'][i].payment+'</strong> For '+ data.data['payment'][i].category+'</p>'+
+                            '</div></div></li>';
+                            notificationsCount += 1;
+                        }
+                    }
+                    if(data.data['category'].length + data.data['payment'].length  == 0)
+                    {
+                        $('a.mark-all').addClass('d-none');
+                        newNotificationHtml +=
+                        newNotificationHtml += '<li class="category-notification notification active">'+
+                        '<div class="media mb-1">'+
+                        '<div class="media-left"><div class="media-object">'+
+                        ''+
+                        '</div></div>'+
+                        '<div class="media-body">'+
+                        '<p class="notification-desc">No record Available</p>'+
+                        '</div></div></li>';
+                    }
+                    // $(newNotificationHtml).insertAfter($('ul.notification-menu li.notification-head'));
+                    $('.notification-menu').html(newNotificationHtml);
+                    $('.notification-count').text(notificationsCount);
+                }).fail({
 
+                });
+        }
     </script>
-@endif
+
 </body>
 </html>

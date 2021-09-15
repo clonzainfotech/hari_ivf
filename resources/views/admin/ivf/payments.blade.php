@@ -730,16 +730,15 @@
                                         {{Form::number('package',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->package)) ? $ivfPaymentHistory->package : '',['class'=>'form-control add_sum ivf_payment p-total-package','id'=>'package','min'=>1,$is_readonly])}} 
                                     </div>
                                     <span class="form-error-msg p-total-package-error m-0 p-1"></span>
-
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">Payment : &nbsp;</span>
                                         {{Form::number('payment',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->payment)) ? $ivfPaymentHistory->payment : '',['class'=>'form-control p-total-payment add_sum ivf_payment','min'=>1,'id' => 'payment','onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57",$is_readonly])}}
                                     </div>
                                     <span class="form-error-msg p-total-payment-error m-0 p-1"></span>
                                 </div> 
-                                 <div class="col-md-2">
+                                 <div class="col-md-3">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">Extra Charge : &nbsp;</span>
                                         {{Form::number('extra_charge',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->extra_charge)) ? $ivfPaymentHistory->extra_charge : '',['class'=>'form-control add_sum ivf_payment','id' => 'extra_charge','min'=>1,'onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57"])}}
@@ -747,15 +746,16 @@
                                     <span class="form-error-msg p-total-payment-extra_charge m-0"></span>
 
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="input-group form-padding">
-                                        <span class="input-group-addon payment-form">Discount : &nbsp;</span>
-                                        {{Form::number('discount',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->discount)) ? $ivfPaymentHistory->discount : '',['class'=>'form-control p-total-payment add_sum ivf_payment','id' => 'discount','min'=>1,'onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57"])}}
-                                    </div>
-                                </div> 
+                                
                             </div>
 
-                            <div class="row">                             
+                            <div class="row">   
+                                <div class="col-md-3">
+                                    <div class="input-group form-padding">
+                                        <span class="input-group-addon payment-form">Discount : &nbsp;</span>
+                                        {{Form::number('discount',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->discount)) ? $ivfPaymentHistory->discount : '',['class'=>'form-control p-total-payment add_sum ivf_payment','id' => 'discount','min'=>1,'onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57",$is_readonly])}}
+                                    </div>
+                                </div>                           
                                 <div class="col-md-3">
                                     <div class="form-group form-padding">
                                         {{Form::select('payment_type',['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->payment_type)) ? $ivfPaymentHistory->payment_type : '',['class'=>'form-control payment-method','placeholder'=>'Select Payment Type',$is_disabled])}}
@@ -767,19 +767,26 @@
                                  </div>
                                 <div class="col-md-3">
                                     <div class="input-group form-padding">
-                                        <span class="input-group-addon payment-form">Remaining Day : &nbsp;</span>
-                                        {{Form::number('remaining_day','',['class'=>'form-control','placeholder'=>'Enter Only Day',])}}
+                                        <span class="input-group-addon payment-form">Next Payment Date : &nbsp;</span>
+                                        {{Form::text('remaining_date','',['class'=>'form-control datetimepicker','placeholder'=>'Enter Only Day',])}}
                                     </div>
                                 </div>
-
                                 <div class="col-md-3">
+                                    <div class="input-group form-padding">
+                                        <span class="input-group-addon payment-form">Next Payment Amount : &nbsp;</span>
+                                        {{Form::number('next_payment_amt','',['class'=>'form-control','placeholder'=>'Next Payment Amount',])}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">Condition : &nbsp;</span>
                                         {{Form::text('condition',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->condition)) ? $ivfPaymentHistory->condition : '',['class'=>'form-control'])}}
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">Remark : &nbsp;</span>
                                         {{Form::text('remark',(isset($ivfPaymentHistory) && !empty($ivfPaymentHistory->remark)) ? $ivfPaymentHistory->remark : '',['class'=>'form-control p-remark','autocomplete'=>'off'])}}
@@ -848,7 +855,12 @@
 
     $(document).ready(function(){
     });
-
+    $('.datetimepicker').bootstrapMaterialDatePicker({
+        format: 'dddd DD MMMM YYYY',
+        // minDate:new Date(),
+        clearButton: true,
+        time:false
+    });
         $('.ivf_payment').on('input', function() {
             value = $(this).val();
             $('#' + this.id).val(value);
@@ -941,7 +953,7 @@
             var extra_charge = $('#extra_charge').val();
             var discount = $('#discount').val();
             var sum_extracharge = Number(sum) + Number(extra_charge);
-            var total = (sum_extracharge - payment - discount);
+            var total = (sum_extracharge - discount);
             $('#net_amount').text(total);
         }
 
@@ -951,7 +963,7 @@
             var extra_charge = $('#extra_charge').val();
             var discount = $('#discount').val();
             var sum_extracharge = Number(sum) + Number(extra_charge);
-            var total = (sum_extracharge - payment - discount);
+            var total = (sum_extracharge - discount);
             $('#net_amount').text(total);
             // $('#total').val(total);
 
@@ -1533,6 +1545,8 @@
                     var cycle_no = $('select.multiple_no_cycle').val();
                     paymentData = paymentData + '&multiple_cycle='+cycle_no;
                 }
+                var cycle_no = $('select.payment-method').val();
+                    paymentData = paymentData + '&payment_type='+cycle_no;
                 if(this.value == 1) {
                     paymentData = paymentData + '&isprint=1';
                 }

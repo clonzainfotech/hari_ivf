@@ -35,6 +35,7 @@ class AppointmentController extends ApiController
             $patientData = $this->PatientToken->where('token', $token)->first();
             if(!empty($patientData)){
                 $patientId = $patientData->patients_id;
+                $patients = $this->OpdPatients->find($patientId);
                 // $appointmentData = $this->Appointment::select('id','date','created_by','is_done','category_id','appontment_request_id','arrival_time',DB::raw("DATE_FORMAT(date,'%Y') as yearKey"))
                 //                         ->where('patients_id', $patientId)
                 //                         ->get();
@@ -82,6 +83,8 @@ class AppointmentController extends ApiController
                             $value->profile_picture = $lastAppointment['getPatientsDetails']['profile_picture'];
                             unset($value->is_done,$value->yearKey,$value->categoryDetails,$value->getPatientsDetails,$value->appontment_request_id,$value->is_book,$value->arrival_time,$value->created_by);
                         }
+                        $value->profile_picture = $patients->profile_picture;
+                        $value->reason = $value->remark;
                         
                     }
                     // $appointmentData[][$key] = $aData;
@@ -160,10 +163,10 @@ class AppointmentController extends ApiController
                     //  $patientCategory =  $this->checkCategory($categoryName);
                     $medicineTime = ['1'=>'Morning','2'=>'Afternoon','3'=>'Evening','4'=>'Night'];
                     $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
+                    $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
 
-                    if(in_array($categoryId, [5, 6])) {
+                    if(in_array($categoryId, [5, 6,10,13])) {
                         $anc = $this->ANC->where('patients_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->where('patients_id',$pId)->first();
-                        $dose = ["1"=>"OD","2"=>"BD","3"=>"TDS","4"=>"ADS"];
                         $madicine_status = ["1"=>"After Meal","2"=>"Empty Stomach","3"=>"Instead of menstruation space"];
 
                         if(!empty($anc)) {
@@ -256,7 +259,6 @@ class AppointmentController extends ApiController
                         }
                     }
                     if(in_array($categoryId, [3, 4])) {
-                        $dose = ["1"=>"OD","2"=>"BD","3"=>"TDS","4"=>"ADS"];
                         $madicine_status = ["1"=>"After Meal","2"=>"Empty Stomach","3"=>"Instead of menstruation space"];
                         $iui = $this->IUI->where('patients_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->first();
                         if(!empty($iui)) {
@@ -294,8 +296,8 @@ class AppointmentController extends ApiController
                                 }
                             }
                             $reportsArr = null;
-                            if(!empty($anc->o_e)) {
-                                $reportsArr = json_decode($anc->o_e, true);
+                            if(!empty($iui->o_e)) {
+                                $reportsArr = json_decode($iui->o_e, true);
                             }
                             $reportsData[] = $reportsArr;
                         }
@@ -333,11 +335,16 @@ class AppointmentController extends ApiController
                                     }
                                 }
                                 $reportsArr = null;
-                                if(!empty($anc->o_e)) {
-                                    $reportsArr = json_decode($anc->o_e, true);
+                                if(!empty($iui->o_e)) {
+                                    $reportsArr = json_decode($iui->o_e, true);
                                 }
                                 $reportsData[] = $reportsArr;
                                 $url[] = url('get-iui-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_history=1');
+                            }
+                            $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->first();
+                            if(!empty($iuiExtraVisit))
+                            {
+                                $url[] = url('get-iui-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_extraVisit=1');
                             }
                             else {
                                 // $url = [];
@@ -348,7 +355,6 @@ class AppointmentController extends ApiController
                     }
                     if(in_array($categoryId, [1, 2])) {
                         $ivf = $this->IVF->where('patients_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->first();
-                        $dose = ["1"=>"OD","2"=>"BD","3"=>"TDS","4"=>"ADS"];
                         $madicine_status = ["1"=>"After Meal","2"=>"Empty Stomach","3"=>"Instead of menstruation space"];
 
                         if(!empty($ivf)) {
@@ -382,18 +388,31 @@ class AppointmentController extends ApiController
                             {
                                 $url[] = url('get-ivf-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_history=1&is_pickup=1');
                             }
-                            $ivfHistory = $this->IvfHistory->where('patients_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->first();
-                            if(!empty($ivfHistory)) {
-                                $madicineData = null;
-                                $reportsArr = null;
-                                $reportsData[] = $reportsArr;
-                                $historyData = json_decode($ivfHistory->description);
-                                $collectionData = !empty($historyData->collection) ? $historyData->collection : [];
-                                //Transfer Report
-                                if (in_array('transfer',$collectionData))
+                            $ivfAllHistory = $this->IvfHistory->where('patients_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->get();
+                            if(!empty($ivfAllHistory)) {
+                                foreach($ivfAllHistory as $ivfHistory)
                                 {
-                                    $url[] = url('get-ivf-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_history=1&is_trasnfer=1');
+                                    $madicineData = null;
+                                    $reportsArr = null;
+                                    $reportsData[] = $reportsArr;
+                                    $historyData = json_decode($ivfHistory->description);
+                                    $collectionData = !empty($historyData->collection) ? $historyData->collection : [];
+                                    //Transfer Report
+                                    if (in_array('transfer',$collectionData))
+                                    {
+                                        $url[] = url('get-ivf-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_history=1&is_trasnfer=1');
+                                    }
+                                    else
+                                    {
+                                        $url[] = url('get-ivf-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_history=1&cycle_no='.encrypt($ivfHistory->cycle_no));
+                                    }
                                 }
+                            }
+                            
+                            $ivfExtraVisit = $this->IvfExtraVisit->where('patient_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->first();
+                            if(!empty($ivfExtraVisit))
+                            {
+                                $url[] = url('get-ivf-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_extraVisit=1');
                             }
                             else {
                                 $madicineData = null;

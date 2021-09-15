@@ -13,6 +13,10 @@
             }
         }
         $mData = $medicineKey;
+        $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
+        $medicine_status = ['' => 'Select Medicine Status','1'=>'જમ્યા પછી','2'=>'જમ્યા પહેલાં','3'=>'માસિકની જગ્યાએ મુકવી'];
+        $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
+        $dose = ['' => 'Select Dose',"1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
     @endphp
         <!--1 C/O -->
         {{Form::hidden('iui_extra_visit_id',!empty($iuiHistoryData) ? encrypt($iuiHistoryData->id) : null)}}
@@ -221,6 +225,7 @@
                                         'class'=>'form-control co-value co_value_data oe_ovary_left_details',
                                         'placeholder'=>'Abnormal Details',
                                         'id' => 'oe_ovary_left_details',
+                                        'data-type' => 'oe',
                                         'multiple'=>true
                                     ])}}
                                 </div>
@@ -273,6 +278,7 @@
                                         'class'=>'form-control co-value co_value_data oe_ovary_right_details',
                                         'placeholder'=>'Abnormal Details',
                                         'id' => 'oe_ovary_right_details',
+                                        'data-type' => 'oe',
                                         'multiple'=>true
                                     ])}}
                                 </div>
@@ -344,7 +350,7 @@
                                 </label>
                             </div>
                         <div class="col-md-9 complain-multi medicine-picker">
-                            {{Form::select("treatment[medicinedata][]",$medicines,$mData,['id'=>'treatment-medicine','class'=>'form-control co-value medicine medicine-co','multiple'=>true])}}
+                            {{Form::select("treatment[medicinedata][]",$medicines,$mData,['id'=>'treatment-medicine','class'=>'form-control co-value medicine medicine-co',"placeholder" => 'Select Medicine'])}}
                         </div>
                     </div>
                     <div class="page-loader-wrapper medicine-loader d-none">
@@ -354,51 +360,124 @@
                     </div>
                     <div class="medicine-data">
                         @if(!empty($treatment))
-                            @foreach($treatment as $key=>$row)
-                                @php
-                                    $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
-                                @endphp
-                                <div class='row' data-id="{{$mId}}">
-                                    <div class='col-md-3'>
-                                        <div class='input-group'>
-                                            <span class='input-group-addon'>Medicine : &nbsp</span>
-                                            {{Form::text('treatment['.$mId.'][medicine]',$row->medicine,['class'=>'form-control','readonly'])}}
-                                        </div>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <div class='form-group'>
-                                            {{Form::select('treatment['.$mId.'][medicine_status]',["1"=>"જમ્યા પછી","2"=>"જમ્યા પહેલાં","3"=>"માસિકની જગ્યાએ મુકવી"],$row->medicine_status,['class'=>'form-control select-padding-0 dose'])}}
-                                        </div>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <div class='form-group'>
-                                            {{Form::select('treatment['.$mId.'][dose]',["1"=>"OD","2"=>"BD","3"=>"TDS","4"=>"ADS","5"=>"Weekly / 1","6"=>"Weekly / 2","7"=>"Stat","8"=>"SOS"],$row->dose,['class'=>'form-control select-padding-0 dose'])}}
-                                        </div>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <div class='input-group'>
-                                            <span class='input-group-addon'>Days : &nbsp</span>
-                                            {{Form::number('treatment['.$mId.'][no]',$row->no,['class'=>'form-control'])}}
-                                        </div>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <div class='input-group'>
-                                            <span class='input-group-addon'>Quantity : &nbsp</span>
-                                            {{Form::text('treatment['.$mId.'][quantity]',$row->quantity,['class'=>'form-control'])}}
-                                        </div>
+                        @foreach($treatment as $key=>$row)
+                        {{-- @if(isset($medicines[$row->medicine])) --}}
+                            <?php
+                            $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                            $firstCharacter = substr($mId, 0, 3);
+                            $notinject = "";
+                            if($firstCharacter=="inj" || $firstCharacter=="INJ") {
+                                $notinject = "is-inj";
+                            }
+                            $till_follow_up = (empty($row->no)) ? 'till-follow-up' : '';
+                            ?>
+                            <div class="{{'row mt-2 '.$notinject}}" data-id="{{$mId}}">
+                                <div class='col-md-2'>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>M : </span>
+                                        {{Form::text('treatment['.$mId.'][medicine]',ucwords($row->medicine),['class'=>'form-control','readonly'])}}
                                     </div>
                                 </div>
-                                <div class="row" data-id="{{$mId}}">
-                                    <div class='col-md-3'>
-                                        <div class='form-group'>
-                                            {{Form::select('treatment['.$mId.'][medicine_time][]',["1"=>"Morning","2"=>"Afternoon","3"=>"Evening","4"=>"Night"],!empty($row->medicine_time) ? $row->medicine_time : null,['class'=>'form-control select-padding-0 dose','multiple'=>'true','title'=>'Select Medicine Time'])}}
-                                        </div>
+                                <div class='col-md-1 notinject'>
+                                    <div class='form-group'>
+                                        {{Form::select('treatment['.$mId.'][quantity]',$medqty,$row->quantity,['class'=>'form-control'])}}
                                     </div>
                                 </div>
-                            @endforeach
-                        @endif
+                                <div class='col-md-1 notinject'>
+                                    <div class='form-group'>
+                                        {{Form::select('treatment['.$mId.'][quantity_2]',$medqty,@$row->quantity_2,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class='col-md-1 notinject'>
+                                    <div class='form-group'>
+                                        {{Form::select('treatment['.$mId.'][quantity_3]',$medqty,@$row->quantity_3,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class='col-md-1 notinject'>
+                                    <div class='form-group'>
+                                        {{Form::select('treatment['.$mId.'][quantity_4]',$medqty,@$row->quantity_4,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class='col-md-2 notinject'>
+                                    <div class='form-group'>
+                                        {{Form::select('treatment['.$mId.'][medicine_status]',$medicine_status,$row->medicine_status,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class='col-md-2 isinject'>
+                                    <div class='form-group'>
+                                        {{Form::select('treatment['.$mId.'][medicine_time]',$medicine_time,@$row->medicine_time,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class='col-md-2'>
+                                    <div class='form-group'>
+                                        {{Form::select('treatment['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class='col-md-1'>
+                                    <div class='input-group'>
+                                        <span class='input-group-addon'>Day :</span>
+                                        {{Form::number('treatment['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                    </div>
+                                </div>
+                                <div class='col-md-1 medicine-data-remove'>
+                                    <span class=""><i class="material-icons">close</i></span>
+                                </div>
+                            </div>
+                            {{-- @endif --}}
+                        @endforeach
+                    @endif
                     </div>
                     {{Form::hidden('old_medicine_data',!empty($medicineKey) ? implode(',',$medicineKey) : null,['class'=>'old-medicine-data'])}}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-5">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        Other Report : &nbsp;
+                    </span>
+                    {{Form::text("oe[investigation_extra]",!empty($oe->investigation_extra) ? $oe->investigation_extra : null,['class'=>'form-control'])}}
+                </div>
+            </div>
+        </div>
+        @php
+            $bloodReportClass = !empty($oe->blood_report) && !empty($oe->blood_report->type) && $oe->blood_report->type == 'yes' ? true : false;
+            $bloodReportClassName = $bloodReportClass ? '' : 'd-none';
+        @endphp
+        <div class="row">
+                                                <div class=" pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        Blood Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("oe[blood_report][type]",'yes',$bloodReportClass,['id'=>'blood_type_yes','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                                                        <label for="blood_type_yes">
+                                                            Yes
+                                                        </label>
+
+                                                        {{Form::radio("oe[blood_report][type]",'no',!empty($oe->blood_report) && !empty($oe->blood_report->type) && $oe->blood_report->type == 'no' ? true : false,['id'=>'blood_type_no','class'=>'blood-type iui-yes-no-status','data-type'=>'blood-type'])}}
+                                                        <label for="blood_type_no">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="{{'col-md-8 pr-0 blood-type extra-blood-images '.$bloodReportClassName}}">
+                                                    <div class="blood-images"></div>
+                                                </div>
+                                                
+                                            </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    {{Form::textarea("oe[remark]",!empty($oe->remark) ? $oe->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    {{Form::textarea("oe[pt_remark]",!empty($oe->pt_remark) ? $oe->pt_remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Patient Remark','rows'=>'2'])}}
                 </div>
             </div>
         </div>
@@ -408,10 +487,35 @@
                 <div class="col-md-3">
                     <div class="input-group">
                         <span class="input-group-addon">Follow Up: &nbsp;</span>
-                        {{Form::text("oe[follow_up]",'',['class'=>'form-control datetimepicker'])}}
+                        {{Form::text("oe[follow_up]",'',['class'=>'form-control datetimepicker next-date'])}}
                     </div>
+                    <span class="form-error-msg follow-error"></span>
                 </div>
             </div>
+        @else
+            {{Form::hidden("oe[follow_up]", isset($oe->follow_up) && !empty($oe->follow_up) ? $oe->follow_up : '',[
+                                'class'=>'form-control next-date'
+                            ])}}
         @endif
         <br>
         <br>
+        <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
+    <script type="text/javascript">
+        var code = '';
+        var patientsId = $('.patients-id').val();
+        var bloodReportImages = @json($bloodReportImagesArray);
+        console.log(bloodReportImages);
+        $(document).ready(function(){
+            $('.extra-blood-images').imageUploader({
+                imagesInputName: 'oe[blood_report][image]',
+            });
+            if(bloodReportImages != 'null') {
+                $('.extra-blood-images').imageUploader({
+                    preloaded: jQuery.parseJSON(bloodReportImages),
+                    imagesInputName: 'oe[blood_report][image]',
+                    preloadedInputName: 'extraVisit_blood_report_old'
+                });
+            }
+        });
+</script>        
+

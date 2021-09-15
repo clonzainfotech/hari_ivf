@@ -179,4 +179,22 @@ class HomeController extends ApiController
         }            
         return $this->sendResponse('Get Q-A list successfully', $data);
     }
+    /**
+    * Return Html Pages
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function getHtmlPages(Request $request)
+    {
+        $data = [];
+        $dataValues = [];
+        $html_pages = $this->HtmlPage->get();
+        foreach($html_pages as $value)
+        {
+            $dataArray['slug'] = $value->slug;
+            $dataArray['url'] = url('html-page/view/'.$value->slug);
+            array_push($data,$dataArray);
+        }            
+        return $this->sendResponse('Get Html pages list successfully', $data);
+    }
 }

@@ -4,7 +4,7 @@
 
 @section('page-style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
-
+    <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet">
 @stop
 @section('content')
     <div class="row clearfix discharge-add indoor">
@@ -538,19 +538,7 @@
                                                     {{$errors->first('followup')}}
                                                 </span>
                                             </div>
-                                            {{-- <div class="col-md-9">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Vital on Discharge :</span>
-                                                    {{Form::text('dischargevital','BP 110/60 mmhg, spo2 94%, p/a- 22Weeks fhs - present,', [
-                                                        'class'=>'form-control dischargevital',
-                                                        'placeholder'=>'Vital on Discharge',
-                                                        'required'
-                                                    ])}}
-                                                </div>
-                                                <span class="form-error-msg">
-                                                {{$errors->first('dischargevital')}}
-                                                </span>
-                                            </div> --}}
+                                            
                                             <div class="col-md-3">
 
                                                 <div class="input-group">
@@ -566,25 +554,33 @@
                                                 </span>
                                             </div>
                                         </div>
-
-                                        {{-- <div class="row clearfix">
-                                            <div class="col-md-12">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon unik-lbl-spn">Condition on Discharge : &nbsp;</span>
-                                                    {{Form::text('condition','Patient is vitally stable at candor hospital on', [
-                                                        'class'=>'form-control condition',
-                                                        'placeholder'=>'Condition on Discharge',
-                                                        'required'
-                                                    ])}}
+                                        @php
+                                            $is_birthCertificate = in_array($bookedPatientData->getprocedure['id'],[1,2,11]) ? '' : 'd-none';
+                                        @endphp
+                                            <div class="{{'row clearfix '.$is_birthCertificate}}">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-3 unik-lbl-spn">
+                                                            <label>Birth Certificate :</label>        
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <div class="birth-images">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <span class="form-error-msg">
-                                                {{$errors->first('condition')}}
-                                                </span>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-3 unik-lbl-spn">
+                                                            <label>Birth Remark :</label>        
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            {{Form::textarea("birth_certificate[remark]",'',['class'=>'form-control',"rows"=>2,"placeholder"=>"Birth Remark"])}}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div> --}}
-
                                     </div>
                                 </div>
                             </div>
@@ -610,7 +606,7 @@
         $.fn.selectpicker.Constructor.DEFAULTS.iconBase = 'zmdi';
         $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';
     </script>
-
+    <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
     <script>
         var bookingId = '';
 
@@ -640,7 +636,10 @@
                 }
             }
         });
-
+        $('.birth-images').imageUploader({
+            imagesInputName: 'birth_certificate[image]',
+            maxFiles : 1,
+        });
 
         $('.code').keypress(function(e) {
             code = $(this).val();
@@ -654,12 +653,12 @@
         $(document).on('click','.submit',function(e) {
             e.preventDefault();
             $('.discharge-save').attr("disabled", true);
-            var discharge = $('#discharge-form').serialize();
+            var discharge = new FormData($("#discharge-form")[0]);
 
             bookingId = $('#booked_id').val();
     
             if (this.value == 1) {
-                discharge = discharge + '&isprint=1';
+                discharge.append('isprint',1);
             }
             dischargeFormData(discharge);
         });
@@ -682,10 +681,16 @@
                 return false;
             }
             $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     url: "{{URL::to('indoor/discharge/')}}" + '/' + bookingId,
                     type: 'POST',
                     dataType: 'json',
                     data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                 }).done(function(data){
                     var url = "{{URL::to('/indoor')}}";
                     if (data.status == 1){

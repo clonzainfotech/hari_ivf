@@ -123,14 +123,7 @@
             height: 100%;
             border-radius: 0;
         }
-        @media (min-width: 576px){
-            .view-file-modal-dialog {
-                /* max-width: 1800px !important; */
-                max-width: 90% !important;
-                margin: 120px auto;
-            }
-
-        }
+        
         .footer-top-border{
             border-top: 1px solid #9ea2a2 !important;
             padding: 1rem !important;
@@ -173,20 +166,40 @@
             table-layout: fixed !important;
             width: inherit;
         }
-        
+        .view-iui-file-modal-dialog .modal-content .modal-body
+        {
+            line-height:0.9 !important;
+        }
+        .follicular_div_1, .follicular_div_2
+        {
+            text-align:left !important;
+        }
+        .follicular_div_2
+        {
+            padding-left : 9rem !important;
+        }
     </style>
 @stop
-
+@php
+    $iuiReportData = !empty($iuiReport) ? json_decode($iuiReport->description) : null;
+@endphp
 @section('content')
     <div class="row clearfix">
         <div class="col-md-12 p-0">
             <div class="card patients-list">
                 <div class="header d-flex">
+                    @php
+                        $careof = isset($referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]) ? $referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]: '';
+                    @endphp
                     <div class="col-md-6">
-                        <h2><strong class="text-secondary">{{ucwords($iui->getPatientsInfo->name)}}</strong>{{' care of '.$referenceDoctor[$iui->getPatientsInfo['reference_doctor_id']]}}</h2>
+                        <h2><strong class="text-secondary">{{ucwords($iui->getPatientsInfo->name)}}</strong>{{' care of '.$careof}}</h2>
                     </div>
                     <div class="col-md-6 text-right">
-                        <a href="{{URL::to('get-all-report/'.encrypt($iui->getPatientsInfo->id).'?status=iui')}}" class="btn btn-primary m-n3">View Reports</a>
+                        <a href="{{URL::to('get-all-report/'.encrypt($iui->getPatientsInfo->id).'?status=iui')}}" target="_blank" class="btn btn-primary mr-1">View Reports</a>
+                        <a class="btn btn-primary view-file-edit ml-2">View File & Edit</a>
+                        @if(!empty($iuiReportStatus))
+                        <a class="btn btn-primary view-iui-report ml-2" data-toggle="modal" data-target="#iui-report-modal">IUI Report</a>
+                        @endif
                     </div>
                 </div>
                 
@@ -199,15 +212,9 @@
                 <div class="header">
                     <h2><strong>IUI Appointment</strong>
                     </h2>
-                    <ul class="header-dropdown col-md-12 align-right">
+                    <ul class="header-dropdown col-md-12 text-right">
                         <li class="w-25">
                             {{Form::select("cycle_no",$iuiCycleNo,'',['class'=>'form-control select-padding-0 iui-cycle-no','placeholder'=>'Select Cycle No.'])}}
-                        </li>
-                        <li class="w-25">
-                            {{Form::select("date",[],'',['class'=>'form-control select-padding-0 iui-date','placeholder'=>'Select Date'])}}
-                        </li>
-                        <li class="w-50">
-                            <button class="btn btn-primary view-file-edit">View File & Edit</button>
                         </li>
                     </ul>
                 </div>
@@ -383,7 +390,120 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade ivf" id="iui-report-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ivf-transfer-report-model">
+            <!-- header -->
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">IUI Report</h4>
+            </div>
+            <!-- body -->
+            {{Form::open([
+                'class'=>'form-inline',
+                'id'=>'iui-report-update'
+            ])}}
+            {{Form::hidden('iui_report_patient_id', !empty($iuiReport) ? encrypt($iuiReport->patients_id) : encrypt($iui->getPatientsInfo->id),['id'=>'iui_report_id'])}}
+            {{Form::hidden('iui_report_cycle_no', !empty($iuiReport) ? encrypt($iuiReport->cycle_no) : encrypt($iuiCurrentCycleNo),['id'=>'iui_report_cycle_id'])}}
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Reason: &nbsp;</span>
+                            {{Form::text("iui_report[reason]",!empty($iuiReportData) && !empty($iuiReportData->reason) ?$iuiReportData->reason : null ,[
+                                'class'=>'form-control'
+                            ])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Volume: &nbsp;</span>
+                            {{Form::text("iui_report[volume_pre]", !empty($iuiReportData) && !empty($iuiReportData->volume_pre) ?$iuiReportData->volume_pre : null, ['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[volume_post]", !empty($iuiReportData) && !empty($iuiReportData->volume_post) ?$iuiReportData->volume_post : null, ['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Sperm Count/ml: &nbsp;</span>
+                            {{Form::text("iui_report[sperm_count_pre]",!empty($iuiReportData) && !empty($iuiReportData->sperm_count_pre) ?$iuiReportData->sperm_count_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[sperm_count_post]",!empty($iuiReportData) && !empty($iuiReportData->sperm_count_post) ?$iuiReportData->sperm_count_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Total Count(mill) : &nbsp;</span>
+                            {{Form::text("iui_report[total_count_pre]",!empty($iuiReportData) && !empty($iuiReportData->total_count_pre) ?$iuiReportData->total_count_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[total_count_post]",!empty($iuiReportData) && !empty($iuiReportData->total_count_post) ?$iuiReportData->total_count_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Total Motility(%) : &nbsp;</span>
+                            {{Form::text("iui_report[total_motility_pre]",!empty($iuiReportData) && !empty($iuiReportData->total_motility_pre) ?$iuiReportData->total_motility_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[total_motility_post]",!empty($iuiReportData) && !empty($iuiReportData->total_motility_post) ?$iuiReportData->total_motility_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Actively Motile(%) : &nbsp;</span>
+                            {{Form::text("iui_report[actively_motile_pre]",!empty($iuiReportData) && !empty($iuiReportData->actively_motile_pre) ?$iuiReportData->actively_motile_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[actively_motile_post]",!empty($iuiReportData) && !empty($iuiReportData->actively_motile_post) ?$iuiReportData->actively_motile_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Sluggishly Motile(%) : &nbsp;</span>
+                            {{Form::text("iui_report[sluggishly_motile_pre]",!empty($iuiReportData) && !empty($iuiReportData->sluggishly_motile_pre) ?$iuiReportData->sluggishly_motile_pre : null, ['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[sluggishly_motile_post]",!empty($iuiReportData) && !empty($iuiReportData->sluggishly_motile_post) ?$iuiReportData->sluggishly_motile_post : null, ['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Non-Motile(%) : &nbsp;</span>
+                            {{Form::text("iui_report[non_motile_pre]",!empty($iuiReportData) && !empty($iuiReportData->non_motile_pre) ?$iuiReportData->non_motile_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[non_motile_post]",!empty($iuiReportData) && !empty($iuiReportData->non_motile_post) ?$iuiReportData->non_motile_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12 iui-report-data ">
+                        <div class="input-group">
+                            <span class="input-group-addon">Normal Morphology: &nbsp;</span>
+                            {{Form::text("iui_report[normal_morphology_pre]",!empty($iuiReportData) && !empty($iuiReportData->normal_morphology_pre) ?$iuiReportData->normal_morphology_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[normal_morphology_post]",!empty($iuiReportData) && !empty($iuiReportData->normal_morphology_post) ?$iuiReportData->normal_morphology_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Pus Cells / hpf: &nbsp;</span>
+                            {{Form::text("iui_report[pus_cells_pre]",!empty($iuiReportData) && !empty($iuiReportData->pus_cells_pre) ? $iuiReportData->pus_cells_pre : null,['class'=>'form-control','placeholder'=>'Pre Wash'])}}
+                            {{Form::text("iui_report[pus_cells_post]",!empty($iuiReportData) && !empty($iuiReportData->pus_cells_post) ? $iuiReportData->pus_cells_post : null,['class'=>'form-control','placeholder'=>'Post Wash'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="input-group">
+                            <span class="input-group-addon">Follow Up: &nbsp;</span>
+                            {{Form::text("iui_report[follow_up]",!empty($iuiReportData) && !empty($iuiReportData->follow_up) ? $iuiReportData->follow_up : null,['class'=>'form-control datetimepicker'])}}
+                        </div>
+                    </div>
+                    <div class="col-md-12 iui-report-data">
+                        <div class="form-group">
+                            {{-- <span class="input-group-addon">Remark: &nbsp;</span> --}}
+                            {{Form::textarea("iui_report[remark]",!empty($iuiReportData) && !empty($iuiReportData->remark) ? $iuiReportData->remark : null,['class'=>'form-control',"placeholder"=>"Remark",'rows'=>2])}}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- footer -->
+            <div class="modal-footer d-inline-block">
+                <button type="submit" class="btn btn-primary waves-effect update-iui-report"  value="1">Save</button>
+                <button type="submit" class="btn btn-primary waves-effect update-iui-report" value="2">Save & Preview</button>
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+            </div>
+            {{Form::close()}}
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="next-appointment-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -444,11 +564,11 @@
 </div>
 
 <div class="modal fade view-file-edit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog view-file-modal-dialog">
+    <div class="modal-dialog view-iui-file-modal-dialog">
       <div class="modal-content">
         <div class="modal-header header-bottom-border">
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-12">
                     <h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date"></span></h5>
                 </div>
@@ -462,16 +582,13 @@
                 <div class="col-md-12">
                     <h5 class="modal-title" id="myModalLabel">Visit:- <span class="iui-appointment-visit-no"></span></h5>
                 </div>
-            </div>
-            <div class="row">
+            </div> -->
+            <!-- <div class="row">
                 <div class="col-md-12 mr-5">
                     <a class="btn edit-btn btn-sm btn-primary">Edit</a>
                     <a class="btn print-btn btn-sm btn-primary">Print</a>
                 </div>
-            </div>
-            <button type="button" class="close anc-details-close mb-2" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-header">
+            </div> -->
             <div class="row">
                 @foreach ($cycleData as $item)
                     <div class="col">
@@ -479,18 +596,15 @@
                     </div>
                 @endforeach
             </div>
-          {{-- <div class="row">
-              <div class="col-md-12 mr-5">
-              </div>
-          </div> --}}
+            <button type="button" class="close anc-details-close mb-2" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
             <div class="anc-details-data"></div>
         </div>
 
         <div class="modal-footer footer-top-border text-right d-inline-block">
-            <button type="button" class="btn btn-primary next-appointment-details" data-type="2" data-cycle="{{$iuiFirstVisitData->cycle_no}}" data-date="{{$iuiFirstVisitData->created_at}}" data-status="2">Prev</button>
-            <button type="button" class="btn btn-primary next-appointment2 next-appointment-details" data-type="1" data-cycle="{{$iuiFirstVisitData->cycle_no}}" data-date="{{$iuiFirstVisitData->created_at}}" data-status="1">Next</button>
+        <button type="button" class="btn btn-primary mb-2" data-dismiss="modal" aria-hidden="true">Close</button>
+
         </div>
       </div>
     </div>
@@ -614,7 +728,8 @@
             $(document).on('click','.view-file-edit',function(e){
                 e.preventDefault();
                 $('.view-file-edit-modal').modal('show');
-                iuiString = 'patient_id='+patientsId+'&appointment_date='+appintmentDate+'&status='+status+'&type='+type+'&cycle_no='+cycleNo+'&is_first='+isFirst;
+                // cycleNo = '{{$iuiCurrentCycleNo}}';
+                iuiString = 'patient_id='+patientsId+'&appointment_date='+appintmentDate+'&status='+status+'&type='+type+'&is_first='+isFirst;
                 getIuiHistoryData(iuiString);
             });
 
@@ -862,6 +977,9 @@
                 if(this.value==6){
                     iui.append('isprint', 6);
                 }
+                if(this.value==8){
+                    iui.append('isprint', 8);
+                }
                 if(this.value==4){
                     var iuiDepositPrint = new FormData($("#iui-form")[0]);
                     iui.append('is_iui_deposit_print', 4);
@@ -943,12 +1061,14 @@
 
             $(document).on('click','.edit-btn',function(){
                 date = $(this).data('date');
+                // var extraVisit = 
                 getIuiData(date,cycleNo);
             });
 
             $(document).on('click','.print-btn',function(){
                 date = $(this).data('date');
-                iuiString = 'patient_id='+patientsId+'&history_date='+date+'&status='+status+'&type='+type+'&cycle_no='+cycleNo;
+                var extra_visit = $(this).data('type');
+                iuiString = 'patient_id='+patientsId+'&history_date='+date+'&status='+status+'&type='+type+'&cycle_no='+cycleNo+'&extra_visit='+extra_visit;
                 getIuiHistoryData(iuiString);
             });
             $(document).on('click','.edit-iui-data',function(){
@@ -1106,12 +1226,14 @@
                         w.window.print();
                     }, 300);
                     // window.location.href = url;
-                } else if (data.status == 5) {
+                } else if (data.status == 5 || data.status == 8) {
                     w = window.open(window.location.href, "_blank");
                     w.document.open();
                     w.document.write(data.data);
                     w.document.close();
-                    w.window.print();
+                    setTimeout(function () {
+                        w.window.print();
+                    }, 300);
                     window.location.href = url;
                 }else{
                     location.reload();
@@ -1132,7 +1254,7 @@
                 dataType: 'json',
                 type:'GET',
             }).done(function(data) {
-                if(data.iui_completed == true)
+                if(data.iui_completed == true && data.historyData == null)
                 {
                     var lastCycle = $('select.iui-cycle-no option:last').val();
                     
@@ -1224,18 +1346,41 @@
                         preloadedInputName: 'blood_report_old'
                     });
                 }
-                if(data.historyData != null && data.bloodImages != 'null')
+                if(data.hsaImages != 'null') {
+                    $('.hsa-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.hsaImages),
+                        imagesInputName: 'investigation[hsa_report][images]',
+                        preloadedInputName: 'hsa_report_old'
+                    });
+                }
+                if(data.historyData != null)
                 {
-                    $('.blood-images').imageUploader({
-                        preloaded: jQuery.parseJSON(data.bloodImages),
-                        imagesInputName: 'investigation[blood_report][image]',
-                        preloadedInputName: 'blood_report_old'
-                    });
-                    $('.data-blood-images').imageUploader({
-                        preloaded: jQuery.parseJSON(data.bloodImages),
-                        imagesInputName: 'data[blood_report][image]',
-                        preloadedInputName: 'blood_report_old'
-                    });
+                    if(data.bloodImages != 'null')
+                    {
+                        $('.blood-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.bloodImages),
+                            imagesInputName: 'investigation[blood_report][image]',
+                            preloadedInputName: 'blood_report_old'
+                        });
+                        $('.data-blood-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.bloodImages),
+                            imagesInputName: 'data[blood_report][image]',
+                            preloadedInputName: 'blood_report_old'
+                        });
+                    }
+                    if(data.hsaImages != 'null') {
+                        $('.hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'investigation[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                        $('.data-hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'data[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                    }
+                    
                 }
                 if(data.historyData != null && data.usgImages != 'null')
                 {
@@ -1372,6 +1517,18 @@
                         preloadedInputName: 'blood_report_old'
                     });
                 }
+                if(data.hsaImages != 'null') {
+                        $('.hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'investigation[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                        $('.data-hsa-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.hsaImages),
+                            imagesInputName: 'data[hsa_report][images]',
+                            preloadedInputName: 'hsa_report_old'
+                        });
+                    }
                 if(data.usgImages != 'null')
                 {
                     $('.data-usg-images').imageUploader({
@@ -1408,26 +1565,35 @@
         }
 
         function getIuiHistoryData(iuiString){
+            
             $.ajax({
                 url:'{{URL::to("get-iui-details")}}?'+iuiString,
                 type:'GET',
                 dataType:'json'
             }).done(function(data){
                 if(data.iui_type == 1){
-                    $('.anc-details-data').html(data.data);
-                    isFirst = 0;
-                    $('.next-appointment-details').data('date',data.date);
-                    $('.next-appointment-details').data('cycle',data.cycle);
-                    $('.iui-appointment-visit-no').text(data.visit);
-                    $('.iui-appointment-cycle-no').text(data.cycle);
-                    $('.next-appointment2').data('type',2);
-                    if(typeof data.date != 'undefined'){
-                        var linkDate = moment(new Date(data.date)).format('YYYY-MM-DD HH:mm:ss');
-                    console.log(linkDate);
-                        var date = moment(new Date(data.date)).format('DD MMMM YYYY');
-                        $('.edit-btn').data('date',linkDate);
-                        $('.print-btn').data('date',linkDate);
-                        $('.anc-appointment-date').text(date);
+                    
+                    var buttonHtml = '';
+                    var previewData = '';
+                    $('.anc-details-data').empty();
+                    var iuiPreview = $('.anc-details-data').html();
+                    for(i=0; i<data.data.length;i++)
+                    {
+                        if(typeof data.date[i] != 'undefined')
+                        {
+                            var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
+                            var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
+                        }
+                        var class_name = (data.extraVisit[i] == 1) ? 'extra-visit' : '';
+                        buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a></div></div>';
+                        
+                        if(data.table_view[i] == true || data.extraVisit[i] == 1)//table view end Extra Visit
+                        {
+                            buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"></div><div class="col-md-6 text-right"><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a></div></div>';
+                        }
+                        iuiPreview = buttonHtml + data.data[i];
+                        $('.anc-details-data').html(iuiPreview);
+                        iuiPreview = iuiPreview + '<div class="row sepreator"></div>';
                     }
                 }
                 if(data.iui_type == 2){
@@ -1435,7 +1601,9 @@
                     w.document.open();
                     w.document.write(data.data);
                     w.document.close();
-                    w.window.print();
+                    setTimeout(function () {
+                        w.window.print();
+                    }, 300);
                 }
             }).fail(function(error){
 
@@ -1551,5 +1719,49 @@
                 location.reload(true);
             });
         }
+        var iuiReportPrint = 0;
+        $(document).on('click','.update-iui-report',function(){
+            iuiReportPrint = $(this).val();
+        })
+        $(document).on('submit',' #iui-report-update',function(e){
+                e.preventDefault();
+                
+                var iuiReport = new FormData($("#iui-report-update")[0]);
+                    iuiReport.append('isprint',iuiReportPrint);
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{URL::to('iui_report_update')}}",
+                    type:'POST',
+                    dataType:'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data:iuiReport,
+                }).done(function(data) {
+                    console.log(data);
+                    if (data.status == 2){
+                        w = window.open(window.location.href, "_blank");
+                        w.document.open();
+                        w.document.write(data.data);
+                        w.document.close();
+                        setTimeout(function () {
+                        w.window.print();
+                    }, 300);
+                    } else if (data.status == 1) {
+                        $('#iui-report-modal').modal('hide');
+                    }else{
+                        swal({
+                            title: 'Oops!',
+                            text: data.message,
+                            type: 'error'
+                        }, function() {
+                            window.location.reload();
+                        });
+                    }
+                    
+                })
+            });
 </script>
 @stop

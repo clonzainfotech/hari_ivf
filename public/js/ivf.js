@@ -445,9 +445,94 @@ $(document).ready(function(){
     $(document).on('change', 'select.history-oe-ovary-right-details', function (e) {
         $('.edit_oe_ovary_right_details').val($('#oe_ovary_right_details').val().toString());
     });
+    $(document).on('change', 'select.oe_ovary_left_details', function (e) {
+        var textboxName = 'oe[ovary][left][updated_details][]';
+        if (typeof ($(this).data('id')) !== 'undefined') {
+            var textboxName = 'data[oe][ovary][left][updated_details][]';
+        }
+        var selectedValues = $('#oe_ovary_left_details').val();
+        var updatedDetails = $('.edited_oe_ovary_left_details').map(function () {
+            return this.id;
+        }).get();
+        var difference = [];
+        var elementDifference = [];
+        jQuery.grep(selectedValues, function (element) {
+            if (jQuery.inArray(element.replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_'), updatedDetails) == -1) {
+                elementDifference.push(element);
+                difference.push(element.replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_'));
+            }
+        });
+        for (var i = 0; i < selectedValues.length; i++) {
+            selectedValues[i] = selectedValues[i].replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_');
+        }
 
+        var remove = [];
+        jQuery.grep(updatedDetails, function (el) {
+            if (jQuery.inArray(el, selectedValues) == -1) {
+                remove.push(el);
+            }
+        });
+        if (selectedValues.length > updatedDetails.length) {
+            for (var i = 0; i < difference.length; i++) {
+                $('.edit_oe_ovary_left_details').append(
+                    '<div class="form-group col-md-12" id="' + difference[i] + '_left">' +
+                    '<input class="form-control edited_oe_ovary_left_details" name="' + textboxName + '" type="text" value="' + elementDifference[i] + '" id="' + difference[i] + '" maxlength="250" required>' +
+                    '</div>'
+                );
+            }
+        }
+        if (updatedDetails.length > $('#oe_ovary_left_details').val().length) {
+            $('#' + remove + '_left').remove();
+        }
+    });
+
+    $(document).on('change', 'select.oe_ovary_right_details', function (e) {
+        var textboxName = 'oe[ovary][right][updated_details][]';
+        if($(this).data('type') == 'oe')
+        {
+            var textboxName = 'oe[ovary][right][updated_details][]';
+        }
+        if (typeof ($(this).data('id')) !== 'undefined') {
+            var textboxName = 'data[oe][ovary][right][updated_details][]';
+        }
+        var selectedValues = $('#oe_ovary_right_details').val();
+        var updatedDetails = $('.edited_oe_ovary_right_details').map(function () {
+            return this.id;
+        }).get();
+        var difference = [];
+        var elementDifference = [];
+        jQuery.grep(selectedValues, function (element) {
+            if (jQuery.inArray(element.replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_'), updatedDetails) == -1) {
+                elementDifference.push(element);
+                difference.push(element.replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_'));
+            }
+        });
+        for (var i = 0; i < selectedValues.length; i++) {
+            selectedValues[i] = selectedValues[i].replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_');
+        }
+        var remove = [];
+        jQuery.grep(updatedDetails, function (el) {
+            if (jQuery.inArray(el, selectedValues) == -1) remove.push(el);
+        });
+        if (selectedValues.length > updatedDetails.length) {
+            for (var i = 0; i < difference.length; i++) {
+                $('.edit_oe_ovary_right_details').append(
+                    '<div class="form-group col-md-12" id="' + difference[i] + '_right">' +
+                    '<input class="form-control edited_oe_ovary_right_details" name="' + textboxName + '" type="text" value="' + elementDifference[i] + '" id="' + difference[i] + '" maxlength="250" required>' +
+                    '</div>'
+                );
+            }
+        }
+        if (updatedDetails.length > $('#oe_ovary_right_details').val().length) {
+            $('#' + remove + '_right').remove();
+        }
+    });
     $(document).on('change', 'select.history-oe-ovary-left-details', function (e) {
         var textboxName = 'oe[ovary][left][updated_details][]';
+        if($(this).data('type') == 'oe')
+        {
+            var textboxName = 'oe[ovary][left][updated_details][]';
+        }
         if (typeof ($(this).data('id')) !== 'undefined') {
             var textboxName = 'data[oe][ovary][left][updated_details][]';
         }
@@ -497,6 +582,12 @@ $(document).ready(function(){
         var date = new Date($(this).val());
         var totalDate = $('.protocol-date').length;
         var dateId = $(this).attr('id');
+        var lmpDate = new Date($('.history-lmd-date').val());
+        var Difference_In_Time = date.getTime() - lmpDate.getTime();
+        var diff = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
+        // console.log(diff);
+        $(this).closest('tr').find('td.protocol-day input').val(diff+1);
+        
         if(dateId == 'history-lmpdate-'+totalDate && date != 'Invalid Date'){
             date.setDate(date.getDate() + 1);
             var followupdate = moment(date).format('dddd DD MMMM YYYY');
@@ -1412,7 +1503,7 @@ $(document).ready(function(){
                             "</div>";
         // }else{
             oeValueData += "<div class='row d-none yalk-sac-"+i+"'>"+
-                                "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yalk Sac :</label></div>"+
+                                "<div class='col-md-1 pr-0'><label class='vertical-form-label pr-0'>Yolk Sac :</label></div>"+
                                 "<div class='col-md-3'><div class='radio is-conceived'>"+
                                     "<input type='radio' name='oe[utdata]["+i+"][yalk_sac]' value='present' id='present_"+i+"' class='yalk_sac'><label for='present_"+i+"'>Present</label>"+
                                     "<input type='radio' name='oe[utdata]["+i+"][yalk_sac]' value='absent' id='absent_"+i+"' class='yalk_sac'><label for='absent_"+i+"'>Absent</label>"+
@@ -1497,9 +1588,9 @@ $(document).ready(function(){
         baseUrl = baseUrl.replace(avoid,'');
         // console.log($('.old-medicine-data').val());
         var oldMedicineData = [];
-        if ($('.old-medicine-data').val() != '') {
-            oldMedicineData = $('.old-medicine-data').val().split(',');
-        }
+        // if ($('.old-medicine-data').val() != '') {
+        //     oldMedicineData = $('.old-medicine-data').val().split(',');
+        // }
         // console.log(oldMedicineData);
         var difference = [];
         // jQuery.grep(value, function(el) {
@@ -1690,9 +1781,9 @@ $(document).ready(function(){
         baseUrl = baseUrl.replace(avoid,'');
         // console.log($('.old-medicine-data').val());
         var oldMedicineData = [];
-        if ($('.old-medicine-data').val() != '') {
-            oldMedicineData = $('.old-medicine-data').val().split(',');
-        }
+        // if ($('.old-medicine-data').val() != '') {
+        //     oldMedicineData = $('.old-medicine-data').val().split(',');
+        // }
         // console.log(oldMedicineData);
         var difference = [];
         // jQuery.grep(value, function(el) {
@@ -2207,7 +2298,7 @@ $(document).ready(function(){
             time = moment(dt).format('hh:mm a');
             var protocolData = "<table class='table m-b-0'>"+
                                         "<thead>"+
-                                            "<tr><th>Cycle Day</th><th>Simulation<br> Day</th><th>Date</th><th>Injecion</th><th>HMG</th><th>HMG Brand Name</th><th>FSH</th><th>FSH Brand Name</th><th>Antagonist</th><th>Time</th></tr>"+
+                                            "<tr><th>Cycle Day</th><th>Simulation<br> Day</th><th>Date</th><th>Injecion</th><th>HMG</th><th>HMG Brand Name</th><th>FSH</th><th>FSH Brand Name</th><th>Antagonist</th></tr>"+
                                         "</thead>"+
                                         "<tbody class='protocol-data-row'>";
             for(i=1;i<=total;i++){
@@ -2220,9 +2311,13 @@ $(document).ready(function(){
                     var dateData = moment(date).format('dddd DD MMMM YYYY');
                 }
                 var day = days + i;
+                var lmpdate  = new Date($('.history-lmd-date').val());
+                var date2 = new Date(dateData);
+                var Difference_In_Time = date2.getTime() - lmpdate.getTime();
+                var diff = Math.ceil(Difference_In_Time / (1000 * 3600 * 24)) + 1;
                 var sDay = parseInt($('.last-s-days').val()) + i;
                 protocolData += "<tr>"+
-                                    "<td class='width-80'><input type='text' name='data[protocol]["+i+"][day]' value='"+day+"' class='form-control'></td>"+
+                                    "<td class='width-80 protocol-day'><input type='text' name='data[protocol]["+i+"][day]' value='"+diff+"' class='form-control'></td>"+
                                     "<td><span class='days-number'>s"+sDay+"</span><input type='hidden' name='data[protocol]["+i+"][s_day]' value="+sDay+" class='s-days-number' id='s-days-"+i+"'></td>"+
                                     "<td><input type='text' name='data[protocol]["+i+"][date]' value='"+dateData+"' class='form-control protocol-date datetimepicker' id='history-lmpdate-"+i+"'></td>";
                                     var injection  = {"1":"Only HMG","2":"Only FSH","3":"FSH + HMG","4":"Lupride","5":"Letrozole + HMG","6":"Letrozole + FSH","7":"Clomiphene Citrate + HMG","8":"Clomiphene Citrate + FSH","9":"Antagonist"};
@@ -2235,8 +2330,8 @@ $(document).ready(function(){
                                     protocolData += "<td><input type='text' name='data[protocol]["+i+"][hmg]' class='form-control hmg-data hmg-"+i+"'></td>"+
                                                     "<td><input type='text' name='data[protocol]["+i+"][hmg_brand_name]' class='form-control hmg-brand-data hmg-brand-"+i+"'></td><td><input type='text' name='data[protocol]["+i+"][fsh]' class='form-control fsh-data fsh-"+i+"'></td>"+
                                                     "<td><input type='text' name='data[protocol]["+i+"][fsh_brand_name]' class='form-control fsh-brand-data fsh-brand-"+i+"'></td><td><input type='text' name='data[protocol]["+i+"][antagonist]' class='form-control antagonist-data antagonist-"+i+"'></td>";
-                                    protocolData += "<td><input type='text' name='data[protocol]["+i+"][time]' value='"+time+"' class='form-control timepicker width-80'></td>"+
-                                "</tr>";
+                                    // protocolData += "<td><input type='text' name='data[protocol]["+i+"][time]' value='"+time+"' class='form-control timepicker width-80'></td>"+
+                                     protocolData +="</tr>";
                     lastDate = dateData;
             }
             protocolData += "</tbody></table>";
@@ -2300,8 +2395,8 @@ $(document).ready(function(){
                             protocolData += "<td><input type='text' name='data[protocol]["+id+"][hmg]' value='"+hmg+"' class='form-control hmg-data hmg-"+id+"'></td>"+
                                             "<td><input type='text' name='data[protocol]["+id+"][hmg_brand_name]' value='"+hmgBrand+"' class='form-control hmg-brand-data hmg-brand-"+id+"'></td><td><input type='text' name='data[protocol]["+id+"][fsh]' value='"+fsh+"' class='form-control fsh-data fsh-"+id+"'></td>"+
                                             "<td><input type='text' name='data[protocol]["+id+"][fsh_brand_name]' value='"+fshBrand+"' class='form-control fsh-brand-data fsh-brand-"+id+"'></td><td><input type='text' name='data[protocol]["+id+"][antagonist]' value='"+antagonistValue+"' class='form-control antagonist-data antagonist-"+id+"'></td>";
-                            protocolData += "<td><input type='text' name='data[protocol]["+id+"][time]' value='"+time+"' class='form-control timepicker width-80'></td>"+
-                        "</tr>";
+                            // protocolData += "<td><input type='text' name='data[protocol]["+id+"][time]' value='"+time+"' class='form-control timepicker width-80'></td>"+
+                            protocolData += "</tr>";
         $('.protocol-data-row').append(protocolData);
         setInjectionValue(injectionValue);
         $('.dose').selectpicker('refresh');
