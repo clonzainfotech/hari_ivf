@@ -67,6 +67,7 @@ class InjectionChargeController extends AdminController
                 $injection->net_price = $request->net_amount;
                 $injection->mrp = $request->mrp;
                 $injection->quantity = $request->quantity;
+                $injection->qty_type = $request->qty_type;
                 $injection->type = 1;
                 $injection->save();
                 $data['status'] = 1;
@@ -78,6 +79,7 @@ class InjectionChargeController extends AdminController
                 $injection->net_price = $request->net_amount;
                 $injection->mrp = $request->mrp;
                 $injection->quantity = $request->quantity;
+                $injection->qty_type = $request->qty_type;
                 $injection->type = 1;
                 $injection->save();
                 $data['status'] = 1;
@@ -121,6 +123,25 @@ class InjectionChargeController extends AdminController
             $inj_charge = $this->InjectionCharge->find($id);
             $inj_charge->delete();
             return 'true';
+        }catch(Exception $e){
+            log::Debug($e);
+            return 'false';
+        }
+    }
+    /**
+    * Return Inj Qty type
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function InjectionChargeController(Request $request)
+    {
+        try{
+            // dd($request->injId);
+            $qty_type = ['1'=>'QTY','2'=>'ML'];
+            $inj_charge = $this->InjectionCharge->where('name',$request->injId)->first();
+            $data['type'] = isset($qty_type[$inj_charge->qty_type]) ? $qty_type[$inj_charge->qty_type] : '-';
+            $data['qty'] = $inj_charge->quantity;
+            return $data;
         }catch(Exception $e){
             log::Debug($e);
             return 'false';

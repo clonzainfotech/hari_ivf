@@ -440,6 +440,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('inj-charge/store','InjectionChargeController@store');
     Route::get('inj-charge/edit/{id}','InjectionChargeController@getInjCharge');
     Route::get('inj-charge/delete/{id}','InjectionChargeController@injChargeDelete');
+    Route::get('getInjectionQtyType','InjectionChargeController@InjectionChargeController');
 
     //html pages
     Route::get('html-page','HtmlPageController@index');

@@ -19,6 +19,16 @@
                                 </button>
                             </a>
                         </li>
+                        <li class="hinjection-data">
+                            <a href='#'>
+                                <button class="btn btn-primary btn-icon btn-icon-mini injection-add" title="Add Injection"><i class="material-icons">add</i> </button>
+                            </a>
+                        </li>
+                        <li class="hinjection-data">
+                            <a href='#'>
+                                <button class="btn btn-primary btn-icon btn-icon-mini injection-remove" title="Remove Injection"><i class="material-icons">remove</i> </button>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="body">
@@ -44,19 +54,42 @@
                                     {{$errors->first('htype')}}
                                 </span>
                             </div>
+                            
                         </div>
-                        <div class="row hormon-row hinjection-data">
-                            <div class="col-md-6">
-                                    {{Form::select('hinjection',$injection,'',[
+                        <div class="row hormon-row hinjection-data injection">
+                            <div class="col-md-3">
+                                    {{Form::select('hinjection[]',$injection,'',[
                                     'class'=>'form-control hinjection',
                                     'placeholder'=>'Select Injection',
-                                    'id'=>'injection',
+                                    'data-id'=>"injection_1",
                                     'data-live-search'=>'true',
                                 ])}}
                                 <span class="form-error-msg injection">
                                     {{$errors->first('hinjection')}}
                                 </span>
                             </div>
+                            <div class="col-md-6 inj-qty">
+                                <div class="input-group">
+                                    <span class="input-group-addon  unik-lbl-spn col-md-4">Injection Qty&nbsp;</span>
+                                    {{Form::number('qty[]',null,['class'=>'form-control col-sm-4','placeholder'=>'Quantity'])}}
+                                    {{Form::text('qty_type','',[
+                                        'class'=>'form-control col-sm-4 amount qty_type_1',
+                                        'readonly'
+                                    ])}}
+                                </div>
+                                <span class="form-error-msg qty_type">
+                                    {{$errors->first('qty_type')}}
+                                </span>
+                            </div>
+                            <div class="col-md-3">
+                                {{Form::number('inj_charge[]','',[
+                                'class'=>'form-control inj-charge inj_charge_1',
+                                'placeholder'=>'Injection Charges',
+                                ])}}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="col-md-6 hinjection-data">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Cycle No : &nbsp;</span>
@@ -282,14 +315,10 @@
             });
             $('select[name="hreference_doctor_id"]').on('change', function() {
                 if (this.value == 'other') {
-                    // $('input[type="text"][name="doctor_name"]').prop('required', 'required');
-                    // $('input[type="text"][name="doctor_mobile_number"]').prop('required', 'required');
                     $('.doctor-name').removeClass('d-none');
                     $('.doctor-mobile-number').removeClass('d-none');
 
                 } else {
-                    // $('input[type="text"][name="doctor_name"]').prop('required', false);
-                    // $('input[type="text"][name="doctor_mobile_number"]').prop('required', false);
                     $('.doctor-name').addClass('d-none');
                     $('.doctor-mobile-number').addClass('d-none');
                 }
@@ -298,6 +327,62 @@
                 (this.value == 1 || this.value == 2) ? $('select[name="hreference_doctor_id"]').prop('required', false) : $('select[name="hreference_doctor_id"]').prop('required', true);
                 (this.value == 1) ? ($('.hinjection').prop('required', true)) : ($('.hinjection').prop('required', false));
                 setField($(this).val());
+            });
+            $(document).on('change','select.hinjection',function(){
+                var injId = $(this).val();
+                var element = $(this);
+                // $(this).parent().find('.inj-qty input.qty_type').val('dfgfdg');
+                $.ajax({
+                    url: "{{URL::to('getInjectionQtyType')}}",
+                    dataType: 'json',
+                    data: {
+                        injId: injId
+                    },
+                }).done(function(result) {
+                    var injClass = element.data('id');
+                    var id = injClass.split('_')[1];
+                    
+                    $('.qty_type_'+id).val(result.qty+'/'+result.type);
+                    // $(this).closest('div').find('input.qty_type').val('dfgfdg');
+                    // $('select.hinjection').find('input.qty_type').val('sdfdg');
+                }).fail(function() {
+                });
+
+            })
+            $(document).on('click','.injection-add',function(e){
+                e.preventDefault();
+                $('select.hinjection').selectpicker('refresh');
+                var injection = @json($injection);
+                var hijectionDiv = '';
+                var div_length = $('div.hinjection-data.injection').length + 1;
+                hijectionDiv += '<div class="row hormon-row hinjection-data injection"><div class="col-md-3">';
+                hijectionDiv += '<select name="hinjection[]" class="form-control hinjection" data-id="injection_'+div_length+'" data-live-search="true">';
+                hijectionDiv   += '<option value="">Select Injection</option>';
+                $.each(injection, function(key, value) {
+                    hijectionDiv += '<option value="' + key + '">' +value+'</option>';
+                });
+                hijectionDiv += '</select></div>';
+                hijectionDiv += '<div class="col-md-6 inj-qty"><div class="input-group"><span class="input-group-addon  unik-lbl-spn col-md-4">Injection Qty&nbsp;</span>';
+                hijectionDiv += '<input class="form-control col-sm-4" placeholder="Quantity" name="qty[]" type="number"><input class="form-control col-sm-4 amount qty_type_'+div_length+'" readonly="" name="qty_type" type="text" value=""></div></div>';
+                hijectionDiv += '<div class="col-md-3"><input class="form-control inj-charge inj_charge_1" placeholder="Injection Charges" name="inj_charge[]" type="number" value=""></div>';
+                hijectionDiv += '</div>'
+                
+                $(hijectionDiv).insertAfter('div.hinjection-data.injection:last');
+            })
+            $(document).on('click','.injection-remove',function(e){
+                e.preventDefault();
+                $('select.hinjection').selectpicker('refresh');
+                if($('div.hinjection-data.injection').length > 1)
+                {
+                    $('div.hinjection-data.injection:last').remove();
+                }
+            });
+            $(document).on('keyup','.inj-charge',function(){
+                var amount = 0;
+                $('.inj-charge').each(function(){
+                    amount +=  Number($(this).val());
+                })
+                $('.hcharge').val(amount);
             });
             $(document).on('click','.submit',function(e){
                 e.preventDefault();
@@ -350,7 +435,7 @@
             var valid = 1;
             var hname=document.getElementById('hname').value;
             var htype=document.getElementById('htype').value;
-            var injection=document.getElementById('injection').value;
+            // var injection=document.getElementById('injection').value;
             var hcharge=document.getElementById('hcharge').value;
             var cycle_no=document.getElementById('cycle_no').value;
             var hreference_doctor=document.getElementById('hreference-doctor').value;
@@ -372,10 +457,10 @@
                 $('.htype').text('The type field is required.');
             }
             if(htype == 1){
-                if (injection == '') {
-                    valid = 0;
-                    $('.injection').text('The injection field is required.');
-                }
+                // if (injection == '') {
+                //     valid = 0;
+                //     $('.injection').text('The injection field is required.');
+                // }
                 if(cycle_no == '')
                 {
                     valid = 0;

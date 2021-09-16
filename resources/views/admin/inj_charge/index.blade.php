@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <div class="card patients-list">
                 <div class="header">
-                    <h2><strong>Injection Charge List</strong></h2>
+                    <h2><strong>Hormon Injection Charge List</strong></h2>
                     <ul class="header-dropdown">
                         <li>
                             <ul class="dropdown-menu dropdown-menu-right slideUp">
@@ -40,14 +40,13 @@
                             <div class="col-md-4">
                                 <ul class="nav nav-tabs padding-0">
                                     <div class="input-group">
-                                        <input type="text" class="form-control search" placeholder="Search...">
+                                        <input type="text" class="form-control search" placeholder="Search..." readonly="readonly" onfocus="this.removeAttribute('readonly')">
                                         <span class="input-group-addon search-border">
                                             <i class="zmdi zmdi-search"></i>
                                         </span>
                                     </div>
                                 </ul>
                             </div>
-                            
                         </div>
                     </div>
                     <!-- Tab panes -->
@@ -125,6 +124,15 @@
                                 </div>
                                 <span class="form-error-msg quantity-error w-100"></span>
                             </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-3">
+                                    Quanity Type
+                                </div>
+                                <div class="col-md-6">
+                                    {{Form::select('qty_type',['1'=>'QTY','2'=>'ML'],'',['class'=>'qty_type'])}}
+                                </div>
+                                <span class="form-error-msg quantity-error w-100"></span>
+                            </div>
                             
                         </div>
                         <!-- footer -->
@@ -176,8 +184,8 @@
                 var net_amount = $('.net_amount').val('');
                 var mrp = $('.mrp').val('');
                 var quantity = $('.quantity').val('');
-                var type = $('select.type').val('');
-                $('.type').selectpicker('refresh');
+                var qty_type = $('select.qty_type').val('');
+                $('.qty_type').selectpicker('refresh');
                 $('#inj-modal').modal('show');
             });
         });
@@ -187,8 +195,8 @@
             var net_amount = $('.net_amount').val('');
             var mrp = $('.mrp').val('');
             var quantity = $('.quantity').val('');
-            var type = $('select.type').val('');
-            $('.type').selectpicker('refresh');
+            var qty_type = $('select.qty_type').val('');
+            $('.qty_type').selectpicker('refresh');
             $('.inj-error').html('');
             $.ajax({
             url: "{{URL::to('inj-charge/edit')}}/" + injId,
@@ -201,8 +209,8 @@
                     $('.net_amount').val(data.injection.net_price);
                     $('.mrp').val(data.injection.mrp);
                     $('.quantity').val(data.injection.quantity);
-                    $('select.type').val(data.injection.type);
-                    $('.type').selectpicker('refresh');
+                    $('select.qty_type').val(data.injection.qty_type);
+                    $('.qty_type').selectpicker('refresh');
                     $('.injId').val(injId);
                 }
                 else{
@@ -219,8 +227,9 @@
             var mrp = $('.mrp').val();
             var quantity = $('.quantity').val();
             var injId = $('.injId').val();
-            var type = $('select.type').val();
-            $('.type').selectpicker('refresh');
+            var qty_type = $('select.qty_type').val();
+            $('.qty_type').selectpicker('refresh');
+            alert(qty_type);
             var hasNoValue = 0;
             $(".form-required").each(function() {
                 if($(this).val() == '')
@@ -252,7 +261,7 @@
                         mrp:mrp,
                         quantity:quantity,
                         injId:injId,
-                        type:type
+                        qty_type:qty_type
                     },
                     dataType: 'json',
                 }).done(function(data) {
