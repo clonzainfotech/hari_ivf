@@ -90,7 +90,7 @@ class MedicalController extends AdminController
             $iuiDate = [];
             $gynecDate = [];
             $patients = $this->OpdPatients->find($pId);
-            $appointmentData = $this->Appointment->wherePatientsId($pId)->whereIn('category_id',['1','2','3','4','5','6','17'])->orderBy('id','DESC')->pluck('category_id','category_id')->toArray();
+            $appointmentData = $this->Appointment->wherePatientsId($pId)->whereIn('category_id',['1','2','3','4','5','6','17'])->where('is_done',1)->orderBy('id','DESC')->pluck('category_id','category_id')->toArray();
             $appointmentData = array_unique($appointmentData);
             $lastCatgoryId = array_first($appointmentData);
             $lastType = null;
