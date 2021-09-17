@@ -555,14 +555,14 @@
                 </div>
             </div>
         </div>
-            
+
         </div>
         <div class="modal fade preview-file-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header header-bottom-border">
-    
-                    
+
+
                         <div class="row">
                             <div class="col-md-12">
                                 <h5 class="modal-title" id="myModalLabel"></h5>
@@ -574,10 +574,10 @@
                         <div class="visit-details-data">
                         </div>
                     </div>
-    
+
                     <div class="modal-footer footer-top-border text-right d-inline-block">
                         <button type="button" class="btn btn-primary waves-effect" data-dismiss="modal">CLOSE</button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -940,11 +940,15 @@
                 data:{appointmentId},
                 dataType: 'json',
             }).done(function(data) {
-                w = window.open(window.location.href,"_blank");
-                w.document.open();
-                w.document.write(data);
-                w.document.close();
-                w.window.print();
+                // w = window.open(window.location.href,"_blank");
+                // w.document.open();
+                // w.document.write(data);
+                // w.document.close();
+                // w.window.print();
+                var originalData = document.body.innerHTML;
+                document.body.innerHTML = data;
+                window.print();
+                document.body.innerHTML = originalData;
             });
         });
 
@@ -1318,28 +1322,28 @@
                     dataType: 'json',
                     }).done(function(data) {
                         $('.'+appendClass).html(data.data);
-                        
+
                         // $(data.data).insertAfter($(this));
                         // function () {
                         $('.'+appendClass).slideDown('medium');
-                        // }, 
+                        // },
                         // function () {
                         //     $('ul.file_menu').slideUp('medium');
                         // }
-                        
+
                     }).fail(function() {
 
                     })
                 }
-                
+
                 });
-           
+
         // });
             $(document).on("click", function(event){
                 var $trigger = $(".patient_dropdown");
                 if($trigger !== event.target && !$trigger.has(event.target).length){
                     $(".appointment_dropdown_content").slideUp("fast");
-                }            
+                }
             });
             $(document).on('click','.preview-close',function(){
                 $('.visit-details-data').html('');
@@ -1357,7 +1361,7 @@
                 if(category == 5 || category == 6 || category == 10 || category == 13)
                 {
                     var anc_id = $(this).data('id');
-                    
+
                     var ancQstring = 'patient_id='+patientsId+'&anc_id='+anc_id+'&is_appointmentView=1'+'&appointmentDate='+appointmentDate;
                     getANCHistoryData(ancQstring);
                 }
@@ -1395,7 +1399,7 @@
                                 var linkDate = moment(new Date(data.date[i])).format('YYYY-MM-DD HH:mm:ss');
                                 var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
                             }
-                            
+
                             ancPreview = buttonHtml + data.data[i];
                             $('.visit-details-data').html(ancPreview);
                             ancPreview = ancPreview + '<div class="row sepreator"></div>';
@@ -1423,7 +1427,7 @@
                         var ivfPreview = $('.visit-details-data').html();
                         var buttonHtml = '';
                         var previewData = '';
-                        
+
                         $('.ivf-appointment-plan').html(data.plan);
                         $('.ivf-appointment-cycle-no').html(data.cycle);
                         for(i=0; i<data.data.length;i++)
@@ -1442,14 +1446,14 @@
                 });
             }
             function getIuiHistoryData(iuiString){
-            
+
             $.ajax({
                 url:'{{URL::to("get-iui-details")}}?'+iuiString,
                 type:'GET',
                 dataType:'json'
             }).done(function(data){
                 if(data.iui_type == 1){
-                    
+
                     var buttonHtml = '';
                     var previewData = '';
                     $('.visit-details-data').empty();
