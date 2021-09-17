@@ -115,7 +115,7 @@ class ExpenseManagerController extends AdminController
             $expense->save();
             $expensecategory = $this->ExpenseCategory->where('type','=','2')->whereStatus(1)->pluck('name','id');
             $paymentMethod = ['2'=>'Swipe','1'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'];
-            $data = [Carbon::parse($request->date)->format('d-m-Y'),$expensecategory[$request->expensecategory],$request->amount,$paymentMethod[$request->payment_method],$request->given_for,$request->note,\Auth()->user()->name,Carbon::now()->format('d-m-Y H:i')];
+            $data = [Carbon::parse($request->date)->format('d-m-Y'),$request->amount,$paymentMethod[$request->payment_method],$request->given_for,$request->note,$expensecategory[$request->expensecategory],\Auth()->user()->name,Carbon::now()->format('d-m-Y H:i')];
             $this->addGoogleSheet($data);
 
             DB::commit();

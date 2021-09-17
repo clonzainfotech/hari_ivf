@@ -77,7 +77,7 @@ class BackupDatabase extends Command
         }
         $this->removeFilesAndDir(0);
         $this->removeFilesAndDir(1);
-        File::cleanDirectory('db_'.date('Y_m_d'));
+        File::cleanDirectory('storage/backups/db_'.date('Y_m_d'));
         return storage_path($this->rootPath.$foldername.date('H_i_')."backup.sql");
     }
 
