@@ -29,6 +29,7 @@
                     <tbody>
                         @php
                             $i = 1;
+                            $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
                         @endphp
                         @forelse($row as $value)
                             <tr>
@@ -37,18 +38,36 @@
                                 <td>{{!empty($value->getMedicinesData['medicine_status']) ? $mStatus[$value->getMedicinesData['medicine_status']] : null}}</td>
                                 <td>{{!empty($value->getMedicinesData['dose']) ? $dose[$value->getMedicinesData['dose']] : null}}</td>
                                 <td>{{$value->getMedicinesData['number']}}</td>
-                                <td>{{$value->getMedicinesData['quantity']}}</td>
+                                <td>@php
+                                    $mData = [0,0,0,0];
+
+                                        if(@$value->getMedicinesData['quantity']>0) {
+                                            $mData[0] = $value->getMedicinesData['quantity'];
+                                        }
+                                        if(@$value->getMedicinesData['quantity_2']>0) {
+                                            $mData[1] = $value->getMedicinesData['quantity_2'];
+                                        }
+                                        if(@$value->getMedicinesData['quantity_3']>0) {
+                                            $mData[2] = $value->getMedicinesData['quantity_3'];
+                                        }
+                                        if(@$value->getMedicinesData['quantity_4']>0) {
+                                            $mData[3] = $value->getMedicinesData['quantity_4'];
+                                        }
+                                        $mData = implode('-',$mData);
+                                    @endphp
+                                    {{$mData}}
+                                </td>
                                 <td>
-                                    @if(!empty($value->getMedicinesData['medicine_time']))
-                                        @php
+                                    {{-- @if(!empty($value->getMedicinesData['medicine_time'])) --}}
+                                        {{-- @php
                                             $medicineTime = json_decode($value->getMedicinesData['medicine_time']);
                                             $data = [];
                                             foreach($medicineTime as $mtimeData){
                                                 $data[] = $mTime[$mtimeData];
                                             }
-                                        @endphp
-                                        {{implode(',',$data)}}
-                                    @endif
+                                        @endphp --}}
+                                        {{isset($medicine_time[$value->getMedicinesData['medicine_time']]) ? $medicine_time[$value->getMedicinesData['medicine_time']] : '-'}}
+                                    {{-- @endif --}}
                                 </td>
                                 <td>
                                     <a href="#" class="delete-medicine" data-id="{{encrypt($value->id)}}">
