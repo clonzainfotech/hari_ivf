@@ -146,7 +146,7 @@
                     </div>
                 </td>
                 <td>-</td>
-                <td>{{$row->getAppointmentCharges['netamount']}}</td>
+                <td>{{!empty($row->getAppointmentCharges['netamount']) ? $row->getAppointmentCharges['netamount'] : 0}}</td>
                 <td>{{($row->nextAppointmentDate() && $row->next_appointment == false && ($row->nextAppointmentDate() != \Carbon\Carbon::parse($row->date)->format('d-m-Y'))) ? (($row->nextAppointmentUsg()) ? 'USG - '.$row->nextAppointmentDate() : $row->nextAppointmentDate()) : $row->nextAppointmentDate() }}</td>
                 <td>
                     <div class="{{'edit-remark-data edit-remark-'.$row->id}}">
