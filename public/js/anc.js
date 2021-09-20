@@ -1161,7 +1161,7 @@ function addOrRemoveClass(value,dId,key=null){
         }else{
             $('.expected-data-'+i).addClass('d-none');
         }
-        if(value>=16) {
+        if(value>=16 || value == 'Full Term') {
             $('.liquor-data-'+i).removeClass('d-none');
         }
         if(value<14) {
@@ -2073,18 +2073,18 @@ function medicineData(value) {
             if(data.data.number == null || data.data.number == 0)
                 {
                     var next_follow_date = $('.next-date').val();
-                    madicineData += "<div class='col-md-1'><div class='input-group'><span class='input-group-addon'>Days:</span>"+
+                    madicineData += "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Days:</span>"+
                     "<input type ='number' name='treatment["+differenceMedicine+"][no]' class='form-control till-follow-up' value='" + dateDiffernce(next_follow_date) + "'></div></div>";
                 }
                 else{
-                    madicineData += "<div class='col-md-1'><div class='input-group'><span class='input-group-addon'>Days:</span>"+
+                    madicineData += "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Days:</span>"+
                     "<input type ='number' name='treatment["+differenceMedicine+"][no]' class='form-control' value='" + ((data.data != null && data.data.number != null) ? data.data.number : '') + "'></div></div>";
                 }
             // madicineData += "<div class='col-md-1'><div class='input-group'><span class='input-group-addon'>Day :</span>"+
             //     "<input type ='number' name='treatment["+differenceMedicine+"][no]' class='form-control' value='" + ((data.data != null && data.data.number != null) ? data.data.number : '') + "'></div></div>";
+            madicineData += "<div class='col-md-4 medicine-note'><div class='form-group'><input type='text' name='treatment["+differenceMedicine+"][note]' class='form-control' placeholder='Note'></div></div>"
             madicineData += "<div class='col-md-1 medicine-data-remove'><span class=''><i class='material-icons'>close</i></span></div>";
             madicineData += "</div><div class='row' data-id=" + differenceMedicine + ">";
-
             madicineData += "</div>";
             $('.medicine-data').append(madicineData);
             $('.dose').selectpicker('refresh');

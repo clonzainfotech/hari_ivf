@@ -997,13 +997,16 @@ class IVFController extends AdminController
                         $transferReport->fertilization_procedure = $request->fertilization_procedure;
                         $transferReport->remark = $request->transfer_remark;
                         $transferReport->save();
-                        //set Notification
-                        $categoryPatientData['patients_id'] = $patientsId;
-                        $categoryPatientData['date'] = $followDate;
-                        $categoryPatientData['reminder_date'] = Carbon::parse($followDate)->subDays(1)->format('Y-m-d');
-                        $categoryPatientData['message'] = "IVF Result";
-                        $categoryPatientData['category_id'] = !empty($request->category) ? $request->category : 2;
-                        $nextAppontment = $this->storeCategoryNotification($categoryPatientData);
+                        if (!$request->ivf_transfer_report_id)
+                        {
+                            //set Notification
+                            $categoryPatientData['patients_id'] = $patientsId;
+                            $categoryPatientData['date'] = $followDate;
+                            $categoryPatientData['reminder_date'] = Carbon::parse($followDate)->subDays(1)->format('Y-m-d');
+                            $categoryPatientData['message'] = "IVF Result";
+                            $categoryPatientData['category_id'] = !empty($request->category) ? $request->category : 2;
+                            $nextAppontment = $this->storeCategoryNotification($categoryPatientData);
+                        }
                     }
                 }
             }
@@ -2956,13 +2959,19 @@ class IVFController extends AdminController
         {
             $id = decrypt($id);
             $ivf = $this->IvfHistory->where('id',$id)->first();
-            $investigation = !empty($ivf->investigation) ? json_decode($ivf->investigation) : null;
-            $description = !empty($ivf->description) ? json_decode($ivf->description) : null;
-            $data['hystroscopy'] = !empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->images)  ? (array)$investigation->hystroscopy->images : [];
-            $data['laproscopy'] = !empty($investigation->laproscopy) && !empty($investigation->laproscopy->images)  ? (array)$investigation->laproscopy->images : [];
-            $data['blood_report'] = !empty($description->blood_report) && !empty($description->blood_report->image)  ? (array)$description->blood_report->image : [];
-            $data['usg'] = !empty($description->usg) && !empty($description->usg->images)  ? (array)$description->usg->images : [];
-            $data['hsa'] = !empty($description->hsa_report) && !empty($description->hsa_report->images)  ? (array)$description->hsa_report->images : [];
+            $ivfHistory = $this->IvfHistory->where('patients_id',$ivf->patients_id)->wherePlan($ivf->plan)->whereCycleNo($ivf->cycle_no)->get();
+            
+            foreach($ivfHistory as $ivfData)
+            {
+                $date = carbon::parse($ivfData->created_at)->format('d M Y H:i');
+                $investigation = !empty($ivfData->investigation) ? json_decode($ivfData->investigation) : null;
+                $description = !empty($ivfData->description) ? json_decode($ivfData->description) : null;
+                $data[$date]['hystroscopy'] = !empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->images)  ? (array)$investigation->hystroscopy->images : [];
+                $data[$date]['laproscopy'] = !empty($investigation->laproscopy) && !empty($investigation->laproscopy->images)  ? (array)$investigation->laproscopy->images : [];
+                $data[$date]['blood_report'] = !empty($description->blood_report) && !empty($description->blood_report->image)  ? (array)$description->blood_report->image : [];
+                $data[$date]['usg'] = !empty($description->usg) && !empty($description->usg->images)  ? (array)$description->usg->images : [];
+                $data[$date]['hsa'] = !empty($description->hsa_report) && !empty($description->hsa_report->images)  ? (array)$description->hsa_report->images : [];
+            }
             return response()->json([
                 'status' => 1,
                 'data' => $data

@@ -2497,10 +2497,16 @@ class IUIController extends AdminController
         {
             $id = decrypt($id);
             $iui = $this->IuiHistory->where('id',$id)->first();
-            $description = !empty($iui->description) ? json_decode($iui->description) : null;
-            $data['blood_report'] = !empty($description->blood_report) && !empty($description->blood_report->image)  ? (array)$description->blood_report->image : [];
-            $data['usg'] = !empty($description->usg) && !empty($description->usg->images)  ? (array)$description->usg->images : [];
-            $data['hsa_report'] = !empty($description->hsa_report) && !empty($description->hsa_report->images)  ? (array)$description->hsa_report->images : [];
+            $iuiHistory = $this->IuiHistory->where('patients_id',$iui->patients_id)->whereCycleNo($iui->cycle_no)->get();
+            
+            foreach($iuiHistory as $iuiData)
+            {
+                $date = carbon::parse($ivfData->created_at)->format('d M Y H:i');
+                $description = !empty($iuiData->description) ? json_decode($iuiData->description) : null;
+                $data[$date]['blood_report'] = !empty($description->blood_report) && !empty($description->blood_report->image)  ? (array)$description->blood_report->image : [];
+                $data[$date]['usg'] = !empty($description->usg) && !empty($description->usg->images)  ? (array)$description->usg->images : [];
+                $data[$date]['hsa_report'] = !empty($description->hsa_report) && !empty($description->hsa_report->images)  ? (array)$description->hsa_report->images : [];
+            } 
             return response()->json([
                 'status' => 1,
                 'data' => $data

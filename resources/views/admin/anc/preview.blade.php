@@ -103,8 +103,11 @@
         color: #03c262 !important;
     }
     .medicine-table td{
-        padding: 2px 15px;
+        padding: 2px 5px !important;
         text-transform: capitalize;
+    }
+    .medicine-table tr{
+        text-align:center !important;
     }
     .panel-primary
     {
@@ -670,6 +673,8 @@
                                             <td>{{$medicine_status}}</td>
                                             <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
                                             <td>{{(!empty($row->no)) ? $row->no.' days' : ''}}</td>
+                                            <td>{{isset($row->note) && !empty($row->note) ? $row->note : '-'}}</td>
+
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -2049,6 +2054,7 @@
                                             <th>Timing</th>
                                             <th>Freq.</th>
                                             <th>Duration</th>
+                                            <th>Note</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -2123,6 +2129,7 @@
                                             <td>
                                             {{(!empty($row->no)) ? $row->no.' days' : ''}}
                                             </td>
+                                            <td>{{isset($row->note) && !empty($row->note) ? $row->note : '-'}}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -2409,6 +2409,11 @@ fieldset[disabled] .btn-link.active {
 .input-group .form-control {
 	padding: 10px 18px 10px 18px
 }
+.medicine-data .form-group .form-control,
+.medicine-data .input-group .form-control
+{
+	padding: 0px 5px 0px 5px!important;
+}
 
 .form-group .form-control+.input-group-addon,
 .input-group .form-control+.input-group-addon {

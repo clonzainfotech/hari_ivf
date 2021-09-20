@@ -1705,10 +1705,16 @@
                                 {{Form::select('data[medicinedata]['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
                             </div>
                         </div>
-                        <div class='col-md-1'>
+                        <div class='col-md-2'>
                             <div class='input-group'>
                                 <span class='input-group-addon'>Day :</span>
                                 {{Form::number('data[medicinedata]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                            </div>
+                        </div>
+                        <div class='col-md-4'>
+                            <div class='form-group'>
+                                <!-- <span class='input-group-addon'>Day :</span> -->
+                                {{Form::number('data[medicinedata]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                             </div>
                         </div>
                         <div class='col-md-1 medicine-data-remove'>
@@ -2013,6 +2019,12 @@
                                         <div class='input-group'>
                                             <span class='input-group-addon'>Day:</span>
                                             {{Form::number('data[medicinedata]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                        </div>
+                                    </div>
+                                    <div class='col-md-4'>
+                                        <div class='form-group'>
+                                            <!-- <span class='input-group-addon'>Day :</span> -->
+                                            {{Form::number('data[medicinedata]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                         </div>
                                     </div>
                                     <div class='col-md-1 medicine-data-remove'>

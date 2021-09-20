@@ -1621,28 +1621,32 @@
                 dataType:'json'
             }).done(function(data){
                 $('.iui-report').modal('show');
-                $('.iui-report-title').html('IUI Report of '+date);
+                $('.iui-report-title').html('');
                 if(data.status == 1){
                     $.each(data, function() {
                         $.each(this, function(k, v) {
-                            if(v.length > 0)
-                            {
-                                
+                            var date = '';
+                            
                                 $.each(v, function(index,image) {
-                                    var extension = image.substr( (image.lastIndexOf('.') +1) );
-                                    var path = "{{url('')}}" + '/'+image;
-                                    if(extension == 'pdf')
+                                    if(image.length > 0)
                                     {
-                                        html += '<embed type="application/pdf" src="'+path+'" frameborder="0" height="100%" width="100%" class="mySlides">';
-                                    }
-                                    else
-                                    {
-                                        html += '<img class="mySlides" src="'+path+'">';
+                                        $.each(image,function(j,img){
+                                           
+                                            var extension = img.substr( (img.lastIndexOf('.') +1) );
+                                            var path = "{{url('')}}" + '/'+img;
+                                            if(extension == 'pdf')
+                                            {
+                                                html += '<embed type="application/pdf" src="'+path+'" frameborder="0" height="100%" width="100%" class="mySlides">';
+                                            }
+                                            else
+                                            {
+                                                html += '<img class="mySlides" src="'+path+'" data-id="'+k+'">';
+                                            }
+                                        })
+
                                     }
                                     
                                 });
-                                
-                            }
                         });
                         
                     });
@@ -1669,7 +1673,9 @@
                 console.log('sdf');
                 x[i].style.display = "none";  
             }
-            x[slideIndex-1].style.display = "block";  
+            x[slideIndex-1].style.display = "block"; 
+            $('.ivf-report-title').html('IVF Report of '+$(x[slideIndex-1]).data('id'));  
+
         }
         $(document).on('click','.edit-remark-icon',function(e){
             e.preventDefault();

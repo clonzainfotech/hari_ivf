@@ -1728,6 +1728,9 @@
 
                                                         @endif
                                                     @endif
+                                                    @if(isset($row->note) && !empty($row->note))
+                                                    | Note: {{$row->note}}
+                                                    @endif
                                                 </div>
                                                     <br>
                                                 @endforeach
@@ -1826,6 +1829,12 @@
                                                             <div class='input-group'>
                                                                 <span class='input-group-addon'>Day :</span>
                                                                 {{Form::number('data[treatment]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-4'>
+                                                            <div class='form-group'>
+                                                                <!-- <span class='input-group-addon'>Day :</span> -->
+                                                                {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                                             </div>
                                                         </div>
                                                         <div class='col-md-1 medicine-data-remove'>
@@ -2812,6 +2821,9 @@
                                                                                 @endif
                                                                         @endif
                                                                     @endif
+                                                                    @if(isset($row->note) && !empty($row->note))
+                                                                    | Note: {{$row->note}}
+                                                                    @endif
                                                                 </div>
                                                                     <br>
                                                                 @endforeach
@@ -2897,10 +2909,16 @@
                                                                         {{Form::select('data[treatment]['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
                                                                     </div>
                                                                 </div>
-                                                                <div class='col-md-1'>
+                                                                <div class='col-md-2'>
                                                                     <div class='input-group'>
                                                                         <span class='input-group-addon'>Day :</span>
                                                                         {{Form::number('data[treatment]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class='col-md-4'>
+                                                                    <div class='form-group'>
+                                                                        <!-- <span class='input-group-addon'>Day :</span> -->
+                                                                        {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                                                     </div>
                                                                 </div>
                                                                 <div class='col-md-1 medicine-data-remove'>
@@ -6543,26 +6561,32 @@
                 dataType:'json'
             }).done(function(data){
                 $('.ivf-report').modal('show');
-                $('.ivf-report-title').html('IVF Report of '+date);
+                $('.ivf-report-title').html('');
                 if(data.status == 1){
                     $.each(data, function() {
                         $.each(this, function(k, v) {
-                            if(v.length > 0)
-                            {
+                            var date = '';
+                            
                                 $.each(v, function(index,image) {
-                                    var extension = image.substr( (image.lastIndexOf('.') +1) );
-                                    var path = "{{url('')}}" + '/'+image;
-                                    if(extension == 'pdf')
+                                    if(image.length > 0)
                                     {
-                                        html += '<embed type="application/pdf" src="'+path+'" frameborder="0" height="100%" width="100%" class="mySlides">';
+                                        $.each(image,function(j,img){
+                                           
+                                            var extension = img.substr( (img.lastIndexOf('.') +1) );
+                                            var path = "{{url('')}}" + '/'+img;
+                                            if(extension == 'pdf')
+                                            {
+                                                html += '<embed type="application/pdf" src="'+path+'" frameborder="0" height="100%" width="100%" class="mySlides">';
+                                            }
+                                            else
+                                            {
+                                                html += '<img class="mySlides" src="'+path+'" data-id="'+k+'">';
+                                            }
+                                        })
+
                                     }
-                                    else
-                                    {
-                                        html += '<img class="mySlides" src="'+path+'">';
-                                    }
+                                    
                                 });
-                                
-                            }
                         });
                         
                     });
@@ -6583,12 +6607,14 @@
         function showDivs(n) {
             var i;
             var x = document.getElementsByClassName("mySlides");
+            
             if (n > x.length) {slideIndex = 1}
             if (n < 1) {slideIndex = x.length}
             for (i = 0; i < x.length; i++) {
                 x[i].style.display = "none";  
             }
-            x[slideIndex-1].style.display = "block";  
+            x[slideIndex-1].style.display = "block";
+            $('.ivf-report-title').html('IVF Report of '+$(x[slideIndex-1]).data('id'));  
         }
 </script>
 @stop

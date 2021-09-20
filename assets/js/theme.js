@@ -119,7 +119,7 @@ function complaintWiseMedicines(value,type,mType,hovalue,isIvf=null,isSp2=false,
     if(value == '' || hovalue == ''){
         $('.medicine-data').html('');
         $('select.medicine-co').val('');
-        var meData = "<select name='treatment[medicinedata][]' class='form-control co-value medicine medicine-co co_value_data' id='treatment-medicine' multiple='true'>";
+        var meData = "<select name='treatment[medicinedata][]' class='form-control co-value medicine medicine-co co_value_data' id='treatment-medicine'>";
         meData += '<option value="">Enter Medicine</option>';
             $.each(medicinesValue, function(key, value) {
                 meData +=  '<option value="' + key + '">'+value+'</option>';
@@ -185,67 +185,12 @@ function complaintWiseMedicines(value,type,mType,hovalue,isIvf=null,isSp2=false,
                 meData += "</select>";
             $('.medicine-picker').html(meData);
             $('select.medicine-co').val(Object.values(data.medicineArray));
-            // $('.medicine-co').selectize({
-            //     delimiter: ',',
-            //     persist: false,
-            //     create: function(input) {
-            //         return {
-            //             value: input,
-            //             text: input
-            //         }
-            //     }
-            // });
-
+            
             $('.old-medicine-data').val(Object.values(data.medicineArray).toString())
             $.each(data.medicines, function(mKey, mValue) {
                 // differenceMedicine = mValue.get_medicines_data.name.toString().replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_');
                 differenceMedicine = mValue.get_medicines_data.name.toString();
-                // madicineData += "<div class='row' data-id=" + differenceMedicine + ">"+
-                //                     // "<div class='col-md-1'>"+
-                //                     // "<input type='text' name='"+name+"["+differenceMedicine+"][injection_status]' id='injection_status_"+mKey+"'">+
-                //                     // "<input type='checkbox' name='"+name+"["+differenceMedicine+"][injection_status]' id='injection_status_"+mKey+"'>"+
-                //                     //     "<label for='injection_status_"+mKey+"'></label>"+
-                //                     // "</div>"+
-                //                 // "<div class='col-md-1'></div>"+
-                //                 "<div class='col-md-4'><div class='input-group'><input type='checkbox' name='"+name+"["+differenceMedicine+"][injection_status]' class='medicines-checkbox' value=1 id='injection_status_"+mKey+"'><span class='input-group-addon'>Medicine : &nbsp</span>"+
-                //                 "<input type ='text' name='"+name+"["+differenceMedicine+"][medicine]' value='"+mValue.get_medicines_data.name+"' readonly class='form-control'></div></div>";
-                // // empty stomach and after meal
-                // var dose = {"0":"How to take","1":"જમ્યા પછી","2":"જમ્યા પહેલાં","3":"માસિકની જગ્યાએ મુકવી"};
-                // madicineData += "<div class='col-md-2'><div class='form-group'><select name='"+name+"["+differenceMedicine+"][medicine_status]' class='form-control select-padding-0 dose medicine-status'>";
-                // $.each(dose, function(key, value) {
-                //     madicineData +=  '<option value="' + key + '"' + ((mValue.get_medicines_data != null && mValue.get_medicines_data.medicine_status != null && key == mValue.get_medicines_data.medicine_status) ? 'selected' : '') + '>'+value+'</option>';
-                // });
-                // madicineData += "</select></div></div>";
-                // // dose
-                // var dose = {"1":"OD","2":"BD","3":"TDS","4":"ADS","5":"Weekly / 1","6":"Weekly / 2","7":"Stat","8":"SOS"};
-                // madicineData += "<div class='col-md-2'><div class='form-group'><select name='"+name+"["+differenceMedicine+"][dose]' class='form-control select-padding-0 dose'>";
-                // madicineData += '<option value="">Select Dose</option>';
-                // $.each(dose, function(key, value) {
-                //     madicineData += '<option value="' + key + '"' + ((mValue.get_medicines_data != null && mValue.get_medicines_data.dose != null && key == mValue.get_medicines_data.dose) ? 'selected' : '') + '>' +value+'</option>';
-                // });
-                // madicineData += "</select></div></div>";
-                // // end dose
-                // // number
-                // madicineData += "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Days. : &nbsp</span>"+
-                // "<input type ='number' name='"+name+"["+differenceMedicine+"][no]' class='form-control' value='" + ((mValue.get_medicines_data != null && mValue.get_medicines_data.number != null) ? mValue.get_medicines_data.number : '') + "'></div></div>";
-                // // quantity
-                // madicineData += "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Quantity : &nbsp</span>"+
-                //                 "<input type ='text' name='"+name+"["+differenceMedicine+"][quantity]' class='form-control' value='" + ((mValue.get_medicines_data != null && mValue.get_medicines_data.quantity != null) ? mValue.get_medicines_data.quantity : '') + "'></div></div>";
-                // // end quantity
-                // madicineData += "</div><div class='row' data-id=" + differenceMedicine + ">";
-                // // medicine time morning,afternoon,evening
-                // var dose = {"0":"Select Time","1":"Morning","2":"Afternoon","3":"Evening","4":"Night"};
-                // madicineData += "<div class='col-md-3'><div class='form-group'><select name='"+name+"["+differenceMedicine+"][medicine_time][]' class='form-control select-padding-0 dose' multiple='true' title='Select Medicine Time'>";
-                // $.each(dose, function(key, value) {
-                //     madicineData +=  '<option value="' + key + '"' + ((mValue.get_medicines_data != null &&  mValue.get_medicines_data.medicine_time != null &&($.inArray(key, mValue.get_medicines_data.medicine_time) != -1)) ? 'selected' : '') + '>'+value+'</option>';
-                // });
-                // madicineData += "</select></div></div>";
-                // var route = {"0":"Select Route","IV":"IV","IM":"IM","SC":"SC"};
-                // madicineData += "<div class='col-md-3'><div class='form-group'><select name='"+name+"["+differenceMedicine+"][route]' class='form-control select-padding-0 dose' title='Select Medicine Route'>";
-                // $.each(route, function(key, value) {
-                //     madicineData +=  '<option value="'+ key+'">'+value+'</option>';
-                // });
-                // madicineData += "</select></div></div></div>";
+                
                 var header = differenceMedicine.slice(0,3).toUpperCase();
             var notinject = "";
             var dose = {"1":"Daily","2":"Once a week","3":"Twice a week","4":"Stat","5":"SOS","6":"Alternate Day"};
@@ -253,7 +198,6 @@ function complaintWiseMedicines(value,type,mType,hovalue,isIvf=null,isSp2=false,
                 dose = {"7":"6 hourly","8":"8 hourly","9":"12 hourly","10":"24 hourly"};
                 notinject = "is-inj";
             }
-            madicineData = "";
             madicineData += "<div class='row "+notinject+"' data-id=" + differenceMedicine + ">"+
                                 "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>M : &nbsp</span>"+
                                 "<input type ='text' name='"+ name +"["+differenceMedicine+"][medicine]' value='"+differenceMedicine.toString()+"' readonly class='form-control'></div></div>";
@@ -319,7 +263,7 @@ function complaintWiseMedicines(value,type,mType,hovalue,isIvf=null,isSp2=false,
                 }
                 madicineData += "<div class='col-md-1 medicine-data-remove'><span class=''><i class='material-icons'>close</i></span></div>";
                 // madicineData += "</div><div class='row "+notinject+"' data-id=" + differenceMedicine + ">";
-                
+                madicineData += "</div>";
             });
             $('.medicine-data').html(madicineData);
             $('.dose').selectpicker('refresh');
