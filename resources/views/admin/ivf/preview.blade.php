@@ -98,8 +98,11 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
         margin-top: 0px !important;
     }
     .medicine-table td{
-        padding: 2px 15px;
+        padding: 4px 5px;
         text-transform: capitalize;
+    }
+    .medicine-table tr{
+        text-align:center !important;
     }
     .pb-1{
         padding-bottom: 30px;

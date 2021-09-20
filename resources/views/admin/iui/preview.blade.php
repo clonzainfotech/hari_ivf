@@ -132,8 +132,11 @@
         white-space: inherit !important;
     }
     .medicine-table td{
-        padding: 4px 15px;
+        padding: 4px 5px;
         text-transform: capitalize;
+    }
+    .medicine-table tr{
+        text-align:center !important;
     }
     .remark-text
     {
@@ -1671,6 +1674,7 @@
                                                 <th>Timing</th>
                                                 <th>Freq.</th>
                                                 <th>Duration</th>
+                                                <th>Note</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1741,6 +1745,7 @@
                                                 <td>{{$medicine_status}}</td>
                                                 <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
                                                 <td>{{$row->no.' days'}}</td>
+                                                <td>{{isset($row->note) && !empty($row->note) ? $row->note : '-'}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -2667,6 +2672,7 @@
                                                 <th>Timing</th>
                                                 <th>Freq.</th>
                                                 <th>Duration</th>
+                                                <th>Note</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -2737,6 +2743,7 @@
                                                 <td>{{$medicine_status}}</td>
                                                 <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
                                                 <td>{{$row->no.' days'}}</td>
+                                                <td>{{isset($row->note) && !empty($row->note) ? $row->note : '-'}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -3604,6 +3611,7 @@
                                         <th>Timing</th>
                                         <th>Freq.</th>
                                         <th>Duration</th>
+                                        <th>Note</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -3675,6 +3683,7 @@
                                         <td>{{$medicine_status}}</td>
                                         <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
                                         <td>{{$row->no.' days'}}</td>
+                                        <td>{{isset($row->note) && !empty($row->note) ? $row->note : '-'}}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

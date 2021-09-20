@@ -49,7 +49,7 @@
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Slug :</span>
-                                    {{Form::text('slug',!empty($html_page) && !empty($html_page->slug) ? $html_page->slug : '',['class'=>'form-control','placeholder'=>'Slug'])}}
+                                    {{Form::text('slug',!empty($html_page) && !empty($html_page->slug) ? $html_page->slug : '',['class'=>'form-control','placeholder'=>'Slug',!empty($html_page) ? 'readonly' : ''])}}
                                 </div>
                                 <span class="form-error-msg">
                                     {{$errors->first('slug')}}

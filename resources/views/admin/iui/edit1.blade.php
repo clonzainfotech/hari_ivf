@@ -3386,10 +3386,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 {{Form::select('treatment['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
                                             </div>
                                         </div>
-                                        <div class='col-md-1'>
+                                        <div class='col-md-2'>
                                             <div class='input-group'>
                                                 <span class='input-group-addon'>Day :</span>
                                                 {{Form::number('treatment['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                            </div>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <div class='form-group'>
+                                                <!-- <span class='input-group-addon'>Day :</span> -->
+                                                {{Form::number('treatment['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                             </div>
                                         </div>
                                         <div class='col-md-1 medicine-data-remove'>
@@ -3971,10 +3977,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 {{Form::select('data[treatment]['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
                                             </div>
                                         </div>
-                                        <div class='col-md-1'>
+                                        <div class='col-md-2'>
                                             <div class='input-group'>
                                                 <span class='input-group-addon'>Day :</span>
                                                 {{Form::number('data[treatment]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                            </div>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <div class='form-group'>
+                                                <!-- <span class='input-group-addon'>Day :</span> -->
+                                                {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                             </div>
                                         </div>
                                         <div class='col-md-1 medicine-data-remove'>
@@ -4324,6 +4336,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         {{$old_medicine_time[$row->medicine_time]}}
                                                     {{-- @endforeach --}}
                                             @endif
+                                        @endif
+                                        @if(isset($row->note) && !empty($row->note))
+                                            | Note: {{$row->note}}
                                         @endif
                                     </div>
                                         <br>
@@ -4802,10 +4817,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     {{Form::select('data[treatment]['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
                                 </div>
                             </div>
-                            <div class='col-md-1'>
+                            <div class='col-md-2'>
                                 <div class='input-group'>
                                     <span class='input-group-addon'>Day :</span>
                                     {{Form::number('data[treatment]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                </div>
+                            </div>
+                            <div class='col-md-4'>
+                                <div class='form-group'>
+                                    <!-- <span class='input-group-addon'>Day :</span> -->
+                                    {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                 </div>
                             </div>
                             <div class='col-md-1 medicine-data-remove'>
@@ -5433,10 +5454,16 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 {{Form::select('data[treatment]['.$mId.'][dose]',$dose,$row->dose,['class'=>'form-control'])}}
                                             </div>
                                         </div>
-                                        <div class='col-md-1'>
+                                        <div class='col-md-2'>
                                             <div class='input-group'>
                                                 <span class='input-group-addon'>Day :</span>
                                                 {{Form::number('data[treatment]['.$mId.'][no]',$row->no,['class'=>'form-control '.$till_follow_up])}}
+                                            </div>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <div class='form-group'>
+                                                <!-- <span class='input-group-addon'>Day :</span> -->
+                                                {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                             </div>
                                         </div>
                                         <div class='col-md-1 medicine-data-remove'>
