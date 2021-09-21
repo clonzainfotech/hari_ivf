@@ -15,6 +15,7 @@
     }
     body
     {
+      font-size: 16px !important;
       text-align: justify; 
       padding:20px;
       font-family: montserrat-regular;
