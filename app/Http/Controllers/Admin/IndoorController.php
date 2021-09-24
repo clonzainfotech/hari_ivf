@@ -243,6 +243,7 @@ class IndoorController extends AdminController
             $indoorbookdata->type_id = $id;
             $indoorbookdata->created_by = Auth::user()->id;
             $indoorbookdata->room_id = $request->room;
+            $indoorbookdata->is_pediatric_patient = $request->is_pediatric_patient;
             // $roomBedId = $request->room_bed;
             // if ($request->indoor_bed == null) {
 
@@ -425,7 +426,6 @@ class IndoorController extends AdminController
                     ->where('id',$appointmentId)
                     ->first();
             }
-
             $category = $this->Category->whereStatus(1)->pluck('name','id');
             $doctor = $this->getDoctor();
             $referenceDoctor = ['other' => 'Other'] + $doctor['referenceDoctor']->toArray();
@@ -482,6 +482,7 @@ class IndoorController extends AdminController
             $bookupdatedata->discharge_time = $request->dischargetime ? Carbon::parse($request->dischargetime)->format('H:i:s') : null;
             $bookupdatedata->price = $this->IndoorType->whereId($request->room_type)->value('price');
             $bookupdatedata->remark = $request->remark;
+            $bookupdatedata->is_pediatric_patient = $request->is_pediatric_patient;
             $produreData = $request->pro;
             $prodataids = '';
             if(is_array($produreData))

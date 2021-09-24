@@ -461,13 +461,21 @@
                                      aria-labelledby="headingThree_1">
                                     <div class="panel-body">
                                         <div class="row clearfix">
-                                            <div class="col-md-12 complain-mulit mb-3">
+                                            <div class="col-md-8 complain-mulit mb-3">
                                                 {{Form::select('pro[pro_type][]',$procedures,!empty($procedureData) ? $procedureData : null,[
                                                     'class'=>'form-control co-value co_value_data',
                                                     'placeholder'=>'Enter Procedure/Surgery',
                                                     'multiple'=>true
                                                 ])}}
                                             </div>
+                                            <div class="col-md-4">
+                                                <div class="checkbox">
+                                                    {{Form::checkbox('is_pediatric_patient',0,$bookingdata->is_pediatric_patient,['class'=>'is_pediatric_patient','id'=>'is_pediatric_patient'])}}
+                                                    <label for="is_pediatric_patient">
+                                                        Pediatric Patient
+                                                    </label>
+                                                </div>
+                                        </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="row">
@@ -659,5 +667,12 @@
         function checkWeight(value) {
             $('.weight').val(validMobileNumber(value));
         }
+        $(document).on('click','.is_pediatric_patient',function(){
+            $(this).val(0);
+            if($(this).prop('checked') == true)
+            {
+                $(this).val(1);
+            }
+        });
     </script>
 @stop

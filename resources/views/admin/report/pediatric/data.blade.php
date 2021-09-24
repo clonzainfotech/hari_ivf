@@ -14,7 +14,8 @@
     <?php
         $i = 0;
         $j = 1;
-        $totalOpd = 0;  
+        $totalOpd = 0;
+        $totalIpd = 0;  
     ?>
     <tbody>
         <tr>
@@ -54,6 +55,31 @@
         @empty
             <td colspan="7" class="text-center">No records available</td>
         @endforelse
+        <tr>
+            <td colspan="5"  class="sub-headline">IPD Income</td>
+        </tr>
+        @forelse($indoorBook as $rowlist => $data)
+            <tr>
+                <td>{{$j}}</td>
+                <td>{{\Carbon\Carbon::parse($data->date)->format('d-m-Y')}}</td>
+                <td>{{ucWords(strtolower($data->getPatientsDetails['name']))}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{$data->getInvoice['grand_total_amt']}}</td>
+            </tr>
+            @php
+                $j++;
+                $totalIpd += $data->getInvoice['grand_total_amt'];
+            @endphp  
+        @empty
+            <td colspan="7" class="text-center">No records available</td>
+            
+        @endforelse
+        <tr>
+            <td colspan="6"></td>
+            <td class="sub-headline upper-border">{{$totalIpd}}</td>
+        </tr>
     </tbody>
 </table>
 <table class="table m-b-0 table-hover font" id="category-report-table">
@@ -120,12 +146,12 @@
     <tr class="bt-none">
         <th class="bt-none">IPD Total</th>
         <th class="bt-none">:</th>
-        <th class="total-upper-border text-right">{{ 0 }}</th>
+        <th class="total-upper-border text-right">{{ $totalIpd }}</th>
     </tr>
     <tr class="bt-none">
         <th class="bt-none">Total</th>
         <th class="bt-none">:</th>
-        <th class="top-border-first total-upper-border text-right">{{ $totalOpd }}</th>
+        <th class="top-border-first total-upper-border text-right">{{ $totalOpd + $totalIpd }}</th>
     </tr>
     <tr class="bt-none">
         <th class="bt-none">Expense Total </th>
@@ -135,6 +161,6 @@
     <tr class="bt-none">
         <th class="bt-none">Grand Total</th>
         <th class="bt-none">:</th>
-        <th class="top-border-first text-right"> {{ $totalOpd - $totalExpense}} </th>
+        <th class="top-border-first text-right"> {{ ($totalOpd + $totalIpd) - $totalExpense}} </th>
     </tr>
 </table>

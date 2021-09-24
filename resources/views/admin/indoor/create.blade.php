@@ -470,13 +470,21 @@
                                      aria-labelledby="headingThree_1">
                                     <div class="panel-body">
                                         <div class="row clearfix mb-3">
-                                            <div class="col-md-12 complain-mulit">
+                                            <div class="col-md-8 complain-mulit">
                                                 {{Form::select('pro[pro_type][]',$procedures,'',[
                                                     'class'=>'form-control co-value co_value_data',
                                                     'placeholder'=>'Enter Procedure/Surgery',
                                                     'multiple'=>true,'
                                                     required'
                                                 ])}}
+                                            </div>
+                                            <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        {{Form::checkbox('is_pediatric_patient',0,'',['class'=>'is_pediatric_patient','id'=>'is_pediatric_patient'])}}
+                                                        <label for="is_pediatric_patient">
+                                                            Pediatric Patient
+                                                        </label>
+                                                    </div>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -711,5 +719,12 @@
                 return value;
             }
         }
+        $(document).on('click','.is_pediatric_patient',function(){
+            $(this).val(0);
+            if($(this).prop('checked') == true)
+            {
+                $(this).val(1);
+            }
+        });
     </script>
 @stop

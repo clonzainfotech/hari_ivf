@@ -63,7 +63,7 @@
         var fromdate = moment(new Date()).format('YYYY-MM-DD');
         var todate = moment(new Date()).format('YYYY-MM-DD');
         
-        var qstring = 'fromdate=' + fromdate + '&todate=' + todate;
+        var qstring = '?fromdate=' + fromdate + '&todate=' + todate;
 
         $(document).ready(function () {
 
@@ -120,7 +120,7 @@
         function getPedReportData(qstring) {
             $('.report-loader').css('display','block');
             $.ajax({
-                url: "{{URL::to('pediatric-report')}}?" + qstring,
+                url: "{{URL::to('pediatric-report')}}" + qstring,
                 dataType: 'json',
             }).done(function (data) {
                 $('.report-loader').css('display','none');

@@ -76,9 +76,7 @@
     }
     </style>
     <table class="table m-b-0 table-hover category-report-table-first" id="category-report-table" cellspacing="0">
-        <tr>
-            <th colspan="7" class="sub-heading">USG</th>
-        </tr>
+       
         <thead>
             <tr>
                 <th colspan="5">{{strtoupper(config('app.hospitalname1'))}}</th>
@@ -103,7 +101,7 @@
         </thead>
         @php 
             $totalOpd = $totalIpd = $expenseGrandTotal = 0;
-            $i = 1;
+            $j = 1;
         @endphp
         <tbody>
             @forelse($income as $rowlist => $data)
@@ -115,7 +113,7 @@
                 @endphp
                 @foreach($data as $row)
                     <tr>
-                        <td class="data-font seperator">{{ ($i++) . '.' }}</td>
+                        <td class="data-font seperator">{{ ($j++) . '.' }}</td>
                         <td class="data-font seperator">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">{{ucWords(strtolower($row->getPatient['name']))}}</td>
                         <td class="data-font seperator">{{$row->given_by}}</td>
@@ -135,12 +133,36 @@
                 <tr>
                     <td class="bt-none" colspan="5"></td>
                     <th class="bt-none" colspan="1">Total :</th>
-                    <th class="top-border-first">{{  $total }}</th>
+                    <th class="top-border-first upper-border">{{  $total }}</th>
                 </tr>
             @empty
                 <td colspan="7" class="text-center">No records available</td>
             @endforelse
-            
+            <tr>
+                <td colspan="5"  class="sub-headline amount">IPD Income</td>
+            </tr>
+            @forelse($indoorBook as $rowlist => $data)
+                <tr>
+                    <td class="data-font seperator">{{$j}}</td>
+                    <td class="data-font seperator">{{\Carbon\Carbon::parse($data->date)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{ucWords(strtolower($data->getPatientsDetails['name']))}}</td>
+                    <td class="data-font seperator"></td>
+                    <td class="data-font seperator"></td>
+                    <td class="data-font seperator"></td>
+                    <td class="data-font seperator">{{$data->getInvoice['grand_total_amt']}}</td>
+                </tr>
+                @php
+                    $j++;
+                    $totalIpd += $data->getInvoice['grand_total_amt'];
+                @endphp  
+            @empty
+                <td colspan="7" class="text-center">No records available</td>
+                
+            @endforelse
+            <tr>
+                <td colspan="6"></td>
+                <td class="sub-headline upper-border">{{$totalIpd}}</td>
+            </tr>
         </tbody>
     </table>
     <table class="table m-b-0 table-hover category-report-table" id="category-report-table" cellspacing="0">
@@ -157,7 +179,7 @@
             
         </thead>
         @php 
-            $i = 1;
+            // $i = 1;
             $expenseGrandTotal = 0;
             $totalExpense = 0;
         @endphp
@@ -169,7 +191,7 @@
                
                 @foreach($data as $row)
                     <tr>
-                        <td class="data-font seperator">{{ ($i++) . '.' }}</td>
+                        <td class="data-font seperator">{{ ($j++) . '.' }}</td>
                         <td class="data-font seperator">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">{{ucWords(strtolower($row->getPatient['name']))}}</td>
                         <td class="data-font seperator">{{$row->given_for}}</td>
@@ -189,7 +211,7 @@
                 <tr>
                     <td class="bt-none" colspan="5"></td>
                     <th class="bt-none" colspan="1">Total :</th>
-                    <th class="top-border-first">{{  $totalExpense }}</th>
+                    <th class="top-border-first upper-border">{{  $totalExpense }}</th>
                 </tr>
             @empty
                 <td colspan="7" class="text-center">No records available</td>
@@ -213,7 +235,7 @@
             <tr>
                 <th class="no-border text-left" >Total</th>
                 <th class="no-border">:</th>
-                <th class="top-border-first text-right">{{ $totalOpd + $totalIpd}}</th>
+                <th class="top-border-first text-right upper-border">{{ $totalOpd + $totalIpd}}</th>
             </tr>
             <tr class="no-border">
                 <th class="no-border text-left">Expense Total</th>
@@ -223,7 +245,7 @@
             <tr>
                 <th class="no-border text-left">Grand Total</th>
                 <th class="no-border">:</th>
-                <th class="top-border-first text-right"> {{$totalOpd - $expenseGrandTotal}} </th>
+                <th class="top-border-first text-right upper-border"> {{($totalOpd + $totalIpd) - $expenseGrandTotal}} </th>
             </tr>
         </tbody>
     </table>
