@@ -218,6 +218,7 @@ class PatientsController extends AdminController
             $patient = $this->getPatients();
             $pMobileNumber = $this->OpdPatients->pluck('mobile_number','id')->toArray();
             $category = $this->Category->pluck('name','id')->toArray();
+            $pIds = [];
             if($request->ajax()){
 
                 $patientId = $request->patient_id;
@@ -239,6 +240,9 @@ class PatientsController extends AdminController
                 if($category)
                 {
                     $patientReportOpd = $patientReportOpd->whereCategoryId($category);
+                    $pIds = $patientReportOpd->pluck('patients_id','patients_id')->toArray();
+                    $indoorDeposit = $indoorDeposit->whereIN('patient_id',$pIds);
+                    $indoorBook = $indoorBook->whereIN('patient_id',$pIds);
                 }
                 if($fromdate || $todate)
                 {
@@ -248,6 +252,7 @@ class PatientsController extends AdminController
                     $patientReportOpd = $patientReportOpd->whereBetween('date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
                     $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
                 }
+                
                 $patientReportOpd = collect($patientReportOpd->get())
                 ->map(function ($query) {
                     $query->date = $query->date;
@@ -270,8 +275,13 @@ class PatientsController extends AdminController
                         return $query;
                     });
                     // dd($indoorBook);
-                $patientReportOpd = collect($patientReportOpd)->merge($indoorDeposit);
-                $patientReportOpd = $patientReportOpd->merge($indoorBook);
+                // $patientReportOpd = collect($patientReportOpd);
+                // if(!$category)
+                // {
+                    $patientReportOpd = collect($patientReportOpd)->merge($indoorDeposit);
+                    $patientReportOpd = $patientReportOpd->merge($indoorBook);
+                // }
+                
                 $patientReportOpd = $patientReportOpd->sortby('date');
                 $patientReportOpd = $patientReportOpd->groupBy('getPatientsDetails.name');
                 // dd($patientReportOpd);

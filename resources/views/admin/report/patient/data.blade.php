@@ -12,15 +12,16 @@
         
     </thead>
     <tbody>
+        @php
+                $i = 1;    
+            @endphp
         @foreach($patientReportOpd as $rowList => $data)
             @if (count($patientReportOpd) > 0)
                 <tr>
                     <td colspan="7" class="sub-headline">{{ $rowList }}</td>
                 </tr>
             @endif
-            @php
-                $i = 1;    
-            @endphp
+            
             @php
                 $grandTotal = 0;    
             @endphp
