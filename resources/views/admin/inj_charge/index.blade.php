@@ -129,7 +129,7 @@
                                     Quanity Type
                                 </div>
                                 <div class="col-md-6">
-                                    {{Form::select('qty_type',['1'=>'QTY','2'=>'ML'],'',['class'=>'qty_type'])}}
+                                    {{Form::select('qty_type',['1'=>'QTY','2'=>'VIAL'],'',['class'=>'qty_type'])}}
                                 </div>
                                 <span class="form-error-msg quantity-error w-100"></span>
                             </div>
@@ -229,7 +229,6 @@
             var injId = $('.injId').val();
             var qty_type = $('select.qty_type').val();
             $('.qty_type').selectpicker('refresh');
-            alert(qty_type);
             var hasNoValue = 0;
             $(".form-required").each(function() {
                 if($(this).val() == '')

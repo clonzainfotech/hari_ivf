@@ -14,7 +14,7 @@
     <tbody>
     @php
         $type= ["1"=>'Hormon','2'=>'IVF','3'=>'IUI'];  
-        $qty_type = ["1"=>'QTY','2'=>'ML'];  
+        $qty_type = ["1"=>'QTY','2'=>'VIAL'];  
     @endphp   
     @forelse($injection as $row)
         

@@ -259,9 +259,11 @@
                 $('.amount').val(amount);
                 $('select.modal_charge_type').val(category);
                 $('.modal_charge_type').selectpicker('refresh');
-
-                var next_date = new Date(nextPaymentdate);
-                $('.modal_remaining_date').val(moment(next_date).format('dddd DD MMMM YYYY'));
+                if(nextPaymentdate.length != 0)
+                {
+                    var next_date = new Date(nextPaymentdate);
+                    $('.modal_remaining_date').val(moment(next_date).format('dddd DD MMMM YYYY'));
+                }
                 // if($('.amount-data').hasClass('amount-val')){
                 //     var previousId = $('.amount-val').data('id');
                 //     var previousAmount = $('.amount-val').data('value');
@@ -330,6 +332,7 @@
                         },
                     }).done(function(data){
                         if(data.status == 1){
+                            $('#deposite-modal').modal('hide');
                             showNotification('bg-blue', 'Amount changed successfully.', 'bottom', 'right', "", "");
                             getHormonData(qstring);
                         }

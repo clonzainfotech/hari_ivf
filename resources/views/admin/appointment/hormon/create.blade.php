@@ -59,33 +59,38 @@
                         <div class="row hormon-row hinjection-data injection">
                             <div class="col-md-3">
                                     {{Form::select('hinjection[]',$injection,'',[
-                                    'class'=>'form-control hinjection',
+                                    'class'=>'form-control hinjection hormon-inj-required',
                                     'placeholder'=>'Select Injection',
                                     'data-id'=>"injection_1",
+                                    'data-error'=>"injection_1",
                                     'data-live-search'=>'true',
                                 ])}}
-                                <span class="form-error-msg injection">
-                                    {{$errors->first('hinjection')}}
+                                <span class="form-error-msg injection injection_1">
+                                    
                                 </span>
                             </div>
                             <div class="col-md-6 inj-qty">
                                 <div class="input-group">
                                     <span class="input-group-addon  unik-lbl-spn col-md-4">Injection Qty&nbsp;</span>
-                                    {{Form::number('qty[]',null,['class'=>'form-control col-sm-4','placeholder'=>'Quantity'])}}
+                                    {{Form::number('qty[]',null,['class'=>'form-control col-sm-4 hormon-inj-required','data-error'=>'qty_1','placeholder'=>'Quantity'])}}
                                     {{Form::text('qty_type','',[
-                                        'class'=>'form-control col-sm-4 amount qty_type_1',
+                                        'class'=>'form-control col-sm-4 amount qty_type_1 hormon-inj-required',
+                                        'data-error'=>'qty_type_1',
                                         'readonly'
                                     ])}}
                                 </div>
-                                <span class="form-error-msg qty_type">
-                                    {{$errors->first('qty_type')}}
+                                <span class="form-error-msg injection qty_1">
+                                   
                                 </span>
                             </div>
                             <div class="col-md-3">
                                 {{Form::number('inj_charge[]','',[
-                                'class'=>'form-control inj-charge inj_charge_1',
+                                'class'=>'form-control inj-charge inj_charge_1 hormon-inj-required','data-error'=>'inj_charge_1',
                                 'placeholder'=>'Injection Charges',
                                 ])}}
+                                <span class="form-error-msg injection inj_charge_1">
+
+                                </span>
                             </div>
                         </div>
                         
@@ -356,15 +361,15 @@
                 var hijectionDiv = '';
                 var div_length = $('div.hinjection-data.injection').length + 1;
                 hijectionDiv += '<div class="row hormon-row hinjection-data injection"><div class="col-md-3">';
-                hijectionDiv += '<select name="hinjection[]" class="form-control hinjection" data-id="injection_'+div_length+'" data-live-search="true">';
+                hijectionDiv += '<select name="hinjection[]" class="form-control hinjection hormon-inj-required" data-id="injection_'+div_length+'" data-live-search="true" data-error ="injection_'+div_length+'">';
                 hijectionDiv   += '<option value="">Select Injection</option>';
                 $.each(injection, function(key, value) {
                     hijectionDiv += '<option value="' + key + '">' +value+'</option>';
                 });
-                hijectionDiv += '</select></div>';
+                hijectionDiv += '</select><span class="form-error-msg injection injection_'+div_length+'"></span></div>';
                 hijectionDiv += '<div class="col-md-6 inj-qty"><div class="input-group"><span class="input-group-addon  unik-lbl-spn col-md-4">Injection Qty&nbsp;</span>';
-                hijectionDiv += '<input class="form-control col-sm-4" placeholder="Quantity" name="qty[]" type="number"><input class="form-control col-sm-4 amount qty_type_'+div_length+'" readonly="" name="qty_type" type="text" value=""></div></div>';
-                hijectionDiv += '<div class="col-md-3"><input class="form-control inj-charge inj_charge_1" placeholder="Injection Charges" name="inj_charge[]" type="number" value=""></div>';
+                hijectionDiv += '<input class="form-control col-sm-4 hormon-inj-required" placeholder="Quantity" name="qty[]" type="number" data-error ="qty_'+div_length+'"><input class="form-control col-sm-4 amount qty_type_'+div_length+'" readonly="" name="qty_type" type="text" value="" data-error ="qty_type_'+div_length+'"></div><span class="form-error-msg injection qty_'+div_length+'"></span></div>';
+                hijectionDiv += '<div class="col-md-3"><input class="form-control inj-charge inj_charge_1 hormon-inj-required" placeholder="Injection Charges" name="inj_charge[]" type="number" value="" data-error ="inj_charge_'+div_length+'"><span class="form-error-msg injection inj_charge_'+div_length+'"></span></div>';
                 hijectionDiv += '</div>'
                 
                 $(hijectionDiv).insertAfter('div.hinjection-data.injection:last');
@@ -444,6 +449,15 @@
             var paymentMethod = $('select.payment-method').val();
             $('.form-error-msg').text('');
             $('.date-error').text('');
+            $('.hormon-inj-required').each(function(){
+                
+                if($(this).val().length == 0)
+                {
+                    valid = 0;
+                    var error_id = $(this).data('error');
+                    $('span.'+error_id).html('This field required');
+                }
+            })
             if(hname == ''){
                 valid = 0;
                 $('.hnameerror').text('The hname field is required.');
