@@ -226,7 +226,7 @@ class PatientsController extends AdminController
                 $procedures = $this->IndoorProcedure->select('id', 'name')->get()->toArray();
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
-                $patientReportOpd = $this->Appointment;
+                $patientReportOpd = $this->Appointment->whereHas('getAppointmentCharges');
                 $indoorDeposit = $this->IndoorDeposit;
                 $indoorBook = $this->IndoorBook
                     ->whereIsFinalInvoice(1)
@@ -237,13 +237,7 @@ class PatientsController extends AdminController
                     $indoorDeposit = $indoorDeposit->wherePatientId($patientId);
                     $indoorBook = $indoorBook->wherePatientId($patientId);
                 }
-                if($category)
-                {
-                    $patientReportOpd = $patientReportOpd->whereCategoryId($category);
-                    $pIds = $patientReportOpd->pluck('patients_id','patients_id')->toArray();
-                    $indoorDeposit = $indoorDeposit->whereIN('patient_id',$pIds);
-                    $indoorBook = $indoorBook->whereIN('patient_id',$pIds);
-                }
+                
                 if($fromdate || $todate)
                 {
                     $fromdate = $fromdate;
@@ -252,7 +246,13 @@ class PatientsController extends AdminController
                     $patientReportOpd = $patientReportOpd->whereBetween('date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
                     $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
                 }
-                
+                if($category)
+                {
+                    $patientReportOpd = $patientReportOpd->whereCategoryId($category);
+                    $pIds = $patientReportOpd->pluck('patients_id','patients_id')->toArray();
+                    $indoorDeposit = $indoorDeposit->whereIN('patient_id',$pIds);
+                    $indoorBook = $indoorBook->whereIN('patient_id',$pIds);
+                }
                 $patientReportOpd = collect($patientReportOpd->get())
                 ->map(function ($query) {
                     $query->date = $query->date;
