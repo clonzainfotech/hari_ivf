@@ -1770,7 +1770,7 @@
                                     </td>
                                     <td>
                                         <span class='days-number'>s{{!empty($row->s_day) ? $row->s_day : null}}</span>
-                                        {{Form::hidden("data[protocol][".$key."][s_day]",!empty($row->s_day) ? $row->s_day : null,['class'=>'form-control','id'=>'s-days-'.$key])}}
+                                        {{Form::text("data[protocol][".$key."][s_day]",!empty($row->s_day) ? $row->s_day : null,['class'=>'form-control','id'=>'s-days-'.$key])}}
                                     </td>
                                     <td>
                                         {{Form::text("data[protocol][".$key."][date]",!empty($row->date) ? $row->date : null,['class'=>'form-control protocol-date datetimepicker','id'=>'history-lmpdate-'.$key])}}

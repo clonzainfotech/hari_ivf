@@ -5137,7 +5137,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                                 {{\Carbon\Carbon::parse($iui_decription->hcg_date)->format('d-m-Y')}}
                                                             
                                                             @elseif($row->visit == 4 && !empty($iui_decription->result))
-                                                                {{\Carbon\Carbon::parse($iui_decription->date)->format('d-m-Y')}}
+                                                                {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
                                                         
                                                             @elseif((!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes'))
                                                                 {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}

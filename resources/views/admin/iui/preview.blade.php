@@ -3231,7 +3231,7 @@
                                         @if(!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date))
                                             {{\Carbon\Carbon::parse($iui_decription->hcg_date)->format('d-m-Y')}}
                                         @elseif($row->visit == 4 && !empty($iui_decription->result))
-                                            {{\Carbon\Carbon::parse($iui_decription->date)->format('d-m-Y')}}
+                                            {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
                                     
                                         @elseif((!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes'))
                                             {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
