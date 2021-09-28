@@ -227,7 +227,7 @@ class PatientsController extends AdminController
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
                 $patientReportOpd = $this->Appointment->whereHas('getAppointmentCharges');
-                $indoorDeposit = $this->IndoorDeposit;
+                $indoorDeposit = $this->IndoorDeposit->where('case_type','Credit');
                 $indoorBook = $this->IndoorBook
                     ->whereIsFinalInvoice(1)
                     ->whereNotNull('final_invoice_date');
