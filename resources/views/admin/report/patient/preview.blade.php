@@ -108,14 +108,17 @@ tr td th {
         </tr>
     </thead>
     <tbody>
-        @foreach($patientReportOpd as $rowList => $data)
-            @if (count($patientReportOpd) > 0)
-                    <tr>
-                        <th colspan="6" class="sub-heading">{{ ucWords(strtolower($rowList)) }}</th>
-                    </tr>
-                @endif
-            @php
+        @php
                 $i = 1;
+                $totalIncome = 0;
+            @endphp
+        @forelse($patientReportOpd as $rowList => $data)
+            @if (count($patientReportOpd) > 0)
+                <tr>
+                    <th colspan="6" class="sub-heading">{{ ucWords(strtolower($rowList)) }}</th>
+                </tr>
+            @endif
+            @php
                 $grandTotal = 0;
             @endphp
             @if (count($patientReportOpd) > 0)
@@ -201,6 +204,7 @@ tr td th {
                                     $total;
                                 }
                                 $grandTotal += $total;
+                                $totalIncome +=$total;
                             @endphp
                                 {{$total}}
                         </th>
@@ -210,9 +214,20 @@ tr td th {
             @endif
             <tr class="table-footer">
                 <td colspan="5"></td>
-                <th colspan="1">Grand Total : </th>
+                <th colspan="1">Total : </th>
                 <th colspan="1" class="upper-border">{{$grandTotal}}</td>
             </tr>
-        @endforeach
+        @empty
+        <td colspan="7" class="text-center cutdata">No records available</td>
+        @endforelse
+        @if ($totalIncome > 0)
+            <tr class="bt-none cutdata">
+                <th class="bt-none" colspan="5"></th>
+                <th class="bt-none" colspan="1">Grand Total :</th>
+                <th class="grand-total-top-border" colspan="1">
+                    {{ $totalIncome }}
+                </th>
+            </tr>
+        @endif
     </tbody>
 </table>

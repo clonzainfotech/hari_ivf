@@ -8,7 +8,9 @@
             <th>Mobile</th>
             <th>Category</th>
             <th>Seen By</th>
+            @if(in_array(Auth::user()->role,[1,2]))
             <th>Action</th>
+            @endif
             <th>Report</th>
             <th>OPD</th>
             <th>Next Appoint.</th>
@@ -57,27 +59,33 @@
                         $arrivalTime = $row->arrival_time ? date('h:i A', strtotime($row->arrival_time)) : null;
                         $appointmentTime = $row->time ? date('h:i A', strtotime($row->time)) : null;
                     @endphp
-                    @if($row->arrival_time == null)
-                        <span class="appointment-time">
-                            <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}">add</i></a>
-                        </span>
+                    @if(in_array(Auth::user()->role,[1,2])) 
+                        @if($row->arrival_time == null)
+                            <span class="appointment-time">
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}">add</i></a>
+                            </span>
+                        @else
+                            {{date('h:i', strtotime($row->arrival_time))}}
+                            <span class="appointment-time">
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
+                            </span>
+                        @endif
                     @else
                         {{date('h:i', strtotime($row->arrival_time))}}
-                        <span class="appointment-time">
-                            <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
-                        </span>
                     @endif
                 </td>
                 <td>
                     {!! !empty($row->time) ? \Carbon\Carbon::parse($row->date)->format('d-m-Y') . ' ' .  \Carbon\Carbon::parse($row->time)->format('h:i') : \Carbon\Carbon::parse($row->date)->format('d-m-Y') !!}
-                    @if($row->time)
-                        <span class="appointment-time">
-                            <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{array_search($appointmentTime,$hospitalTime)}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
-                        </span>
-                    @else
-                        <span class="appointment-time">
-                            <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">add</i></a>
-                        </span>
+                    @if(in_array(Auth::user()->role,[1,2]))
+                        @if($row->time)
+                            <span class="appointment-time">
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{array_search($appointmentTime,$hospitalTime)}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
+                            </span>
+                        @else
+                            <span class="appointment-time">
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">add</i></a>
+                            </span>
+                        @endif
                     @endif
                 </td>
                 @php
@@ -104,54 +112,56 @@
                     @php
                     $paymentUrl = url('ivf/payments/'.encrypt($row->patients_id));
                     @endphp
-
-                <td>
-                    <div class="header custom-dropdown">
-                        <ul class="header-dropdown">
-                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    @if(ucfirst($row->categoryDetails['id'] == 1) || ucfirst($row->categoryDetails['id'] == 2))
-                                    <li>
-                                        <a href="{{$paymentUrl}}"   class="opd-patients"> IVF Payment</a>
-                                    </li> |
-                                    @endif
-                                    <li>
-                                        <a class="opd-patients" data-toggle="modal" data-target="#defaultModal"  id="{{encrypt($row->id)}}">OPD</a>
-                                    </li> |
-                                    <li>
-                                        <a class="sticker-appointment" id="{{encrypt($row->id)}}">Sticker</a>
-                                    </li> |
-                                    <li>
-                                        <a class="print-appointment" id="{{encrypt($row->id)}}">Print</a>
-                                    </li>
-                                    {!! !empty($row->getAppointmentCharges) ? '| <li><a class="print-opd-charge" id="'.encrypt($row->id).'">Print OPD</a></li>' : null !!}
-                                    {!! (!$row->nextAppointmentDate() && $row->next_appointment == true && $row->date >= \Carbon\Carbon::now()->format('Y-m-d')) ? '| <li><a class="next-appointment" data-toggle="modal" data-target="#next-appointment-modal" id="'.encrypt($row->id).'">Next Appointment</a></li>' : null !!}
-                                    @if(strtotime(\Carbon\Carbon::now()->format('Y-m-d')) <= strtotime($row->date))
-                                        |
+                @if(in_array(Auth::user()->role,[1,2]))
+                    <td>
+                        <div class="header custom-dropdown">
+                            <ul class="header-dropdown">
+                                <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        @if(ucfirst($row->categoryDetails['id'] == 1) || ucfirst($row->categoryDetails['id'] == 2))
                                         <li>
-                                            <a class="add-arrival" data-id="{{encrypt($row->id)}}">
-                                                Arrival
+                                            <a href="{{$paymentUrl}}"   class="opd-patients"> IVF Payment</a>
+                                        </li> |
+                                        @endif
+                                        <li>
+                                            <a class="opd-patients" data-toggle="modal" data-target="#defaultModal"  id="{{encrypt($row->id)}}">OPD</a>
+                                        </li> |
+                                        <li>
+                                            <a class="sticker-appointment" id="{{encrypt($row->id)}}">Sticker</a>
+                                        </li> |
+                                        <li>
+                                            <a class="print-appointment" id="{{encrypt($row->id)}}">Print</a>
+                                        </li>
+                                        {!! !empty($row->getAppointmentCharges) ? '| <li><a class="print-opd-charge" id="'.encrypt($row->id).'">Print OPD</a></li>' : null !!}
+                                        {!! (!$row->nextAppointmentDate() && $row->next_appointment == true && $row->date >= \Carbon\Carbon::now()->format('Y-m-d')) ? '| <li><a class="next-appointment" data-toggle="modal" data-target="#next-appointment-modal" id="'.encrypt($row->id).'">Next Appointment</a></li>' : null !!}
+                                        @if(strtotime(\Carbon\Carbon::now()->format('Y-m-d')) <= strtotime($row->date))
+                                            |
+                                            <li>
+                                                <a class="add-arrival" data-id="{{encrypt($row->id)}}">
+                                                    Arrival
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if($row->date > \Carbon\Carbon::now()->format('Y-m-d') || ($row->is_done == 0 && $row->date == \Carbon\Carbon::now()->format('Y-m-d')))
+                                            |
+                                            <li>
+                                            <a href="#" class="delete-appointment" data-id="{{$row->id}}">
+                                                <button class="btn  btn-icon candor-color btn-neutral btn-icon-mini">
+                                                    <i class="zmdi zmdi-delete material-icons"></i>
+                                                </button>
                                             </a>
-                                        </li>
-                                    @endif
-                                    @if($row->date > \Carbon\Carbon::now()->format('Y-m-d') || ($row->is_done == 0 && $row->date == \Carbon\Carbon::now()->format('Y-m-d')))
-                                        |
-                                        <li>
-                                        <a href="#" class="delete-appointment" data-id="{{$row->id}}">
-                                            <button class="btn  btn-icon candor-color btn-neutral btn-icon-mini">
-                                                <i class="zmdi zmdi-delete material-icons"></i>
-                                            </button>
-                                        </a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                @endif
                 <td>-</td>
                 <td>{{$row->getAppointmentCharges['netamount']}}</td>
                 <td>{{($row->nextAppointmentDate() && $row->next_appointment == false && ($row->nextAppointmentDate() != \Carbon\Carbon::parse($row->date)->format('d-m-Y'))) ? (($row->nextAppointmentUsg()) ? 'USG - '.$row->nextAppointmentDate() : $row->nextAppointmentDate()) : $row->nextAppointmentDate() }}</td>
+                @if(in_array(Auth::user()->role,[1,2]))
                 <td>
                     <div class="{{'edit-remark-data edit-remark-'.$row->id}}">
                         @if($row->remark)
@@ -166,6 +176,13 @@
                         @endif
                     </div>
                 </td>
+                @else
+                    <td>
+                        @if($row->remark)
+                                {!!wordwrap($row->remark, 30,"<br>\n") !!}
+                        @endif
+                    </td>
+                @endif
                 {{-- <td>{{$row->nextAppointmentDate()}}</td> --}}
             </tr>
         @empty

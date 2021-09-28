@@ -29,53 +29,62 @@
 </div>
 
 <div class="row clearfix dashboard">
+    
+        <div class="col-lg-3 col-md-6">
+            <a href="{{URL::to('appointment')}}">
+                <div class="card">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="text-muted">Today's Appointments</p>
+                                <h3 class="number m-b-0">{{ $totalAppointments }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
     <div class="col-lg-3 col-md-6">
-        <div class="card">
-            <div class="body">
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text-muted">Today's Appointments</p>
-                        <h3 class="number m-b-0">{{ $totalAppointments }}</h3>
+        <a href="{{URL::to('patient')}}">
+            <div class="card">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-muted">Today's New Patients</p>
+                            <h3 class="number m-b-0">{{ $totalPatients }}</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-lg-3 col-md-6">
-        <div class="card">
-            <div class="body">
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text-muted">Today's New Patients</p>
-                        <h3 class="number m-b-0">{{ $totalPatients }}</h3>
+        <a href="{{URL::to('anc-iui-ivf')}}">
+            <div class="card">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-muted">Today's Opd Patients</p>
+                            <h3 class="number m-b-0">{{ $totalOpds }}</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-lg-3 col-md-6">
-        <div class="card">
-            <div class="body">
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text-muted">Today's Opd Patients</p>
-                        <h3 class="number m-b-0">{{ $totalOpds }}</h3>
+        <a href="{{URL::to('indoor')}}">
+            <div class="card">
+                <div class="body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-muted">Today's Indoor</p>
+                            <h3 class="number  m-b-0">{{$inddorcount}}</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card">
-            <div class="body">
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text-muted">Today's Indoor</p>
-                        <h3 class="number  m-b-0">{{$inddorcount}}</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </a>
     </div>
 </div>
 @if(Auth::user()->role == 1)

@@ -149,7 +149,7 @@
         }
 
         $(document).on('click','.print-report',function(){
-
+            qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&isprint=1';
             $.ajax({
                 url: "{{URL::to('patient-report')}}?" + qstring,
                 

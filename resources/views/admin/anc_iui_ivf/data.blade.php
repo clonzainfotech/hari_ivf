@@ -8,8 +8,10 @@
             <th>Mob. No/Code</th>
             <th>Seen By</th>
             <th>Category</th>
+            @if(in_array(Auth::user()->role,[1,3])) 
             <th>Remark</th>
             <th>Action</th>
+            @endif
             
         </tr>
     </thead>
@@ -140,32 +142,34 @@
                <!--  <td>
                     {{$categoryName}} 
                 </td> -->
-                <td>
-                    <div class="{{'edit-remark-data edit-remark-'.$row->id}}">
-                        @if($row->remark)
-                            {!!wordwrap($row->remark, 30,"<br>\n") !!}
-                            <span class="edit-remark">
-                                <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->remark}}" data-appointmentid="{{encrypt($row->id)}}" data-id="{{$row->id}}">edit</i>
-                            </span>
-                        @else
-                            <span class="edit-remark">
-                                <i class="material-icons edit-remark-icon" data-value="{{$row->remark}}" data-appointmentid="{{encrypt($row->id)}}" data-id="{{$row->id}}">add</i>
-                            </span>
+                @if(in_array(Auth::user()->role,[1,3])) 
+                    <td>
+                        <div class="{{'edit-remark-data edit-remark-'.$row->id}}">
+                            @if($row->remark)
+                                {!!wordwrap($row->remark, 30,"<br>\n") !!}
+                                <span class="edit-remark">
+                                    <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->remark}}" data-appointmentid="{{encrypt($row->id)}}" data-id="{{$row->id}}">edit</i>
+                                </span>
+                            @else
+                                <span class="edit-remark">
+                                    <i class="material-icons edit-remark-icon" data-value="{{$row->remark}}" data-appointmentid="{{encrypt($row->id)}}" data-id="{{$row->id}}">add</i>
+                                </span>
+                            @endif
+                        </div>
+                    </td>
+                    <td>
+                        @if($row->categoryDetails['id'] == 1 || $row->categoryDetails['id'] == 2)
+                        <a href="{{$paymentUrl}}" class="btn btn-primary btn-sm ivf-payment-font"> IVF Payment</a>
                         @endif
-                    </div>
-                </td>
-                <td>
-                @if($row->categoryDetails['id'] == 1 || $row->categoryDetails['id'] == 2)
-                <a href="{{$paymentUrl}}" class="btn btn-primary btn-sm ivf-payment-font"> IVF Payment</a>
+                        @if($patient_notification['name'] == $name)
+                            <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
+                        @else
+                            @if($row->arrival_time)
+                                <button class="btn btn-danger btn-sm notify-patient" id="{{encrypt($row->patients_id)}}"  onclick="callPatient('{{$name}}','{{$cName}}',this)">Call Patient</button>
+                            @endif
+                        @endif
+                    </td>
                 @endif
-                @if($patient_notification['name'] == $name)
-                    <span>{{!empty($patient_notification['read_by']) ? 'Read by '.$patient_notification['read_by'] : 'Unseen'}}</span>
-                @else
-                    @if($row->arrival_time)
-                        <button class="btn btn-danger btn-sm notify-patient" id="{{encrypt($row->patients_id)}}"  onclick="callPatient('{{$name}}','{{$cName}}',this)">Call Patient</button>
-                    @endif
-                @endif
-                </td>
             </tr>
         @empty
             <td colspan='9' class="text-center">No records available</td>

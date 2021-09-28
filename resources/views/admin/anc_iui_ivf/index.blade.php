@@ -202,19 +202,23 @@
                 getAncIuiIvf(qstring);
             });
         });
-
-        $(document).on('dblclick', '.anc-iui-ivf-edit', function(event) {
-            var patientId = $(this).data('id');
-            var appointmentId = $(this).data('apid');
-            var type = $(this).data('type');
-            var categoryName = $(this).data('catname');
-            var res = categoryName.toLowerCase();
-            if(typeof(patientId) !== 'undefined'){
-                var url =res+'/'+type+'/'+patientId+'/'+appointmentId;
-                window.location.href = url;
-            }
-        });
-
+        </script>
+        @if(in_array(Auth::user()->role,[1,3])) 
+            <script type="text/javascript">
+            $(document).on('dblclick', '.anc-iui-ivf-edit', function(event) {
+                var patientId = $(this).data('id');
+                var appointmentId = $(this).data('apid');
+                var type = $(this).data('type');
+                var categoryName = $(this).data('catname');
+                var res = categoryName.toLowerCase();
+                if(typeof(patientId) !== 'undefined'){
+                    var url =res+'/'+type+'/'+patientId+'/'+appointmentId;
+                    window.location.href = url;
+                }
+            });
+            </script>
+        @endif
+        <script type="text/javascript">
         // get all category data
         function getAncIuiIvf(qstring){
             $('.appointment-loader').removeClass('d-none');
