@@ -44,6 +44,7 @@ Auth::routes();
 Route::get('get-iui-report','Admin\IUIController@getIuiDetails');
 Route::get('get-ivf-report','Admin\IVFController@getIvfDetails');
 Route::get('get-anc-report','Admin\ANCController@getAncDetails');
+Route::get('get-gynec-details','GynecController@getGynecDetails');
 Route::post('login','Admin\UserController@login')->name('login');
 Route::post('register','Admin\UserController@register')->name('register');
 Route::get('update-lmp/{type}','Base\Admin\AdminController@updateLmp');
@@ -153,7 +154,6 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('gynec/create/{patientsId}/{appointmentId?}','GynecController@create');
     Route::get('gynec/history/{patientsId}/{appointmentId?}','GynecController@gynecHistory');
     Route::post('gynec','GynecController@store');
-    Route::get('get-gynec-details','GynecController@getGynecDetails');
 
     // anc route
     Route::resource('anc','ANCController');
