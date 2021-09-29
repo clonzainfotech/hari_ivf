@@ -604,12 +604,13 @@ class HomeController extends AdminController
                 $plan_type = $planData[$currentHistory->plan];
                 $remark = !empty($currentData->remark) ? $currentData->remark : '';
             }
+            $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
             $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
             <p><span class="font-bold candor-color">No. Of Cycle : </span>'.$no_cycle.'</p>
             <p><span class="font-bold candor-color">Current Cycle : </span>'.$current_cycle.'</p>
             <p><span class="font-bold candor-color">Plan : </span>'.$plan_type.'</p>
             <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>
-            <p><span class="font-bold candor-color">Package : </span>'.'-'.'</p>';
+            <p><span class="font-bold candor-color">Package : </span>'.(!empty($package) ? $package->package : '-').'</p>';
         }
         if($request->category && in_array($request->category,[3,4]))
         {
