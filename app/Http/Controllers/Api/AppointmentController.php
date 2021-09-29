@@ -420,6 +420,26 @@ class AppointmentController extends ApiController
                             }
                         // }
                     }
+                    if(in_array($categoryId, [17,18])) {
+                        $gynec = $this->Gynec->where('patients_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->where('patients_id',$pId)->first();
+                        $madicine_status = ["1"=>"After Meal","2"=>"Empty Stomach","3"=>"Instead of menstruation space"];
+
+                        if(!empty($gynec)) {
+                            $madicineData = null;
+                            // $url[] = url('get-anc-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id));
+                            
+                            $reportsArr = null;
+                            if(!empty($anc->o_e)) {
+                                $reportsArr = json_decode($anc->o_e, true);
+                            }
+                            $reportsData[] = $reportsArr;
+
+                            $patient_id = encrypt($appointment->patients_id);
+                            // $url = url('ancdata/'.$patient_id);
+                            $url[] = url('get-gynec-details?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id));
+                        }
+                        
+                    }
                 }
 
                 $mobilenumber = $appointment->getPatientsDetails['mobile_number'];

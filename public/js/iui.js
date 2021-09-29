@@ -36,9 +36,9 @@ $(document).ready(function () {
             daysToAdd2 = 5;
             daysToAdd = 7;
         }
-        if (plan.includes('100') || plan.includes(' 5 ')) {
-            daysToAdd = 9;
-        }
+        // if (plan.includes('100') || plan.includes(' 5 ')) {
+        //     daysToAdd = 9;
+        // }
         $("input[name='data[plan][follow_up]']").val('');
         $('.second-visit-inducing').val('');
         if (daysToAdd != 0) {

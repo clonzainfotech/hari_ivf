@@ -1,3 +1,4 @@
+@extends(isset($printPreview) && $printPreview == 1 ? 'layouts.printpreview' : 'layouts.printPreviewBlank')
 @php
     $patientsInfo = !empty($gynec->patients_info) ? json_decode($gynec->patients_info) : null;
     $ho = !empty($gynec->ho) ? json_decode($gynec->ho) : null;
@@ -19,7 +20,7 @@
 
 <style>
     .module-report-table {
-        font-family: roboto-black;
+        /* font-family: roboto-black; */
         width: 100%;
     }
     .module-report-table{
@@ -38,6 +39,10 @@
 
     .module-report-table tr {
         height: 27px;
+    }
+    .medicine-table th
+    {
+        text-align: center;
     }
     .table-footer{
         font-weight: 900;
@@ -71,6 +76,7 @@
         background-color: #f5f5f5;
         color: #55555a;
         width: 100%;
+        font-weight: bold;
     }
     .main-print-anc-div{
         margin: 0 auto;
@@ -151,7 +157,6 @@
         padding: 2px 15px;
         text-transform: capitalize;
     }
-    
     /* @media all {
         .page-break { display: none; }
     }
@@ -160,9 +165,26 @@
     } */
     @page { margin-top : 120px; margin-bottom : 80px;}
 </style>
-
+@if(isset($printPreview) && $printPreview != 0)
+    @section('content')
+@endif   
 <div class="main-print-anc-div">
-    <div class="panel panel-primary">
+    <div class="panel">
+        <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
+            <tbody>
+                <tr>
+                    <th>
+                        <span class="pb-1 font-bold ivf-label">Name : {{ ucwords(strtolower($gynec->getGynecPatients['name'])) . ' / ' . $gynec->getGynecPatients['age']. ' years' }}</span>
+                    </th>
+                    <th>
+                    <th class="pb-1 float-right font-bold ivf-label">Visit Date:  {{Carbon\Carbon::parse($gynec->created_at)->format('d/m/Y')}}
+                        @if($gynec->getGynecPatients['weight'])
+                            <br>Weight: {{$gynec->getGynecPatients['weight'].' kg'}}
+                        @endif
+                    </th>
+                </tr>
+            </tbody>
+        </table>
         <!-- H/O -->
         @if($ho && !empty($ho->ho_details))
             <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
@@ -1060,7 +1082,8 @@
             @endif
         @endif
         
-        @if($investigation  && (!empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes' || (!empty($investigation->laproscopy) && $investigation->laproscopy->type == 'yes') || (!empty($investigation->hcg) && $investigation->hcg->type == 'yes') || (isset($investigation->investigation_extra) && !empty($investigation->investigation_extra))))
+        @if($investigation  && (isset($investigation->hystroscopy) && !empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes' || (!empty($investigation->laproscopy) && isset($investigation->laproscopy->type) && $investigation->laproscopy->type == 'yes') || (!empty($investigation->hcg) && isset($investigation->hcg->type) && $investigation->hcg->type == 'yes') || (isset($investigation->investigation_extra) && !empty($investigation->investigation_extra))))
+        {{-- @if($investigation  && (isset($investigation->hystroscopy) && !empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes' ))) --}}
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                             <tbody>
                                 <tr>
@@ -1283,9 +1306,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Investigation</th>
-                    </tr>
-                    <tr>
                         @if(!empty($investigation->investigation_anc_date))
                             <th class="seperator w-500">
                                 <span class="anc-label">Date :</span>
@@ -1478,20 +1498,24 @@
                         </tbody>
                     </table>
                 @endif
-               
         @endif
         <br>
         <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
-                <tbody>
-                    <tr>
-                        <td> Follow up :{{ isset($ho->follow_up) && !empty($ho->follow_up) ? $ho->follow_up : '-' }}<td>
-                    </tr>
-                    @if(isset($ho->remark) && !empty($ho->remark))
-                    <tr>
-                        <td><span class="f-date"> Remark :</span>{{ $ho->remark}}</td>
-                    </tr>
-                    @endif
-                </tbody>
+            <tbody>
+                <tr>
+                    <th> Follow up :{{ isset($ho->follow_up) && !empty($ho->follow_up) ? $ho->follow_up : '-' }}<th>
+                </tr>
+                @if(isset($ho->remark) && !empty($ho->remark))
+                <tr>
+                    <td><span class="f-date"> Remark :</span>{{ $ho->remark}}</td>
+                </tr>
+                @endif
+            </tbody>
         </table>
+        {{-- <h4 class="text-center"></h4> --}}
     </div>
 </div>
+@if(isset($printPreview) && $printPreview != 0)
+
+    @endsection
+@endif
