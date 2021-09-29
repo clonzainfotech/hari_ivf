@@ -1011,6 +1011,13 @@ class ReportController extends AdminController
                 if($patientId){
                     $appointment = $appointment->where('patients_id',$patientId);
                 }
+                $fromdate = $request->fromdate;
+                $todate = $request->todate;
+                if($fromdate || $todate){
+                    $fromdate = carbon::parse($fromdate)->format('Y-m-d');
+                    $todate = carbon::parse($todate)->format('Y-m-d');
+                    $appointment = $appointment->whereBetween('date',[$fromdate,$todate]);
+                }
                 $search = $request->search;
                 if($search){
                     $appointment = $appointment->where('remark','LIKE','%'.$search.'%');

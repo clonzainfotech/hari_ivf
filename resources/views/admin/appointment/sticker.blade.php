@@ -134,7 +134,7 @@ td{
                             <td>: {{$appointment->getPatientsDetails->getHospitalDoctor['name']}}</td>
                         </tr>
                         <tr>
-                            <td class="sticker-sub-header"><span class="sticker-sub-span">Ref. Dr. Name</span></td>
+                            <td class="sticker-sub-header"><span class="sticker-sub-span">Reference</span></td>
                             <td class="sticker-bold">: {{$appointment->getPatientsDetails->getReferenceDoctor['name']}}</td>
                         </tr>
                         <tr>
@@ -173,7 +173,7 @@ td{
                             <td>: {{$appointment->getPatientsDetails->getHospitalDoctor['name']}}</td>
                         </tr>
                         <tr>
-                            <td class="sticker-sub-header"><span class="sticker-sub-span">Ref. Dr. Name</span></td>
+                            <td class="sticker-sub-header"><span class="sticker-sub-span">Reference</span></td>
                             <td class="sticker-bold">: {{$appointment->getPatientsDetails->getReferenceDoctor['name']}}</td>
                         </tr>
                         <tr>

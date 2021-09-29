@@ -25,7 +25,7 @@
                         <div class="col-md-3">
                             <ul class="nav nav-tabs padding-0">
                                 <div class="input-group">
-                                    <input type="text" class="form-control search-word" placeholder="Search by word">
+                                    <input type="text" class="form-control search-word" placeholder="Search by word" readonly="readonly" onfocus="this.removeAttribute('readonly')">
                                     <span class="input-group-addon search-border">
                                         <i class="zmdi zmdi-search"></i>
                                     </span>
