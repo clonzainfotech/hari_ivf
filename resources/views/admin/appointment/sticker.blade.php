@@ -94,6 +94,11 @@ td{
     font-size: 24px;
     -webkit-print-color-adjust: exact;
 }
+.sticker-svg svg {
+    width: 140px;
+    position: relative;
+    top: -24px;
+}
 /* width: 50%;
     height: auto;
     vertical-align: initial; */

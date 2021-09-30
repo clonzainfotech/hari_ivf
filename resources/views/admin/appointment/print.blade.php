@@ -6,7 +6,7 @@
 }
 td{
     height: 25px;
-    font-size: 14px;
+    font-size: 18px;
     text-transform: capitalize;
 }
 .sticker-bold{
@@ -21,6 +21,7 @@ td{
     display: none;
   }
 }
+@page { margin-top : 200px;}
 @media print {
   div.divFooter {
     position: fixed;
