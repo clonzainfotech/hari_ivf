@@ -172,12 +172,12 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     <tbody>
                         <tr>
                             <th>
-                                <span class="pb-1 font-bold ivf-label">Name : {{ ucwords(strtolower($ivf->getPatientsInfoData->name)) . ' / ' . $patientsInfo->age. ' years' }}</span>
+                                <span class="pb-1 font-bold ivf-label">Name : {{ ucwords(strtolower($ivf->getPatientsDetails['name'])) . ' / ' . $ivf->getPatientsDetails['age']. ' years' }}</span>
                             </th>
                             <th>
                             <th class="pb-1 float-right font-bold ivf-label">Visit Date:  {{Carbon\Carbon::parse($ivf->created_at)->format('d/m/Y')}}
-                                @if($ivf->getPatientsInfoData->weight)
-                                    <br>Weight: {{$ivf->getPatientsInfoData['weight'].' kg'}}
+                                @if($ivf->getPatientsDetails['weight'])
+                                    <br>Weight: {{$ivf->getPatientsDetails['weight'].' kg'}}
                                 @endif
                             </th>
                         </tr>
