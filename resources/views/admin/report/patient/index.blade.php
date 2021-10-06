@@ -4,8 +4,19 @@
 @section('page-style')
 
 
-    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
 @endsection
+<style>
+.dateto-word::before {
+    position: absolute;
+    content: 'To';
+    font-size: 14px;
+    right: -22px;
+    top: 10px;
+    letter-spacing: 0.5px;
+}
+</style>
+
 @section('content')
 
     <div class="row clearfix report patient-report">
@@ -26,8 +37,8 @@
 
                 <div class="body">
                     <!-- Nav tabs -->
-                    <div class="row">
-                            <div  class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="row">
+                            <div  class="col-lg-2 col-md-6 col-sm-6">
                                 <div class="form-group daterange">
                                     {{ Form::text('daterange', '',  [
                                         'id' => 'daterange',
@@ -54,13 +65,46 @@
                                     'data-id'=>'1'
                                 ])}}
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="col-lg-2 col-md-6 col-sm-6">
                                 {{ Form::select('category', $category,'',[
                                     'class'=>'form-control select-padding-0 category',
                                     'placeholder'=>'Select Category',
                                     'data-live-search'=>'true',
                                     'data-id'=>'3'
                                 ])}}
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-6">
+                                <div class="checkbox">
+                                    {{Form::checkbox('advanced_search','',false,[
+                                        'id'=>'cash_box',
+                                        'class'=>'advanced_search',
+                                    ])}}
+                                    <label for="cash_box">
+                                        Advance Search
+                                    </label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="row advanced-search d-none">
+                            <div class="col-lg-3 col-md-6 col-sm-3">
+                                <div class="form-group dateto-word">
+                                    {{ Form::date('allIncome_fromDate','',[
+                                        'class'=>'form-control category allIncome_fromDate',
+                                        'placeholder'=>'Select From Date',
+                                    ])}}
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-3">
+                                <div class="form-group">                                
+                                    {{ Form::date('allIncome_toDate','',[
+                                        'class'=>'form-control category allIncome_toDate',
+                                        'placeholder'=>'Select From Date',
+                                    ])}}
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-3">
+                                <span class="candor-color">** Select Date for get recent patients all Income **</span>
                             </div>
                         </div>
                     <!-- Tab panes -->
@@ -86,6 +130,9 @@
         var category = '';
         var fromdate = moment(new Date()).format('YYYY-MM-DD');
         var todate = moment(new Date()).format('YYYY-MM-DD');
+        var allIncome_fromDate = '';
+        var allIncome_toDate = '';
+
         var qstring = 'fromdate=' + fromdate + '&todate=' + todate ;
 
         $(document).ready(function(){
@@ -116,6 +163,25 @@
             });
            
         });
+            $(document).on('change','.advanced_search',function(){
+                $('.advanced-search').addClass('d-none')
+                if($(this).prop('checked') == true)
+                {
+                    $('.advanced-search').removeClass('d-none');
+                }
+            })
+            $(document).on('change','.allIncome_fromDate', function() {
+                allIncome_fromDate = $(this).val();
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&allIncome_fromDate='+allIncome_fromDate+'&allIncome_toDate='+allIncome_toDate;
+                getPatientData(qstring);
+
+            });
+            $(document).on('change','.allIncome_toDate', function() {
+                allIncome_toDate = $(this).val();
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&allIncome_fromDate='+allIncome_fromDate+'&allIncome_toDate='+allIncome_toDate;
+                getPatientData(qstring);
+
+            });
         
             $(document).on('change','select.patient', function() {
                 var dId = $(this).data('id');

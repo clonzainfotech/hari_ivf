@@ -249,7 +249,7 @@ class PatientsController extends AdminController
             $category = $this->Category->pluck('name','id')->toArray();
             $pIds = [];
             if($request->ajax()){
-
+                DB::enableQueryLog();
                 $patientId = $request->patient_id;
                 $category = $request->category;
                 $procedures = $this->IndoorProcedure->select('id', 'name')->get()->toArray();
@@ -266,14 +266,17 @@ class PatientsController extends AdminController
                     $indoorDeposit = $indoorDeposit->wherePatientId($patientId);
                     $indoorBook = $indoorBook->wherePatientId($patientId);
                 }
-                
-                if($fromdate || $todate)
+                if(empty($request->allIncome_fromDate) ||  empty($request->allIncome_toDate))
                 {
-                    $fromdate = $fromdate;
-                    $todate = $todate;
-                    $indoorDeposit = $indoorDeposit->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
-                    $patientReportOpd = $patientReportOpd->whereBetween('date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
-                    $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
+                    if($fromdate || $todate)
+                    {
+                        $fromdate = $fromdate;
+                        $todate = $todate;
+                        $indoorDeposit = $indoorDeposit->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                        $patientReportOpd = $patientReportOpd->whereBetween('date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
+                        $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
+                        
+                    }
                 }
                 if($category)
                 {
@@ -281,6 +284,23 @@ class PatientsController extends AdminController
                     $pIds = $patientReportOpd->pluck('patients_id','patients_id')->toArray();
                     $indoorDeposit = $indoorDeposit->whereIN('patient_id',$pIds);
                     $indoorBook = $indoorBook->whereIN('patient_id',$pIds);
+                }
+                //for display all income which is between above range
+                if(!empty($request->allIncome_fromDate) &&  !empty($request->allIncome_toDate))
+                {
+                    $fromdate = $fromdate;
+                    $todate = $todate;
+                    $pIds = $patientReportOpd->whereBetween('date', [$fromdate . ' 00:00:00', $todate. ' 23:59:59'])->pluck('patients_id','patients_id')->toArray();
+                    $allIncome_fromDate = Carbon::parse($request->allIncome_fromDate)->format('Y-m-d');
+                    $allIncome_toDate = Carbon::parse($request->allIncome_toDate)->format('Y-m-d');
+
+                    $patientReportOpd = $patientReportOpd->whereIN('patients_id',$pIds);
+                    $indoorDeposit = $indoorDeposit->whereIN('patient_id',$pIds);
+                    $indoorBook = $indoorBook->whereIN('patient_id',$pIds);
+
+                    $indoorDeposit = $indoorDeposit->whereBetween(\DB::raw('DATE(created_at)'), [$allIncome_fromDate, $allIncome_toDate]);
+                    $patientReportOpd = $patientReportOpd->whereBetween('date', [$allIncome_fromDate . ' 00:00:00', $allIncome_toDate. ' 23:59:59']);
+                    $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$allIncome_fromDate . ' 00:00:00', $allIncome_toDate. ' 23:59:59']);
                 }
                 $patientReportOpd = collect($patientReportOpd->get())
                 ->map(function ($query) {
