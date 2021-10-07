@@ -211,8 +211,9 @@ class AuthApiController extends ApiController
         if($validator->fails()){
             return $this->sendError($validator->errors()->first(), 422);
         }
+        $opdPatient = OpdPatients::where('mobile_number',$request->mobile_number)->first();
         $patient = $this->PatientSignup->where('mobile_number',$request->mobile_number)->where('is_approved',1)->first();
-        if($patient)
+        if($patient || $opdPatient)
         {
             return $this->sendResponse('Your Request is Approved Successfully');
         }
