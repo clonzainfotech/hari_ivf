@@ -330,7 +330,7 @@
                                         </div>
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
-                                                {{Form::select('seen_by',$hospitalDoctor,'',['class'=>'form-control select-padding-0 seenBy_doctor','placeholder'=>'Select Seen By Doctor','data-live-search'=>'true'])}}
+                                                {{Form::select('seen_by',$hospitalDoctor,!empty($patientData->getHospitalDoctor['id']) ? $patientData->getHospitalDoctor['id'] : null,['class'=>'form-control select-padding-0 seenBy_doctor','placeholder'=>'Select Seen By Doctor','data-live-search'=>'true'])}}
                                             </div>
                                         </div>
                                     </div>
@@ -796,6 +796,8 @@
                 $('.pro-ref-hospital-doctor').selectpicker('refresh');
                 $('.hospital_doctor').val(data['patients']['hospital_doctor_id']);
                 $('.hospital_doctor').selectpicker('refresh');
+                $('.seenBy_doctor').val(data['patients']['hospital_doctor_id']);
+                $('.seenBy_doctor').selectpicker('refresh');
                 $('.other_mobile_number').val(data['patients']['other_mobile_number']);
                 $('.mobile_number').val(data['patients']['mobile_number']);
                 $('#gender').val(data['patients']['gender']);
@@ -908,6 +910,14 @@
             msg = 'Holiday Appointment';
             text = "This Appointment of Holiday "+holiday+", Are you sure you want to appointment??";
         }
+        if(already == 4)
+        {
+            patientId = '';
+            var d_name = "{{Session::get('doctor')}}";
+            var apt_date = "{{Session::get('apt_date')}}";
+            msg = d_name;
+            text = d_name+" is not available on "+apt_date+" , Are you sure you want to appointment??";
+        }
         swal({
             title: msg,
             text: text,
@@ -933,12 +943,13 @@
     function updateAppointmentDate(aId,date,time){
         var patientId = "{{Session::get('patientId')}}";
         var date = $('.next-date').val();
+        
         $.ajax({
             url: "{{URL::to('update-appointment-date-time')}}",
             type: "GET",
             data:{appointment_id:aId,date:date,time:time,patient_id:patientId}
         }).done(function(data) {
-            window.location.href = "{{URL::to('appointment')}}";
+            // window.location.href = "{{URL::to('appointment')}}";
         }).fail(function(error){
             
         });

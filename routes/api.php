@@ -25,6 +25,8 @@ Route::prefix('v1')->namespace('Api')->group(function () {
     Route::get('/hospital_tutorials', 'HomeController@hospital_tutorials');
     Route::get('/getQ_A', 'HomeController@getQAns');
     Route::get('getHtmlPages','HomeController@getHtmlPages');
+    Route::post('getRegisterStatus','AuthApiController@registerStatus');
+
 
     Route::middleware('APIToken')->group(function () {
         // Logout
@@ -96,6 +98,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
         //patient's USG images
         Route::get('getPatientUsgImageList','PatientController@getPatientUsgImageList');
+
     });
 
 });

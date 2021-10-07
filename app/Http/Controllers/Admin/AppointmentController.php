@@ -271,6 +271,19 @@ class AppointmentController extends AdminController
             $appointmentDate = Carbon::parse($request->date)->format('Y-m-d');
             $isNext = 0;
             $already = 0;
+            if($request->seen_by)
+            {
+                $absence_doctor = $this->User->where('id',$request->seen_by)->whereRole('3')->whereStatus('1')->whereRaw("find_in_set('".Carbon::parse($request->date)->format('m/d/Y')."',absence_dates)")->first();
+                if(!empty($absence_doctor))
+                {
+                    $already = 4;
+                    $isNext = 1;
+                    Session::flash('doctor',$absence_doctor->name);
+                    Session::flash('apt_date',Carbon::parse($request->date)->format('d M Y'));
+                }
+            }
+            
+            
             $appointmentDay = Carbon::parse($appointmentDate)->format('D');
             if($appointmentDay == 'Sun'){
                 $already = 2;
@@ -321,6 +334,7 @@ class AppointmentController extends AdminController
                     Session::flash('patientId',$patientsId);
                 }
                 Session::flash('p_name',$request->name);
+                
                 return back()->with('already',$already)->withInput();
             }
 
@@ -1254,6 +1268,7 @@ class AppointmentController extends AdminController
             if($holiday){
                 $isNext = 1;
             }
+
             if($isNext == 1){
                 $appointment = $this->Appointment->where('patients_id',$request->patient_id)->orderBy('id','DESC')->first();
                 if($appointment){
@@ -1274,9 +1289,11 @@ class AppointmentController extends AdminController
                 Session::flash('msg', $message);
                 return ['status'=>'1'];
             }
+
             $appointment->date = Carbon::parse($request->date)->format('Y-m-d');
             $appointment->time = !empty($request->time) ? Carbon::parse($request->time)->format('H:i:s') : null;
             $appointment->save();
+
             $message = 'Appointment has been added!';
             Session::flash('msg', $message);
             return ['status'=>'1'];

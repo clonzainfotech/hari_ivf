@@ -263,6 +263,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             if(this.value==3){
                 formData.append('isprint', 3);
             }
+            
             ancFormData(formData);
         });
 

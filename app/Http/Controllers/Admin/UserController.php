@@ -357,7 +357,7 @@ class UserController extends AdminController
                 
                 $user->achievement = json_encode(array_merge($lastAchievements, $achievement), JSON_FORCE_OBJECT);
             }
-            
+            $user->absence_dates = isset($request->absence_dates) ? $request->absence_dates : null;
             $user->description = $request->description;
             $user->mobile_number = $request->mobile_number;
             $user->status = $request->status;

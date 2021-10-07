@@ -269,7 +269,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="checkbox">
                                         {{Form::checkbox('is_mobile_view',$user->is_mobile_view,$user->is_mobile_view == 1 ? true: false,['id'=>'is_mobile_view'])}}
                                         <label for="is_mobile_view">
@@ -277,7 +277,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="{{'col-md-6 doctor-fields ' . $doctorFields}}">
+                                <div class="{{'col-md-4 doctor-fields ' . $doctorFields}}">
                                     <div class="checkbox">
                                         {{Form::checkbox('is_rmo_doctor',$user->is_rmo_doctor,$user->is_rmo_doctor == 1 ? true: false,['id'=>'is_rmo_doctor'])}}
                                         <label for="is_rmo_doctor">
@@ -285,8 +285,13 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon unik-lbl-spn">Absence Date :</span>
+                                        {{Form::text("absence_dates",!empty($user->absence_dates) ? $user->absence_dates : '',['class'=>'form-control datetime','placeholder'=>'Select Absence Date'])}}
+                                    </div>
+                                </div>
                             </div>
-
                             <div class="col-sm-12">
                                 {{Form::submit('submit',['class'=>'btn btn-primary submit'])}}
                                 <a href="{{URL::to('user')}}" class="btn btn-default">Cancel</a>
@@ -310,14 +315,18 @@
             time: false,
             weekStart: 1
         });
+        $(document).ready(function(){
+            $('.datetime').multiDatesPicker({
+                minDate: 0
+            });
+        });
 
-                $('.mobile_number').keypress(function(event){
-             var length = $(this).val().length;
-       if(length == 10){
-           event.preventDefault(); //stop character from entering input
-       }
-
-   });
+        $('.mobile_number').keypress(function(event){
+            var length = $(this).val().length;
+            if(length == 10){
+                event.preventDefault(); //stop character from entering input
+            }
+        });
         $(document).ready(function () {
             $(document).on('change','select.user-roles',function(){
                 roleValue = $(this).val();

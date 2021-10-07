@@ -171,8 +171,8 @@ class AuthApiController extends ApiController
         $patient->other_reference = $request->other;
         $patient->reason = $request->reason;
         $patient->save();
-        $success['msg'] = "Please contact to Radha Candor IVF Hospital for Approve your Request";
-        return $this->sendResponse('Register Successfully.',$success);
+        
+        return $this->sendResponse('Register Successfully.',$patient);
             
     }
     /**
@@ -193,6 +193,32 @@ class AuthApiController extends ApiController
             }
         } else {
             return $this->sendError('User is not found');
+        }
+    }
+    /**
+    * Register Patient
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function registerStatus(Request $request)
+    {
+        $rule = [
+            'mobile_number' => 'required|numeric|digits:10'
+        ];
+
+        $validator = Validator::make($request->all(),$rule);
+
+        if($validator->fails()){
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+        $patient = $this->PatientSignup->where('mobile_number',$request->mobile_number)->where('is_approved',1)->first();
+        if($patient)
+        {
+            return $this->sendResponse('Your Request is Approved Successfully');
+        }
+        else
+        {
+            return $this->sendResponse('Please contact to Radha Candor IVF Hospital for Approve your Request');
         }
     }
 }
