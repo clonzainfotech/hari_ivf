@@ -35,6 +35,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         Route::get('/appointments', 'AppointmentController@index');
         Route::post('/appointmentdetails', 'AppointmentController@appointmentDetail');
         Route::post('/add-appointment', 'AppointmentController@addAppointment');
+        Route::post('/book-appointment', 'AppointmentController@bookAppointment');
 
         Route::get('getUsers',  'ReviewController@getUsers');
         Route::get('get-patients-review', 'ReviewController@getPatientsReview');
@@ -98,6 +99,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
         //patient's USG images
         Route::get('getPatientUsgImageList','PatientController@getPatientUsgImageList');
+        Route::get('getappointmentDoctorList','AppointmentController@appointmentDoctorList');
 
     });
 

@@ -60,6 +60,7 @@ class AppointmentRequestController extends AdminController
                         $appointment->date = $appointmentRequests->appointment_date;
                         $appointment->time = $aTime;
                         $appointment->created_by = Auth::User()->id;
+                        $appointment->seen_by = $appointmentRequests->seen_by;
                         $appointment->category_id = $lastAppointment->category_id;
                         $appointment->patients_id = $appointmentRequests->patients_id;
                         $appointment->appontment_request_id = $apRequestId;

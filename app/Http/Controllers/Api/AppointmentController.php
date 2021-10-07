@@ -598,24 +598,129 @@ class AppointmentController extends ApiController
             return $this->sendError('Patient is not found');
         }
     }
+    /**
+    * Book Appointment
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function bookAppointment(Request $request) {
 
-    // private function checkCategory($categoryName)
-    // {
-    //     $ancArr = ['new anc','old anc'];
-    //     $iuiArr = ['new iui','old iui'];
-    //     $ivfArr = ['new ivf','old ivf'];
+        $rule = [
+            'date' => 'required',
+            'time' => 'required',
+            'doctor_id'=>'required'
+        ];
 
-    //     if (in_array($categoryName, $ancArr)) {
-    //         $patientCategory = 1;
-    //     }
-    //     if (in_array($categoryName, $iuiArr)) {
-    //         $patientCategory = 2;
-    //     }
-    //     if (in_array($categoryName, $ivfArr)) {
-    //         $patientCategory = 3;
-    //     }
-    //     return ['category' => $patientCategory];
-    // }
+        $validator = Validator::make($request->all(),$rule);
+        if($validator->fails()){
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+
+        $token = $request->header('Authorization');
+        $currentDate = \Carbon\Carbon::now()->format('Y-m-d');
+        $currentTime = \Carbon\Carbon::now()->format('H:i:s');
+        $msg = '';
+
+        if($token) {
+            $patientId = $this->PatientToken->where('token', $token)->pluck('patients_id')->first();
+
+            $lastAppointment = $this->AppointmentRequest->where('patients_id', $patientId)->orderBy('id','DESC')->first();
+
+            if(!empty($patientId)) 
+            {
+                $absence_doctor = $this->User->where('id',$request->doctor_id)->whereRole('3')->whereStatus('1')->whereRaw("find_in_set('".\Carbon\Carbon::parse($request->date)->format('m/d/Y')."',absence_dates)")->first();
+                if($absence_doctor)
+                {
+                    return $this->sendResponse($absence_doctor->name.' is not available on '.\Carbon\Carbon::parse($request->date)->format('d M Y').'. Please Select other Date');
+                }
+                $appointmentTime = \Carbon\Carbon::parse($request->time)->format('H:i:s');
+                $nextAppointmentTime = \Carbon\Carbon::parse($request->time)->addMinute(15)->format('H:i:s');
+                $checkTotalAppointment = $this->AppointmentRequest->where('appointment_date',\Carbon\Carbon::parse($request->date)->format('Y-m-d'))->where('is_book',0)->whereBetween('appointment_time',[$appointmentTime,$nextAppointmentTime])->get();
+                $totalappointment = $request->doctor_id == 11 ? 3 : 2;
+                if(count($checkTotalAppointment) == $totalappointment) 
+                {
+                    return $this->sendResponse('Appointmnet already booked on this time. Please Choose other sloat or change Doctor');
+                }
+
+                if ($request->date >= $currentDate || $request->time > $currentTime) {
+                    if (!empty($lastAppointment)) {
+                        if ($lastAppointment->is_book == 0) {
+                            $this->AppointmentRequest
+                                ->find($lastAppointment->id)
+                                ->update([
+                                    'appointment_date' => $request->date
+                                ]);
+                            $msg = "Your appointment is already in pending";
+                        }
+                        if($lastAppointment->is_book == 1) {
+                            $appointment = $this->Appointment->where('date', $lastAppointment->appointment_date)->orderBy('id','DESC')->first();
+                            // if ($lastAppointment->appointment_date < $currentDate) {
+                            if (((strtotime($appointment->date.' '.$appointment->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($appointment->is_done == 0) || ($appointment->date == $currentDate && !$appointment->arrival_time))) {
+                                $msg = "You have already appointment";
+                            } else {
+                                if (!empty($appointment)) {
+                                    // $msg = "Your appointment is already aprooved";
+                                    // if($appointment->is_done == 0){
+                                        $appointmentRequest = $this->AppointmentRequest;
+                                        $appointmentRequest->patients_id = $patientId;
+                                        $appointmentRequest->appointment_date = $request->date;
+                                        $appointmentRequest->appointment_time = $request->time;
+                                        $appointmentRequest->seen_by = $request->doctor_id;
+                                        $appointmentRequest->save();
+                                        $msg = "Your appointment is in pending";
+                                    // }
+                                } else {
+                                    $msg = "Your appointment is already aprooved";
+                                }
+                            }
+                        }
+                        if ($lastAppointment->is_book == 2) { 
+                            // if($lastAppointment->appointment_date <= $currentDate){
+                                $appointmentRequest = $this->AppointmentRequest;
+                                $appointmentRequest->patients_id = $patientId;
+                                $appointmentRequest->appointment_date = $request->date;
+                                $appointmentRequest->appointment_time = $request->time;
+                                $appointmentRequest->seen_by = $request->doctor_id;
+                                $appointmentRequest->save();
+                                return $this->sendResponse("Your appointment is in pending");
+                            // }
+                        }
+                        return $this->sendResponse($msg);
+                    } else {
+                        $appointmentRequest = $this->AppointmentRequest;
+                        $appointmentRequest->patients_id = $patientId;
+                        $appointmentRequest->appointment_date = $request->date;
+                        $appointmentRequest->appointment_time = $request->time;
+                        $appointmentRequest->seen_by = $request->doctor_id;
+                        $appointmentRequest->save();
+                        return $this->sendResponse('Your requested appointment is now in pending. we will inform you after approve it');
+                    }
+                } else {
+                    return $this->sendError('Please enter valid date and time');
+                }
+            }
+            else {
+                return $this->sendError('Patient is not found');
+            }
+        }
+    }
+    /**
+    * Return list of Doctor for appoinment
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function appointmentDoctorList(Request $request) {
+
+        $token = $request->header('Authorization');
+        
+        $doctor = [];
+        if($token) 
+        {
+            $doctor = $this->User->whereIn('id',[11,42])->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+        }
+        return $this->sendResponse('Get Doctor list successfully',$doctor);
+    }
+
 
 }
 
