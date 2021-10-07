@@ -227,7 +227,7 @@ class AuthApiController extends ApiController
         }
         else
         {
-            return $this->sendResponse('Please contact to Radha Candor IVF Hospital for Approve your Request');
+            return $this->sendError('Please contact to Radha Candor IVF Hospital for Approve your Request');
         }
     }
 }
