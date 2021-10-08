@@ -746,18 +746,20 @@ class AppointmentController extends ApiController
             return $this->sendError($validator->errors()->first(), 422);
         }
         $result = [];
-        $sloats = ['10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00','12:15','12:30','12:45','04:00','04:15','04:30','04:45','05:00','05:15','05:30','05:45','06:00','06:15','06:30','06:45'];
+        $sloats = ['10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00','12:15','12:30','12:45','16:00','16:15','16:30','16:45','17:00','17:15','17:30','17:45','18:00','18:15','18:30','18:45'];
         if($request->doctor_id == 11)
         {
             $sloats = ['10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00','12:15','12:30','12:45'];
         }
         foreach($sloats as $sloat)
         {
-            $appointmentTime = \Carbon\Carbon::parse($sloat)->format('H:i:s');
-            $nextAppointmentTime = \Carbon\Carbon::parse($sloat)->addMinute(15)->format('H:i:s');
+            $appointmentTime = \Carbon\Carbon::parse($sloat)->format('h:i:s');
+            $nextAppointmentTime = \Carbon\Carbon::parse($sloat)->addMinute(15)->format('h:i:s');
             $checkTotalAppointment = $this->AppointmentRequest->where('seen_by',$request->doctor_id)->where('appointment_date',\Carbon\Carbon::parse($request->date)->format('Y-m-d'))->where('is_book',0)->whereBetween('appointment_time',[$appointmentTime,$nextAppointmentTime])->get();
-            $data['sloat'] = $sloat.'-'.\Carbon\Carbon::parse($nextAppointmentTime)->format('H:i');
+            $data['sloat'] = \Carbon\Carbon::parse($sloat)->format('h:i').'-'.\Carbon\Carbon::parse($nextAppointmentTime)->format('h:i');
             $data['count'] = count($checkTotalAppointment);
+            //set 16:00 timestamp(1633689000)
+            $data['status'] = strtotime($sloat) >= 1633689000 ? 1 : 0;
             array_push($result,$data);
         }
         return $this->sendResponse('Get Sloat Count successfully',$result);
