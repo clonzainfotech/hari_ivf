@@ -283,6 +283,10 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                     }
                 });
             }
+            else
+            {
+                ancFormData(formData);
+            }
         });
 
         $(document).on('change','select.anc_visit_id',function(e){

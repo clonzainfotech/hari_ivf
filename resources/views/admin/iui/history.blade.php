@@ -1221,46 +1221,50 @@
                     if(isConfirm == true)
                     {
                         $('.showSweetAlert').hide();
-                        $.ajax({
-                            url:'{{URL::to("iui")}}',
-                            type:'POST',
-                            dataType:'json',
-                            data:iuiData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                        }).done(function(data){
-                            if(data.status == 'true' && data.secondVisit == false){
-                                window.location.href = url;
-                            }else if(data.status == 1){
-                                $('#iui_history_id').val(data.id);
-                                w = window.open(window.location.href, "_blank");
-                                w.document.open();
-                                w.document.write(data.data);
-                                w.document.close();
-                                setTimeout(function () {
-                                    w.window.print();
-                                }, 300);
-                                // window.location.href = url;
-                            } else if (data.status == 5 || data.status == 8) {
-                                w = window.open(window.location.href, "_blank");
-                                w.document.open();
-                                w.document.write(data.data);
-                                w.document.close();
-                                setTimeout(function () {
-                                    w.window.print();
-                                }, 300);
-                                window.location.href = url;
-                            }else{
-                                location.reload();
-                            }
-                        });
+                        submitIUIVisit(iuiData);
                     }
                 });
             }
+            submitIUIVisit(iuiData);
             
         }
-
+        function submitIUIVisit(iuiData)
+        {
+            $.ajax({
+                url:'{{URL::to("iui")}}',
+                type:'POST',
+                dataType:'json',
+                data:iuiData,
+                cache: false,
+                contentType: false,
+                processData: false,
+            }).done(function(data){
+                if(data.status == 'true' && data.secondVisit == false){
+                    window.location.href = url;
+                }else if(data.status == 1){
+                    $('#iui_history_id').val(data.id);
+                    w = window.open(window.location.href, "_blank");
+                    w.document.open();
+                    w.document.write(data.data);
+                    w.document.close();
+                    setTimeout(function () {
+                        w.window.print();
+                    }, 300);
+                    // window.location.href = url;
+                } else if (data.status == 5 || data.status == 8) {
+                    w = window.open(window.location.href, "_blank");
+                    w.document.open();
+                    w.document.write(data.data);
+                    w.document.close();
+                    setTimeout(function () {
+                        w.window.print();
+                    }, 300);
+                    window.location.href = url;
+                }else{
+                    location.reload();
+                }
+            });
+        }
         // get form data
         function getIuiData(histdate,cycleNo){
             var iuiDate = $('select.iui-date').val();
