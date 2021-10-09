@@ -418,6 +418,7 @@ class HormonController extends AdminController
                 }
                 $hormon->total = $total;
                 $hormon->case_type = $type;
+                $hormon->payment_type = $request->payment_method;
                 $hormon->save();
             }
             $checkPatients = $this->IvfPaymentReminder->where('patients_id',$hormon->patient_id)->whereDate('date',date('Y-m-d',strtotime($hormon->created_at)))->orderBy('id','DESC')->where('status',0)->first();

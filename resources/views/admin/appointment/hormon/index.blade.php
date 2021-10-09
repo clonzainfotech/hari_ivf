@@ -129,6 +129,16 @@
                                     {{Form::number('next_payment_amt','',['class'=>'form-control modal_next_payment_amt','placeholder'=>'Next Payment Amount'])}}
                                 </div>
                             </div>
+                            <div class="form-group col-md-12 mt-1">
+                                <div class="col-md-4">
+                                    Payment Type:
+                                </div>
+                                <div class="col-md-6">
+                                    {{Form::select('payment_type',['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],'',['class'=>'form-control payment-method','placeholder'=>'Select Payment Type'])}}
+                                    <span class="form-error-msg payment-method-error d-none">This Field is Required</span>
+                                    
+                                </div>
+                            </div>
                         </div>
                         
                     </div>
@@ -255,9 +265,12 @@
                 selectedHormonId = $(this).data('hormon');
                 var nextPayment = $(this).data('nextpayment');
                 var nextPaymentdate = $(this).data('nextpaymentdate');
+                var payment_method = $(this).data('paymentmethod');
                 $('.modal_next_payment_amt').val(nextPayment);
                 $('.amount').val(amount);
                 $('select.modal_charge_type').val(category);
+                $('select.payment-method').val(payment_method);
+                $('.payment-method').selectpicker('refresh');
                 $('.modal_charge_type').selectpicker('refresh');
                 if(nextPaymentdate.length != 0)
                 {
@@ -299,11 +312,13 @@
                 var id = $(this).data('id');
                 $('.amt-error').addClass('d-none');
                 $('.charge-type-error').addClass('d-none');
+                $('.payment-method-error').addClass('d-none');
                 // var selectedHormonId = $(this).data('hormon');
                 var amount = $('.amount').val();
                 var charge_type = $('select.modal_charge_type').val();
                 var next_payment = $('.modal_remaining_date').val();
                 var next_payment_amt = $('.modal_next_payment_amt').val();
+                var payment_method = $('select.payment-method').val();
                 var isValid = 1;
                 if(amount == '' || amount <= 0)
                 {
@@ -314,6 +329,12 @@
                 if(charge_type == 'undefined' || charge_type == '')
                 {
                     $('.charge-type-error').removeClass('d-none');
+                    isValid = 0;
+                    return false;
+                }
+                if(payment_method == 'undefined' || payment_method == '')
+                {
+                    $('.payment-method-error').removeClass('d-none');
                     isValid = 0;
                     return false;
                 }
@@ -328,7 +349,8 @@
                             total:amount,
                             charge_type:charge_type,
                             next_payment:next_payment,
-                            next_payment_amt:next_payment_amt
+                            next_payment_amt:next_payment_amt,
+                            payment_method:payment_method
                         },
                     }).done(function(data){
                         if(data.status == 1){
