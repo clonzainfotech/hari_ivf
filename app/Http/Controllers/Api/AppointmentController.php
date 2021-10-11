@@ -759,7 +759,8 @@ class AppointmentController extends ApiController
             $data['sloat'] = \Carbon\Carbon::parse($sloat)->format('h:i').'-'.\Carbon\Carbon::parse($nextAppointmentTime)->format('h:i');
             $data['count'] = count($checkTotalAppointment);
             //set 16:00 timestamp(1633689000)
-            $data['status'] = strtotime($sloat) >= 1633689000 ? 1 : 0;
+            $now = date('Y-m-d');
+            $data['status'] = strtotime($sloat) >= strtotime($now.' 16:00') ? 1 : 0;
             array_push($result,$data);
         }
         return $this->sendResponse('Get Sloat Count successfully',$result);
