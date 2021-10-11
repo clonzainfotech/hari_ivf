@@ -761,7 +761,8 @@ class AppointmentController extends ApiController
                 $nextAppointmentTime = \Carbon\Carbon::parse($sloat)->addMinute(15)->format('h:i:s');
                 $checkTotalAppointment = $this->AppointmentRequest->where('seen_by',$request->doctor_id)->where('appointment_date',\Carbon\Carbon::parse($request->date)->format('Y-m-d'))->where('is_book',0)->whereBetween('appointment_time',[$appointmentTime,$nextAppointmentTime])->get();
                 $data['sloat'] = \Carbon\Carbon::parse($sloat)->format('h:i').'-'.\Carbon\Carbon::parse($nextAppointmentTime)->format('h:i');
-                $data['count'] = count($checkTotalAppointment);
+                // $data['count'] = count($checkTotalAppointment);
+                $data['count'] = 1;
                 //set 16:00 timestamp(1633689000)
                 $now = date('Y-m-d');
                 $data['status'] = strtotime($sloat) >= strtotime($now.' 16:00') ? 1 : 0;
