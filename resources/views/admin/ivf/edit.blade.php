@@ -3302,6 +3302,13 @@
                                             </div>
                                             <span class="{{'col-md-1 p-2 oe_vitals_status_data '.$vitlasClass}}">/ Min</span>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {{Form::textarea('oe[remark]',isset($oe->remark) && !empty($oe->remark) ? $oe->remark : '', ['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

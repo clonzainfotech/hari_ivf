@@ -2898,6 +2898,13 @@
                                                 </div>
                                                 <span class="col-md-1 p-2 oe_vitals_status_data d-none">/ Min</span>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        {{Form::textarea('oe[remark]',null, ['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
