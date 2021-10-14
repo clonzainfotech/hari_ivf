@@ -4808,7 +4808,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                 <div class='col-md-2'>
                                     <div class='input-group'>
                                         <span class='input-group-addon'>Day :</span>
-                                        {{Form::number('treatment['.$mId.'][no]',$row->no,['class'=>'form-control'])}}
+                                        {{Form::number('treatment['.$mId.'][no]',$row->no,['class'=>'form-control till-follow-up'])}}
                                     </div>
                                 </div>
                                 <div class='col-md-4'>
