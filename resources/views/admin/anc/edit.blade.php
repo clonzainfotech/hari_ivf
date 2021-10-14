@@ -45,11 +45,10 @@
         '7'=>'Twins Reduced to Singleton',
         '8'=>'Monochorionic Diamniotic'
     ];
-    $terminationtype = [
-        ''=>"Select Reason",
-        'Delivery'=>"Delivery",
-        'Obseravation'=>"Obseravation",
-        'Operation'=>"Operation"];
+    $terminationtype = ['Delivery'=>"Delivery",
+                        'Obseravation'=>"Obseravation",
+                        'Termination'=>"Termination",
+                        'Operation'=>"Operation"];
     $selectAttr = (!empty($ancId) || !empty($ancHistoryId)) ? 'disabled' : '-';
 
     $childStatusType = 'd-none';

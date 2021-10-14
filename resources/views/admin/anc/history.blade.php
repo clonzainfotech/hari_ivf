@@ -359,7 +359,9 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
     $(document).on('click','.blighted-ovum',function(){
         checkGynec();
     });
-
+    $(document).on('change','.termination_type',function(){
+        checkGynec();
+    });
     $(document).on('click','.anc-details-close', function () {
         location.reload();
     });
@@ -650,7 +652,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         var isGynec = 0;
         var fcpValue = $('.fcp-type-1:checked').val();
         var gSacValue = $('.g-sac-1').val();
-       $(".blighted-ovum:checked").each(function() {
+        $(".blighted-ovum:checked").each(function() {
                 var isBlighted = $(this).val();
                 
                 if($(this).val() == 'no')
@@ -668,6 +670,10 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                     isGynec = 1;
                 }
             })
+        if($('select.termination_type').val() == 'Termination')
+        {
+            isGynec = 1;
+        }
         if(fcpValue == 'absent'){
             isGynec = 1;
         }

@@ -59,6 +59,7 @@
     $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
     $terminationtype = ['Delivery'=>"Delivery",
                         'Obseravation'=>"Obseravation",
+                        'Termination'=>"Termination",
                         'Operation'=>"Operation"];
 @endphp
 <style type="text/css">

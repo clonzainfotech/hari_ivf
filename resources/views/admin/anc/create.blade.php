@@ -3259,11 +3259,10 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <?php
-                                                    $terminationtype = [
-                                                        ''=>"Select Reason",
-                                                        'Delivery'=>"Delivery",
-                                                        'Obseravation'=>"Obseravation",
-                                                        'Operation'=>"Operation"];
+                                                    $terminationtype = ['Delivery'=>"Delivery",
+                                                            'Obseravation'=>"Obseravation",
+                                                            'Termination'=>"Termination",
+                                                            'Operation'=>"Operation"];
                                                     ?>
                                                     {{Form::select("usg[termination_type]",$terminationtype,(@$usg->termination_type) && !empty($usg->termination_type) ? $terminationtype[$usg->termination_type]: null,['class'=>'form-control'])}}
                                                 </div>
