@@ -96,6 +96,9 @@
                                 <div class="col-md-2 form-padding">
                                     Reason:
                                 </div>
+                                <div class="col-md-8 form-padding d-none other-reason">
+                                    {{form::textarea('remark','',['class'=>'form-control other','rows'=>2])}}
+                                </div>
                                 <div class="col-md-8 form-padding reason gu d-none">
                                     {{Form::select('remark',config('app.reject_apt_reason_gu'),'',['class'=>' select-padding-0 select-reason gu'])}}
                                 </div>
@@ -151,7 +154,15 @@
             $('.remark-error').addClass('d-none');
             $('.language').selectpicker('refresh');
             var lan = $('select.language').val();
-            var reason = $("select."+lan+" option:selected").text();
+            
+            if($('.other-reason').hasClass('d-none'))
+            {
+                var reason = $("select."+lan+" option:selected").text();
+            }
+            else
+            {
+                var reason = $(".other").val();
+            }
             
             if(reason == '')
             {
@@ -189,8 +200,17 @@
         });
         $(document).on('change','select.language',function(){
             var lan = $(this).val();
+            $('.other-reason').addClass('d-none');
             $('.reason').addClass('d-none');
             $('.reason.'+lan).removeClass('d-none');
+        })
+        $(document).on('change','select.select-reason',function(){
+            $('.other-reason').addClass('d-none');
+            if($(this).val() == 'other')
+            {
+                $('.other-reason').removeClass('d-none');
+                $('.reason').addClass('d-none');
+            }
         })
     </script>
 
