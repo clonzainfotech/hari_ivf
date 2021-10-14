@@ -363,11 +363,26 @@ class HormonController extends AdminController
     */
     public function delete($id){
         try{
-            $hormon = $this->Hormon->find($id);
-            $hormon->delete();
-            return 'true';
+            $hormon = $this->IndoorDeposit->where('id',decrypt($id))->first();
+            if($hormon->charge_type == 1)
+            {
+                $injection = explode(',',$hormon->injection);
+                $injectionData = $this->InjectionCharge->whereIn('name',$injection)->get();
+                // dd($injectionData);
+                $hormonDate = carbon::parse($hormon->created_at)->format('Y-m-d');
+                foreach($injectionData as $injectionCharge)
+                {
+                    $injectionData = $this->InjectionManager->where('injection',$injectionCharge->name)->where('patients_id',$hormon->patient_id)->whereDate('created_at',$hormonDate)->first();
+                    $updateQty = $this->InjectionCharge->where('id',$injectionCharge->id)->update(['quantity' => $injectionCharge->quantity+$injectionData->qty]);
+                    $injectionData->delete();
+                }
+                // $injection->quantity = ($injection->quantity - $request->qty[$i]) >= 0 ? ($injection->quantity - $request->qty[$i]) : 0;
+                $hormon->delete();
+                return 'true';
+            }
+            
         }catch(Exception $e){
-            abort(500);
+            log::Debug($e);
             return 'false';
         }
     }

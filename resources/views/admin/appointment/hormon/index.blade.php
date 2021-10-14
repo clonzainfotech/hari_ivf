@@ -185,6 +185,7 @@
         qstring = 'page='+page+ '&date=' + date + '&patient_id='+patientId+'&charge_type='+charge_type+'&charge_value='+charge_text+'&search='+search;
         var hormonQueryString = 'hname=' + hname + '&htype=' + htype+'&search='+search;
         var selectedHormonId = '';
+        var hormonId = '';
         $(document).ready(function(){
 
             // $('.daterange').change(function(){
@@ -249,6 +250,7 @@
 
             $(document).on('click','.delete-hormon',function(){
                 qstring = 'page='+page+ '&date=' + date + '&patient_id='+patientId+'&charge_type='+charge_type+'&charge_value='+charge_text+'&search='+search;
+                hormonId = $(this).data('hormon');
                 showConfirmMessage();
             });
 
@@ -338,6 +340,7 @@
                     isValid = 0;
                     return false;
                 }
+                
                 if(isValid == 1)
                 {
                     $.ajax({
@@ -400,7 +403,7 @@
                 closeOnConfirm: false
             }, function () {
                 $.ajax({
-                    url: "{{URL::to('hormon/delete/')}}"+'/'+hormonId,
+                    url: "{{URL::to('hormon/delete')}}"+'/'+hormonId,
                     dataType: 'json',
                 }).done(function(data) {
                     getHormonData(qstring);

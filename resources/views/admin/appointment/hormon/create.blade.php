@@ -361,7 +361,7 @@
                 var hijectionDiv = '';
                 var div_length = $('div.hinjection-data.injection').length + 1;
                 hijectionDiv += '<div class="row hormon-row hinjection-data injection"><div class="col-md-3">';
-                hijectionDiv += '<select name="hinjection[]" class="form-control hinjection hormon-inj-required" data-id="injection_'+div_length+'" data-live-search="true" data-error ="injection_'+div_length+'">';
+                hijectionDiv += '<select name="hinjection[]" class="form-control hormon-inj-required" data-id="injection_'+div_length+'" data-live-search="true" data-error ="injection_'+div_length+'">';
                 hijectionDiv   += '<option value="">Select Injection</option>';
                 $.each(injection, function(key, value) {
                     hijectionDiv += '<option value="' + key + '">' +value+'</option>';
@@ -490,6 +490,7 @@
                     valid = 0;
                     $('.cycle_no').text('The type field is required.');
                 }
+                alert(valid);
             }
             
             if (hcharge == '') {

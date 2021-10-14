@@ -749,7 +749,7 @@ class AppointmentController extends ApiController
         $doctor = $this->User->where('role',3)->where('id',$request->doctor_id)->first();
         if($doctor)
         {
-            //fir shivani shah
+            //for shivani shah
             $totalSloat = 2;
             $sloats = ['10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00','12:15','12:30','12:45','16:00','16:15','16:30','16:45','17:00','17:15','17:30','17:45','18:00','18:15','18:30','18:45'];
             if($request->doctor_id == 11)//for jaydev sir
@@ -766,7 +766,7 @@ class AppointmentController extends ApiController
                 $data['sloat'] = \Carbon\Carbon::parse($sloat)->format('h:i').'-'.$nextAppointmentTime;
                 //count = how many sloat is available
                 $data['count'] = ($totalSloat - count($checkTotalAppointment)) >= 0  ? ($totalSloat - count($checkTotalAppointment)) : 0;
-                if(strtotime($sloat) <= time() && date('y-m-d') == \Carbon\Carbon::parse($request->date)->format('Y-m-d'))
+                if(strtotime($sloat) <= time() && date('y-m-d') >= \Carbon\Carbon::parse($request->date)->format('Y-m-d'))
                 {
                     $data['count'] = 0;
                 }
