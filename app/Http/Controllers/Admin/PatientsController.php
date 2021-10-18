@@ -54,7 +54,7 @@ class PatientsController extends AdminController
                 }
                 $search = $request->search;
                 if($search){
-                    $patient = $patient->where('mobile_number','LIKE',$search.'%');
+                    $patient = $patient->where('mobile_number','LIKE',$search.'%')->orWhere('main_area','LIKE',$search.'%');
                     }
                 if($request->date){
                     $date = explode("-",$request->date);
