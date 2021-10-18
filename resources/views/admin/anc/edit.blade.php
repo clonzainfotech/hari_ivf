@@ -45,7 +45,7 @@
         '7'=>'Twins Reduced to Singleton',
         '8'=>'Monochorionic Diamniotic'
     ];
-    $terminationtype = ['Delivery'=>"Delivery",
+    $terminationtype = [''=>'Select Reason','Delivery'=>"Delivery",
                         'Obseravation'=>"Obseravation",
                         'Termination'=>"Termination",
                         'Operation'=>"Operation"];

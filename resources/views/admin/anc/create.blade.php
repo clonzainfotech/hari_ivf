@@ -3259,7 +3259,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <?php
-                                                    $terminationtype = ['Delivery'=>"Delivery",
+                                                    $terminationtype = [''=>'Select Reason','Delivery'=>"Delivery",
                                                             'Obseravation'=>"Obseravation",
                                                             'Termination'=>"Termination",
                                                             'Operation'=>"Operation"];
