@@ -1875,16 +1875,16 @@
                 </label>
             </div>
             @php
-                $transfer = json_decode($ivfData->transfer);
+                $transfer = $ivfData->transfer;
             @endphp
             <div class="col-sm-2">
                 <div class="radio is-conceived">
-                    {{Form::radio("data[transfer][upt_type]",'positive',!empty($transfer) && $transfer->upt_type == 'yes' ? true : false,['id'=>'transfer-positive','class'=>'upt-type','disabled'])}}
+                    {{Form::radio("data[transfer][upt_type]",'positive',!empty($transfer) && $transfer->upt_type == 'positive' ? true : false,['id'=>'transfer-positive','class'=>'upt-type','disabled'])}}
                     <label for="transfer-positive">
                         Positive
                     </label>
 
-                    {{Form::radio("data[transfer][upt_type]",'negative',!empty($transfer) && $transfer->upt_type == 'no' ? true : false,['id'=>'transfer-negative','class'=>'upt-type','disabled'])}}
+                    {{Form::radio("data[transfer][upt_type]",'negative',!empty($transfer) && $transfer->upt_type == 'negative' ? true : false,['id'=>'transfer-negative','class'=>'upt-type','disabled'])}}
                     <label for="transfer-negative">
                         Negative
                     </label>
@@ -1899,12 +1899,12 @@
 
             <div class="col-sm-2">
                 <div class="radio is-conceived">
-                    {{Form::radio("data[transfer][result_type]",'conceive',!empty($transfer) && $transfer->result_type == 'yes' ? true : false,['id'=>'transfer-conceive','class'=>'result-type','disabled'])}}
+                    {{Form::radio("data[transfer][result_type]",'conceive',!empty($transfer) && $transfer->result_type == 'conceive' ? true : false,['id'=>'transfer-conceive','class'=>'result-type','disabled'])}}
                     <label for="transfer-conceive">
                         Conceive
                     </label>
 
-                    {{Form::radio("data[transfer][result_type]",'fail',!empty($transfer) && $transfer->result_type == 'yes' ? true : false,['id'=>'transfer-fail','class'=>'result-type','disabled'])}}
+                    {{Form::radio("data[transfer][result_type]",'fail',!empty($transfer) && $transfer->result_type == 'fail' ? true : false,['id'=>'transfer-fail','class'=>'result-type','disabled'])}}
                     <label for="transfer-fail">
                         Fail
                     </label>
@@ -1936,33 +1936,32 @@
                 <div class="input-group">
                     <span class="input-group-addon">Follow Up: &nbsp;</span>
                     {{Form::text("data[transfer][follow_up]",\Carbon\Carbon::now()->addDays(7)->format('D d M Y'),['class'=>'form-control datetimepicker'])}}
+                    {{Form::hidden("data[follow_up]",\Carbon\Carbon::now()->addDays(7)->format('D d M Y'),['class'=>'form-control datetimepicker'])}}
                 </div>
             </div>
         </div>
         <br>
-        <div id="treatment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree_1">
-            <div class="panel-body" id="parent">
-                <div class="row treatment-data" id="t_data_1">
-                    <div id="treatment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree_1">
-                        <div class="panel-body" id="parent">
-                            <div class="row treatment-data" id="t_data_1">
-                                <div class="col-md-2 pr-0">
-                                    <label class="vertical-form-label pr-0">
-                                        Select Medicine :
-                                    </label>
-                                </div>
-            
-                                <div class="col-md-9 complain-multi medicine-picker">
-                                    {{Form::select("treatment[medicinedata][]",$medicines,$historyMedicineKey,['id'=>'treatment-medicine','class'=>'form-control co-value medicines-data','placeholder'=>'Enter Medicine'])}}
-                                </div>
+        
+                <div id="treatment" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree_1">
+                    <div class="panel-body" id="parent">
+                        <div class="row treatment-data" id="t_data_1">
+                            <div class="col-md-2 pr-0">
+                                <label class="vertical-form-label pr-0">
+                                    Select Medicine :
+                                </label>
                             </div>
-                            <div class="page-loader-wrapper medicine-loader d-none">
+            
+                            <div class="col-md-9 complain-multi medicine-picker">
+                                {{Form::select("treatment[medicinedata][]",$medicines,$historyMedicineKey,['id'=>'treatment-medicine','class'=>'form-control co-value medicines-data','placeholder'=>'Enter Medicine'])}}
+                            </div>
+                        </div>
+                        <div class="page-loader-wrapper medicine-loader d-none">
                                 <div class="loader">
                                     <div class="m-t-30"><img src="{{url(config('app.loader'))}}" width="48" height="48" alt="Oreo"></div>
                                 </div>
-                            </div>
-                            
-                            @if(!empty($ivfData->medicinedata))
+                        </div>
+                        
+                        @if(!empty($ivfData->medicinedata))
                                 @foreach($ivfData->medicinedata as $key=>$row)
                                 <?php
                                 $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
@@ -2048,17 +2047,16 @@
                                         <div class='col-md-1 medicine-data-remove'><span class=''><i class='material-icons'>close</i></span></div> --}}
                                     {{-- </div> --}}
                                 @endforeach
-                            @endif
-                            <div class="treatment-medicine-data"></div>
-                            {{Form::hidden('old_medicine_data',!empty($historyMedicineKey) ? implode(',',$historyMedicineKey) : null,['class'=>'old-medicine-data'])}}
-                        </div>
+                        @endif
+                        <div class="treatment-medicine-data"></div>
+                        {{Form::hidden('old_medicine_data',!empty($historyMedicineKey) ? implode(',',$historyMedicineKey) : null,['class'=>'old-medicine-data'])}}
                     </div>
                 </div>
+                
                 <div class="treatment-medicine-data">
 
                 </div>
-            </div>
-        </div>
+            
         <br>
     @endif
     {{Form::hidden('ivf_history_id', '' , ['id' => 'ivf_history_id'])}}
