@@ -123,29 +123,29 @@ class Appointment extends BaseModel
                     ->orderBy('id','DESC')
                     ->first();
         }
-        $status = '';
+        $status = [];
         if($anc)
         {
             $usg = json_decode($anc->usg);
             if(!empty($usg->early_scan) && carbon::parse($usg->early_scan)->format('Y-m-d') == $this->date)
             {
-                $status .= 'Early Scan';
+                array_push($status,'Early Scan');
             }
             if(!empty($usg->nt_scan) && carbon::parse($usg->nt_scan)->format('Y-m-d') == $this->date)
             {
-                $status .= 'NT Scan';
+                array_push($status,'NT Scan');
             }
             if(!empty($usg->anomalies_miles) && carbon::parse($usg->anomalies_miles)->format('Y-m-d') == $this->date)
             {
-                $status .= 'Anomalies Miles';
+                array_push($status,'Anomalies Miles');
             }
             if(!empty($usg->growth_scan) && carbon::parse($usg->growth_scan)->format('Y-m-d') == $this->date)
             {
-                $status .= 'Growth Scan';
+                array_push($status,'Growth Scan');
             }
 
         }
-        return $status;
+        return implode(', ',$status);
     }
     public function getAppointmentDateANC()
     {
