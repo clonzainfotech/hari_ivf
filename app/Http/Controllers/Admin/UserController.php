@@ -117,6 +117,7 @@ class UserController extends AdminController
                                 WHEN role = "6" THEN "IVF"
                                 WHEN role = "7" THEN "IUI"
                                 WHEN role = "8" THEN "ANC"
+                                WHEN role = "9" THEN "Telly Caller"
                                 END) AS role'),
                             \DB::raw('(CASE 
                                 WHEN status = "1" THEN "Active"
@@ -152,7 +153,7 @@ class UserController extends AdminController
             if($request->isprint == 1){
                 $user = $this->User
                         ->select("*",
-                            \DB::raw('(CASE WHEN role = "1" THEN "Admin" WHEN role = "2" THEN "Reception" WHEN role = "3" THEN "Doctor" WHEN role = "4" THEN "Accountant" WHEN role = "5" THEN "Medical" WHEN role = "6" THEN "IVF" WHEN role = "7" THEN "IUI" WHEN role = "8" THEN "ANC" END) AS role'),
+                            \DB::raw('(CASE WHEN role = "1" THEN "Admin" WHEN role = "2" THEN "Reception" WHEN role = "3" THEN "Doctor" WHEN role = "4" THEN "Accountant" WHEN role = "5" THEN "Medical" WHEN role = "6" THEN "IVF" WHEN role = "7" THEN "IUI" WHEN role = "8" THEN "ANC" WHEN role = "9" THEN "Telly Caller" END) AS role'),
                             \DB::raw('(CASE WHEN status = "1" THEN "Active" ELSE "Deactive" END) AS status'))->get();
                 $data['status'] = 2;
                 $data['data'] = View::make('admin.user.preview',compact('user'))->render();

@@ -21,7 +21,8 @@ class UserRoleSeeder extends Seeder
             ['role' => 'IVF'],
             ['role' => 'IUI'],
             ['role' => 'ANC'],
-            ['role' => 'Developer']
+            ['role' => 'Developer'],
+            ['role' => 'Telly Caller']
         ]);
     }
 }

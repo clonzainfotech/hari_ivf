@@ -136,7 +136,8 @@
                                             5=>'Medical',
                                             6=>'IVF',
                                             7=>'IUI',
-                                            8=>'ANC'
+                                            8=>'ANC',
+                                            9=>'Telly Caller'
                                         ],$user->role,['class'=>'form-control select-padding-0 user-roles','placeholder'=>'Select Role'])}}
                                     </div>
                                     <span class="form-error-msg user_error role">

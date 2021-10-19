@@ -78,7 +78,7 @@ class UserController extends ApiController
                 ->whereIn('id',[43,48,53,32,54,55,29,52,51,19,56])
                 ->whereStatus('1')
                 ->select('id','name','profile_picture','designation')
-                ->orderByRaw("FIELD(designation, 'Management Person', 'HR', 'RMO Doctor','Head Nurse','OT Nurse','Head Receptionist','Receptionist','Accountant') ASC")
+                ->orderByRaw("FIELD(designation, 'Management Person', 'HR', 'RMO Doctor','Head Nurse','OT Nurse','Head Receptionist','Receptionist','Accountant','Telly Caller') ASC")
                 ->get()
             )->map(function($q){
                 $image = $q->profile_picture;
