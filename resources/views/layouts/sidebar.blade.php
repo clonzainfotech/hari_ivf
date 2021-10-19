@@ -38,7 +38,7 @@
                 <ul class="list sidemenu_list">
 
                     {{--reception--}}
-                    @if(in_array(Auth::user()->role,[1,2]))
+                    @if(in_array(Auth::user()->role,[1,2,9]))
                     <li class="{{Request::segment(1) === 'appointment' || Request::segment(1) === 'appointment-create'|| Request::segment(1) === 'appointment-request' || Request::segment(1) === 'donor' || Request::segment(1) === 'hormon' || Request::segment(1) === 'usg-appointment' || Request::segment(1) === 'self-booking' ? 'active open' : null }}">
                         <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                         <span>RECEPTION</span></a>
@@ -86,12 +86,12 @@
                     @endif
 
                     {{--patient--}}
-                    @if(in_array(Auth::user()->role,[1,2,3]))
+                    @if(in_array(Auth::user()->role,[1,2,3,9]))
                     <li class="{{ Request::segment(1) === 'patient' ? 'sub active open' : null }}"><a href="{{URL::to('patient')}}"><span>Patient</span></a></li>
                     @endif
 
                     {{--indoor--}}
-                    @if(in_array(Auth::user()->role,[1,2,3]))
+                    @if(in_array(Auth::user()->role,[1,2,3,9]))
                     <li class="{{ Request::segment(1) === 'indoor'  || Request::segment(1) === 'patient-detail' ? 'active open' : null }}">
                         <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                         <span>indoor</span></a>
@@ -103,7 +103,7 @@
                     @endif
 
                     {{--report--}}
-                    @if(in_array(Auth::user()->role,[1,2,4]))
+                    @if(in_array(Auth::user()->role,[1,2,4,9]))
                     <li class="{{ (Request::segment(1) === 'report' && empty(Request::segment(2)))  || Request::segment(1) === 'category-report' || Request::segment(1) == 'ref-pro-doctor-report' || Request::segment(1) == 'remark-appointment-report' || Request::segment(1) === 'cut-report' || Request::segment(1) === 'ivf-payment-report'|| Request::segment(1) == 'infertility-report' || Request::segment(1) === 'ref-doctor-report' || Request::segment(1) === 'collection-report' || Request::segment(1) === 'patient-report' || Request::segment(1) == 'edd-patient' || Request::segment(1) === 'sms-manager' || Request::segment(1) === 'ca-expense-report' || Request::segment(1) === 'hormon-inj-report' || Request::segment(1) === 'pediatric-report' ? 'active open' : null }}">
                         <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                         <span>reports</span></a>
