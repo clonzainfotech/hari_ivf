@@ -99,6 +99,7 @@ class AppointmentController extends AdminController
 
                 $referenceDoctorId = $request->reference_doctor_id;
                 $hospitalDoctorId = $request->hospital_doctor_id;
+                $seenByDoctorId = $request->seen_by_doctor;
                 if($referenceDoctorId){
                     $appointment = $appointment->WhereHas('getPatientsDetails', function($query) use($referenceDoctorId){
                         $query->where('reference_doctor_id',$referenceDoctorId);
@@ -108,6 +109,9 @@ class AppointmentController extends AdminController
                     $appointment = $appointment->WhereHas('getPatientsDetails', function($query) use($hospitalDoctorId){
                         $query->where('hospital_doctor_id',$hospitalDoctorId);
                     });
+                }
+                if($seenByDoctorId){
+                    $appointment = $appointment->where('seen_by',$seenByDoctorId);
                 }
 
                 if($request->date){
