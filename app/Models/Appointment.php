@@ -193,4 +193,11 @@ class Appointment extends BaseModel
         }
         return['frozen'=>$semen_Freezing,'embroy' => $embroyReady];
     }
+    public function checkFirstVisitExists()
+    {
+        $status = 0;
+        $firstVisitIVF = IVF::where('patients_id',$this->patients_id)->first();
+        $firstVisitIUI = IUI::where('patients_id',$this->patients_id)->first();
+        return (!empty($firstVisitIVF) || !empty($firstVisitIUI)) ? 1 : 0;
+    }
 }

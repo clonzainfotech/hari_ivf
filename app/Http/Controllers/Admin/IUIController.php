@@ -1190,6 +1190,52 @@ class IUIController extends AdminController
     public function iuiHistory(Request $request,$patientsId){
         try{
             $id = decrypt($patientsId);
+            //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
+            $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->orderBy('id', 'DESC')->first();
+            if($lastAppointment->category_id == 1 || $lastAppointment->category_id == 2)
+            {
+                $firstVisit = $this->IUI->where('patients_id',$id)->first();
+                $firstVisitHistory = null;
+                if($firstVisit)
+                {
+                    $firstVisitHistory = $this->IuiHistory->where('patients_id',$id)->where('cycle_no',$firstVisit->cycle_no)->first();
+                    $cycleNo = ($firstVisit) ? $firstVisit->cycle_no + 1 : 1;
+                    if(!$firstVisit)
+                    {
+                        $firstVisit = $this->IVF->where('patients_id',$id)->first();
+                        $cycleNo = 1;
+                    }
+                }
+                $iuiHistory = $this->IuiHistory->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
+                $checkExistIUI = $this->IUI->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
+                if($firstVisit && !$iuiHistory && !$checkExistIUI && !empty($firstVisitHistory))
+                {
+                    // dd('sdf');
+                    $iui = $this->IUI;
+                    $iui->patients_id = $id;
+                    $iui->seen_by = $firstVisit->seen_by;
+                    $iui->rmo_doctor = $firstVisit->rmo_doctor;
+                    $iui->created_by = $firstVisit->created_by;
+                    $iui->patients_info = $firstVisit->patients_info;
+                    $iui->h_o = $firstVisit->h_o;
+                    $iui->c_o = $firstVisit->c_o;
+                    $iui->o_h = $firstVisit->o_h;
+                    $iui->m_h = $firstVisit->m_h;
+                    $iui->ho_rx = $firstVisit->ho_rx;
+                    $iui->investigation = $firstVisit->investigation;
+                    $iui->husband_factor = $firstVisit->husband_factor;
+                    $iui->patients_details_ho = $firstVisit->patients_details_ho;
+                    $iui->o_e = $firstVisit->o_e;
+                    $iui->plan_management = $firstVisit->plan_management;
+                    $iui->possible_case_of_infertility = $firstVisit->possible_case_of_infertility;
+                    $iui->treatment = $firstVisit->treatment;
+                    $iui->lmp_date = $firstVisit->lmp_date;
+                    $iui->cycle_no = $cycleNo;
+                    $iui->cycle_status = 1;
+                    $iui->save();
+                    // $view = redirect('iui/history/'.encrypt($id));
+                }
+            }
             $iui = $this->IUI->wherePatientsId($id)->orderBy('id','DESC')->first();
             if($request->iui_cycle_no)
             {
@@ -1565,8 +1611,9 @@ class IUIController extends AdminController
             $iuiReportStatus = $this->IuiHistory->wherePatientsId($id)->whereCycleNo($cycleNo)->where('description->hcg->iui->status','yes')->first();
             $cycleData = $this->IUI->wherePatientsId($id)->orderBy('cycle_no','asc')->pluck('cycle_no','cycle_no')->toArray();
             $view = view('admin.iui.history',compact('medicines','patientsId','hospitalTime','date','iuiCycleNo','iuiCurrentCycleNo','iui','iuiFirstVisitData','cycleData','referenceDoctor','iuiReport','iuiReportStatus'));
-           //display old iui visit when patients is tranfer from iui to ANC or IVf
-            if(($iuifourthVisit)){
+            
+            //display old iui visit when patients is tranfer from iui to ANC or IVf
+            if(($iuifourthVisit && ($lastAppointment->category_id == 1 || $lastAppointment->category_id == 2))){
                 $ivfTransfer = $this->IVF->wherePatientsId($id)->where('created_at','>=',$iuifourthVisit->created_at)->first();
                 $ancTransfer = $this->ANC->wherePatientsId($id)->where('created_at','>=',$iuifourthVisit->created_at)->first();
                 if((empty($ivfTransfer) && empty($ancTransfer)))

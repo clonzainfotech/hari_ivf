@@ -67,14 +67,14 @@
                 @php
                     $categoryName = 'INF';
                     $cName = 'IUI';
-                    $type = $row->getPatientsDetails->getIui ? 'history' : 'create';
+                    $type = $row->getPatientsDetails->getIui || $row->checkFirstVisitExists() ? 'history' : 'create';
                 @endphp
             @endif
             @if($categoryId == '1' || $categoryId == '2' || $categoryId == '11' || $categoryId == '14')
                 @php
                     $categoryName = 'IVF';
                     $cName = 'IVF';
-                    $type = $row->getPatientsDetails->getIvf ? 'history' : 'create';
+                    $type = $row->getPatientsDetails->getIvf  || $row->checkFirstVisitExists() ? 'history' : 'create';
                 @endphp
             @endif
             @if($categoryId == '17' || $categoryId == '18' || strtolower($row->categoryDetails['name']) == 'gynec' || strtolower($row->categoryDetails['name']) == 'new gynec' || strtolower($row->categoryDetails['name']) == 'old gynec')
@@ -114,10 +114,10 @@
                         {{$row->getPatientsDetails->getAnc &&  $row->is_new_anc == 0  ? 'old-anc' : 'new-anc'}}
                     @endif
                     @if($categoryId == '4' || $categoryId == '3')
-                        {{$row->getPatientsDetails->getIui ? 'old-iui' : 'new-iui'}}
+                        {{$row->getPatientsDetails->getIui || $row->checkFirstVisitExists() ? 'old-iui' : 'new-iui'}}
                     @endif
                     @if($categoryId == '1' || $categoryId == '2' || $categoryId == '11' || $categoryId == '14')
-                        {{$row->getPatientsDetails->getIvf ? 'old-ivf' : 'new-ivf'}}
+                        {{$row->getPatientsDetails->getIvf || $row->checkFirstVisitExists() ? 'old-ivf' : 'new-ivf'}}
                     @endif
                     @if($categoryId == '22')
                         {{$row->getPatientsDetails->getIvf ? 'old-stich' : 'new-stich'}}
