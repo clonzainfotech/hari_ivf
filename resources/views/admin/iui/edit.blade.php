@@ -4718,7 +4718,8 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
             @if($visitNo == 3)
             @php
                 $lastHistoryData = json_decode($iuiHistoryData[count($iuiHistoryData)-1]['description']);
-                $husbandFactor = !empty($iuiSecondVisit->husband_factor) ? json_decode($iuiSecondVisit->husband_factor) : null;
+                $secondVisitHusbandFactor = json_decode($iuiSecondVisit->husband_factor);
+                $husbandFactor = !empty($iuiSecondVisit->husband_factor) && (!empty($secondVisitHusbandFactor->sperm_count) || !empty($secondVisitHusbandFactor->remark) || !empty($secondVisitHusbandFactor->motility)) ? json_decode($iuiSecondVisit->husband_factor) : json_decode($iuiFirstVisit->husband_factor);
             @endphp
             <div class=" col-md-12 follicular_table_print">
                 <div class="row mb-15 mb-5 do_print">{{--mb-15 is used in print--}}

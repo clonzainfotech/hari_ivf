@@ -195,7 +195,9 @@
             $historyLmddateData = null;
             $historyLmddateDate = null;
             $historyLmdDiff = null;
-            $husbandFactor = json_decode($ivfSecondHistory->husband_factor);
+            $secondVisitHusbandFactor = json_decode($ivfSecondHistory->husband_factor);
+            $husbandFactor = !empty($ivfSecondHistory->husband_factor) && (!empty($secondVisitHusbandFactor->sperm_count) || !empty($secondVisitHusbandFactor->remark) || !empty($secondVisitHusbandFactor->motility)) ? json_decode($ivfSecondHistory->husband_factor) : json_decode($ivfVisit->husband_factor);
+
             if($LMPDate){
             
 
@@ -262,7 +264,7 @@
                                     <th class="font-15"><span class="font-bold ">LMP Date: </span>{{\Carbon\Carbon::parse($historyLmddateDate)->format('D d M Y')}}</th>
                                     <th class="font-15"><span class="font-bold ">Weight: </span>{{isset($lastCycleData->weight) && !empty($lastCycleData->weight) ? $lastCycleData->weight.' kg' : ''}}</th>
                                 </tr>
-                                @if(!empty($husbandFactor) && !empty($husbandFactor->sperm_count) && !empty($husbandFactor->motility))
+                                @if(!empty($husbandFactor) && (!empty($husbandFactor->sperm_count) || !empty($husbandFactor->motility)))
                                 <tr>
                                     <th class="font-15"><span class="font-bold ">Male Age : </span>{{$husbandFactor->age}}</th>
                                     <th class="font-15"><span class="font-bold ">Sperm Count : </span>{{$husbandFactor->sperm_count}}</th>
@@ -1963,7 +1965,7 @@
                                                 <span class="visit-lable-value">{{$historySemenFreezing}}</span>
                                             </div>
                                         @endif
-                                        @if(!empty($husbandFactor) && !empty($husbandFactor->sperm_count) && !empty($husbandFactor->motility))
+                                        @if(!empty($husbandFactor) && (!empty($husbandFactor->sperm_count) || !empty($husbandFactor->remark) || !empty($husbandFactor->motility)))
                                             <div class="mb-2">
                                                 <span class="visit-lable">Male Age : </span>
                                                 <span class="visit-lable-value">{{$husbandFactor->age}}</span>
@@ -2000,7 +2002,7 @@
                                                 <span class="visit-lable-value">{{$historyEmbroyReady}}</span>
                                             </div>
                                         @endif
-                                        @if(!empty($husbandFactor) && !empty($husbandFactor->sperm_count) && !empty($husbandFactor->motility))
+                                        @if(!empty($husbandFactor) && (!empty($husbandFactor->sperm_count) || !empty($husbandFactor->remark) || !empty($husbandFactor->motility)))
                                         <div class="mb-2">
                                             <span class="visit-lable">Sperm Count : </span>
                                             <span class="visit-lable-value">{{$husbandFactor->sperm_count}}</span>
