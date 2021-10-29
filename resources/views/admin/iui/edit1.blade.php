@@ -307,6 +307,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         {{Form::radio("oh[upt_type]",'positive',!empty($oh->upt_type) && $oh->upt_type  == 'positive' ? true : false,[
                                             'id'=>'positive',
                                             'class'=>'upt-type',
+                                            'disabled'
                                         ])}}
                                         <label for="positive">
                                             Positive
@@ -315,6 +316,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         {{Form::radio("oh[upt_type]",'negative',!empty($oh->upt_type) && $oh->upt_type  == 'negative' ? true : false,[
                                             'id'=>'negative',
                                             'class'=>'upt-type',
+                                            'disabled'
                                         ])}}
                                         <label for="negative">
                                             Negative
@@ -4701,12 +4703,12 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-addon">No.Follicle : &nbsp;</span>
-                            {{Form::number("data[no_follicle]",!empty($historyData->no_follicle) ? $historyData->no_follicle : null,['class'=>'form-control follicle', $ovalution == 'yes' ? 'disabled' : null])}}
-                            @if($ovalution == 'yes')
+                            {{Form::number("data[no_follicle]",!empty($historyData->no_follicle) ? $historyData->no_follicle : null,['class'=>'form-control follicle'])}}
+                            {{-- @if($ovalution == 'yes')
                                 {{Form::hidden('data[no_follicle]',!empty($historyData->no_follicle) ? $historyData->no_follicle : null)}}
                                 {{Form::hidden('data[ovalution]',!empty($historyData->ovalution) ? $historyData->ovalution : null)}}
                                 {{Form::hidden('data[follow_up]',!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : null)}}
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                     <div class="col-md-1 pr-0">
@@ -4720,7 +4722,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <label for="ovalution_yes">
                                 Yes
                             </label>
-                            {{Form::radio("data[ovalution]",'no',!empty($historyData->ovalution) && $historyData->ovalution == 'no' ? true : false,['class'=>'ovalution-type','id'=>'ovalution_no',$ovalution == 'yes' ? 'disabled' : null])}}
+                            {{Form::radio("data[ovalution]",'no',!empty($historyData->ovalution) && $historyData->ovalution == 'no' ? true : false,['class'=>'ovalution-type','id'=>'ovalution_no'])}}
                             <label for="ovalution_no">
                                 No
                             </label>
@@ -4732,7 +4734,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             @if(!empty($historyData->follow_up))
                                 {{Form::hidden('data[new_follow_up]',$historyData->follow_up)}}
                             @endif
-                            {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '.$hcgIuiDate,$ovalution == 'yes' || !empty($historyData->follow_up) ? 'disabled' : null])}}
+                            {{-- {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '.$hcgIuiDate,$ovalution == 'yes' || !empty($historyData->follow_up) ? 'disabled' : null])}} --}}
+                            {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '])}}
                         </div>
                         <span class="follow-date-msg form-error-msg"></span>
                     </div>
@@ -5084,6 +5087,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         {{Form::radio("data[upt_type]",'positive',!empty($historyData->upt_type) && $historyData->upt_type == 'positive' ? true : false,[
                                             'id'=>'positive',
                                             'class'=>'upt-type',
+                                            'disabled'
                                         ])}}
                                         <label for="positive">
                                             Positive
@@ -5092,6 +5096,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         {{Form::radio("data[upt_type]",'weak_positive',!empty($historyData->upt_type) && $historyData->upt_type == 'weak_positive' ? true : false,[
                                             'id'=>'weak_positive',
                                             'class'=>'upt-type',
+                                            'disabled'
                                         ])}}
                                         <label for="weak_positive">
                                             Weak Positive
@@ -5100,6 +5105,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         {{Form::radio("data[upt_type]",'negative',!empty($historyData->upt_type) && $historyData->upt_type == 'negative' ? true : false,[
                                             'id'=>'negative',
                                             'class'=>'upt-type',
+                                            'disabled'
                                         ])}}
                                         <label for="negative">
                                             Negative
@@ -5402,12 +5408,12 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="radio is-conceived">
-                                        {{Form::radio("data[result]",'fail',!empty($historyData->result) && $historyData->result == 'fail' ? true : false,['id'=>'fail','class'=>'r-type'])}}
+                                        {{Form::radio("data[result]",'fail',!empty($historyData->result) && $historyData->result == 'fail' ? true : false,['id'=>'fail','class'=>'r-type','disabled'])}}
                                         <label for="fail">
                                             Fail
                                         </label>
 
-                                        {{Form::radio("data[result]",'consive',!empty($historyData->result) && $historyData->result == 'consive' ? true : false,['id'=>'consive','class'=>'r-type'])}}
+                                        {{Form::radio("data[result]",'consive',!empty($historyData->result) && $historyData->result == 'consive' ? true : false,['id'=>'consive','class'=>'r-type','disabled'])}}
                                         <label for="consive">
                                             Consive
                                         </label>

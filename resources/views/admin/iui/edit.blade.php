@@ -4754,11 +4754,11 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         @if(!empty($husbandFactor) && !empty($husbandFactor->sperm_count) && !empty($husbandFactor->motility))
                             <div class="mb-3">
                                 <span class="visit-lable">Male Age :- </span> 
-                                <span class="visit-lable-value">{{!empty($husbandFactor) ? $husbandFactor->age : ''}}</span>
+                                <span class="visit-lable-value">{{!empty($husbandFactor) && isset($husbandFactor->age) ? $husbandFactor->age : ''}}</span>
                             </div>
                             <div class="mb-3">
                                 <span class="visit-lable">Male Factor Remark :- </span> 
-                                <span class="visit-lable-value">{{!empty($husbandFactor) ? $husbandFactor->remark : ''}}</span>
+                                <span class="visit-lable-value">{{!empty($husbandFactor) && isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</span>
                             </div>
                         @endif
                     </div>
@@ -4858,7 +4858,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
 
                                
                                 @foreach($iuiHistoryData as $key=>$row)
-                                    @if($row->visit != 4)
+                                    {{-- @if($row->visit != 4) --}}
                                         @php
                                             $iuiPrevVisit = IuiHistory::where('patients_id',$row->patients_id)->where('created_at','<',$row->created_at)->orderBy('id','DESC')->first();
                                             if($iuiPrevVisit){
@@ -4867,7 +4867,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             }
                                             $data = json_decode($row->description);
                                             $agentData = !empty($data->plan->inducing_agent) ? $data->plan->inducing_agent : [];
-                                            $lmpDate = \Carbon\Carbon::parse($data->lmp->date)->format('d-m-Y');
+                                            $lmpDate = !isset($data->lmp->date) ?\Carbon\Carbon::parse($iuiSecondVisitData->lmp->date)->format('d-m-Y') : \Carbon\Carbon::parse($data->lmp->date)->format('d-m-Y');
                                             // $lmpDate = \Carbon\Carbon::parse($data->new_follow_up)->format('d-m-Y');
                                             $createdAt = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
                                             $appointmentDate = !empty($data->new_follow_up) ? \Carbon\Carbon::parse($data->new_follow_up)->format('d-m-Y') : \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
@@ -5056,7 +5056,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             </td>
                                             <td class="editStudyReport">
                                                 {{!empty($data->remark) ? $data->remark : ''}}
-                                        {{isset($data->investigation_extra) && !empty($data->investigation_extra) ? ' Other Report :'.$data->investigation_extra : ''}}
+                                            {{isset($data->investigation_extra) && !empty($data->investigation_extra) ? ' Other Report :'.$data->investigation_extra : ''}}
 
                                             </td>
                                             <td class="editStudyReport text-center">
@@ -5148,7 +5148,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                     @endforeach
                                             @endif
                                         @endif
-                                    @endif
+                                    {{-- @endif --}}
                                 @endforeach
                                 
                                 @php

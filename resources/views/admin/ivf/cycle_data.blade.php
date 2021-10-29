@@ -195,7 +195,7 @@
             $historyLmddateData = null;
             $historyLmddateDate = null;
             $historyLmdDiff = null;
-            $secondVisitHusbandFactor = json_decode($ivfSecondHistory->husband_factor);
+            $secondVisitHusbandFactor = !empty($ivfSecondHistory->husband_factor) ? json_decode($ivfSecondHistory->husband_factor) : null;
             $husbandFactor = !empty($ivfSecondHistory->husband_factor) && (!empty($secondVisitHusbandFactor->sperm_count) || !empty($secondVisitHusbandFactor->remark) || !empty($secondVisitHusbandFactor->motility)) ? json_decode($ivfSecondHistory->husband_factor) : json_decode($ivfVisit->husband_factor);
 
             if($LMPDate){
@@ -3043,13 +3043,15 @@
                 <div class="body">
                     <div class="col-md-12 col-lg-12">
                         {{Form::open(['class'=>'form ivf','files'=>'true','id'=>'ivf-form'])}}
-                        <h6>Husband Factor</h6>
+                        
                             <div class="row">
                                 
                                 @php
                                     $husbandFactor = json_decode($ivfVisit->husband_factor);
                                 @endphp
                                 @if(!empty($husbandFactor) && !empty($husbandFactor->sperm_count) && !empty($husbandFactor->motility))
+                                    <h6>Husband Factor</h6>
+                                    <br>
                                     <div class="col-md-3"><span class="font-bold">Remark : </span>{{isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</div>
                                     <div class="col-md-3">
                                         <span class="font-bold">Age : </span>{{$husbandFactor->age}}

@@ -1012,7 +1012,6 @@ class IUIController extends AdminController
             }
             $iui->created_at = !empty($iui->created_at) ? $iui->created_at : Carbon::now()->format('Y-m-d H:i:s');
             $iui->created_by = Auth::user()->id;
-            // dd($iui);
             if($request->iui_history_id)
             {
                 $editIvf = $this->IuiHistory->find($request->iui_history_id);
