@@ -76,10 +76,10 @@
                     <!-- Nav tabs -->
                     <div class="col-md-12">
                             <div class="row">
-                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="col-lg-3 col-md-6 col-sm-6">
                                     <input type="text" class="form-control daterange" placeholder="Select Date">
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="col-lg-3 col-md-6 col-sm-6">
                                     {{Form::select('patient_id',$patientsData,'',[
                                         'class'=>'form-control select-padding-0 patient-id',
                                         'placeholder'=>'Select Patient',
@@ -87,7 +87,7 @@
                                         'data-live-search' => 'true'
                                     ])}}
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <ul class="nav nav-tabs padding-0">
                                         <div class="input-group">
                                             <input type="text" class="form-control search-mobile-number" placeholder="Search by Word" readonly="readonly" onfocus="this.removeAttribute('readonly')">
@@ -96,6 +96,9 @@
                                             </span>
                                         </div>
                                     </ul>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-6 ">
+                                    <input type="text" class="form-control usg_reason" placeholder="Search by Usg Reason" readonly="readonly" onfocus="this.removeAttribute('readonly')">
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -130,6 +133,7 @@
                                         'data-live-search' => 'true'
                                     ])}}
                                 </div>
+                               
                             </div>
                         </div>
                     <!-- Tab panes -->
@@ -619,10 +623,11 @@
         var referenceDoctorId = '';
         var hospitalDoctorId = '';
         var seenByDoctorId = '';
+        var usg_reason = '';
         date = $('.daterange').val();
 
         var selectedAppointmentId = '';
-        qstring = 'page=' + page + '&patient_id=' + patientId + '&date=' + date + '&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status;
+        qstring = 'page=' + page + '&patient_id=' + patientId + '&date=' + date + '&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&usg_reason='+usg_reason;
 
 
 
@@ -643,7 +648,7 @@
 
             $('.daterange').change(function(){
                 date = $(this).val();
-                qstring = 'page=' + page + '&patient_id=' + patientId + '&date=' + date + '&reference_doctor_id=' + referenceDoctorId + '&hospital_doctor_id=' + hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status;
+                qstring = 'page=' + page + '&patient_id=' + patientId + '&date=' + date + '&reference_doctor_id=' + referenceDoctorId + '&hospital_doctor_id=' + hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
@@ -652,7 +657,7 @@
             $(document).on('click', '.pagination a',function(event){
                 event.preventDefault();
                 page=$(this).attr('href').split('page=')[1];
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
@@ -660,14 +665,14 @@
                 e.preventDefault();
                 $('.daterange').val('');
                 date = $('.daterange').val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
             $(document).on('click','.btn-success',function(e){
                 e.preventDefault();
                 date = $('.daterange').val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
@@ -685,41 +690,46 @@
                 if ($(this).prop("checked")) {
                     usg_status = 'yes';
                 }
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&usg_reason='+usg_reason;
+                getAppointmentData(qstring);
+            });
+            $(document).on('keyup','.usg_reason',function(){
+                usg_reason = $(this).val();
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
             $(document).on('keyup','.search-mobile-number',function(){
                 search = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
             $(document).on('change','select.reference-doctor',function(){
                 referenceDoctorId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
             $(document).on('change','select.hospital-doctor',function(){
                 hospitalDoctorId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
             $(document).on('change','select.seen-by-doctor',function(){
                 seenByDoctorId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
             $(document).on('change','select.patient-id',function(){
                 patientId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
             $(document).on('change', 'select.category', function () {
                 categoryId = $(this).val();
-                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
 
@@ -795,7 +805,7 @@
                         $("input[name=daterangepicker_end]").val(data.date);
                         $("input[name=daterangepicker_start]").val(data.date);
                         date = $('.daterange').val();
-                        qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                        qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                         $('#next-appointment-modal').modal('hide');
                         showNotification('bg-blue', 'Next appointment successfully added.', 'bottom', 'right', "", "");
                         getAppointmentData(qstring);
@@ -815,7 +825,7 @@
             });
 
             $(document).on('click', '.print-appointmentprint', function () {
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&isprint=1'+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&isprint=1'+'&usg_status='+usg_status+'&seen_by_doctor='+seenByDoctorId+'&usg_reason='+usg_reason;
                 getAppointmentData(qstring);
             });
         });

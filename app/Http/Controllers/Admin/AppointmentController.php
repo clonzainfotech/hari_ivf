@@ -70,7 +70,7 @@ class AppointmentController extends AdminController
                 // search text
 
                 $patientId = $request->patient_id;
-
+               
                 if($patientId) {
                     $appointment = $appointment->where(function($query) use($patientId) {
                         $query
@@ -124,6 +124,18 @@ class AppointmentController extends AdminController
                         $patientsData = $this->getPatients($pId);
                         $appointment = $appointment->whereBetween('date', [$startDate, $endDate]);
                     }
+                }
+                if(!empty($request->usg_reason))
+                {
+                    $usgReason = $request->usg_reason;
+                    $appIds = $appointment->pluck('id','id');
+                    $usgReasonIds = collect($appointment->get())->map(function ($query) use ($usgReason) {
+                        if(substr($query->getUsgReason(),0,strlen($usgReason)) ===  $usgReason)
+                        {
+                            return $query;
+                        }
+                    });
+                    $appointment = $appointment->whereIn('id',$usgReasonIds->pluck('id','id'));
                 }
                 if($request->date && $startDate == $nowDate && $endDate == $nowDate){
                     $appointment = $appointment
