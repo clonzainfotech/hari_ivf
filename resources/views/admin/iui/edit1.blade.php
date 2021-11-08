@@ -2863,8 +2863,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 $left = in_array('left',!empty($oe->ovary->type) ? $oe->ovary->type : []) ? '' : 'd-none';
                                 $right = in_array('right',!empty($oe->ovary->type) ? $oe->ovary->type : []) ? '' : 'd-none';
                                 $afcsOption = isset($mh->lmd_date_diff) && in_array($mh->lmd_date_diff,['2','3','4']) ? '' : 'd-none';
-                                $ovaryLeftType = !empty($oe->ovary->left->type) && $oe->ovary->left->type == '2' ? '' : 'd-none';
-                                $ovaryRightType = !empty($oe->ovary->right->type) && $oe->ovary->right->type == '2' ? '' : 'd-none';
+                                $ovaryLeftType = isset($oe->ovary->left->updated_details) && !empty($oe->ovary->left->updated_details) ? '' : 'd-none';
+                                $ovaryRightType = isset($oe->ovary->right->updated_details) && !empty($oe->ovary->right->updated_details) ? '' : 'd-none';
                             @endphp
                             <div class="{{'row tvs-details '.$tvsType}}">
                                 <div class="col-md-1"></div>
@@ -2883,7 +2883,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 </div>
                                 <div class="{{'col-md-3 right-details'}}">
                                     <div class="form-group">
-                                        {{Form::select("oe[ovary][right][type]",['1'=>'Normal','2'=>"Abnormal"],!empty($oe->ovary->right->type) ? $oe->ovary->right->type : null,['class'=>'form-control select-padding-0 abnormal','data-type'=>'ovary-right-abnormal-type'])}}
+                                        {{Form::select("oe[ovary][right][type]",['1'=>'Normal','2'=>"Abnormal"],isset($oe->ovary->right->updated_details) && !empty($oe->ovary->right->updated_details) ? '2' : '1',['class'=>'form-control select-padding-0 abnormal','data-type'=>'ovary-right-abnormal-type'])}}
                                     </div>
                                 </div>
                                 <div class="{{'col-md-2 afcs-details '.$afcsOption}}">
@@ -2905,6 +2905,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 'class'=>'form-control co-value co_value_data oe_ovary_right_details',
                                                 'placeholder'=>'Abnormal Details',
                                                 'id' => 'oe_ovary_right_details',
+                                                'data-type'=>'oe',
                                                 'multiple'=>true
                                             ])}}
                                         </div>
@@ -2938,7 +2939,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 </div>
                                 <div class="{{'col-md-3 left-details'}}">
                                     <div class="form-group">
-                                        {{Form::select("oe[ovary][left][type]",['1'=>'Normal','2'=>"Abnormal"],!empty($oe->ovary->left->type) ? $oe->ovary->left->type : null,[
+                                        {{Form::select("oe[ovary][left][type]",['1'=>'Normal','2'=>"Abnormal"],isset($oe->ovary->left->updated_details) && !empty($oe->ovary->left->updated_details) ? '2' : '1',[
                                             'class'=>'form-control select-padding-0 abnormal',
                                             'data-type'=>'ovary-left-abnormal-type'
                                         ])}}
@@ -2963,6 +2964,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                 'class'=>'form-control co-value co_value_data oe_ovary_left_details',
                                                 'placeholder'=>'Abnormal Details',
                                                 'id' => 'oe_ovary_left_details',
+                                                'data-type'=>'oe',
                                                 'multiple'=>true
                                             ])}}
                                         </div>

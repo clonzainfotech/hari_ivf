@@ -2812,6 +2812,7 @@
                                                                 'class'=>'form-control co-value co_value_data history-oe-ovary-right-details',
                                                                 'placeholder'=>'Abnormal Details',
                                                                 'id' => 'oe_ovary_right_details',
+                                                                'data-type'=>'oe',
                                                                 'multiple'=>true
                                                             ])}}
                                                         </div>
@@ -2858,6 +2859,7 @@
                                                                 'class'=>'form-control co-value co_value_data history-oe-ovary-left-details',
                                                                 'placeholder'=>'Abnormal Details',
                                                                 'id' => 'oe_ovary_left_details',
+                                                                'data-type'=>'oe',
                                                                 'multiple'=>true
                                                             ])}}
                                                         </div>

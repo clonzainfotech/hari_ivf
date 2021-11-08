@@ -2873,6 +2873,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 'class'=>'form-control co-value co_value_data oe_ovary_right_details',
                                                 'placeholder'=>'Abnormal Details',
                                                 'id' => 'oe_ovary_right_details',
+                                                'data-type'=>'oe',
                                                 'multiple'=>true
                                             ])}}
                                         </div>
