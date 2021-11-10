@@ -3248,111 +3248,83 @@ class IVFController extends AdminController
         $investigationReport = $this->allInvestigationReport();
         $planData = ['1'=>'Self','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
         $pt_view = 0;
-        $isTableView = '0';
         $ivfCycleData = null;
         $patientId = decrypt($patient_id);
         $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
         
         $isTableView = 0;
         $isAppointmentView = true; // for bootstrap file duplication
-            $ivf = $this->IVF->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
-            $isIvfHistory = '1';
-            $ivfType = 1;
-            $isExtraVisit = 0;
-            $plan = decrypt($plan);
-            $cycleNo = decrypt($cycleNo);
+        $ivf = $this->IVF->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
+        $isIvfHistory = '1';
+        $isExtraVisit = 0;
+        $plan = decrypt($plan);
+        $cycleNo = decrypt($cycleNo);
+        $ivfHistory = $this->IvfHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
+        $ivfSecondVisit = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->where('cycle_no',$cycleNo)->where('visit',2)->first();
+        $ivfSecondVisitData = json_decode($ivfSecondVisit->description);
+        if($ivfHistory)
+        {
+            $isIvfHistory = '2';
             $ivfHistory = $this->IvfHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
-            $ivfSecondVisit = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->where('cycle_no',$cycleNo)->where('visit',2)->first();
-            $ivfSecondVisitData = json_decode($ivfSecondVisit->description);
-            if($ivfHistory)
+            if($ivfHistory && ($ivfHistory->plan != $plan || ($ivfHistory->plan == $plan && $ivfHistory->cycle_no != $cycleNo)))//display all plan visits in one page
             {
-                $isIvfHistory = '2';
-                $ivfHistory = $this->IvfHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
-                if($ivfHistory && ($ivfHistory->plan != $plan || ($ivfHistory->plan == $plan && $ivfHistory->cycle_no != $cycleNo)))//display all plan visits in one page
-                {
-                    $preview = 0;
-                }
-                $ivf = $ivfHistory;
-                $historyData = json_decode($ivf->description);
-                $doseData = $this->Dose->pluck('name','name');
+                $preview = 0;
             }
-            //find extra visit after 1st visit
-            $firstVisit = $this->IVF->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
-            if($firstVisit)
+            $ivf = $ivfHistory;
+            $historyData = json_decode($ivf->description);
+            $doseData = $this->Dose->pluck('name','name');
+        }
+        $ivfExtraVisit = $this->IvfExtraVisit->where('patient_id',$patientId)->where('cycle_no',$cycleNo)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
+        if(!empty($ivfExtraVisit))
+        {
+            $isExtraVisit = 1; 
+            return View::make('admin.ivf.preview', compact('ivfSecondVisitData','investigationReport','ivf', 'historyData', 'isIvfHistory','doseData','remark','transferDate','currentdate','lastAppointmentData','isExtraVisit','ivfExtraVisit','ivfPatients','isAppointmentView'))->render();
+        }
+        //ivf and ivf-history visit
+        if($ivf)
+        {
+            $extraVisit[] = 0;
+            $ivfCycleData = null;
+            if(!isset($ivf->visit))
             {
-                
-                $ivfExtra = $this->IvfExtraVisit->where('patient_id',$patientId)->where('cycle_no',$cycleNo)->where('created_at','>',$firstVisit->created_at)->get();
-                if(!empty($ivfExtra))
+                $preview = 0;
+                $isTableView = 0;
+            }
+            if($ivf->visit >= 2)
+            {
+                $ivfCycleData = $this->IvfHistory->wherePatientsId($patientId)->whereCycleNo($ivf->cycle_no)->wherePlan($ivf->plan)->get();
+                $isTableView = 1;
+                $displayPlan = $ivfCycleData[0]->plan;
+                $displayCycle = $ivfCycleData[0]->cycle_no;
+                //ivf pickUP report
+                if($ivf->plan == 1 && $preview == 2)
                 {
-                    foreach($ivfExtra as $ivfExtraVisit)
+                    $ivfReport = $this->IvfPlanReport->where('patients_id',$patientId)->whereCycleNo($ivf->cycle_no)->wherePlan($ivf->plan)->first();
+                    if($ivfReport)
                     {
-                        $isExtraVisit = 1; 
-                        return View::make('admin.ivf.preview', compact('ivfSecondVisitData','investigationReport','ivf', 'historyData', 'isIvfHistory','doseData','remark','transferDate','currentdate','lastAppointmentData','isExtraVisit','ivfExtraVisit','ivfPatients','isAppointmentView'))->render();
-
+                        $pt_view = 0;
+                        $printPreview = 0;
+                        return View::make('admin.ivf.ivf_plan_report_print', compact('ivfReport','pt_view','isAppointmentView','printPreview'))->render();
                     }
+                }
+                //ivf Transfer Report
+                if($preview == 2)
+                {
                     
+                    $transferReport = $this->IvfTransferReport->where('patient_id',$patientId)->where('cycle_no',$ivf->cycle_no)->wherePlan($ivf->plan)->first();
+                    if($transferReport)
+                    {
+                        $pt_view = 0;
+                        $printPreview = 0;
+                        return View::make('admin.ivf.transfer_report', compact('transferReport','pt_view','printPreview'))->render();
+                    }
                 }
+                $preview++;
             }
-            // extra visit after transfer
-            $ivfTransferHistory = $this->IvfHistory->where('patients_id',$patientId)->where('description->is_transfer','yes')->where('plan',$plan)->where('cycle_no',$cycleNo)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
-            if($ivfTransferHistory)
+            if($preview <= 1)
             {
-                $ivfExtra = $this->IvfExtraVisit->where('patient_id',$patientId)->where('cycle_no',$cycleNo)->where('created_at','>',$ivfTransferHistory->created_at)->get();
-                if(!empty($ivfExtra))
-                {
-                    foreach($ivfExtra as $ivfExtraVisit)
-                    {
-                        $isExtraVisit = 1; 
-                        return View::make('admin.ivf.preview', compact('ivfSecondVisitData','investigationReport','ivf', 'historyData', 'isIvfHistory','doseData','remark','transferDate','currentdate','lastAppointmentData','isExtraVisit','ivfExtraVisit','ivfPatients','isAppointmentView'))->render();
-                    }
-                }
+                return View::make('admin.ivf.preview', compact('ivfSecondVisitData','preview','isTableView','ivfCycleData','investigationReport','ivf', 'historyData', 'isIvfHistory','doseData','remark','transferDate','currentdate','lastAppointmentData','isAppointmentView'))->render();
             }
-            //ivf and ivf-history visit
-            if($ivf)
-            {
-                $extraVisit[] = 0;
-                $ivfCycleData = null;
-                if(!isset($ivf->visit))
-                {
-                    $preview = 0;
-                    $isTableView = 0;
-                }
-                if($ivf->visit >= 2)
-                {
-                    $ivfCycleData = $this->IvfHistory->wherePatientsId($patientId)->whereCycleNo($ivf->cycle_no)->wherePlan($ivf->plan)->get();
-                    $isTableView = 1;
-                    $displayPlan = $ivfCycleData[0]->plan;
-                    $displayCycle = $ivfCycleData[0]->cycle_no;
-                    //ivf pickUP report
-                    if($ivf->plan == 1 && $preview == 2)
-                    {
-                        $ivfReport = $this->IvfPlanReport->where('patients_id',$patientId)->whereCycleNo($ivf->cycle_no)->wherePlan($ivf->plan)->first();
-                        if($ivfReport)
-                        {
-                            $pt_view = 0;
-                            $printPreview = 0;
-                            return View::make('admin.ivf.ivf_plan_report_print', compact('ivfReport','pt_view','isAppointmentView','printPreview'))->render();
-                        }
-                    }
-                    //ivf Transfer Report
-                    if($preview == 2)
-                    {
-                        
-                        $transferReport = $this->IvfTransferReport->where('patient_id',$patientId)->where('cycle_no',$ivf->cycle_no)->wherePlan($ivf->plan)->first();
-                        if($transferReport)
-                        {
-                            $pt_view = 0;
-                            $printPreview = 0;
-                            return View::make('admin.ivf.transfer_report', compact('transferReport','pt_view','printPreview'))->render();
-                        }
-                    }
-                    $preview++;
-
-                }
-                if($preview <= 1)
-                {
-                    return View::make('admin.ivf.preview', compact('ivfSecondVisitData','preview','isTableView','ivfCycleData','investigationReport','ivf', 'historyData', 'isIvfHistory','doseData','remark','transferDate','currentdate','lastAppointmentData','isAppointmentView'))->render();
-                }
-            }
+        }
     }
 }

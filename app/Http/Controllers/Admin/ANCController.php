@@ -1844,18 +1844,14 @@ class ANCController extends AdminController
         {
             $p_info = !empty($ancData->patients_info) ? json_decode($ancData->patients_info) : null;
             $weight = !empty($p_info->weight) ? $p_info->weight : null;
-            // $anc_id = $ancData->id;
             $ancFirstVisitData = $ancData;
         }
-        
-
         if(!$ancData)
         {
             $ancData = $this->AncHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$historyDate)->first();
             $h_o = !empty($ancData->h_o) ? json_decode($ancData->h_o) : null;
             $weight = !empty($h_o->weight) ? $h_o->weight : null;
             $ancFirstVisitData = $this->ANC->where('patients_id',$patientId)->where('id',$ancData->anc_id)->first();
-            // $anc_id = $ancData->anc_id;
         }
         $date = Carbon::parse($historyDate)->format('d-m-y');
         $upt = json_decode($ancFirstVisitData->patients_obstratics, true);
@@ -1874,12 +1870,10 @@ class ANCController extends AdminController
         if(((!empty($usg['nt_scan']) && $usg['nt_scan'] == $oe_followUp) || (!empty($usg['early_scan']) && $usg['early_scan'] == $oe_followUp) || (!empty($usg['anomalies_miles']) && $usg['anomalies_miles'] == $oe_followUp) || (!empty($usg['growth_scan']) && $usg['growth_scan'] == $oe_followUp))){
             $usgStatus = 1;
         }
-
         if(!empty($upt['upt_type']) && $upt['upt_type'] == 'positive' && isset($oe['utdata'][1]['ut_type']) && $oe['utdata'][1]['ut_type'] == 'g-sac' && (strtolower($oe['utdata'][1]['oe_ut_sac']) == 'no' || strtolower($oe['utdata'][1]['oe_ut_sac_2']) == 'no')) {
             $isGsac = true;
         }
         $ancAutoRemark = $this->getAutoRemark($patientId,$anc_id);
-
         return View::make('admin.anc.preview', compact('ancFirstVisitData','investigationReport','weight','personal_past_history_type','personal_history_type','placenta', 'ancData','ancHistory','isNextAppointment','nextAppointmentDate','lmdDate','usgEddDate','eddDate', 'isGsac', 'isFirstVisit','currentdate','previousAnc','weekData','usgStatus','date','patients','ancAutoRemark'))->render();
     }
 

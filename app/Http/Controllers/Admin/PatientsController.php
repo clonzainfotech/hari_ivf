@@ -547,18 +547,25 @@ class PatientsController extends AdminController
     {
         $pId = decrypt($patient_id);
         $patients = $this->OpdPatients->find($pId);
+        $doctor = $this->getDoctor();
+        $referenceDoctor = $doctor['referenceDoctor'];
         // $appointments = $this->Appointment->where('patients_id',$pId)->where('is_done','1')->orderBy('date','desc')->get();
         $anc = $this->ANC->select('created_at',DB::raw("5 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
         $ancHistory = $this->AncHistory->select('created_at',DB::raw("6 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
-        $iui = $this->IUI->select('created_at',DB::raw("3 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
+        $iui = $this->IUI->select('created_at',DB::raw("3 as category_id"))->where('patients_id',$pId)->groupBy('patients_id')->pluck('category_id','created_at')->toArray();
         $iuiHistory = $this->IuiHistory->select('created_at',DB::raw("4 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
+        $iuiReport = $this->IUIReport->select('created_at',DB::raw("4 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
+        $iuiExtraVisit = $this->IuiExtraVisit->select('created_at',DB::raw("4 as category_id"))->where('patient_id',$pId)->pluck('category_id','created_at')->toArray();
         $ivf = $this->IVF->select('created_at',DB::raw("1 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
         $ivfHistory = $this->IvfHistory->select('created_at',DB::raw("2 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
+        $ivfExtraVisit = $this->IvfExtraVisit->select('created_at',DB::raw("4 as category_id"))->where('patient_id',$pId)->pluck('category_id','created_at')->toArray();
+
         // $ivfTransfer = $this->IvfTransferReport->select('created_at',DB::raw("2 as category_id"))->where('patient_id',$pId)->pluck('category_id','created_at')->toArray();
         // $ivfplanReport = $this->IvfPlanReport->select('created_at',DB::raw("2 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
         // $history = [];
         // $allVisit = [];
-        $allVisit = array_merge($anc,$ancHistory,$iui,$iuiHistory,$ivf,$ivfHistory);
+        $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
+        $allVisit = array_merge($anc,$ancHistory,$iui,$iuiHistory,$iuiExtraVisit,$iuiReport,$ivf,$ivfHistory,$ivfExtraVisit);
         krsort($allVisit);
         // $preview = 0;
         foreach($allVisit as $date => $category_id)
@@ -581,12 +588,12 @@ class PatientsController extends AdminController
                     if (in_array('transfer',$collectionData))
                     {
                         // $preview = 0;
-                        $history[$created_at]['IVF'] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$plan,$preview);
+                        $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$plan,$preview);
                         // $history[$created_at] = $preview;
                     }
                     else
                     {
-                        $history[$created_at]['IVF'] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$plan,$preview);
+                        $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$plan,$preview);
                         // $history[$created_at] = $preview;
                     }
                 }
@@ -596,7 +603,7 @@ class PatientsController extends AdminController
                     $preview = 0;
                     $created_at = Carbon::parse($ivf->created_at)->format('Y-m-d H:i');
                     // $history[$created_at] = $preview;
-                    $history[$created_at]['IVF'] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$plan,$preview);
+                    $history[$created_at]['IVF'][''] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$plan,$preview);
                 }
             }
             // //iui
@@ -609,7 +616,16 @@ class PatientsController extends AdminController
                     $cycle_no = encrypt($iui->cycle_no);
                     $preview = $iui->visit - 1;
                     $created_at = Carbon::parse($iui->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IUI'] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$preview,$category_id);
+                    $history[$created_at]['IUI'][$iui->cycle_no] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$preview,$category_id);
+                    // $history[$created_at] = $preview;
+                }
+                $iuiExtra = $this->IuiExtraVisit->where('patient_id',$pId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$date)->first();
+                if($iuiExtra)
+                {
+                    $cycle_no = encrypt($iuiExtra->cycle_no);
+                    $preview = 0;
+                    $created_at = Carbon::parse($iuiExtra->created_at)->format('Y-m-d H:i');
+                    $history[$created_at]['IUI'][$iuiExtra->cycle_no] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$preview,$category_id);
                     // $history[$created_at] = $preview;
                 }
                 $iui = $this->IUI->where('patients_id',$pId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$date)->first();
@@ -618,7 +634,7 @@ class PatientsController extends AdminController
                     $cycle_no = encrypt($iui->cycle_no);
                     $preview = 0;
                     $created_at = Carbon::parse($iui->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IUI'] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$preview,$category_id);
+                    $history[$created_at]['IUI'][''] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($created_at,$patient_id,$cycle_no,$preview,$category_id);
                     // $history[$created_at] = $preview;
                 }
             }
@@ -630,19 +646,19 @@ class PatientsController extends AdminController
                 if($anc)
                 {
                     $created_at = Carbon::parse($anc->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['ANC'] = app('App\Http\Controllers\Admin\ANCController')->getAncAppointmentWiseVisit($created_at,$patient_id,$anc->anc_id);
+                    $history[$created_at]['ANC'][''] = app('App\Http\Controllers\Admin\ANCController')->getAncAppointmentWiseVisit($created_at,$patient_id,$anc->anc_id);
                     // $history[$created_at] = $created_at;
                 }
                 $anc = $this->ANC->where('patients_id',$pId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d %H:%i'))"),$date)->first();
                 if($anc && $category_id == 5)
                 {
                     $created_at = Carbon::parse($anc->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['ANC'] = app('App\Http\Controllers\Admin\ANCController')->getAncAppointmentWiseVisit($created_at,$patient_id,$anc->id);
+                    $history[$created_at]['ANC'][''] = app('App\Http\Controllers\Admin\ANCController')->getAncAppointmentWiseVisit($created_at,$patient_id,$anc->id);
                     // $history[$created_at] = $created_at;
                 }
             }
         }
         // dd(krsort($history));
-        return view('admin.appointment.patient.patient_history',compact('patients','history'));
+        return view('admin.appointment.patient.patient_history',compact('patients','history','referenceDoctor'));
     }
 }
