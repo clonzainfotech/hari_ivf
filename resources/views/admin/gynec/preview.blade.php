@@ -40,7 +40,7 @@
     .module-report-table tr {
         height: 27px;
     }
-    .medicine-table th
+    .medicine-table th, .medicine-table td
     {
         text-align: center;
     }
@@ -1423,6 +1423,7 @@
                                         <th>Timing</th>
                                         <th>Freq.</th>
                                         <th>Duration</th>
+                                        <th>Note</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1491,6 +1492,7 @@
                                         <td>{{$medicine_status}}</td>
                                         <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
                                         <td>{{$row->no.' days'}}</td>
+                                        <td>{{isset($row->note) ? $row->note : '-'}}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

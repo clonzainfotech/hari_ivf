@@ -490,4 +490,25 @@ class GynecController extends AdminController
         
         
     }
+    /**
+    * Return gynec appointwise preview 
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function getGynecAppointmentWiseVisit($date,$patient_id)
+    {
+        try{
+            $patient = decrypt($patient_id);
+            $printPreview = 0;
+            $gynec = $this->Gynec->where('patients_id',$patient)->where('created_at',$date)->first();
+            $surgicallyData = $this->surgicallyType()['data'];
+            $investigationReport = $this->allInvestigationReport();
+            return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview'));
+        }
+        catch(Exception $e)
+        {
+            log::debug($e);
+            abort(500);            
+        }
+    }
 }

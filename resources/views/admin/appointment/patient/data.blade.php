@@ -44,7 +44,7 @@
                     <a href="#" class="mr-1 label-link"  data-toggle="modal" data-target="#label-modal" data-name="{{$row->name}}"><i class="fa fa-address-card-o candor-color font-20" title="Name Print"></i>
                     </a>
                     <a href="{{URL::to('get-all-report/'.encrypt($row->id).'?status=')}}" target="_blank" class=""><i class="fa fa-file candor-color font-20" title="All Reports"></i></a>
-                    <a href="{{URL::to('patient-history/'.encrypt($row->id))}}" class=""><i class="fa fa-pencil candor-color font-20" title="All History"></i></a>
+                    <a href="{{URL::to('patient-history/'.encrypt($row->id))}}" class="" target="_blank"><i class="fa fa-server candor-color font-20" title="All History"></i></a>
                 </a></td>
             </tr>
         @empty

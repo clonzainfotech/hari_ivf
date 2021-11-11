@@ -559,13 +559,13 @@ class PatientsController extends AdminController
         $ivf = $this->IVF->select('created_at',DB::raw("1 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
         $ivfHistory = $this->IvfHistory->select('created_at',DB::raw("2 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
         $ivfExtraVisit = $this->IvfExtraVisit->select('created_at',DB::raw("2 as category_id"))->where('patient_id',$pId)->pluck('category_id','created_at')->toArray();
-
+        $gynec = $this->Gynec->select('created_at',DB::raw("18 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
         // $ivfTransfer = $this->IvfTransferReport->select('created_at',DB::raw("2 as category_id"))->where('patient_id',$pId)->pluck('category_id','created_at')->toArray();
         // $ivfplanReport = $this->IvfPlanReport->select('created_at',DB::raw("2 as category_id"))->where('patients_id',$pId)->pluck('category_id','created_at')->toArray();
-        // $history = [];
+        $history = [];
         // $allVisit = [];
         $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
-        $allVisit = array_merge($anc,$ancHistory,$iui,$iuiHistory,$iuiExtraVisit,$iuiReport,$ivf,$ivfHistory,$ivfExtraVisit);
+        $allVisit = array_merge($anc,$ancHistory,$iui,$iuiHistory,$iuiExtraVisit,$iuiReport,$ivf,$ivfHistory,$ivfExtraVisit,$gynec);
         krsort($allVisit);
         // $preview = 0;
         foreach($allVisit as $date => $category_id)
@@ -673,6 +673,17 @@ class PatientsController extends AdminController
                 {
                     $created_at = Carbon::parse($anc->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['ANC'][''] = app('App\Http\Controllers\Admin\ANCController')->getAncAppointmentWiseVisit($date,$patient_id,$anc->id);
+                    // $history[$created_at] = $created_at;
+                }
+            }
+            if($category_id == 18)
+            {
+                // $preview = [];
+                $gynec = $this->Gynec->where('patients_id',$pId)->where('created_at',$date)->first();
+                if($gynec)
+                {
+                    $created_at = Carbon::parse($gynec->created_at)->format('Y-m-d H:i');
+                    $history[$created_at]['GYNEC'][''] = app('App\Http\Controllers\Admin\GynecController')->getGynecAppointmentWiseVisit($date,$patient_id);
                     // $history[$created_at] = $created_at;
                 }
             }

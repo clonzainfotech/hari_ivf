@@ -47,8 +47,10 @@
                                 {{' care of '.$careof}}</h2>
                                 
                         </div>
-                        <div class="col-md-6">
-                            
+                        <div class="col-md-6 pull-right">
+                            <a href="{{URL::to('get-all-report/'.encrypt($patients->id).'?status=')}}" target="_blank" class="mb-1 ml-1">
+                                <button class="btn btn-primary pull-right">View Reports</button>
+                            </a>
                         </div>
                     </div>
                 </div>
