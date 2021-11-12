@@ -3258,7 +3258,7 @@ class IVFController extends AdminController
         $ivfPatients = $this->OpdPatients->find($patientId);
         $ivfHistory = $this->IvfHistory->where('patients_id',$patientId)->where('created_at',$historyDate)->first();
         $ivfSecondVisit = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->where('cycle_no',$cycleNo)->where('visit',2)->first();
-        $ivfSecondVisitData = json_decode($ivfSecondVisit->description);
+        $ivfSecondVisitData = !empty($ivfSecondVisit) ? json_decode($ivfSecondVisit->description) : null;
         if($ivfHistory)
         {
             $isIvfHistory = '2';
