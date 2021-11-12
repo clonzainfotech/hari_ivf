@@ -57,8 +57,8 @@
                         @if($isConceivedIVF)
                             <a href="{{URL::to('ivf/history/'.encrypt($ancData->getPatients['id']))}}" target="_blank" class="btn btn-primary pull-right">IVF History</a>
                         @endif
+                        <a href="{{URL::to('patient-history/'.encrypt($ancData->getPatients['id']))}}" target="_blank" class="btn btn-primary pull-right">View History</a>
                     </div>
-                    
                 </div>
             </div>
         </div>
