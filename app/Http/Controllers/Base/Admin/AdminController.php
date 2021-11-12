@@ -598,7 +598,7 @@ class AdminController extends BaseController
         $now = Carbon::now()->format('Y-m-d');
         $payment = [];
         $yester = Carbon::parse($now)->subDays(1)->format('Y-m-d');
-        $data = $this->CategoryNotification->with('getPatients')->whereDate('reminder_date','<',$yester)->delete();
+        $data = $this->CategoryNotification->with('getPatients')->whereDate('reminder_date','<',$yester)->groupBy('patients_id')->delete();
         $auth_id = Auth::user()->id;
         $category = $this->CategoryNotification->with('getPatients')->whereDate('date','=',$now);
         $category = collect($category->get())
