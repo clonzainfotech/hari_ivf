@@ -605,7 +605,7 @@ class PatientsController extends AdminController
                     $plan = encrypt($ivfExtra->plan);
                     $preview = 0;
                     $created_at = Carbon::parse($ivfExtra->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IVF'][$ivfExtra->cycle_no.'/'.isset($planData[$ivf->plan]) ? $planData[$ivf->plan] : ''] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
+                    $history[$created_at]['IVF'][$ivfExtra->cycle_no.'/'.(isset($planData[$ivfExtra->plan]) ? $planData[$ivfExtra->plan] : '')] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
                     // $history[$created_at] = $preview;
                 }
                 $ivf = $this->IVF->where('patients_id',$pId)->where('created_at',$date)->first();
