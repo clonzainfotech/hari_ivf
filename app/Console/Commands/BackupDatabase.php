@@ -88,9 +88,11 @@ class BackupDatabase extends Command
             $path = glob(storage_path('logs') ."\\*");
             $fPath = 'storage/logs/';
         }else{
-            $path = glob(storage_path('backups') ."\\*",GLOB_ONLYDIR);
+            // $path = glob(storage_path('backups') ."\\*",GLOB_ONLYDIR);
+            $path = glob(storage_path('backups').'/*', GLOB_ONLYDIR);
             $fPath = 'storage/backups/db_';
         }
+       
         $systemSettings = SystemSetting::first();
         $logDays = $systemSettings->clear_logs_day;
         if($logDays > 1){
@@ -100,6 +102,7 @@ class BackupDatabase extends Command
         $files2 = $path; 
         $files2 = $files2 ? $files2 : [];
         $filecount = count($files2); 
+       
         for($i=1; $i<=$filecount;$i++){
             if($type == 1){
                 $removeDate = Carbon::parse($days)->subDays($i)->format('Y-m-d');
