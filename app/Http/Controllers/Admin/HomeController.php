@@ -480,6 +480,7 @@ class HomeController extends AdminController
             $remark = '';
             $current_anc_id = null;
             $hoDate = null;
+            $gpal_status = null;
             if($ancHistory && $request->category != 5)
             {
                 $ancFirst = $this->ANC->where('patients_id',$patients_id)->where('id',$ancHistory->anc_id)->first();
@@ -498,12 +499,14 @@ class HomeController extends AdminController
                 {
                     $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
                     $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
+                    $patientsObstratics = json_decode($ancFirst->patients_obstratics);
                     $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
                     $current_anc_id = $ancFirst->id;
                     $ancFirstH_o = !empty($ancFirst->h_o) ? json_decode($ancFirst->h_o) : null;
                     $ancFirstO_e = !empty($ancFirst->o_e) ? json_decode($ancFirst->o_e) : null;
                     $remark = !empty($ancFirstO_e->remark) ? $ancFirstO_e->remark : null;
                     $ancCreatedDate = $ancFirst->created_at;
+                    $gpal_status = isset($patientsObstratics->gpal_status) && !empty($patientsObstratics->gpal_status) ? $patientsObstratics->gpal_status : '';
                 }
             }
             if(!empty($lmp))
@@ -578,6 +581,7 @@ class HomeController extends AdminController
                     <p><span class="font-bold candor-color">Preg. Week : </span>'.(!empty($preg_week) ? $preg_week.' week' : '-').'</p>
                     <p><span class="font-bold candor-color">Remark : </span>'.$html.'</p>
                     <p><span class="font-bold candor-color">Last Remark : </span>'.$remark.'</p>
+                    <p><span class="font-bold candor-color">GPAL Status : </span>'.$gpal_status.'</p>
                     <p><span class="font-bold candor-color">Ref. By : </span>'.$opdPatient->getReferenceDoctor['name'].'</p>';
         }
         if($request->category && in_array($request->category,[1,2]))
