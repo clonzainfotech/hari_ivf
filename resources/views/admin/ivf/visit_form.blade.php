@@ -1922,6 +1922,7 @@
                     </label>
                 </div>
             </div>
+            
             {{-- result --}}
             <div class="col-md-1">
                 <label class="vertical-form-label pr-0">
@@ -1942,6 +1943,8 @@
                     </label>
                 </div>
             </div>
+            {{Form::hidden('data[transfer][upt_type]',!empty($transfer) ? $transfer->upt_type : '')}}
+            {{Form::hidden('data[transfer][result_type]',!empty($transfer) ? $transfer->result_type : '')}}
             {{-- end result --}}
         </div>
         <br>
