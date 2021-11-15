@@ -294,7 +294,22 @@ $menu = "";
                             notificationsCount += 1;
                         }
                     }
-                    if(data.data['category'].length + data.data['payment'].length  == 0)
+                    for(var i=0; i< data.data['report'].length; i++)
+                    {
+                        if(data.data['report'][i] != null)
+                        {
+                            newNotificationHtml += '<li class="category-notification report-notification notification active">'+
+                            '<div class="media mb-1">'+
+                            '<div class="media-left"><div class="media-object">'+
+                            '</div></div>'+
+                            '<div class="media-body">'+
+                            '<strong class="notification-title">'+data.data['report'][i].patient_name+'</strong><br>'+
+                            '<p class="notification-desc"><span class="candor-color"> Freezing Deatils Not fill Up</span> - Report Date : '+data.data['report'][i].date+'</p>'+
+                            '</div></div></li>';
+                            notificationsCount += 1;
+                        }
+                    }
+                    if(data.data['category'].length + data.data['payment'].length + data.data['report'].length  == 0)
                     {
                         $('a.mark-all').addClass('d-none');
                         newNotificationHtml +=

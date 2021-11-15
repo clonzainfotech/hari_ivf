@@ -2872,4 +2872,8 @@ a.ui-state-default:hover, a.ui-datepicker-prev.ui-corner-all:hover ,a.ui-datepic
 {
     font-weight: 700 !important;
 }
+.report-notification
+{
+    border-left: 3px solid #1e5f63 !important;
+}
         

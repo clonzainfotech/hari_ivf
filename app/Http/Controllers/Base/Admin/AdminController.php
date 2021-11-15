@@ -622,10 +622,21 @@ class AdminController extends BaseController
                                 return $query;
                         });
         }
-
+        $fillUPdate = Carbon::now()->addDays(5)->format('Y-m-d');
+        $report = $this->IvfPlanReport;
+        $report = collect($report->get())
+            ->map(function ($query) use($now){
+                $description = json_decode($query->description);
+                if(empty($description->loop_1))
+                {
+                    $query->patient_name = ucWords($query->getPatients['name']);
+                    $query->date = Carbon::parse($query->created_at)->format('d M Y');
+                    return $query;
+                }
+        });
         return response()->json([
             'status'=>1,
-            'data' => array('category'=>$category,"payment"=>$payment)
+            'data' => array('category'=>$category,"payment"=>$payment,"report" =>$report)
         ]);
     }
 
