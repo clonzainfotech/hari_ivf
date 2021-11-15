@@ -623,12 +623,13 @@ class AdminController extends BaseController
                         });
         }
         $fillUPdate = Carbon::now()->addDays(5)->format('Y-m-d');
-        $report = $this->IvfPlanReport;
+        $report = $this->IvfPlanReport->where('plan',1);
         $report = collect($report->get())
             ->map(function ($query) use($now){
                 $description = json_decode($query->description);
-                if(empty($description->loop_1))
+                if((empty($description->loop_1) || empty($description->loop_2) || empty($description->loop_3) || empty($description->loop_4)) && Carbon::parse($query->created_at)->diffInDays($now) >= 5)
                 {
+                    // dd($query->patients_id);
                     $query->patient_name = ucWords($query->getPatients['name']);
                     $query->date = Carbon::parse($query->created_at)->format('d M Y');
                     return $query;
