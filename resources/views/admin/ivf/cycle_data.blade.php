@@ -4788,7 +4788,7 @@
                                         {{-- <div class="row"> --}}
                                             <div class="col-md-12">
                                                 <div class="input-group">
-                                                    {{Form::textarea("h_factor[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Husband Factor Remark','rows'=>'2'])}}
+                                                    {{Form::textarea("h_factor[remark]",'',['class'=>'form-control no-resize','placeholder'=>'Husband Factor Remark','rows'=>'2'])}}
                                                 </div>
                                             </div>
                                         {{-- </div> --}}

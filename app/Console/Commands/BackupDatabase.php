@@ -113,6 +113,7 @@ class BackupDatabase extends Command
                 break;
             }
             File::$removeFileType($fPath.$removeDate);
+            File::delete($fPath.$removeDate.'.zip');
         }
     }
 }

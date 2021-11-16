@@ -1348,12 +1348,12 @@ class IVFController extends AdminController
                 case 1:
                     if($isCycle){
                         $key = $lastCycleId;
-                        $value = $pickupCycleNo;
-                        if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
+                        // $value = $pickupCycleNo;
+                        // if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
                             $newCycle = true;
                             $value = $pickupCycleNo + 1;
                             
-                        }
+                        // }
                         if(!$pickupCycleNo){
                             $value = 1;
                         }
@@ -1366,12 +1366,12 @@ class IVFController extends AdminController
                 case 2:
                     if($isCycle){
                         $key = $lastCycleId;
-                        $value = $fetCycleNo;
-                        // if($lastAppointment->date <= $currentDate || ($ivfReport && $lastAppointment->date <= $currentDate)){
-                            if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
+                        // $value = $fetCycleNo;
+                        // // if($lastAppointment->date <= $currentDate || ($ivfReport && $lastAppointment->date <= $currentDate)){
+                        //     if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
                             $newCycle = true;
                             $value = $fetCycleNo + 1;
-                        }
+                        // }
                         if(!$fetCycleNo){
                             $value = 1;
                         }
@@ -1385,11 +1385,11 @@ class IVFController extends AdminController
                 case 3:
                     if($isCycle){
                         $key = $lastCycleId;
-                        $value = $fetOdCycleNo;
-                        if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
+                        // $value = $fetOdCycleNo;
+                        // if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
                             $newCycle = true;
                             $value = $fetOdCycleNo + 1;
-                        }
+                        // }
                         if(!$fetOdCycleNo){
                             $value = 1;
                         }
@@ -1402,11 +1402,11 @@ class IVFController extends AdminController
                 case 4:
                     if($isCycle){
                         $key = $lastCycleId;
-                        $value = $fetEdCycleNo;
-                        if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
+                        // $value = $fetEdCycleNo;
+                        // if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
                             $newCycle = true;
                             $value = $fetEdCycleNo + 1;
-                        }
+                        // }
                         if(!$fetEdCycleNo){
                             $value = 1;
                         }
