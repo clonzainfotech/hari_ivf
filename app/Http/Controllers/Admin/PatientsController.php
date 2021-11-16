@@ -458,13 +458,17 @@ class PatientsController extends AdminController
                 $reportDate = Carbon::parse($ivfHistoryVisit->created_at)->format('Y-m-d H:i:s');
                 $investigationHistoryReport = !empty($ivfHistoryVisit->investigation) ? json_decode($ivfHistoryVisit->investigation,true) : '';
                 $investigationHistoryData = !empty($ivfHistoryVisit->description) ? json_decode($ivfHistoryVisit->description,true) : '';
+                // $investigationTransferData = isset($investigationHistoryData['transfer']) && !empty($investigationHistoryData['transfer']) ? json_decode($investigationHistoryData['transfer'],true) : '';
                 // dd($investigationHistoryReport['hystroscopy']['images']);
                 $IVFReports[$reportDate]['hystroscopy'] = !empty($investigationHistoryReport['hystroscopy']['images']) ? $investigationHistoryReport['hystroscopy']['images'] : [];
                 $IVFReports[$reportDate]['laproscopy'] = !empty($investigationHistoryReport['laproscopy']['images']) ? $investigationHistoryReport['laproscopy']['images'] : [];
                 $IVFReports[$reportDate]['blood_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['blood_report']['image']) ? $investigationHistoryData['blood_report']['image'] : [];
                 $IVFReports[$reportDate]['usg_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['usg']['images']) ? $investigationHistoryData['usg']['images'] : [];
                 $IVFReports[$reportDate]['hsa_report'] = !empty($investigationHistoryData) && !empty($investigationHistoryData['hsa_report']['images']) ? $investigationHistoryData['hsa_report']['images'] : [];
-                
+                if(isset($investigationHistoryData['transfer']['report']))
+                {
+                    $IVFReports[$reportDate]['blood_report'] = isset($investigationHistoryData['transfer']['report']) && !empty($investigationHistoryData['transfer']['report']) ? $investigationHistoryData['transfer']['report'] : [];
+                }
             }
         }
         if($ivfAllExtraVisit)

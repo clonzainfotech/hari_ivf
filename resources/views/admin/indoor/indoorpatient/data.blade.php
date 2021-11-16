@@ -35,7 +35,7 @@
                 <td>{{ ucwords(strtolower($patients->getPatientsDetails['name'])) }} </td>
                 <td>{{ $patients->procedurename }}</td>
                 <td>{{ $patients->getRoomType['name'] }}</td>
-                <td><a href="#" class="sticker-link text-dark" data-toggle="modal" data-target="#sticker-modal" data-date="{{$patients->doa_date}}" data-appointmentid="{{($patients->getPatientsDetails->getAppointment['id']) ? $patients->getPatientsDetails->getAppointment['id'] : ''}}">{{(!empty($patients->doa_date)) ? \Carbon\Carbon::parse($patients->doa_date)->format('d-m-Y') : '-' }}</a></td>
+                <td><a href="#" class="sticker-link text-dark" data-toggle="modal" data-target="#sticker-modal" data-date="{{$patients->doa_date}}" data-appointmentid="{{isset($patients->getPatientsDetails->getAppointment['id']) ? $patients->getPatientsDetails->getAppointment['id'] : ''}}">{{(!empty($patients->doa_date)) ? \Carbon\Carbon::parse($patients->doa_date)->format('d-m-Y') : '-' }}</a></td>
                 <td>{{ (!empty($patients->dod_date)) ? \Carbon\Carbon::parse($patients->dod_date)->format('d-m-Y') : '-' }}</td>
                 <td>{{ (!empty($patients->getInvoice['grand_total_amt']) || !empty($patients->getInvoice['deposit_amt'])) ?  $patients->getInvoice['grand_total_amt'] + $patients->getInvoice['deposit_amt'] : 0}}</td>
                 <td>
