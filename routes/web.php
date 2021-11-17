@@ -213,7 +213,8 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('get-ivf-report-data','IVFController@getIvfReportData');
     Route::post('edit-ivf-report-data','IVFController@updateIvfReportData');
 
-    Route::get('ivf/payments/{patientsId}/','IVFController@payment');
+    Route::get('ivf/payments/{patientsId}/{id?}','IVFController@payment');
+    Route::get('create/payments/{patientsId}/','IVFController@create_payment');
     Route::get('ivf/payments/{patientsId}/{lang}','IVFController@payment_gujarati');
     Route::post(' ivf-store-payment_newui','IVFController@ivfPaymentStoreNewUi');
     Route::get('ivf-remaining-payment','ReportController@ivfRemainigPayment');

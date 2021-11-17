@@ -12,13 +12,10 @@
                 max-width: 800px !important;
             }
         }
-       
-
-
-          @media (min-width: 360px){
+        @media (min-width: 360px){
            .data{
             margin-bottom: -22px;
-         }
+        }
         }
         .data{
             margin-top: 10px;
@@ -38,7 +35,21 @@
         <div id="patients" class="" role="tabpanel" aria-labelledby="headingThree_1">
             <div class="card patients-list">
                 <div class="header">
-                    <h2><strong>IVF Payments</strong></h2>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <h2><strong>IVF Payments</strong></h2>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <ul class="header-dropdown col-md-12">
+                                <li class="w-25">
+                                    {{Form::select("package",$ivfPaymentList,'',['class'=>'form-control select-padding-0 package-list','placeholder'=>'Select Package'])}}
+                                </li>
+                                <li class="w-25">
+                                    <a href="{{URL::to('create/payments/'.encrypt($patients->id))}}" class=""><button class="btn btn-primary">Add New</button></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                     @if(Session::has('msg'))
                         <div class="alert alert-success">
@@ -58,25 +69,16 @@
                                 </span>
                             </button>
                         </div> 
-
                     {{Form::open(['class'=>'form-inline','id'=>'ivf-payment-form','name' => 'form'])}}
                     {{csrf_field()}}
-                     
+                    {{Form::hidden('ivf_pkg_id',isset($ivfPaymentHistory) ? encrypt($ivfPaymentHistory->id) : '')}}
                     @php
-                        $is_readonly = (isset($is_deposite) && $is_deposite == 1) ? 'readonly' : '';    
-                        $is_disabled = (isset($is_deposite) && $is_deposite == 1) ? 'disabled' : '';    
+                        // $is_readonly = (isset($is_deposite) && $is_deposite == 1) ? 'readonly' : '';    
+                        // $is_disabled = (isset($is_deposite) && $is_deposite == 1) ? 'disabled' : '';  
+                        $is_readonly = '';    
+                        $is_disabled = '';    
                     @endphp
                         <div class="modal-body col-md-12">
-                            {{-- <div class="row">
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-4 form-padding">
-                                        Deposit
-                                    </div>
-                                    <div class="col-md-5 form-padding">
-                                        {{Form::number('deposit','0',['class'=>'form-control p-deposit','placeholder'=>'Deposit','min'=>1,'disabled'])}}
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="row" >
                                 <div class="col-md-6">
                                     <div class="input-group form-padding">
@@ -87,7 +89,7 @@
                                 <div class="col-sm-6">
                                     <div class="input-group form-padding">
                                         <span class="input-group-addon payment-form">
-                                            Date : &nbsp;
+                                            Date : &nbsp;   
                                         </span>
 
                                         {{Form::text('date', \Carbon\Carbon::now()->format('D d M Y'), [
@@ -1020,6 +1022,11 @@
             });
         });
 
+
+        $(document).on('change','select.package-list',function(){
+            var patientId = '{{encrypt($patients->id)}}';
+            window.location.href = "{{ URL::to('ivf/payments') }}"+'/'+patientId+'/'+$(this).val();
+        })
         // $(function () {
         $("#consulation").click(function () {
             if ($(this).is(":checked")) {

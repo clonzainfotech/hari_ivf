@@ -12,6 +12,7 @@ use Auth;
 use Log;
 use App\Models\OpdPatients as opd;
 use App;
+use DB;
 
 class IVFController extends AdminController
 {
@@ -1222,38 +1223,41 @@ class IVFController extends AdminController
             $ivfReport = false;
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
             $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->orderBy('id', 'DESC')->first();
-            if($lastAppointment->category_id == 3 || $lastAppointment->category_id == 4)
+            if($lastAppointment)
             {
-                $firstVisit = $this->IVF->where('patients_id',$id)->first();
-                if(!$firstVisit)
+                if($lastAppointment->category_id == 3 || $lastAppointment->category_id == 4)
                 {
-                    $firstVisit = $this->IUI->where('patients_id',$id)->first();
-                }
-                $checkExistIVF = $this->IVF->where('patients_id',$id)->first();
-                if($firstVisit && !$checkExistIVF)
-                {
-                    $ivf = $this->IVF;
-                    $ivf->patients_id = $id;
-                    $ivf->seen_by = $firstVisit->seen_by;
-                    $ivf->rmo_doctor = $firstVisit->rmo_doctor;
-                    $ivf->created_by = $firstVisit->created_by;
-                    $ivf->patients_info = $firstVisit->patients_info;
-                    $ivf->h_o = $firstVisit->h_o;
-                    $ivf->c_o = $firstVisit->c_o;
-                    $ivf->o_h = $firstVisit->o_h;
-                    $ivf->m_h = $firstVisit->m_h;
-                    $ivf->ho_rx = $firstVisit->ho_rx;
-                    $ivf->investigation = $firstVisit->investigation;
-                    $ivf->husband_factor = $firstVisit->husband_factor;
-                    $ivf->patients_details_ho = $firstVisit->patients_details_ho;
-                    $ivf->o_e = $firstVisit->o_e;
-                    $ivf->plan_management = json_encode(array('ivf_details'=>null,'plan'=>1));
-                    $ivf->possible_case_of_infertility = $firstVisit->possible_case_of_infertility;
-                    $ivf->treatment = $firstVisit->treatment;
-                    $ivf->lmp_date = $firstVisit->lmp_date;
-                    // dd($ivf);
-                    $ivf->save();
-                    // $view = redirect('iui/history/'.encrypt($id));
+                    $firstVisit = $this->IVF->where('patients_id',$id)->first();
+                    if(!$firstVisit)
+                    {
+                        $firstVisit = $this->IUI->where('patients_id',$id)->first();
+                    }
+                    $checkExistIVF = $this->IVF->where('patients_id',$id)->first();
+                    if($firstVisit && !$checkExistIVF)
+                    {
+                        $ivf = $this->IVF;
+                        $ivf->patients_id = $id;
+                        $ivf->seen_by = $firstVisit->seen_by;
+                        $ivf->rmo_doctor = $firstVisit->rmo_doctor;
+                        $ivf->created_by = $firstVisit->created_by;
+                        $ivf->patients_info = $firstVisit->patients_info;
+                        $ivf->h_o = $firstVisit->h_o;
+                        $ivf->c_o = $firstVisit->c_o;
+                        $ivf->o_h = $firstVisit->o_h;
+                        $ivf->m_h = $firstVisit->m_h;
+                        $ivf->ho_rx = $firstVisit->ho_rx;
+                        $ivf->investigation = $firstVisit->investigation;
+                        $ivf->husband_factor = $firstVisit->husband_factor;
+                        $ivf->patients_details_ho = $firstVisit->patients_details_ho;
+                        $ivf->o_e = $firstVisit->o_e;
+                        $ivf->plan_management = json_encode(array('ivf_details'=>null,'plan'=>1));
+                        $ivf->possible_case_of_infertility = $firstVisit->possible_case_of_infertility;
+                        $ivf->treatment = $firstVisit->treatment;
+                        $ivf->lmp_date = $firstVisit->lmp_date;
+                        // dd($ivf);
+                        $ivf->save();
+                        // $view = redirect('iui/history/'.encrypt($id));
+                    }
                 }
             }
             
@@ -1835,7 +1839,7 @@ class IVFController extends AdminController
     }
     
     /**
-    * Get Dose list
+    * Get payments view
     * @param  \Illuminate\Http\Request 
     * @return \Illuminate\Http\Response
     */
@@ -1846,26 +1850,41 @@ class IVFController extends AdminController
         $patients = opd::where(['id' => $patients_Id])->first();
         $ivfPaymentHistory = $this->IvfPayment->wherePatientsId($patients_Id)->orderBy('id','DESC')->first();
         $opdCollection = $this->IndoorDeposit->wherePatientId($patients_Id)->whereNotNull('package')->whereChargeType(2)->orderBy('id','DESC')->first();
-
+        $ivfPaymentList = $this->IvfPayment->select(DB::raw("CONCAT(package,'- Cycle : ',cycle_no) as package"),'id')->wherePatientsId($patients_Id)->pluck('package','id');
         $is_deposite = (!empty($opdCollection)) ? 1 : 0;
-        return view('admin.ivf.payments',['patientsId' => $patientsId,'patients' => $patients,'ivfPaymentHistory' => $ivfPaymentHistory, 'is_deposite' => $is_deposite]);
+        return view('admin.ivf.payments',['patientsId' => $patientsId,'patients' => $patients,'ivfPaymentHistory' => $ivfPaymentHistory, 'is_deposite' => $is_deposite,'ivfPaymentList'=>$ivfPaymentList]);
     }
 
-    public function payment(Request $request,$patientsId){
+    public function payment(Request $request,$patientsId,$packageID = null){
         $patients_Id = decrypt($patientsId);
         $patients = opd::where(['id' => $patients_Id])->first();
         $ivfPaymentHistory = $this->IvfPayment->wherePatientsId($patients_Id)->orderBy('id','DESC')->first();
+        if($packageID)
+        {
+            $ivfPaymentHistory = $this->IvfPayment->find($packageID);
+        }
         $opdCollection = $this->IndoorDeposit->wherePatientId($patients_Id)->whereNotNull('package')->whereChargeType(2)->orderBy('id','DESC')->first();
-
+        $ivfPaymentList = $this->IvfPayment->select(DB::raw("CONCAT(package,'- Cycle : ',cycle_no) as package"),'id')->wherePatientsId($patients_Id)->pluck('package','id');
         $is_deposite = (!empty($opdCollection)) ? 1 : 0;
-        return view('admin.ivf.payments',['patientsId' => $patientsId,'patients' => $patients,'ivfPaymentHistory' => $ivfPaymentHistory, 'is_deposite' => $is_deposite]);
+        return view('admin.ivf.payments',['patientsId' => $patientsId,'patients' => $patients,'ivfPaymentHistory' => $ivfPaymentHistory, 'is_deposite' => $is_deposite,'ivfPaymentList'=>$ivfPaymentList]);
     }
 
     public function ivfPayment($patientsId){
         $patientsId = decrypt($patientsId);
+        $ivfPaymentList = $this->IvfPayment->select(DB::raw("CONCAT(package,'- Cycle : ',cycle_no) as package"),'id')->wherePatientsId($patientsId)->pluck('package','id');
         $ivfDeposit = $this->IndoorDeposit->wherePatientId($patientsId)->whereChargeType(2)->orderBy('id','DESC')->first();
         $ivfPayment = $this->IvfPayment->wherePatientsId($patientsId)->first();
-        return ['deposit'=>$ivfDeposit,'ivfPayment'=>$ivfPayment];
+        return ['deposit'=>$ivfDeposit,'ivfPayment'=>$ivfPayment,'ivfPaymentList'=>$ivfPaymentList];
+    }
+    public function create_payment($patientsId)
+    {
+        $patients_Id = decrypt($patientsId);
+        $patients = opd::where(['id' => $patients_Id])->first();
+        // $ivfPaymentHistory = null;
+        $ivfPaymentList = $this->IvfPayment->select(DB::raw("CONCAT(package,'- Cycle : ',cycle_no) as package"),'id')->wherePatientsId($patientsId)->pluck('package','id');
+        $opdCollection = $this->IndoorDeposit->wherePatientId($patients_Id)->whereNotNull('package')->whereChargeType(2)->orderBy('id','DESC')->first();
+
+        return view('admin.ivf.payments',['patientsId' => $patientsId,'patients' => $patients]);
     }
 
     /**
@@ -1884,12 +1903,15 @@ class IVFController extends AdminController
         {
             $no_cycle = $request->multiple_cycle;
         }
-        $ivfPaymentData = $this->IvfPayment->wherePatientsId($patientsId)->whereCycleNo($no_cycle)->first();
-    
         $ivfPayment = $this->IvfPayment;
-        if($ivfPaymentData){
-            $ivfPayment = $ivfPaymentData;
+        if(!empty($request->ivf_pkg_id))
+        {
+            $pkgId = decrypt($request->ivf_pkg_id);
+            $ivfPayment = $this->IvfPayment->find($pkgId);
         }
+        // if($ivfPaymentData){
+        //     $ivfPayment = $ivfPaymentData;
+        // }
 
         if ($request->cycle_type == "OD") {
                 $ivfPayment->donor_charge = $request->donor_charge;

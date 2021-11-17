@@ -87,6 +87,7 @@ class HormonController extends AdminController
                 });
             })
             ->pluck('name','id');
+            // $ivfPaymentList = $this->IvfPayment->select(DB::raw("CONCAT(package,'- Cycle : ',cycle_no) as package"),'id')->wherePatientsId($patientsId)->pluck('payment','id');
             $referenceDoctor = ['other' => 'Other'] + $this->ReferenceDoctor->pluck('name','id')->toArray();
             return view('admin.appointment.hormon.create',compact('category','referenceDoctor', 'patient','injection'));
         }catch(Exception $e){
@@ -121,8 +122,9 @@ class HormonController extends AdminController
             ->orderBy('id', 'DESC')
             ->value('total');
             //for Ivf package
-            $ivfPaymentData = $this->IvfPayment->wherePatientsId($hormon->patient_id)->where('is_completed',0)->orderBy('id','DESC')->first();
-            if ( $request->htype == 2 && $ivfPaymentData) {
+            $ivfPaymentData = null;
+            if ( $request->htype == 2) {
+                $ivfPaymentData = $this->IvfPayment->find($request->package_id);
                 $lastTotal = $this->IndoorDeposit
                 ->whereChargeTypeAndPatientId($request->htype, $request->hname)
                 ->whereCycleNo($ivfPaymentData->cycle_no)
@@ -329,6 +331,8 @@ class HormonController extends AdminController
     public function getHormonData(Request $request) {
         $hname = $_GET['hname'];
         $hormonData['patient'] = $this->OpdPatients->with('getReferenceDoctorPro')->find($hname);
+        $hormonData['package'] = $this->IvfPayment->select(DB::raw("CONCAT(package,'- Cycle : ',cycle_no) as package"),'id')->wherePatientsId($hormonData['patient']->id)->pluck('package','id');
+        
         $hormonData['hormon'] = $this->IndoorDeposit
             ->where([
                 ['patient_id', '=', $_GET['hname']],

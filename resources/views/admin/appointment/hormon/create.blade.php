@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div class="row hormon-row mt-18">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Charge : &nbsp;</span>
                                     {{Form::text('hcharge','',[
@@ -130,7 +130,7 @@
                                     {{$errors->first('hcharge')}}
                                 </span>
                             </div>
-                            <div class="col-md-4 ivf-data">
+                            <div class="col-md-3 ivf-data">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Discount : &nbsp;</span>
                                     {{Form::number('discount','',[
@@ -143,7 +143,7 @@
                                     ])}}
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Date:</span>
                                     {{Form::text('date',\Carbon\Carbon::now()->format('l d M Y'),[
@@ -152,6 +152,15 @@
                                     ])}}
                                 </div>
                                 <span class="form-error-msg date-error"></span>
+                            </div>
+                            <div class="col-md-3 ivf-data">
+                                {{Form::select('package_id',[], '', [
+                                    'class' => 'form-control w-100 plr-0',
+                                    'id'=>'package_id',
+                                    'placeholder'=>'Select Package'
+                                ])}}
+                                <span class="form-error-msg package-error">
+                                </span>
                             </div>
                             <div class="form-group col-md-4">
                                 {{Form::select('payment_type',['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],'',['class'=>'form-control payment-method','placeholder'=>'Select Payment Type'])}}
@@ -288,6 +297,8 @@
                 }).done(function(hormonData) {
                     $('.htype').val('');
                     $('.htype').selectpicker('refresh');
+                    $('#package_id').val('');
+                    $('#package_id').selectpicker('refresh');
                     $('.hinjection').val('');
                     $('.hcharge').val('');
                     $('.hreference-doctor').val(1);
@@ -297,6 +308,17 @@
                         $('.ref-name').val(hormonData.patient.reference_doctor_id);
                         $('.reference_doctor').val(hormonData.patient.reference_doctor_id);
                         $('.ref-name').selectpicker('refresh');
+                    }
+                    if(hormonData.package)
+                    {
+                        var packageHtml   = '<option value="">Select Package</option>';
+                        $.each(hormonData.package, function(key, value) {
+                            $('select#package_id').append($("<option></option>").attr("value", key).text(value)); 
+                            // packageHtml += '<option value="' + key + '">' +value+'</option>';
+                        });
+                       
+                        // $('select.#package_id').val(hormonData.package);
+                        $('#package_id').selectpicker('refresh');
                     }
                     if (hormonData.hormon != null) {
                         setField(hormonData.hormon.charge_type);
@@ -481,18 +503,24 @@
                         $('span.'+error_id).html('This field required');
                     }
                 })
-                // if (injection == '') {
-                //     valid = 0;
-                //     $('.injection').text('The injection field is required.');
-                // }
                 if(cycle_no == '')
                 {
                     valid = 0;
                     $('.cycle_no').text('The type field is required.');
                 }
-                alert(valid);
             }
-            
+            if(htype == 2)
+            {
+                
+                $('#package_id').selectpicker('refresh');
+                alert($('select#package_id').val());
+                if($('select#package_id').val() == '')
+                {
+                    valid = 0;
+                    // var error_id = $('select.hinjection').data('error');
+                    $('.package-error').html('This package field is required');
+                }
+            }
             if (hcharge == '') {
                 valid = 0;
                 $('.hchargeerror').text('The charge field is required.');

@@ -909,11 +909,12 @@ class ReportController extends AdminController
             $ivfPaymentData->payment = $request->payment;
             $ivfPaymentData->package = $request->package;
             $ivfPaymentData->payment_type = $request->payment_type;
-            $ivfPaymentData->time = $request->time;
+            // $ivfPaymentData->time = $request->time;
             $ivfPaymentData->condition = $request->condition;
             $ivfPaymentData->save();
             return['status'=>1,'data'=>$ivfPaymentData];
         }catch(Exception $e){
+            log::debug($e);
             return['status'=>0];
         }
     }
