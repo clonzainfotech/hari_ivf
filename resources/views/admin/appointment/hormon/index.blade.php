@@ -96,7 +96,7 @@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <div class="col-md-4">
-                                    Amount:
+                                    Total Amount:
                                 </div>
                                 <div class="col-md-6">
                                     {{Form::number('amount','',['class'=>'form-control amount form-required','placeholder'=>'Amount','min'=>1])}}

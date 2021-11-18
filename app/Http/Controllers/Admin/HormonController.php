@@ -123,13 +123,16 @@ class HormonController extends AdminController
             ->value('total');
             //for Ivf package
             $ivfPaymentData = null;
-            if ( $request->htype == 2) {
+            if ( $request->htype == 2) 
+            {
                 $ivfPaymentData = $this->IvfPayment->find($request->package_id);
                 $lastTotal = $this->IndoorDeposit
                 ->whereChargeTypeAndPatientId($request->htype, $request->hname)
                 ->whereCycleNo($ivfPaymentData->cycle_no)
+                ->where('ivf_payment_id',$ivfPaymentData->id)
                 ->orderBy('id', 'DESC')
                 ->value('total');
+                $hormon->ivf_payment_id = $ivfPaymentData ? $request->package_id : '';
             }
            
             $hormon->total = ($lastTotal == null) ? $hormon->amount : ($lastTotal + $hormon->amount);

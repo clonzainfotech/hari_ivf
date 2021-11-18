@@ -1472,14 +1472,20 @@ class AppointmentController extends AdminController
                     $extraOeData = json_decode($isExtraVisit->oe);
                     $report .= !empty($extraOeData) && isset($extraOeData->investigation_extra) ? $extraOeData->investigation_extra : '';
                 }
-                $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
-                $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
-                        <p><span class="font-bold candor-color">Package: </span>'.(!empty($package) ? $package->package : '-').'</p>
+                $packages = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->get();
+                $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>';
+                // dd($packages);
+
+                foreach($packages as $key => $package)
+                {
+                    $data .= $key == 0 ? '<hr>' : ''; 
+                    $data .= '<p><span class="font-bold candor-color">Package: </span>'.(!empty($package) ? $package->package.' - cycle : '.$package->cycle_no : '-').'</p>
                         <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($package->package) ? ($package->package - $TotalAmount) : '-').'</p>
                         <p><span class="font-bold candor-color">Package Condition: </span>'.(!empty($package) ? $package->condition : '-').'</p>
                         <p><span class="font-bold candor-color">Package Remark: </span>'.(!empty($package) ? $package->remark : '-').'</p>
-                        <p><span class="font-bold candor-color">Payment : </span></p>';
-                $data .= $payment;   
+                        <p><span class="font-bold candor-color">Payment : </span></p><hr>';
+                }
+                // $data .= $payment;   
                 $data .= '<button class="btn btn-primary preview-file" data-plan="'.$plan.'" data-cycleno="'.$cycle_no.'" data-extravisit="'.$extraVisit.'" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="" data-patient = "'.$request->patients_id.'">Visit</button>';
             }
             if($request->category && in_array($request->category,[3,4]))

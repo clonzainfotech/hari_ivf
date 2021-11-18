@@ -617,6 +617,8 @@ class PatientsController extends AdminController
                 {
                     $preview = 0;
                     $created_at = Carbon::parse($ivf->created_at)->format('Y-m-d H:i');
+                    $cycle_no = 0;
+                    $plan = 0;
                     // $history[$created_at] = $preview;
                     $history[$created_at]['IVF'][''] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
                 }

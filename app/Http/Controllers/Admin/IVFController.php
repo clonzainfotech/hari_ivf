@@ -1968,6 +1968,7 @@ class IVFController extends AdminController
         $ivfPayment->remark = $request->remark;
         
         $ivfPayment->save();  
+        $indoorDeposit = $this->IndoorDeposit->where('patient_id',$patientsId)->where('ivf_payment_id',$ivfPayment->id)->update(['package'=>$ivfPayment->package]);
         // Add ivf payment reminder
         if(!empty($request->remaining_date) && !empty($request->next_payment_amt))
         {
@@ -3275,8 +3276,8 @@ class IVFController extends AdminController
         $ivf = $this->IVF->where('patients_id',$patientId)->where('created_at',$historyDate)->first();
         $isIvfHistory = '1';
         $isExtraVisit = 0;
-        $plan = decrypt($plan);
-        $cycleNo = decrypt($cycleNo);
+        $plan = !empty($plan) ? decrypt($plan) : '';
+        $cycleNo = !empty($cycleNo) ? decrypt($cycleNo) : '';
         $ivfPatients = $this->OpdPatients->find($patientId);
         $ivfHistory = $this->IvfHistory->where('patients_id',$patientId)->where('created_at',$historyDate)->first();
         $ivfSecondVisit = $this->IvfHistory->where('patients_id',$patientId)->where('plan',$plan)->where('cycle_no',$cycleNo)->where('visit',2)->first();
