@@ -1451,6 +1451,7 @@ class AppointmentController extends AdminController
                 $ivfId = null;
                 $plan = '';
                 $cycle_no = '';
+                $no_cycle = 0;
                 $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->orderBy('id','desc')->first();
                 if($currentHistory)
                 {
@@ -1474,16 +1475,20 @@ class AppointmentController extends AdminController
                 }
                 $packages = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->get();
                 $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>';
+                $no_cycle = count($this->IvfHistory->where('patients_id',$patients_id)->WhereNull('description->skip_reason')->Where('description->is_transfer','=','yes')->groupBy('cycle_no')->get());
+                // $data = '<p><span class="font-bold candor-color">Plan : </span>'.$report.'</p>';
+                $data = '<p><span class="font-bold candor-color">Attempt Cycle : </span>'.$no_cycle.'</p>';
                 // dd($packages);
 
                 foreach($packages as $key => $package)
                 {
+                    $totalAmount = $this->IndoorDeposit->where('patient_id',$patients_id)->where('ivf_payment_id',$package->id)->sum('amount');
                     $data .= $key == 0 ? '<hr>' : ''; 
                     $data .= '<p><span class="font-bold candor-color">Package: </span>'.(!empty($package) ? $package->package.' - cycle : '.$package->cycle_no : '-').'</p>
-                        <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($package->package) ? ($package->package - $TotalAmount) : '-').'</p>
+                        <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($package->package) ? ($package->package - $totalAmount) : '-').'</p>
                         <p><span class="font-bold candor-color">Package Condition: </span>'.(!empty($package) ? $package->condition : '-').'</p>
                         <p><span class="font-bold candor-color">Package Remark: </span>'.(!empty($package) ? $package->remark : '-').'</p>
-                        <p><span class="font-bold candor-color">Payment : </span></p><hr>';
+                        <p><span class="font-bold candor-color">Payment : </span>'.$totalAmount.'</p><hr>';
                 }
                 // $data .= $payment;   
                 $data .= '<button class="btn btn-primary preview-file" data-plan="'.$plan.'" data-cycleno="'.$cycle_no.'" data-extravisit="'.$extraVisit.'" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="" data-patient = "'.$request->patients_id.'">Visit</button>';

@@ -609,14 +609,27 @@ class HomeController extends AdminController
                 $plan_type = $planData[$currentHistory->plan];
                 $remark = !empty($currentData->remark) ? $currentData->remark : '';
             }
-            $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+            // $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
             $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
             <p><span class="font-bold candor-color">Patient Age : </span>'.$opdPatient->age.' Years'.'</p>
             <p><span class="font-bold candor-color">Attempt Of Cycle : </span>'.$no_cycle.'</p>
             <p><span class="font-bold candor-color">Current Cycle : </span>'.$current_cycle.'</p>
             <p><span class="font-bold candor-color">Plan : </span>'.$plan_type.'</p>
-            <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>
-            <p><span class="font-bold candor-color">Package : </span>'.(!empty($package) ? $package->package : '-').'</p>';
+            <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>';
+            $packages = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->get();
+                // dd($packages);
+
+                foreach($packages as $key => $package)
+                {
+                    $totalAmount = $this->IndoorDeposit->where('patient_id',$patients_id)->where('ivf_payment_id',$package->id)->sum('amount');
+                    $data .= $key == 0 ? '<hr>' : ''; 
+                    $data .= '<p><span class="font-bold candor-color">Package: </span>'.(!empty($package) ? $package->package.' - cycle : '.$package->cycle_no : '-').'</p>
+                        <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($package->package) ? ($package->package - $totalAmount) : '-').'</p>
+                        <p><span class="font-bold candor-color">Package Condition: </span>'.(!empty($package) ? $package->condition : '-').'</p>
+                        <p><span class="font-bold candor-color">Package Remark: </span>'.(!empty($package) ? $package->remark : '-').'</p>
+                        <p><span class="font-bold candor-color">Payment : </span>'.$totalAmount.'</p><hr>';
+                }
+            // <p><span class="font-bold candor-color">Package : </span>'.(!empty($package) ? $package->package : '-').'</p>';
         }
         if($request->category && in_array($request->category,[3,4]))
         {
