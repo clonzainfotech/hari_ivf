@@ -647,7 +647,7 @@ class IndoorController extends AdminController
                 $followupDate = $request->followdate;
                 $followDate = date('Y-m-d',strtotime($followupDate));
                 $appointmentTime = null;
-                $fDate = !empty($followDate) ? Carbon::parse($followDate)->format('Y-m-d') : null;
+                $fDate = !empty($followDate) && $followDate >= Carbon::now()->format('Y-m-d')  ? Carbon::parse($followDate)->format('Y-m-d') : null;
                 if($fDate){
                     $requestData = new \Illuminate\Http\Request();
                     $requestData->replace(['date' => $fDate,'status'=>true]);
