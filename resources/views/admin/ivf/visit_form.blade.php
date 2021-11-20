@@ -742,13 +742,29 @@
                 <div class="{{'col-md-2 '.$class.' '.$progesteroneStatus}}">
                     {{Form::hidden('progesterone_status','yes')}}
                     <div class="radio is-conceived">
-                        {{Form::radio("data[progesterone][type]",'day_3',!empty($ivfData->progesterone->type) && $ivfData->progesterone->type == 'day_3' ? true : false ,['id'=>'day_3','class'=>'progesterone-type'])}}
+                        {{-- {{Form::radio("data[progesterone][type]",'day_3',!empty($ivfData->progesterone->type) && $ivfData->progesterone->type == 'day_3' ? true : false ,['id'=>'day_3','class'=>'progesterone-type'])}}
                         <label for="day_3">
                             Day-3
                         </label>
                         {{Form::radio("data[progesterone][type]",'day_5',!empty($ivfData->progesterone->type) && $ivfData->progesterone->type == 'day_5' ? true : false ,['id'=>'day_5','class'=>'progesterone-type'])}}
                         <label for="day_5">
                             Day-5
+                        </label> --}}
+                        {{Form::radio("data[progesterone][type]",'day_3',!empty($ivfData->progesterone->type) && $ivfData->progesterone->type == 'day_3' ? true : false,['id'=>'day_3','class'=>'progesterone-type'])}}
+                        <label for="day_3">
+                            Day-3
+                        </label>
+                        {{Form::radio("data[progesterone][type]",'day_4',!empty($ivfData->progesterone->type) && $ivfData->progesterone->type == 'day_4' ? true : false,['id'=>'day_4','class'=>'progesterone-type'])}}
+                        <label for="day_4">
+                            Day-4
+                        </label>
+                        {{Form::radio("data[progesterone][type]",'day_5',!empty($ivfData->progesterone->type) && $ivfData->progesterone->type == 'day_5' ? true : false,['id'=>'day_5','class'=>'progesterone-type'])}}
+                        <label for="day_5">
+                            Day-5
+                        </label>
+                        {{Form::radio("data[progesterone][type]",'day_6',!empty($ivfData->progesterone->type) && $ivfData->progesterone->type == 'day_6' ? true : false,['id'=>'day_6','class'=>'progesterone-type'])}}
+                        <label for="day_6">
+                            Day-6
                         </label>
                     </div>
                 </div>

@@ -947,13 +947,29 @@
                                                         @endphp
                                                         <div class="{{'col-md-2 d-none '.$class}}">
                                                             <div class="radio is-conceived">
-                                                                {{Form::radio("data[progesterone][type]",'day_3','',['id'=>'day_3','class'=>'progesterone-type'])}}
+                                                                {{-- {{Form::radio("data[progesterone][type]",'day_3','',['id'=>'day_3','class'=>'progesterone-type'])}}
                                                                 <label for="day_3">
                                                                     Day-3
                                                                 </label>
                                                                 {{Form::radio("data[progesterone][type]",'day_5','',['id'=>'day_5','class'=>'progesterone-type'])}}
                                                                 <label for="day_5">
                                                                     Day-5
+                                                                </label> --}}
+                                                                {{Form::radio("data[progesterone][type]",'day_3','',['id'=>'day_3','class'=>'progesterone-type'])}}
+                                                                <label for="day_3">
+                                                                    Day-3
+                                                                </label>
+                                                                {{Form::radio("data[progesterone][type]",'day_4','',['id'=>'day_4','class'=>'progesterone-type'])}}
+                                                                <label for="day_4">
+                                                                    Day-4
+                                                                </label>
+                                                                {{Form::radio("data[progesterone][type]",'day_5','',['id'=>'day_5','class'=>'progesterone-type'])}}
+                                                                <label for="day_5">
+                                                                    Day-5
+                                                                </label>
+                                                                {{Form::radio("data[progesterone][type]",'day_6','',['id'=>'day_6','class'=>'progesterone-type'])}}
+                                                                <label for="day_6">
+                                                                    Day-6
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -2328,13 +2344,29 @@
                                                             <div class="{{'col-md-3 d-none progesterone_data'}}">
                                                                 
                                                                 <div class="radio is-conceived">
-                                                                    {{Form::radio("data[progesterone][type]",'day_3','',['id'=>'day_3','class'=>'progesterone-type'])}}
+                                                                    {{-- {{Form::radio("data[progesterone][type]",'day_3','',['id'=>'day_3','class'=>'progesterone-type'])}}
                                                                     <label for="day_3">
                                                                         Day-3
                                                                     </label>
                                                                     {{Form::radio("data[progesterone][type]",'day_5','',['id'=>'day_5','class'=>'progesterone-type'])}}
                                                                     <label for="day_5">
                                                                         Day-5
+                                                                    </label> --}}
+                                                                    {{Form::radio("data[progesterone][type]",'day_3','',['id'=>'day_3','class'=>'progesterone-type'])}}
+                                                                    <label for="day_3">
+                                                                        Day-3
+                                                                    </label>
+                                                                    {{Form::radio("data[progesterone][type]",'day_4','',['id'=>'day_4','class'=>'progesterone-type'])}}
+                                                                    <label for="day_4">
+                                                                        Day-4
+                                                                    </label>
+                                                                    {{Form::radio("data[progesterone][type]",'day_5','',['id'=>'day_5','class'=>'progesterone-type'])}}
+                                                                    <label for="day_5">
+                                                                        Day-5
+                                                                    </label>
+                                                                    {{Form::radio("data[progesterone][type]",'day_6','',['id'=>'day_6','class'=>'progesterone-type'])}}
+                                                                    <label for="day_6">
+                                                                        Day-6
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -3699,9 +3731,17 @@
                                                 <label for="day_3">
                                                     Day-3
                                                 </label>
+                                                {{Form::radio("data[progesterone][type]",'day_4','',['id'=>'day_4','class'=>'progesterone-type'])}}
+                                                <label for="day_4">
+                                                    Day-4
+                                                </label>
                                                 {{Form::radio("data[progesterone][type]",'day_5','',['id'=>'day_5','class'=>'progesterone-type'])}}
                                                 <label for="day_5">
                                                     Day-5
+                                                </label>
+                                                {{Form::radio("data[progesterone][type]",'day_6','',['id'=>'day_6','class'=>'progesterone-type'])}}
+                                                <label for="day_6">
+                                                    Day-6
                                                 </label>
                                             </div>
                                         </div>
@@ -5982,7 +6022,7 @@
             $(document).on('click','.progesterone-type',function(){
                 if($(this).is(":checked")) {
                     var days = $(this).val();
-                    days = days == 'day_3' ? 3 : 5;
+                    days = days.split('_')[1];
                     // if(days != null)
                     // {
                         $('.progesterone_date_div').removeClass('d-none');
@@ -6006,7 +6046,8 @@
             });
             $(document).on('change','.progesterone_date',function(){
                 var days = $('.progesterone-type:checked').val();
-                days = days == 'day_3' ? 3 : 5;
+                days = days.split('_')[1];
+                // days = days == 'day_3' ? 3 : 5;
                 var now = new Date($('.last-appointment-date').val());
                 var progesteroneDate = new Date($('.progesterone_date').val());
                 if(progesteroneDate != null)

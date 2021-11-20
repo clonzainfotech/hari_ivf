@@ -1155,7 +1155,7 @@ class IVFController extends AdminController
                     $isTableView = 0;
                 }
                 if($request->isprint == 2){
-                    $day = $request->data['progesterone']['type'] == 'day_3' ? '3' : '5';
+                    $day = !empty($request->data['progesterone']['type']) ? explode('_',$request->data['progesterone']['type'])[1] : null;
                     $transferDate = Carbon::parse(!empty($request->data['progesterone_date']) ? $request->data['progesterone_date'] : $lastAppointmentData->date)->addDays($day)->format('d-m-Y');
                     if($request->progesterone_status == 'yes'){
                         $transferDate = Carbon::parse($fDate)->format('d-m-Y');
