@@ -6022,7 +6022,9 @@
             $(document).on('click','.progesterone-type',function(){
                 if($(this).is(":checked")) {
                     var days = $(this).val();
-                    days = days.split('_')[1];
+                    console.log(days);
+                    days = parseInt(days.split('_')[1]);
+                    // days = 5;
                     // if(days != null)
                     // {
                         $('.progesterone_date_div').removeClass('d-none');
@@ -6036,7 +6038,7 @@
                             now = new Date($('.progesterone_date').val());
                         }
                     }
-                    
+                    console.log(now);
                     now.setDate(now.getDate()+days);
                     now = moment(now).format('ddd DD MMM YYYY');
                     $('.tranfer-follow-date').val(now);
@@ -6046,7 +6048,7 @@
             });
             $(document).on('change','.progesterone_date',function(){
                 var days = $('.progesterone-type:checked').val();
-                days = days.split('_')[1];
+                days = parseInt(days.split('_')[1]);
                 // days = days == 'day_3' ? 3 : 5;
                 var now = new Date($('.last-appointment-date').val());
                 var progesteroneDate = new Date($('.progesterone_date').val());

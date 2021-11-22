@@ -594,17 +594,13 @@ class HomeController extends AdminController
             $plan_type = '';
             $remark = '';
             $package = '';
-            $current_cycle = '';
             if($ivf)
             {
                 $ohData = json_decode($ivf->o_h);
                 $year = !empty($ohData->first_marriage_life) ? $ohData->first_marriage_life.' year' : (!empty($ohData->second_marriage_details) ? $ohData->second_marriage_details.' year': null);
                 $ml = !empty($ohData->type_of_infertility) ? $typeOfData[$ohData->type_of_infertility].' / '.$year : 'Primary / '.$year;
             }
-            $no_cycle = count($this->IvfHistory->where('patients_id',$patients_id)->WhereNull('description->skip_reason')->Where('description->is_transfer','=','yes')->groupBy('cycle_no')->get());
-            // dd($no_cycle); 
             $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)->orderBy('id','desc')->first();
-            $current_cycle = $no_cycle + 1;
             if($currentHistory)
             {
                 $currentData = json_decode($currentHistory->description);
@@ -628,7 +624,6 @@ class HomeController extends AdminController
             $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
             <p><span class="font-bold candor-color">Patient Age : </span>'.$opdPatient->age.' Years'.'</p>
             <p><span class="font-bold candor-color">Attempt Of Cycle : </span><span class="attempt-cycle">'.$totalAttemptCycle.'</span></p>
-            <p><span class="font-bold candor-color">Current Cycle : </span>'.$current_cycle.'</p>
             <p><span class="font-bold candor-color">Current Plan : </span>'.$plan_type.'</p>
             <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>';
             $packages = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->get();
