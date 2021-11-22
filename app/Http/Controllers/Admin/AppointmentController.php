@@ -1452,7 +1452,12 @@ class AppointmentController extends AdminController
                 $plan = '';
                 $cycle_no = '';
                 $no_cycle = 0;
+                $planData = ['1'=>'Self','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
                 $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->orderBy('id','desc')->first();
+                if(!$currentHistory)
+                {
+                    $currentHistory =  $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)->orderBy('id','desc')->first();
+                }
                 if($currentHistory)
                 {
                     $ivfData = !empty($currentHistory) ? json_decode($currentHistory->description) : null;
@@ -1475,11 +1480,21 @@ class AppointmentController extends AdminController
                 }
                 $packages = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->get();
                 $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>';
-                $no_cycle = count($this->IvfHistory->where('patients_id',$patients_id)->WhereNull('description->skip_reason')->Where('description->is_transfer','=','yes')->groupBy('cycle_no')->get());
-                // $data = '<p><span class="font-bold candor-color">Plan : </span>'.$report.'</p>';
-                $data = '<p><span class="font-bold candor-color">Attempt Cycle : </span>'.$no_cycle.'</p>';
-                // dd($packages);
+                $ivfSelfCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','1')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+                $ivfFetCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','2')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+                $ivfFetOdCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','3')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+                $ivfFetEdCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','4')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+                $ivfSelfCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','1')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+                $ivfFetCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','2')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+                $ivfFetOdCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','3')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+                $ivfFetEdCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','4')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
 
+                $totalAttemptCycle = 'PickUp - Total Cycle : '.($ivfSelfCycle - $ivfSelfCycleSkip).' (Skip : '.($ivfSelfCycleSkip).') <br>';
+                $totalAttemptCycle .= 'FET - Total Cycle : '.($ivfFetCycle - $ivfFetCycleSkip).' (Skip : '.($ivfFetCycleSkip).') <br>';
+                $totalAttemptCycle .= 'FET-OD - Total Cycle : '.($ivfFetOdCycle - $ivfFetOdCycleSkip).' (Skip : '.($ivfFetOdCycleSkip).') <br>';
+                $totalAttemptCycle .= 'FET-ED -Total Cycle : '.($ivfFetEdCycle - $ivfFetEdCycleSkip).' (Skip : '.($ivfFetEdCycleSkip).') <br>';
+                $data .= '<p><span class="font-bold candor-color">Attempt Cycle : </span><span class="attempt-cycle">'.$totalAttemptCycle.'</span></p>';
+                $data .= '<p><span class="font-bold candor-color">Current Plan: </span>'.(!empty($plan) ? $planData[$plan] : '').'</p>';
                 foreach($packages as $key => $package)
                 {
                     $totalAmount = $this->IndoorDeposit->where('patient_id',$patients_id)->where('ivf_payment_id',$package->id)->sum('amount');

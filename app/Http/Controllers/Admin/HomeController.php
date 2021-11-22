@@ -484,6 +484,7 @@ class HomeController extends AdminController
             if($ancHistory && $request->category != 5)
             {
                 $ancFirst = $this->ANC->where('patients_id',$patients_id)->where('id',$ancHistory->anc_id)->first();
+                $patientsObstratics = json_decode($ancFirst->patients_obstratics);
                 $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
                 $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
                 $eddDate = !empty($mhData->edd) ? $mhData->edd : null;
@@ -491,6 +492,7 @@ class HomeController extends AdminController
                 $o_e = !empty($ancHistory->o_e) ? json_decode($ancHistory->o_e) : null;
                 $remark = !empty($o_e->remark) ? $o_e->remark : null;
                 $ancCreatedDate = $ancHistory->created_at;
+                $gpal_status = isset($patientsObstratics->gpal_status) && !empty($patientsObstratics->gpal_status) ? $patientsObstratics->gpal_status : '';
             }
             else
             {
@@ -609,12 +611,25 @@ class HomeController extends AdminController
                 $plan_type = $planData[$currentHistory->plan];
                 $remark = !empty($currentData->remark) ? $currentData->remark : '';
             }
+            $ivfSelfCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','1')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+            $ivfFetCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','2')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+            $ivfFetOdCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','3')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+            $ivfFetEdCycle = count($this->IvfHistory->where('patients_id',$patients_id)->where('plan','4')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+            $ivfSelfCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','1')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+            $ivfFetCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','2')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+            $ivfFetOdCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','3')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+            $ivfFetEdCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','4')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
+
+            $totalAttemptCycle = 'PickUp - Total Cycle : '.($ivfSelfCycle - $ivfSelfCycleSkip).' (Skip : '.($ivfSelfCycleSkip).') <br>';
+            $totalAttemptCycle .= 'FET - Total Cycle : '.($ivfFetCycle - $ivfFetCycleSkip).' (Skip : '.($ivfFetCycleSkip).') <br>';
+            $totalAttemptCycle .= 'FET-OD - Total Cycle : '.($ivfFetOdCycle - $ivfFetOdCycleSkip).' (Skip : '.($ivfFetOdCycleSkip).') <br>';
+            $totalAttemptCycle .= 'FET-ED -Total Cycle : '.($ivfFetEdCycle - $ivfFetEdCycleSkip).' (Skip : '.($ivfFetEdCycleSkip).') <br>';
             // $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
             $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
             <p><span class="font-bold candor-color">Patient Age : </span>'.$opdPatient->age.' Years'.'</p>
-            <p><span class="font-bold candor-color">Attempt Of Cycle : </span>'.$no_cycle.'</p>
+            <p><span class="font-bold candor-color">Attempt Of Cycle : </span><span class="attempt-cycle">'.$totalAttemptCycle.'</span></p>
             <p><span class="font-bold candor-color">Current Cycle : </span>'.$current_cycle.'</p>
-            <p><span class="font-bold candor-color">Plan : </span>'.$plan_type.'</p>
+            <p><span class="font-bold candor-color">Current Plan : </span>'.$plan_type.'</p>
             <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>';
             $packages = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->get();
                 // dd($packages);
