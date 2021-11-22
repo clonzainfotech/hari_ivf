@@ -1319,7 +1319,7 @@ class IVFController extends AdminController
                 }
                 if($ivfHistory->cycle_status == 2){
                     $isCycle = true;
-                    $planTransfer = (int)!empty($lastIvfHistory->plan) ? $lastIvfHistory->plan : null;
+                    $planTransfer = (int)!empty($lastIvfHistory->plan) ? $lastIvfHistory->plan : $ivfHistory->plan;
                     $lastPlan = $planTransfer;
                     if(!$planTransfer){
                         $lastPlan = $ivfHistory->plan;
@@ -1388,6 +1388,7 @@ class IVFController extends AdminController
                     break;
                 case 3:
                     if($isCycle){
+                        
                         $key = $lastCycleId;
                         // $value = $fetOdCycleNo;
                         // if(!empty($isIvfappointment) && $isIvfappointment->date >= $currentDate){
@@ -1461,7 +1462,14 @@ class IVFController extends AdminController
                 $collection =  isset($description->collection) ? $description->collection : [];
                 return [$value->plan.'_'.$value->cycle_no  => in_array('progesterone',$collection) && isset($description->progesterone->status) && $description->progesterone->status == 'yes' ? true : false];
             })->all();
-            // dd($dataForSamecycle_value);
+            $dataForFailCycle = collect($this->IvfHistory
+                                ->wherePatientsId($id)
+                                ->where('description->transfer->result_type', 'fail')
+                                // ->where('cycle_status', '2')
+                                ->get());
+            $dataFailcycle = $dataForFailCycle->mapWithKeys(function($value){
+                return [$value->plan.'_'.$value->cycle_no  => $value->plan];
+            })->all();
             $referenceDoctor = $this->ReferenceDoctor->pluck('name','id');
             $complaints = $this->Complaint->pluck('name','name');
             $medicines = $this->Medicine->pluck('name','name');
@@ -1501,6 +1509,7 @@ class IVFController extends AdminController
             $data['dataForSkipPlans'] = $dataForSkipPlans;
             $data['dataForSkipReason'] = $dataForSkipReason;
             $data['dataSamecycle'] = $dataSamecycle;
+            $data['dataFailcycle'] = $dataFailcycle;
             $data['dataForSamecycle_value'] = $dataForSamecycle_value;
             $data['isIvfappointment'] = !empty($isIvfappointment) ? true : false;
             if($request->ajax()){

@@ -49,11 +49,24 @@
                             $class = 'skip-cycle';
                             $cycleNumber--;
                         }
+                        //for cycle fail
+                        $isFail = false;
+                        $failcycleNo = array_search('1',$dataFailcycle);
+                        if($failcycleNo)
+                        {
+                            $cycleNo = explode('_',$failcycleNo)[1];
+                            if($cycleNo == $row)
+                            {
+                                $isFail = true;
+                                $class = 'fail-cycle';
+                            }
+                        }
                     @endphp 
                     <div class="{{'card p-3 patient_name '.$class}}">
                         <span>{{isset($dataForSkipReason['1_'.$row]) ? 'Skip Reason : '.$dataForSkipReason['1_'.$row] : ''}}</span>
                         <span>{{isset($dataForSamecycle_value['1_'.$row]) &&  $dataForSamecycle_value['1_'.$row] == true ? 'Transfer : Same Cycle' : ''}}</span>
                         <span class="candor-color"><b>{{($currentCycle == true) ? 'Current Cycle' : ''}}</b></span>
+                        <span class="text-danger"><b>{{($isFail == true) ? 'Cycle Failed' : ''}}</b></span>
                         <div class="row">
                             <div class="col-md-12">
                                 <a id="patient_name_display" class="ivf-patinent-name" href="{{URL::to('ivf/cycle/'.encrypt($key).'/'.$patientsId.'/'.encrypt(1).'/'.encrypt($row))}}">
@@ -105,11 +118,24 @@
                             $class = 'skip-cycle';
                             $cycleNumber--;
                         }
+                        //for cycle fail
+                        $isFail = false;
+                        $failcycleNo = array_search('2',$dataFailcycle);
+                        if($failcycleNo)
+                        {
+                            $cycleNo = explode('_',$failcycleNo)[1];
+                            if($cycleNo == $row)
+                            {
+                                $isFail = true;
+                                $class = 'fail-cycle';
+                            }
+                        }
                         
                     @endphp
                     <div class="{{'card p-3 patient_name '.$class}}">
                         <span>{{isset($dataForSkipReason['2_'.$row]) ? 'Skip Reason : '.$dataForSkipReason['2_'.$row] : ''}}</span>
                         <span class="candor-color"><b>{{($currentCycle == true) ? 'Current Cycle' : ''}}</b></span>
+                        <span class="text-danger"><b>{{($isFail == true) ? 'Cycle Failed' : ''}}</b></span>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="test">
@@ -153,17 +179,31 @@
                             $cycleNo = (int)$cycleNo[1];
                             // $cycleNumber++;
                         }
+                        // for display skip reason
                         if($cycleNo == $row){
                             unset($dataForSkipPlans[$cycleNoKey]);
                             $class = 'skip-cycle';
                             $cycleNumber--;
                         }
-                        // for display skip reason
+                        //for cycle fail
+                        $isFail = false;
+                        $failcycleNo = array_search('3',$dataFailcycle);
+                        if($failcycleNo)
+                        {
+                            $cycleNo = explode('_',$failcycleNo)[1];
+                            if($cycleNo == $row)
+                            {
+                                $isFail = true;
+                                $class = 'fail-cycle';
+                            }
+                            
+                        }
                         
                     @endphp
                     <div class="{{'card p-3 patient_name '.$class}}">
                         <span>{{isset($dataForSkipReason['3_'.$row]) ? 'Skip Reason : '.$dataForSkipReason['3_'.$row] : ''}}</span>
                         <span class="candor-color"><b>{{($currentCycle == true) ? 'Current Cycle' : ''}}</b></span>
+                        <span class="text-danger"><b>{{($isFail == true) ? 'Cycle Failed' : ''}}</b></span>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="test">
@@ -213,12 +253,25 @@
                             $class = 'skip-cycle';
                             $cycleNumber--;
                         }
+                        //for cycle fail
+                        $isFail = false;
+                        $failcycleNo = array_search('4',$dataFailcycle);
+                        if($failcycleNo)
+                        {
+                            $cycleNo = explode('_',$failcycleNo)[1];
+                            if($cycleNo == $row)
+                            {
+                                $isFail = true;
+                                $class = 'fail-cycle';
+                            }
+
+                        }
                         
                     @endphp
                     <div class="{{'card p-3 patient_name '.$class}}">
                         <span>{{isset($dataForSkipReason['4_'.$row]) ? 'Skip Reason : '.$dataForSkipReason['4_'.$row] : ''}}</span>
                         <span class="candor-color"><b>{{($currentCycle == true) ? 'Current Cycle' : ''}}</b></span>
-                        
+                        <span class="text-danger"><b>{{($isFail == true) ? 'Cycle Failed' : ''}}</b></span>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="test">
