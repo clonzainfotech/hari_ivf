@@ -509,17 +509,17 @@
                     $('.cycle_no').text('The type field is required.');
                 }
             }
-            if(htype == 2)
-            {
+            // if(htype == 2)
+            // {
                 
-                $('#package_id').selectpicker('refresh');
-                if($('select#package_id').val() == '')
-                {
-                    valid = 0;
-                    // var error_id = $('select.hinjection').data('error');
-                    $('.package-error').html('This package field is required');
-                }
-            }
+            //     $('#package_id').selectpicker('refresh');
+            //     if($('select#package_id').val() == '')
+            //     {
+            //         valid = 0;
+            //         // var error_id = $('select.hinjection').data('error');
+            //         $('.package-error').html('This package field is required');
+            //     }
+            // }
             if (hcharge == '') {
                 valid = 0;
                 $('.hchargeerror').text('The charge field is required.');

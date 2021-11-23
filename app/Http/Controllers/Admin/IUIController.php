@@ -1195,7 +1195,7 @@ class IUIController extends AdminController
             $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->orderBy('id', 'DESC')->first();
             //if patient is currently in anc or ivf now convert in inf then fillup first visit auto
             $currentAppointment = $this->Appointment->where('patients_id',$id)->whereNotNull('arrival_time')->whereDate('date',Carbon::now()->format('Y-m-d'))->where('is_done',0)->first();
-            if(($lastAppointment && ($lastAppointment->category_id == 1 || $lastAppointment->category_id == 2)))
+            if(($lastAppointment && ($lastAppointment->category_id == 1 || $lastAppointment->category_id == 2)) || !empty($currentAppointment))
             {
                 $firstVisit = $this->IUI->where('patients_id',$id)->first();
                 $firstVisitHistory = null;

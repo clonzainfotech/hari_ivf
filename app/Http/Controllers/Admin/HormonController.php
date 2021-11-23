@@ -125,14 +125,21 @@ class HormonController extends AdminController
             $ivfPaymentData = null;
             if ( $request->htype == 2) 
             {
-                $ivfPaymentData = $this->IvfPayment->find($request->package_id);
-                $lastTotal = $this->IndoorDeposit
-                ->whereChargeTypeAndPatientId($request->htype, $request->hname)
-                ->whereCycleNo($ivfPaymentData->cycle_no)
-                ->where('ivf_payment_id',$ivfPaymentData->id)
-                ->orderBy('id', 'DESC')
-                ->value('total');
-                $hormon->ivf_payment_id = $ivfPaymentData ? $request->package_id : '';
+                if($request->package_id)
+                {
+                    $ivfPaymentData = $this->IvfPayment->find($request->package_id);
+                }
+                if($ivfPaymentData)
+                {
+                    $lastTotal = $this->IndoorDeposit
+                    ->whereChargeTypeAndPatientId($request->htype, $request->hname)
+                    ->whereCycleNo($ivfPaymentData->cycle_no)
+                    ->where('ivf_payment_id',$ivfPaymentData->id)
+                    ->orderBy('id', 'DESC')
+                    ->value('total');
+                    $hormon->ivf_payment_id = $ivfPaymentData ? $request->package_id : '';
+                }
+                
             }
            
             $hormon->total = ($lastTotal == null) ? $hormon->amount : ($lastTotal + $hormon->amount);
