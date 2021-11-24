@@ -1276,7 +1276,8 @@ class IVFController extends AdminController
                 $ivfSecondVisitData = json_decode($ivfSecondVisitData->description);
             }
             $ivf = $this->IVF->wherePatientsId($id)->first();
-            $planManagement = json_decode($ivf->plan_management);
+            // $planManagement = json_decode($ivf->plan_management);
+            $planManagement = !empty($ivf->plan_management) ? json_decode($ivf->plan_management) : '';
             $planTransfer = !empty($planManagement->plan) ? $planManagement->plan : 1;
             $lastPlan = $planTransfer;
             if($ivfHistory){
