@@ -1858,11 +1858,11 @@
             <br>
         @endif
         <br>
-        <div class="row mt-1">
+        <div class="row mt-1">s
             <div class="col-md-6">
-                <label>Remark:</label>
+                <label>Dr. Remark:</label>
                 <div class="form-group">
-                    {{Form::textarea('data[remark]',!empty($ivfData->remark) ? $ivfData->remark : null, ['class' => 'form-control no-resize call-response','placeholder' => 'Remark','rows' => '3'])}}
+                    {{Form::textarea('data[remark]',!empty($ivfData->remark) ? $ivfData->remark : null, ['class' => 'form-control no-resize call-response','placeholder' => 'Dr. Remark','rows' => '3'])}}
                 </div>
             </div>
 

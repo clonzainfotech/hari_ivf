@@ -4145,7 +4145,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 <div class="row">
                     <div class="col-md-6">
                         <div class="input-group">
-                            {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                            {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Dr. Remark','rows'=>'5'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('remark')}}
@@ -4984,7 +4984,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 <div class="row">
                     <div class="col-md-6">
                         <div class="input-group">
-                            {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                            {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Dr. Remark','rows'=>'5'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('remark')}}
@@ -5612,7 +5612,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
-                                {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                                {{Form::textarea("data[remark]",!empty($historyData->remark) ? $historyData->remark : '',['class'=>'form-control no-resize remark','placeholder'=>'Dr. Remark','rows'=>'5'])}}
                             </div>
                             <span class="form-error-msg">
                                 {{$errors->first('remark')}}

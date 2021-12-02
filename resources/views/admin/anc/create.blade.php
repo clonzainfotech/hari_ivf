@@ -2003,7 +2003,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    {{Form::textarea('oe[remark]', null, ['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}
+                                                    {{Form::textarea('oe[remark]', null, ['class'=>'form-control no-resize remark','placeholder'=>'Dr. Remark','rows'=>'2'])}}
                                                 </div>
                                             </div>
                                         </div>

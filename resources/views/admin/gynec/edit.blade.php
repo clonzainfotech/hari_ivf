@@ -3043,7 +3043,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 <div class="medicine-data"></div>
             {{Form::hidden('old_medicine_data',!empty($medicineKey) ? implode(',',$medicineKey) : null,['class'=>'old-medicine-data'])}}
             <div class="row mt-3">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon">
                             Follow Up : &nbsp;
@@ -3052,13 +3052,23 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <span class="gsac-no-data-followup form-error-msg"></span>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-4">
                     <div class="input-group">
                         {{Form::textarea("ho[remark]",!empty($ho->remark) ? $ho->remark : null,['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
                     </div>
                     <span class="form-error-msg">
                         {{$errors->first('remark')}}
                     </span>
+                    
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        {{Form::textarea("ho[pt_remark]",isset($ho->pt_remark) && !empty($ho->pt_remark) ? $ho->pt_remark : null,['class'=>'form-control no-resize','placeholder'=>"Patient'sRemark",'rows'=>'5'])}}
+                    </div>
+                    {{-- <label>Patient'sRemark:</label>
+                    <div class="input-group">
+                        {{Form::textarea("data[pt_remark]",!empty($ivfData->pt_remark) ? $ivfData->pt_remark : '',['class'=>'form-control no-resize pt_remark','placeholder'=>"Patient's Remark",'rows'=>'3'])}}
+                    </div> --}}
                 </div>
                 {{Form::hidden('gynec_id',!empty($gynecId) ? encrypt($gynecId) : null,['class'=>'gynecId'])}}
             </div>

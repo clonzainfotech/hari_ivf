@@ -4694,7 +4694,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                 <div class="row">
                     <div class="col-md-6">
                         <div class="input-group">
-                            {{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
+                            {{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Dr. Remark','rows'=>'5'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('remark')}}
@@ -4840,7 +4840,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                     <th style="width:15% !important">Endometrial Thickness / Pattern</th>
                                     <th style="width: 20% !important;">Gonodotropin </th>
                                     <th style="width:10px;">Vascularity of Endometrium</th>
-                                    <th style="width: 20% !important;">Remark</th>
+                                    <th style="width: 20% !important;">Dr. Remark</th>
                                     <th style="width: 10% !important;" class="">Action</th>
                                 </tr>
                             </thead>
@@ -5201,7 +5201,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             <td>
                                                 {{Form::select('data[vascularity_of_endo]',$vascularity_of_endo,'',['class'=>'form-control select-padding-0 vascularity_of_endo','placeholder'=>'Select Vascularity'])}}
                                             </td>
-                                            <td class="">{{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'2'])}}</td>
+                                            <td class="">{{Form::textarea("data[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Dr. Remark','rows'=>'2'])}}</td>
                                             <td class=""></td>
                                         </tr>
                                     @endif

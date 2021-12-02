@@ -329,7 +329,7 @@
                                     <th class="text-secondary">Rt. Ovary</th>
                                     <th class="text-secondary">Lt. Ovary</th>
                                     <th class="text-secondary">ET</th>
-                                    <th class="text-secondary">Remark</th>
+                                    <th class="text-secondary">Dr. Remark</th>
                                     <th class="text-secondary">Action</th>
                                 </tr>
                                 </thead>
@@ -2079,7 +2079,7 @@
                                                     <th style="width:15% !important">Endometrial Thickness / Pattern</th>
                                                     <th style="width:5px;">Vascularity of Endometrium</th>
                                                     <th style="width: 20% !important;">Drugs </th>
-                                                    <th style="width: 20% !important;">Remark</th>
+                                                    <th style="width: 20% !important;">Dr. Remark</th>
                                                     <th style="width: 10% !important;" class="">Action</th>
                                                 </tr>
                                             </thead>
@@ -4885,7 +4885,7 @@
                                      <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{Form::textarea('data[remark]','', ['class' => 'form-control no-resize remark call-response','placeholder' => 'Remark','rows' => '5'])}}
+                                                {{Form::textarea('data[remark]','', ['class' => 'form-control no-resize remark call-response','placeholder' => 'Dr. Remark','rows' => '5'])}}
                                                 <span class="transfer-error text-danger mb-2"></span>
                                             </div>
                                         </div>

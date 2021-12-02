@@ -1509,9 +1509,15 @@
                 </tr>
                 @if(isset($ho->remark) && !empty($ho->remark))
                 <tr>
-                    <td><span class="f-date"> Remark :</span>{{ $ho->remark}}</td>
+                    <td><span class="f-date">Dr. Remark : </span>{{ $ho->remark}}</td>
                 </tr>
                 @endif
+                @if(isset($printPreview) && $printPreview == 1 && isset($ho->pt_remark) && !empty($ho->pt_remark))
+                    <tr>
+                        <td><span class="f-date"> Remark :</span>{{ $ho->pt_remark}}</td>
+                    </tr>
+                @endif
+                
             </tbody>
         </table>
         {{-- <h4 class="text-center"></h4> --}}
