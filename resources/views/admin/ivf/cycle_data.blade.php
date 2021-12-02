@@ -236,6 +236,7 @@
                 $lastCycle = $cycle[count($cycle)-1];
                 
             @endphp
+            
             @foreach($cycle as $row)
                 <div class="card d-none {{'visit-card-'.$row->id}}">
                     <div class="body">
@@ -249,7 +250,11 @@
             <div class="card pick_up_table">
                 <div class="body">
                     {{Form::open(['class'=>'form ivf','files'=>'true','id'=>'ivf-form'])}}
-                    
+                    @if($remark)
+                        <span class="remark-text">Last Remark: {{$remark}}</span>
+                        <br>
+                        <br>
+                    @endif
                     <div class="row">
                         <div class="col-md-12">
                             <table class='unik-header-table table m-b-0'>
@@ -1944,6 +1949,11 @@
                 @endphp
                 <div class="card frozen-table">
                     <div class="body">
+                        @if($remark)
+                            <span class="remark-text">Last Remark: {{$remark}}</span>
+                            <br>
+                            <br>
+                        @endif
                         <div class="col-md-12">
                             {{Form::open(['class'=>'form ivf','files'=>'true','id'=>'ivf-form'])}}
                             {{Form::hidden('visit',$visit,['class'=>'visit-no'])}}
@@ -3078,6 +3088,11 @@
         @if($isForm && $skipPlan == $pStatus && ($nextVisitValue < 2))
             <div class="card cycle-form">
                 <div class="body">
+                    @if($remark)
+                        <span class="remark-text">Last Remark: {{$remark}}</span>
+                        <br>
+                        <br>
+                    @endif
                     <div class="col-md-12 col-lg-12">
                         {{Form::open(['class'=>'form ivf','files'=>'true','id'=>'ivf-form'])}}
                         

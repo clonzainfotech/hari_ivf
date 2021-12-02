@@ -1789,7 +1789,21 @@ class IVFController extends AdminController
             //check semen and embroy is used in previous cycle or not
             $isSemen_used = $this->IvfHistory->where('patients_id',$id)->where('cycle_no',($cNumber-1))->where('plan',$pStatus)->where('description->collected->frozen->type', 'yes')->where('description->is_transfer','no')->where('description->skip_cycle','yes')->orderBy('id','DESC')->first();
             $isEmbroy_used = $this->IvfHistory->where('patients_id',$id)->where('cycle_no',($cNumber-1))->where('plan',$pStatus)->where('description->collected->report->embroy->type', 'yes')->where('description->is_transfer','no')->where('description->skip_cycle','yes')->orderBy('id','DESC')->first();
+            $remark = null;
+            $LastIvfVisit = $this->IvfHistory->wherePatientsId($id)->orderBy('created_at','desc')->first();
+            if($LastIvfVisit)
+            {
+                $des = json_decode($LastIvfVisit->description);
+                $remark = isset($des->remark) && !empty($des->remark) ? $des->remark : '';
+                $ivfExtraVisit  = $this->IvfExtraVisit->where('patient_id',$id)->where('created_at','>',$LastIvfVisit->created_at)->first();
+                if($ivfExtraVisit)
+                {
+                    $oe = json_decode($ivfExtraVisit->oe);
+                    $remark = isset($oe->remark) && !empty($oe->remark) ? $oe->remark : '';
+                }
+            }
             $data = [];
+            $data['remark'] = $remark;
             $data['isSemen_used'] = !empty($isSemen_used) ? true : false;
             $data['isEmbroy_used'] = !empty($isEmbroy_used) ? true : false;
             $data['pickupDate'] = $pickupDate;
