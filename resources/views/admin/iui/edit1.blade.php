@@ -3399,7 +3399,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <div class='col-md-4'>
                                             <div class='form-group'>
                                                 <!-- <span class='input-group-addon'>Day :</span> -->
-                                                {{Form::number('treatment['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
+                                                {{Form::text('treatment['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                             </div>
                                         </div>
                                         <div class='col-md-1 medicine-data-remove'>
@@ -3990,7 +3990,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <div class='col-md-4'>
                                             <div class='form-group'>
                                                 <!-- <span class='input-group-addon'>Day :</span> -->
-                                                {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
+                                                {{Form::text('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                             </div>
                                         </div>
                                         <div class='col-md-1 medicine-data-remove'>
@@ -4877,7 +4877,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <div class='col-md-4'>
                                 <div class='form-group'>
                                     <!-- <span class='input-group-addon'>Day :</span> -->
-                                    {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
+                                    {{Form::text('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                 </div>
                             </div>
                             <div class='col-md-1 medicine-data-remove'>
@@ -5517,7 +5517,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <div class='col-md-4'>
                                             <div class='form-group'>
                                                 <!-- <span class='input-group-addon'>Day :</span> -->
-                                                {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
+                                                {{Form::text('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                             </div>
                                         </div>
                                         <div class='col-md-1 medicine-data-remove'>

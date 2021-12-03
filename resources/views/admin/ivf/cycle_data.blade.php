@@ -1893,7 +1893,7 @@
                                                         <div class='col-md-4'>
                                                             <div class='form-group'>
                                                                 <!-- <span class='input-group-addon'>Day :</span> -->
-                                                                {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
+                                                                {{Form::text('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                                             </div>
                                                         </div>
                                                         <div class='col-md-1 medicine-data-remove'>
@@ -3042,7 +3042,7 @@
                                                                 <div class='col-md-4'>
                                                                     <div class='form-group'>
                                                                         <!-- <span class='input-group-addon'>Day :</span> -->
-                                                                        {{Form::number('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
+                                                                        {{Form::text('data[treatment]['.$mId.'][note]',isset($row->note) ? $row->note : '',['class'=>'form-control','placeholder'=>'Note'])}}
                                                                     </div>
                                                                 </div>
                                                                 <div class='col-md-1 medicine-data-remove'>
