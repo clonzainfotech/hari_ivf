@@ -3085,7 +3085,7 @@
 
             @endif
         @endif
-        @if($isForm && $skipPlan == $pStatus && ($nextVisitValue < 2))
+        @if($skipPlan == $pStatus && ($nextVisitValue < 2))
             <div class="card cycle-form">
                 <div class="body">
                     @if($remark)

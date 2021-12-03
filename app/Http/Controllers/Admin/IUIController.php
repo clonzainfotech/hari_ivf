@@ -1194,26 +1194,27 @@ class IUIController extends AdminController
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
             $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->orderBy('id', 'DESC')->first();
             //if patient is currently in anc or ivf now convert in inf then fillup first visit auto
-            $currentAppointment = $this->Appointment->where('patients_id',$id)->whereNotNull('arrival_time')->whereDate('date',Carbon::now()->format('Y-m-d'))->where('is_done',0)->first();
             if(($lastAppointment && ($lastAppointment->category_id == 1 || $lastAppointment->category_id == 2)))
             {
                 $firstVisit = $this->IUI->where('patients_id',$id)->first();
                 $firstVisitHistory = null;
+                $is_IUI_firstVisit = 0;
                 if($firstVisit)
                 {
                     $firstVisitHistory = $this->IuiHistory->where('patients_id',$id)->where('cycle_no',$firstVisit->cycle_no)->first();
                     $cycleNo = ($firstVisit) ? $firstVisit->cycle_no + 1 : 1;
-                    if(!$firstVisit)
-                    {
-                        $firstVisit = $this->IVF->where('patients_id',$id)->first();
-                        $cycleNo = 1;
-                    }
+                    $is_IUI_firstVisit = !empty($firstVisitHistory) ? 1 : 0;
+                }
+                if(!$firstVisit)
+                {
+                    $firstVisit = $this->IVF->where('patients_id',$id)->first();
+                    $cycleNo = 1;
+                    $is_IUI_firstVisit = 1;
                 }
                 $iuiHistory = $this->IuiHistory->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
                 $checkExistIUI = $this->IUI->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
-                if($firstVisit && !$iuiHistory && !$checkExistIUI && !empty($firstVisitHistory))
+                if($firstVisit && $is_IUI_firstVisit == 1)
                 {
-                    // dd('sdf');
                     $iui = $this->IUI;
                     $iui->patients_id = $id;
                     $iui->seen_by = $firstVisit->seen_by;
