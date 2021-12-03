@@ -112,6 +112,19 @@
                     window.location.href=url;
                 }
             });
+            $(document).on('click','.medicine-given',function(){
+                var pid = $(this).data('pid');
+                $.ajax({
+                    url: "{{URL::to('medical-given-status')}}",
+                    // method:'POST',
+                    dataType: 'json',
+                    data : {pid:pid},
+                    }).done(function(data) {
+                        getPatientsData(qstring);
+                    }).fail(function() {
+                        getPatientsData(qstring);
+                    });
+            })
 
         });
 

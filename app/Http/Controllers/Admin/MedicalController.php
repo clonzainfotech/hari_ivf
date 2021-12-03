@@ -257,4 +257,21 @@ class MedicalController extends AdminController
             abort(500);
         }
     }
+
+     /**
+    * Change medicine status in appointment table
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function medicineStatus(Request $request)
+    {
+        try
+        {
+           $appointment = $this->Appointment->where('patients_id',$request->pid)->whereDate('date',Carbon::now()->format('Y-m-d'))->where('is_done',1)->update(['is_medicine_given'=>1]);
+        }catch(Exception $e){
+            log::Debug($e);
+            abort(500);
+        }
+        
+    }
 }

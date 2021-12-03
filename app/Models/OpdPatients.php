@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Base\BaseModel;
-
+use Carbon\Carbon;
 
 class OpdPatients extends BaseModel
 {
@@ -81,6 +81,22 @@ class OpdPatients extends BaseModel
 
     public function getIVFPayment(){
         return $this->hasOne('App\Models\IvfPayment','patients_id','id');
+    }
+
+    public function getCurrentDoneAppointment()
+    {
+        $appointment = null;
+        $appointment = Appointment::where('patients_id',$this->id)
+                            ->where('is_done','1')
+                            ->whereDate('date',carbon::now()->format('Y-m-d'))
+                            ->first();
+        if($appointment)
+        {
+            $status = 1;
+            return['status'=>$status,'medicine_status' => $appointment->is_medicine_given];
+        }
+        
+        // return $this->hasOne('App\Models\Appointment','patients_id','id')->where('is_done','1')->whereDate('date',carbon::now()->format('Y-m-d'));
     }
 
 }

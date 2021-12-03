@@ -1721,7 +1721,7 @@ class IVFController extends AdminController
 
             }
             // $checkIsTransfer = $this->IvfHistory->wherePatientsId($id)->where('description->is_transfer','yes')->first();
-            $checkIsTransfer = $this->IvfHistory->wherePatientsId($id)->orderBy('id','DESC')->first();
+            $checkIsTransfer = $this->IvfHistory->wherePatientsId($id)->where('cycle_status','!=',2)->orderBy('id','DESC')->first();
 
             if($checkIsTransfer){
                 $checkIsTransferData = json_decode($checkIsTransfer->description);
@@ -1737,6 +1737,7 @@ class IVFController extends AdminController
                 }
 
             }
+            
             $complaints = $this->Complaint->pluck('name','name');
             $lastAppointment = $this->Appointment->wherePatientsId($id)->orderBy('id','DESC')->first();
             $isTransfer = $checkIsTransfer ? true : false;

@@ -338,6 +338,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     // medical route
     Route::get('medical','MedicalController@index');
     Route::get('get-medicine/{patientsId}','MedicalController@getMedicines');
+    Route::get('medical-given-status','MedicalController@medicineStatus');
 
   // send sms
 
