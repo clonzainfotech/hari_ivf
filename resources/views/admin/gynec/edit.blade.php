@@ -98,7 +98,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
 </div>
 @if($isGynec != 1)
     <!-- O/H -->
-    <div class="panel panel-primary">
+    <div class="panel panel-primary d-none">
         <div class="panel-heading" role="tab" id="headingThree_1">
         <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse"
                                 data-parent="#oh" href="#oh" aria-expanded="false"
@@ -1267,7 +1267,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
     </div>
 @endif
 @if($isGynec != 1)
-    <div class="panel panel-primary">
+    <div class="panel panel-primary d-none">
         <div class="panel-heading" role="tab" id="headingThree_1">
             <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#patients-detailed-ho" href="#patients-detailed-ho" aria-expanded="false"
                     aria-controls="patients-detailed-ho">5. Patients Detailed H/O</a></h4>
@@ -1498,12 +1498,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     @php
                         $uterusType = !empty($oe->uterus->type) && $oe->uterus->type == '2' ? '' : 'd-none';
                     @endphp
-                    <div class="{{'col-md-2 uterus-abnormal-type '.$uterusType}}">
+                    {{-- <div class="{{'col-md-2 uterus-abnormal-type '.$uterusType}}">
                         <div class="form-group">
                             {{Form::text("oe[uterus][details]",!empty($oe->uterus->details) ? $oe->uterus->details : null,['class'=>'form-control','placeholder'=>'Abnormal Details'])}}
                         </div>
+                    </div> --}}
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            {{Form::text("oe[uterus][details]",'',['class'=>'form-control','placeholder'=>'Uterus Details'])}}
+                        </div>
                     </div>
-                    <span class="{{'col-md-1 p-2 uterus-abnormal-type '.$uterusType}}">LG</span>
+                    {{-- <span class="{{'col-md-1 p-2 uterus-abnormal-type '.$uterusType}}">LG</span> --}}
                 </div>
                 <div class="{{'row tvs-details '.$tvsType}}">
                     <div class="col-md-1"></div>

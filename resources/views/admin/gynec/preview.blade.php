@@ -196,6 +196,9 @@
                     </tr>
                     <th class="w-250 seperator">
                         <span class="anc-label ">H/O : </span>
+                        @if($isGynec == 1)
+                            <span class="input-group-addon">Follow Up Case Of {{!empty($ho->gynec_type) ? $ho->gynec_type : ''}} : &nbsp;</span>
+                        @endif
                         {{!empty($ho->ho_details) ? $ho->ho_details : '-' }}
                     </th>
                     </tr>
@@ -289,262 +292,6 @@
                             {{-- @endif --}}
                         </tr>
                     {{-- @endif --}}
-                </tbody>
-            </table>
-        @endif
-        
-        @if($oe  && ((isset($oe->tvs) && $oe->tvs->type == 'yes') || (isset($oe->p_s) && $oe->p_s->type == 'yes') || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
-            
-            <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
-                <tbody>
-                    <tr>
-                        <br>  
-                        <td colspan="9">
-                            <div class="panel-title header-print-title">O/E</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        @if(!empty($oe->le->temp) || !empty($oe->le->bp) || !empty($oe->le->pulse))
-                            <th class=" w-100">
-                                Vitals
-                                @if(!empty($oe->le->temp))
-                                    <br>
-                                    <span class="iui-label">Temp : </span>
-                                    {{$oe->le->temp}}
-                                @endif
-                                @if(!empty($oe->le->pulse))
-                                    <br>
-                                    <span class="iui-label">Pulse : </span>
-                                    {{$oe->le->pulse ? $oe->le->pulse : '80'}} / Min
-                                @endif
-                                @if(!empty($oe->le->bp))
-                                    <br>
-                                    <span class="iui-label">B.P :</span>
-                                    {{$oe->le->bp ? $oe->le->bp : '110/70'}} MMHG
-                                @endif
-                            </th>
-                        @endif
-                    </tr>
-                    @if($oe->p_s->type == 'yes')
-                        <tr>
-                            <th>
-                                <span class="iui-label">P / S:</span>
-                                {{ !empty($oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
-                                @if ($oe->p_s->type == 'yes')
-                                    {{!empty($oe->p_s->details) ? '| '.$oe->p_s->details : '-' }}
-                                @endif
-                            </th>
-                        </tr>
-                    @endif
-                    @if(!empty($oe->cervix->details))
-                        <tr>
-                            <th>
-                                <span class="iui-label">Cervix:  </span>
-                                {{ !empty($oe->cervix->details) ? $oe->cervix->details : '-' }}
-                            </th>
-                        </tr>
-                    @endif
-                    @if($oe->tvs->type == 'yes')
-                        <tr>
-                            <th>
-                                <span class="iui-label">Transvaginal Ultrasonography:</span>
-                            </th>
-                        </tr>
-                    @endif
-                    @if ($oe->tvs->type == 'yes')
-                        <tr>
-                            <th>
-                                <span class="iui-label">Uterus:  </span>
-                                {{ !empty($oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
-                            </th>
-                            @if ($oe->uterus->type == '2')
-                                <th>
-                                    <span class="iui-label">Abnormal Details:  </span>
-                                    {{ !empty($oe->uterus->details) ? $oe->uterus->details : '-' }}
-                                </th>
-                            @endif
-                        </tr>
-                    @endif
-                    @if ($oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
-                        <tr>
-                            <th>
-                                <span class="iui-label">Endometrial Thickness:  </span>
-                                {{ !empty($oe->endometrial_thickness) ? $oe->endometrial_thickness : '-' }}
-                            </th>
-                        </tr>
-                    @endif
-                    @if (!empty($oe->ovary->right->updated_details) || !empty($oe->ovary->right->afcs))
-                    <tr>
-                        <th>
-                            @if (!empty($oe->ovary->right->updated_details))
-                            <span class="iui-label">Right Ovary : </span>
-                                @foreach ($oe->ovary->right->updated_details as $key => $value)
-                                    @php
-                                        echo !empty($value) ? $value .  '<br />' : '- <br />';
-                                    @endphp
-                                @endforeach
-                            @endif
-                            @if(!empty($oe->ovary->right->afcs))
-                                <span class="iui-label">Follicle numbers per ovary : </span>
-                                {{$oe->ovary->right->afcs}}
-                            @endif
-                        </th>
-                    </tr>
-                    @endif
-                    @if(!empty($oe->ovary->left->updated_details) || !empty($oe->ovary->left->afcs))
-                    <tr>
-                        <th>
-                            @if(!empty($oe->ovary->left->updated_details))
-                            <span class="iui-label">Left Ovary : </span>
-                                @foreach($oe->ovary->left->updated_details as $key => $value)
-                                    @php
-                                        echo !empty($value) ? $value .  '<br />' : '- <br />';
-                                    @endphp
-                                @endforeach
-                            @endif
-                            @if(!empty($oe->ovary->left->afcs))
-                                <span class="iui-label">Follicle numbers per ovary : </span>
-                                {{$oe->ovary->left->afcs}}
-                            @endif
-                        </th>
-                    </tr>
-                    @endif
-                    @if (isset($oe->breast) && $oe->breast->type == 'yes')
-                    
-                    <tr>
-                        <th>Breast</th>
-                    </tr>
-                    <tr>   
-                        <th> 
-                            @if(!empty($oe->breast->right))
-                            <span class="iui-label">Right : </span>{{$oe->breast->right}}
-                            @endif
-                            @if(!empty($oe->breast->left))
-                            <br>
-                            <span class="iui-label">Left : </span>{{$oe->breast->left}}
-                            @endif
-                            
-                        </th>
-                    </tr>
-                    @endif
-                    
-                </tbody>
-            </table>
-        @endif
-        @if($mh)
-            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
-
-                <tbody>
-                    <tr>
-                        <td colspan="9">
-                            <div class="panel-title header-print-title">Menstrual History</div>
-                        </td>
-                    </tr>
-                    @if (!empty($mh->age_of_menarchy) || !empty($mh->since_year))
-                        <tr>
-                            @if (!empty($mh->age_of_menarchy))
-                                <th>
-                                    <span class="iui-label">Age Of Menarchy : </span>
-                                    {{ $mh->age_of_menarchy }}
-                                </th>
-                            @endif
-
-                            @if (!empty($mh->since_year))
-                                <th>
-                                    <span class="iui-label">Since Year :</span>
-                                    {{ $mh->since_year }}
-                                </th>
-                            @endif
-                        </tr>
-                    @endif
-                    @if (!empty($mh->age_of_manopause) || !empty($mh->manopause_since_year))
-                        <tr>
-                            @if (!empty($mh->age_of_manopause))
-                                <th>
-                                    <span class="ivf-label">Age Of Manopause : </span>
-                                    {{ $mh->age_of_manopause }}
-                                </th>
-                            @endif
-
-                            @if (!empty($mh->manopause_since_year))
-                                <th>
-                                    <span class="ivf-label">Since Year :</span>
-                                    {{ $mh->manopause_since_year }}
-                                </th>
-                            @endif
-                        </tr>
-                    @endif
-                    <tr>
-                        <th>
-                            @if(!empty($mh->same_past) && $mh->same_past == 'same')
-                                <span class="iui-label">Present / Past M/H :</span>
-                            @endif
-                            @if ($mh->past_mh_2 != 'regular') | IR Regular @endif
-                                @if (!empty($mh->past_interval_of_day) || $mh->past_mh_2 == 'regular')
-                            | Duration Of Menstruation: {{$mh->past_mh_2 == 'regular' ? '3 - 4 day' : $mh->past_interval_of_day}}
-                            @endif
-                            @if (!empty($mh->past_duration_of_day) || $mh->past_mh_2 == 'regular')
-                                    at Interval Of : {{$mh->past_mh_2 == 'regular' ? '28 - 30 day' : $mh->past_duration_of_day}}
-                            @endif
-                            @if($mh->past_mh_2 != 'regular')
-                            | {{ !empty($mh->past_month) ? ucwords($mh->past_month) : ''}}
-                            @else
-                                    Regular, Moderate, Painless
-                            @endif
-                            @if(!empty($mh->present_withdrawal_medicine) && $mh->present_withdrawal_medicine == 'yes')
-                                | Withdrawal by Medicine 
-                            @endif
-                        </th>
-                    </tr>
-                    @if(!empty($mh->same_past) && $mh->same_past == 'exit')
-                        <tr>
-                            <th>
-                                <span class="iui-label">Present M/H : </span>
-                                {{ ucwords($mh->present_mh_1) }}
-                                | @if ($mh->present_mh_2 == 'regular')Regular @else IR Regular @endif
-                                @if (!empty($mh->present_duration_of_day) || $mh->present_mh_2 == 'regular')
-                                | Duration Of Menstruation : {{$mh->present_mh_2 == 'regular' ? '28 - 30 day' : $mh->present_duration_of_day}}
-                                @endif
-                                @if (!empty($mh->present_interval_of_day) || $mh->present_mh_2 == 'regular')
-                                at Interval Of : {{$mh->present_mh_2 == 'regular' ? '3 - 4 day' : $mh->present_interval_of_day}}
-                                @endif
-                                @if($mh->present_mh_2 != 'regular')
-                                    | {{ !empty($mh->present_month) ? ucwords($mh->present_month) : ''}}
-                                @else
-                                    Regular, Moderate, Painless
-                                @endif
-                                @if(!empty($mh->present_withdrawal_medicine) && $mh->present_withdrawal_medicine == 'yes')
-                                    | Withdrawal by Medicine 
-                                @endif
-                            </th>
-                        </tr>
-                    @endif
-                    <tr>
-                        @if(!empty($mh->last_menstrual_date))
-                            <th>
-                                <span class="iui-label">Last Menstrual Date :</span>
-                                {{!empty($mh->last_menstrual_date) ?  \Carbon\Carbon::parse($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
-                                <br>
-                                @if (isset($mh->lmd_date_diff) && !empty($mh->lmd_date_diff))
-                                <span class="iui-label">Day of mense :</span>
-                                {{ $mh->lmd_date_diff}}
-                                @endif
-                            </th>
-                        @endif
-                        @if(!empty($mh->since_cycle))
-                            <th>
-                                <span class="iui-label">Since Month :</span>
-                                {{!empty($mh->since_month) ?  $mh->since_month : '-' }}
-                            </th>
-                        @endif
-                        @if(!empty($mh->since_cycle))
-                            <th>
-                                <span class="iui-label">Since Cycle :</span>
-                                {{!empty($mh->since_cycle) ?  $mh->since_cycle : '-' }}
-                            </th>
-                        @endif
-                    </tr>
-
                 </tbody>
             </table>
         @endif
@@ -1046,6 +793,262 @@
                     </tbody>
                 </table>
         @endif
+        @if($oe  && ((isset($oe->tvs) && $oe->tvs->type == 'yes') || (isset($oe->p_s) && $oe->p_s->type == 'yes') || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
+            
+            <table cellspacing="0" cellpadding="0" class="table m-b-0 table-hover module-report-table">
+                <tbody>
+                    <tr>
+                        <br>  
+                        <td colspan="9">
+                            <div class="panel-title header-print-title">O/E</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        @if(!empty($oe->le->temp) || !empty($oe->le->bp) || !empty($oe->le->pulse))
+                            <th class=" w-100">
+                                Vitals
+                                @if(!empty($oe->le->temp))
+                                    <br>
+                                    <span class="iui-label">Temp : </span>
+                                    {{$oe->le->temp}}
+                                @endif
+                                @if(!empty($oe->le->pulse))
+                                    <br>
+                                    <span class="iui-label">Pulse : </span>
+                                    {{$oe->le->pulse ? $oe->le->pulse : '80'}} / Min
+                                @endif
+                                @if(!empty($oe->le->bp))
+                                    <br>
+                                    <span class="iui-label">B.P :</span>
+                                    {{$oe->le->bp ? $oe->le->bp : '110/70'}} MMHG
+                                @endif
+                            </th>
+                        @endif
+                    </tr>
+                    @if($oe->p_s->type == 'yes')
+                        <tr>
+                            <th>
+                                <span class="iui-label">P / S:</span>
+                                {{ !empty($oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
+                                @if ($oe->p_s->type == 'yes')
+                                    {{!empty($oe->p_s->details) ? '| '.$oe->p_s->details : '-' }}
+                                @endif
+                            </th>
+                        </tr>
+                    @endif
+                    @if(!empty($oe->cervix->details))
+                        <tr>
+                            <th>
+                                <span class="iui-label">Cervix:  </span>
+                                {{ !empty($oe->cervix->details) ? $oe->cervix->details : '-' }}
+                            </th>
+                        </tr>
+                    @endif
+                    @if($oe->tvs->type == 'yes')
+                        <tr>
+                            <th>
+                                <span class="iui-label">Transvaginal Ultrasonography:</span>
+                            </th>
+                        </tr>
+                    @endif
+                    @if ($oe->tvs->type == 'yes')
+                        <tr>
+                            <th>
+                                <span class="iui-label">Uterus:  </span>
+                                {{ !empty($oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
+                            </th>
+                            {{-- @if ($oe->uterus->type == '2') --}}
+                                <th>
+                                    <span class="iui-label">Uterus Details:  </span>
+                                    {{ !empty($oe->uterus->details) ? $oe->uterus->details : '-' }}
+                                </th>
+                            {{-- @endif --}}
+                        </tr>
+                    @endif
+                    @if ($oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
+                        <tr>
+                            <th>
+                                <span class="iui-label">Endometrial Thickness:  </span>
+                                {{ !empty($oe->endometrial_thickness) ? $oe->endometrial_thickness : '-' }}
+                            </th>
+                        </tr>
+                    @endif
+                    @if (!empty($oe->ovary->right->updated_details) || !empty($oe->ovary->right->afcs))
+                    <tr>
+                        <th>
+                            @if (!empty($oe->ovary->right->updated_details))
+                            <span class="iui-label">Right Ovary : </span>
+                                @foreach ($oe->ovary->right->updated_details as $key => $value)
+                                    @php
+                                        echo !empty($value) ? $value .  '<br />' : '- <br />';
+                                    @endphp
+                                @endforeach
+                            @endif
+                            @if(!empty($oe->ovary->right->afcs))
+                                <span class="iui-label">Follicle numbers per ovary : </span>
+                                {{$oe->ovary->right->afcs}}
+                            @endif
+                        </th>
+                    </tr>
+                    @endif
+                    @if(!empty($oe->ovary->left->updated_details) || !empty($oe->ovary->left->afcs))
+                    <tr>
+                        <th>
+                            @if(!empty($oe->ovary->left->updated_details))
+                            <span class="iui-label">Left Ovary : </span>
+                                @foreach($oe->ovary->left->updated_details as $key => $value)
+                                    @php
+                                        echo !empty($value) ? $value .  '<br />' : '- <br />';
+                                    @endphp
+                                @endforeach
+                            @endif
+                            @if(!empty($oe->ovary->left->afcs))
+                                <span class="iui-label">Follicle numbers per ovary : </span>
+                                {{$oe->ovary->left->afcs}}
+                            @endif
+                        </th>
+                    </tr>
+                    @endif
+                    @if (isset($oe->breast) && $oe->breast->type == 'yes')
+                    
+                    <tr>
+                        <th>Breast</th>
+                    </tr>
+                    <tr>   
+                        <th> 
+                            @if(!empty($oe->breast->right))
+                            <span class="iui-label">Right : </span>{{$oe->breast->right}}
+                            @endif
+                            @if(!empty($oe->breast->left))
+                            <br>
+                            <span class="iui-label">Left : </span>{{$oe->breast->left}}
+                            @endif
+                            
+                        </th>
+                    </tr>
+                    @endif
+                    
+                </tbody>
+            </table>
+        @endif
+        @if($mh)
+            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
+
+                <tbody>
+                    <tr>
+                        <td colspan="9">
+                            <div class="panel-title header-print-title">Menstrual History</div>
+                        </td>
+                    </tr>
+                    @if (!empty($mh->age_of_menarchy) || !empty($mh->since_year))
+                        <tr>
+                            @if (!empty($mh->age_of_menarchy))
+                                <th>
+                                    <span class="iui-label">Age Of Menarchy : </span>
+                                    {{ $mh->age_of_menarchy }}
+                                </th>
+                            @endif
+
+                            @if (!empty($mh->since_year))
+                                <th>
+                                    <span class="iui-label">Since Year :</span>
+                                    {{ $mh->since_year }}
+                                </th>
+                            @endif
+                        </tr>
+                    @endif
+                    @if (!empty($mh->age_of_manopause) || !empty($mh->manopause_since_year))
+                        <tr>
+                            @if (!empty($mh->age_of_manopause))
+                                <th>
+                                    <span class="ivf-label">Age Of Manopause : </span>
+                                    {{ $mh->age_of_manopause }}
+                                </th>
+                            @endif
+
+                            @if (!empty($mh->manopause_since_year))
+                                <th>
+                                    <span class="ivf-label">Since Year :</span>
+                                    {{ $mh->manopause_since_year }}
+                                </th>
+                            @endif
+                        </tr>
+                    @endif
+                    <tr>
+                        <th>
+                            @if(!empty($mh->same_past) && $mh->same_past == 'same')
+                                <span class="iui-label">Present / Past M/H :</span>
+                            @endif
+                            @if ($mh->past_mh_2 != 'regular') | IR Regular @endif
+                                @if (!empty($mh->past_interval_of_day) || $mh->past_mh_2 == 'regular')
+                            | Duration Of Menstruation: {{$mh->past_mh_2 == 'regular' ? '3 - 4 day' : $mh->past_interval_of_day}}
+                            @endif
+                            @if (!empty($mh->past_duration_of_day) || $mh->past_mh_2 == 'regular')
+                                    at Interval Of : {{$mh->past_mh_2 == 'regular' ? '28 - 30 day' : $mh->past_duration_of_day}}
+                            @endif
+                            @if($mh->past_mh_2 != 'regular')
+                            | {{ !empty($mh->past_month) ? ucwords($mh->past_month) : ''}}
+                            @else
+                                    Regular, Moderate, Painless
+                            @endif
+                            @if(!empty($mh->present_withdrawal_medicine) && $mh->present_withdrawal_medicine == 'yes')
+                                | Withdrawal by Medicine 
+                            @endif
+                        </th>
+                    </tr>
+                    @if(!empty($mh->same_past) && $mh->same_past == 'exit')
+                        <tr>
+                            <th>
+                                <span class="iui-label">Present M/H : </span>
+                                {{ ucwords($mh->present_mh_1) }}
+                                | @if ($mh->present_mh_2 == 'regular')Regular @else IR Regular @endif
+                                @if (!empty($mh->present_duration_of_day) || $mh->present_mh_2 == 'regular')
+                                | Duration Of Menstruation : {{$mh->present_mh_2 == 'regular' ? '28 - 30 day' : $mh->present_duration_of_day}}
+                                @endif
+                                @if (!empty($mh->present_interval_of_day) || $mh->present_mh_2 == 'regular')
+                                at Interval Of : {{$mh->present_mh_2 == 'regular' ? '3 - 4 day' : $mh->present_interval_of_day}}
+                                @endif
+                                @if($mh->present_mh_2 != 'regular')
+                                    | {{ !empty($mh->present_month) ? ucwords($mh->present_month) : ''}}
+                                @else
+                                    Regular, Moderate, Painless
+                                @endif
+                                @if(!empty($mh->present_withdrawal_medicine) && $mh->present_withdrawal_medicine == 'yes')
+                                    | Withdrawal by Medicine 
+                                @endif
+                            </th>
+                        </tr>
+                    @endif
+                    <tr>
+                        @if(!empty($mh->last_menstrual_date))
+                            <th>
+                                <span class="iui-label">Last Menstrual Date :</span>
+                                {{!empty($mh->last_menstrual_date) ?  \Carbon\Carbon::parse($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
+                                <br>
+                                @if (isset($mh->lmd_date_diff) && !empty($mh->lmd_date_diff))
+                                <span class="iui-label">Day of mense :</span>
+                                {{ $mh->lmd_date_diff}}
+                                @endif
+                            </th>
+                        @endif
+                        @if(!empty($mh->since_cycle))
+                            <th>
+                                <span class="iui-label">Since Month :</span>
+                                {{!empty($mh->since_month) ?  $mh->since_month : '-' }}
+                            </th>
+                        @endif
+                        @if(!empty($mh->since_cycle))
+                            <th>
+                                <span class="iui-label">Since Cycle :</span>
+                                {{!empty($mh->since_cycle) ?  $mh->since_cycle : '-' }}
+                            </th>
+                        @endif
+                    </tr>
+
+                </tbody>
+            </table>
+        @endif
+        
         @if($gynec->is_gynec == 0)
             @if(!empty($planManagement) && !empty($planManagement->plan_of_management_data))
                 <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
@@ -1507,14 +1510,17 @@
                 <tr>
                     <th> Follow up :{{ isset($ho->follow_up) && !empty($ho->follow_up) ? $ho->follow_up : '-' }}<th>
                 </tr>
-                @if(isset($ho->remark) && !empty($ho->remark))
+                @if((!isset($printPreview) || $printPreview == 0))
                 <tr>
-                    <td><span class="f-date">Dr. Remark : </span>{{ $ho->remark}}</td>
+                    <td><span class="f-date">Dr. Remark : </span>{{isset($ho->remark) && !empty($ho->remark) ? $ho->remark : ''}}</td>
+                </tr>
+                <tr>
+                    <td><span class="f-date">Patient's Remark : </span>{{ isset($ho->pt_remark) && !empty($ho->pt_remark) ? $ho->pt_remark : ''}}</td>
                 </tr>
                 @endif
                 @if(isset($printPreview) && $printPreview == 1 && isset($ho->pt_remark) && !empty($ho->pt_remark))
                     <tr>
-                        <td><span class="f-date"> Remark :</span>{{ $ho->pt_remark}}</td>
+                        <td><span class="f-date">Patient's Remark :</span>{{ $ho->pt_remark}}</td>
                     </tr>
                 @endif
                 

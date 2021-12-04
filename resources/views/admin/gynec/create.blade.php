@@ -1364,12 +1364,17 @@
                                                             {{Form::select("oe[uterus][type]",['1'=>'Normal','2'=>"Abnormal"],'',['class'=>'form-control select-padding-0 abnormal','data-type'=>'uterus-abnormal-type'])}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2 uterus-abnormal-type d-none">
+                                                    {{-- <div class="col-md-2 uterus-abnormal-type d-none">
                                                         <div class="form-group">
                                                             {{Form::text("oe[uterus][details]",'',['class'=>'form-control','placeholder'=>'Abnormal Details'])}}
                                                         </div>
+                                                    </div> --}}
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            {{Form::text("oe[uterus][details]",'',['class'=>'form-control','placeholder'=>'Uterus Details'])}}
+                                                        </div>
                                                     </div>
-                                                    <span class="col-md-1 p-2 uterus-abnormal-type d-none">LG</span>
+                                                    {{-- <span class="col-md-1 p-2 uterus-abnormal-type d-none">LG</span> --}}
                                                 </div>
                                                 <div class="row tvs-details d-none">
                                                     <div class="col-md-1"></div>
@@ -2758,7 +2763,7 @@
                                 </div>
                                 {{Form::hidden('old_medicine_data','',['class'=>'old-medicine-data'])}}
                                 <div class="row mt-3">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 Follow Up : &nbsp;
@@ -2767,13 +2772,18 @@
                                         </div>
                                         <span class="gsac-no-data-followup form-error-msg"></span>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-4">
                                         <div class="input-group">
                                             {{Form::textarea("ho[remark]",'',['class'=>'form-control no-resize remark','placeholder'=>'Remark','rows'=>'5'])}}
                                         </div>
                                         <span class="form-error-msg">
                                             {{$errors->first('remark')}}
                                         </span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            {{Form::textarea("ho[pt_remark]",'',['class'=>'form-control no-resize','placeholder'=>"Patient'sRemark",'rows'=>'5'])}}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">

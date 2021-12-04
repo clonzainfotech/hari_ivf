@@ -189,10 +189,11 @@ class GynecController extends AdminController
             if($request->is_print == 1){
                 $surgicallyData = $this->surgicallyType()['data'];
                 $investigationReport = $this->allInvestigationReport();
+                $isGynec = $request->is_gynec;
                 return response()->json([
                     'status'=>1,
                     'id' => encrypt($gynec->id),
-                    'data' => View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData'))->render()
+                    'data' => View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec'))->render()
                 ]);
             }
             return ['status'=>'true'];
@@ -440,7 +441,11 @@ class GynecController extends AdminController
                     $gynec = $this->Gynec->where('patients_id',$patient)->where('created_at',$request->history_date)->first();
                     $surgicallyData = $this->surgicallyType()['data'];
                     $investigationReport = $this->allInvestigationReport();
-                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData'))->render();
+                    $isGynec = 0;
+                    if($gynec){
+                        $isGynec = $gynec->is_gynec;
+                    }
+                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec'))->render();
                     return response()->json([
                         'status'=> 1,
                         'gynec_type' => $gynec_type,
@@ -457,8 +462,12 @@ class GynecController extends AdminController
                     foreach($gynecAll as $gynec)
                     {
                         $gynec = $this->Gynec->find($gynec->id);
+                        $isGynec = 0;
+                        if($gynec){
+                            $isGynec = $gynec->is_gynec;
+                        }
                         $date[] = $gynec->created_at;
-                        $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData'))->render();
+                        $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec'))->render();
                     }
                     return response()->json([
                         'status'=>1,
@@ -476,9 +485,13 @@ class GynecController extends AdminController
                 {
                     $printPreview = 1;
                     $gynec = $this->Gynec->where('patients_id',$patient)->whereDate('created_at',$request->date)->first();
+                    $isGynec = 0;
+                    if($gynec){
+                        $isGynec = $gynec->is_gynec;
+                    }
                     $surgicallyData = $this->surgicallyType()['data'];
                     $investigationReport = $this->allInvestigationReport();
-                    return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview'));
+                    return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec'));
                 }
                 
             }
@@ -501,9 +514,13 @@ class GynecController extends AdminController
             $patient = decrypt($patient_id);
             $printPreview = 0;
             $gynec = $this->Gynec->where('patients_id',$patient)->where('created_at',$date)->first();
+            $isGynec = 0;
+            if($gynec){
+                $isGynec = $gynec->is_gynec;
+            }
             $surgicallyData = $this->surgicallyType()['data'];
             $investigationReport = $this->allInvestigationReport();
-            return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview'));
+            return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec'));
         }
         catch(Exception $e)
         {

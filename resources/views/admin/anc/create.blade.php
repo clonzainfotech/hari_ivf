@@ -18,7 +18,7 @@ $childType = [
         '8'=>'Monochorionic Diamniotic'
     ];
 $abArray = ['1'=>'Normal','2'=>"Abnormal"];
-$wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
+$wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
 @endphp
 @section('content')
     <div class="row clearfix">
