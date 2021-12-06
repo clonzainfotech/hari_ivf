@@ -98,5 +98,8 @@ class OpdPatients extends BaseModel
         
         // return $this->hasOne('App\Models\Appointment','patients_id','id')->where('is_done','1')->whereDate('date',carbon::now()->format('Y-m-d'));
     }
+    public function lastDoneAppointmentData(){
+        return $this->hasOne('App\Models\Appointment','patients_id','id')->where('is_done','1')->orderBy('id','DESC');
+    }
 
 }
