@@ -391,9 +391,10 @@ class HormonController extends AdminController
                     $injectionData->delete();
                 }
                 // $injection->quantity = ($injection->quantity - $request->qty[$i]) >= 0 ? ($injection->quantity - $request->qty[$i]) : 0;
-                $hormon->delete();
-                return 'true';
+                
             }
+            $hormon->delete();
+            return 'true';
             
         }catch(Exception $e){
             log::Debug($e);
