@@ -5396,6 +5396,18 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span class="input-group-addon"></span>
+                                {{Form::file('embryos_transferred_image[]',['class'=>'form-control edit_embryos_transferred_image','accept' => 'image/png,image/jpeg,image/jpg',
+                                'multiple' => true])}}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="total_embryos_transferred_image"></span>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Frozen Embryos: &nbsp;</span>
@@ -5407,29 +5419,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <span class="input-group-addon"></span>
-                                {{Form::file('embryos_transferred_image[]',['class'=>'form-control edit_embryos_transferred_image','accept' => 'image/png,image/jpeg,image/jpg',
-                                'multiple' => true])}}
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
                                 <span class="input-group-addon">Pick up Date: &nbsp;</span>
                                 {{Form::text("pick_up_date", '', ['class'=>'form-control datetimepicker pick_up_date'])}}
                             </div>
                         </div>
+                        
+                        
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Simulation Protocol: &nbsp;</span>
                                 {{Form::text("simulation_protocol",'',['class'=>'form-control simulation_protocol', 'maxlength' => 250])}}
                             </div>
                         </div>
-                        
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Total OCC: &nbsp;</span>
@@ -5440,21 +5443,26 @@
                                 ])}}
                             </div>
                         </div>
+                        
+                        
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Mll: &nbsp;</span>
                                 {{Form::text("mll",'',['class'=>'form-control number mll', 'maxlength' => 250, 'id' => 'mll'])}}
                             </div>
                         </div>
-                        
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Ml: $&nbsp;</span>
                                 {{Form::text("ml",'',['class'=>'form-control number ml', 'maxlength' => 250, 'id' => 'ml'])}}
                             </div>
                         </div>
+                        
+                        
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">GV: &nbsp;</span>
@@ -5465,24 +5473,22 @@
                                 ])}}
                             </div>
                         </div>
-                        
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Oocyte Quality: &nbsp;</span>
                                 {{Form::text("oocycle_quality",'',['class'=>'form-control oocycle_quality', 'maxlength' => 250])}}
                             </div>
                         </div>
+                        
+                        
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Sperm Quality: &nbsp;</span>
                                 {{Form::text("sperm_quality",'',['class'=>'form-control sperm_quality', 'maxlength' => 250])}}
                             </div>
                         </div>
-                        
-                    </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">Fertilization Procedure: &nbsp;</span>
@@ -5492,6 +5498,8 @@
                                 ])}}
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="input-group">
                                 <span class="input-group-addon">Remark: &nbsp;</span>
@@ -6450,6 +6458,8 @@
                         $('.day').val(data.data.day);
                         $('.endo_thickness').val(data.data.endo_thickness);
                         $('.et_procedure').val(data.data.et_procedure);
+                        var total_image = data.data.embryos_transferred_image;
+                        $('.total_embryos_transferred_image').html('Total '+total_image.split(',').length+ ' Images');
                         $('.embryos_transferred').val(data.data.embryos_transferred);
                         $('.frozen_embryos').val(data.data.frozen_embryos);
                         if (data.data.pickup_date != null) {

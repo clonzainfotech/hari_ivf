@@ -2356,9 +2356,9 @@ class IVFController extends AdminController
                     
                 }
                 $request->embryos_transferred_image = implode(',',$transferImages);
+                $transferReport->embryos_transferred_image = $request->embryos_transferred_image;
             }
             $transferReport->embryos_transferred = $request->embryos_transferred;
-            $transferReport->embryos_transferred_image = $request->embryos_transferred_image;
             $transferReport->frozen_embryos = $request->frozen_embryos;
             $transferReport->pickup_date = !empty($request->pick_up_date) ? \Carbon\Carbon::parse($request->pick_up_date)->format('Y-m-d') : null;
             $transferReport->simulation_protocol = $request->simulation_protocol;
