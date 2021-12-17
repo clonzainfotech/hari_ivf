@@ -709,4 +709,158 @@ class PatientsController extends AdminController
         // dd(krsort($history));
         return view('admin.appointment.patient.patient_history',compact('patients','history','referenceDoctor'));
     }
+    /**
+     * return all category wise visit for advice report
+     * @return  array
+     * @param 
+     */
+    public function getAdviceReportList(Request $request)
+    {
+        try{
+            $patients = $this->getPatients();
+            if($request->ajax()){
+                $appointment = $this->Appointment->where('is_procedure',0)->where('is_done',1)->whereIn('category_id',[1,2,3,4,5,6])->orderBy('id','DESC');
+
+                // search text
+                $patientId = $request->patient_id;
+                if($patientId){
+                    $appointment = $appointment->where(function($query) use($patientId){
+                        $query->whereHas('getPatientsDetails', function($query) use($patientId) {
+                            $query->Where('id', $patientId);
+                        });
+                    });
+                }
+                // if($request->hcg == 1){
+                //     $patientsId = $this->IuiHistory->where('description->hcg->type','yes')->pluck('patients_id');
+                //     $appointment = $appointment->whereIn('patients_id',$patientsId);
+                // }
+                if($request->date){
+                    $date = explode("-",$request->date);
+                    $startDate = Carbon::createFromFormat('d/m/Y', trim($date[0]))->format('Y-m-d');
+                    $endDate = Carbon::createFromFormat('d/m/Y', trim($date[1]))->format('Y-m-d');
+                    if($date){
+                        $appointment = $appointment->whereBetween('date', [$startDate, $endDate]);
+                    }
+                }
+                $search = $request->search;
+                if($search){
+                    $appointment = $appointment->where(function($query) use($search) {
+                        $query
+                        ->orWhereHas('getPatientsDetails', function($query) use($search) {
+                            $query->where('mobile_number','LIKE',$search.'%');
+                        });
+                    });
+                }
+                $investigationReport = $this->allInvestigationReport();
+                $investigationReport = $investigationReport['reportData'];
+
+                $appointment = $appointment->paginate(100);
+                foreach($appointment as $record)
+                {
+                    $investigationData = [];
+                    $otherReport = '';
+                    if(in_array($record->category_id,[5,6]))
+                    {
+                        $anc = $this->AncHistory->where('patients_id',$record->patients_id)->whereDate('created_at',$record->date)->first();
+                        if(!$anc)
+                        {
+                            $anc = $this->ANC->where('patients_id',$record->patients_id)->whereDate('created_at',$record->date)->first();
+                        }
+                        if($anc)
+                        {
+                            $investigation = json_decode($anc->investigation);
+                            $investigationValueDetails = [];
+                            $data = $investigation->investigation_data;
+                            $investigationValueData = (array)$investigation->investigation_details;
+                            foreach($data as $key => $value){
+                                if(empty($investigationValueData[$value])){
+                                    $investigationData[] = $investigationReport[$value];
+                                }
+                            }
+                            $otherReport = isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null;
+                        }
+                    }
+                    if(in_array($record->category_id,[1,2]))
+                    {
+                        $ivf = $this->IvfHistory->where('patients_id',$record->patients_id)->whereDate('created_at',$record->date)->first();
+                        if(!$ivf)
+                        {
+                            $ivf = $this->IVF->where('patients_id',$record->patients_id)->whereDate('created_at',$record->date)->first();
+                        }
+                        if($ivf)
+                        {
+                            $investigation = json_decode($ivf->investigation);
+                            $description = json_decode($ivf->description);
+                            if($ivf->visit == 2)
+                            {
+                                $historyWifeInvestigation = (isset(json_decode($ivf->investigation)->wife)) ? json_decode($ivf->investigation)->wife : null;
+                                $historyHubInvestigation = (isset(json_decode($ivf->investigation)->hub)) ? json_decode($ivf->investigation)->hub : null;
+                                $investigationValueDetails['wife'] = [];
+                                $data = (!empty($historyWifeInvestigation->investigation_data)) ? $historyWifeInvestigation->investigation_data : [];
+                                $investigationValueData = (array)$historyWifeInvestigation->investigation_details;
+                                foreach($data as $key => $value){
+                                    if(empty($investigationValueData[$value])){
+                                        $investigationData[] = isset($investigationReport[$value]) ? $investigationReport[$value] : '';
+                                    }
+                                }
+                                if(!empty($historyHubInvestigation))
+                                {
+                                    $hubinvestigationData = [];
+                                    $investigationValueDetails['hub'] = [];
+                                    $data = !empty($historyHubInvestigation->investigation_data) ? $historyHubInvestigation->investigation_data : [];
+                                    $investigationValueData = (array)$historyHubInvestigation->investigation_details;
+                                    foreach($data as $key => $value){
+                                        if(!empty($investigationValueData[$value])){
+                                            $investigationValueDetails['hub'][$investigationReport[$value]] = $investigationValueData[$value];
+                                        }else{
+                                            $hubinvestigationData[] = isset($investigationReport[$value]) ? $investigationReport[$value] : '';
+                                        }
+                                    }
+                                    $record->advice_report_male = implode(', ',$hubinvestigationData);
+                                }
+                            }
+                           
+                            $otherReport = isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null;
+                            $otherReport .= isset($description->investigation_extra) && !empty($description->investigation_extra) ? $description->investigation_extra : null;
+                        }
+                    }
+                    if(in_array($record->category_id,[3,4]))
+                    {
+                        $iui = $this->IuiHistory->where('patients_id',$record->patients_id)->whereDate('created_at',$record->date)->first();
+                        if(!$iui)
+                        {
+                            $iui = $this->IUI->where('patients_id',$record->patients_id)->whereDate('created_at',$record->date)->first();
+                        }
+                        if($iui)
+                        {
+                            $investigation = json_decode($iui->investigation);
+                            $description = json_decode($iui->description);
+                            $investigationValueDetails = [];
+                            $data = !empty($investigation->investigation_data) ? $investigation->investigation_data : [];
+                            $investigationValueData = !empty($investigation->investigation_details) ? (array)$investigation->investigation_details : [];
+                            foreach($data as $key => $value){
+                                if(empty($investigationValueData[$value])){
+                                    $investigationData[] = $investigationReport[$value];
+                                }
+                            }
+                            $otherReport = isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? $investigation->investigation_extra : null;
+                            $otherReport .= isset($description->investigation_extra) && !empty($description->investigation_extra) ? $description->investigation_extra : null;
+
+                        }
+                    }
+
+                    $record->advice_report = (!empty($investigationData) ? implode(', ',$investigationData) : '').(!empty($otherReport) ? ', '.$otherReport : '');
+                    
+                }
+                $data['status'] = 1;
+                $data['adviceReport'] = View::make('admin.report_advice_list.data',compact('appointment'))->render();
+                return $data;
+            }
+            return view('admin.report_advice_list.index', compact('patients'));
+        }catch(Exception $e){
+            dd($e);
+            log::Debug($e);
+            abort(500);
+        }
+    }
 }

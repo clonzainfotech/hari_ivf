@@ -64,7 +64,7 @@
 
                     {{--visit--}}
                     @if(in_array(Auth::user()->role,[1,3,6,7,8]))
-                    <li class="visit {{ Request::segment(1) === 'anc-iui-ivf' || (Request::segment(1) === 'report' && !empty(Request::segment(2))) || Request::segment(1) === 'anc' || Request::segment(1) === 'iui' || Request::segment(1) === 'ivf' || Request::segment(1) === 'call-reminder' || Request::segment(1) === 'iui-result' || Request::segment(1) === 'get-anc-report' ? 'active open' : null }}">
+                    <li class="visit {{ Request::segment(1) === 'anc-iui-ivf' || (Request::segment(1) === 'report' && !empty(Request::segment(2))) || Request::segment(1) === 'anc' || Request::segment(1) === 'iui' || Request::segment(1) === 'ivf' || Request::segment(1) === 'call-reminder' || Request::segment(1) === 'iui-result' || Request::segment(1) === 'get-anc-report' || Request::segment(1) === 'advice-report-list' ? 'active open' : null }}">
                         <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                         <span>VISIT</span></a>
                         <ul class="ml-menu" style="display: none;">
@@ -82,6 +82,7 @@
                             <li class="{{ Request::segment(1) === 'call-reminder' ? 'sub active open' : null }}"><a href="{{URL::to('call-reminder')}}"><span>IUI Call Reminder</span></a></li>
                             <li class="{{ Request::segment(1) === 'iui-result' ? 'sub active open' : null }}"><a href="{{URL::to('iui-result')}}"><span>IUI Result</span></a></li>
                             <li class="{{ Request::segment(1) === 'ivf-result-review' ? 'sub active open' : null }}"><a href="{{URL::to('ivf-result-review')}}"><span>IVF Result Reviews</span></a></li>
+                            <li class="{{ Request::segment(1) === 'advice-report-list' ? 'sub active open' : null }}"><a href="{{URL::to('advice-report-list')}}"><span>Advice Report List</span></a></li>
                         </ul>
                     </li>
                     @endif

@@ -460,6 +460,8 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     
     Route::any('html-page/uploadImage','HtmlPageController@upload')->name('ckeditor.upload');
 
+    //report advice list
+    Route::get('advice-report-list','PatientsController@getAdviceReportList');
 
     Route::get('print-preview','SystemSettingController@printpreview');
     
