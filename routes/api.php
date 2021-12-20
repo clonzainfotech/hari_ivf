@@ -35,6 +35,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         Route::post('/appointmentdetails', 'AppointmentController@appointmentDetail');
         Route::post('/add-appointment', 'AppointmentController@addAppointment');
         Route::post('/book-appointment', 'AppointmentController@bookAppointment');
+        Route::post('/update-deviceToken', 'PatientController@updateDeviceToken');
 
         Route::get('getUsers',  'ReviewController@getUsers');
         Route::get('get-patients-review', 'ReviewController@getPatientsReview');

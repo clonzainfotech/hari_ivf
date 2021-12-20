@@ -711,5 +711,40 @@ class PatientController extends ApiController
             return $this->sendError(__('auth.failed'), 401);
         }
     }
-    
+    /**
+    * update patients device token
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function updateDeviceToken(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $get_token = $this->PatientToken->where('token', $token)->first();
+        $rule = [
+            'device_token' => 'required',
+        ];
+        $validator = Validator::make($request->all(),$rule);
+        if($validator->fails()){
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+        if ($get_token) 
+        {
+            $user = OpdPatients::where('id', $get_token->patients_id)->first();
+            $data = [];
+            if ($user && !empty($user->code)) 
+            {   
+                $user->device_token = $request->device_token;
+                $user->save();
+                return $this->sendResponse('Updated Successfully..',$user);
+            }
+            else 
+            {
+                return $this->sendError('User is not found');
+            }
+
+        }
+        else{
+            return $this->sendError(__('auth.failed'), 401);
+        }
+    }
 }
