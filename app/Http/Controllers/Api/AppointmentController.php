@@ -48,13 +48,28 @@ class AppointmentController extends ApiController
                 $aData = [];
                 $appointmentData = [];
                 // foreach ($data as $key=>$row) {
-                    foreach ($appointmentRequestData as $value) {
+                    foreach ($appointmentRequestData as $value) 
+                    {
+                        $utersWeek = null;
                         $lastAppointment = $this->Appointment->where('patients_id', $patientId)->where('date',$value->date)->orderBy('id','DESC')->first();
                         if($lastAppointment)
                         {
                             $value->id = $lastAppointment->id;
                             $value->date = \Carbon\Carbon::parse($value->date)->format('d-m-Y');
                             $categoryData = $lastAppointment->category_id;
+                            
+                            if($lastAppointment->category_id == 5 || $lastAppointment->category_id == 6)
+                            {
+                                $anc = $this->ANC->where('patients_id',$patientId)->orderBy('created_at','desc')->first();
+                                if($anc) 
+                                {
+                                    $mhData = json_decode($anc->m_h);
+                                    $lmdDate = $mhData->last_menstrual_date;
+                                    $oldDate = \Carbon\Carbon::parse($lmdDate)->format('Y-m-d');
+                                    $utersWeek = \Carbon\Carbon::parse($oldDate)->diffInWeeks(\Carbon\Carbon::parse($value->date)->format('Y-m-d'));
+                                }
+                            }
+                            
                             $value->category = $categoryData ? $lastAppointment['categoryDetails']['name'] : null; 
                             $value->category_id = $categoryData;
                             $currentDate = \Carbon\Carbon::now()->format('d-m-Y');
@@ -85,6 +100,7 @@ class AppointmentController extends ApiController
                         }
                         $value->profile_picture = $patients->profile_picture;
                         $value->reason = $value->remark;
+                        $value->week = $utersWeek;
                         
                     }
                     // $appointmentData[][$key] = $aData;
@@ -652,7 +668,7 @@ class AppointmentController extends ApiController
                                 ->update([
                                     'appointment_date' => $request->date
                                 ]);
-                            $msg = "Your appointment is already in pending";
+                            $msg = "Your appointment is in pending";
                         }
                         if($lastAppointment->is_book == 1) {
                             $appointment = $this->Appointment->where('date', $lastAppointment->appointment_date)->orderBy('id','DESC')->first();

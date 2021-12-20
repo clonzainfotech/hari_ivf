@@ -25,7 +25,6 @@ Route::prefix('v1')->namespace('Api')->group(function () {
     Route::get('/hospital_tutorials', 'HomeController@hospital_tutorials');
     Route::get('/getQ_A', 'HomeController@getQAns');
     Route::get('getHtmlPages','HomeController@getHtmlPages');
-    Route::get('patient_verify','AuthApiController@getPatientVerify');
     Route::post('getRegisterStatus','AuthApiController@registerStatus');
 
     Route::middleware('APIToken')->group(function () {
