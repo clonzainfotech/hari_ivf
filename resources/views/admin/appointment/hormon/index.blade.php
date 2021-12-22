@@ -48,7 +48,7 @@
                                 {{Form::select('charge_type',['1'=>'Hormon','2'=>'IVF','3'=>'IUI'],'',['class'=>'form-control select-padding-0 charge_type','placeholder'=>'Select Charge Category'])}}
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
-                                {{Form::select('reference_dr',$referenceDoctor,'',['class'=>'form-control select-padding-0 reference_dr','placeholder'=>'Select Reference Doctor'])}}
+                                {{Form::select('reference_dr',$referenceDoctor,'',['class'=>'form-control select-padding-0 reference_dr','placeholder'=>'Select Reference Doctor','data-live-search' => 'true'])}}
                             </div>
                         </div>
                     </div>
