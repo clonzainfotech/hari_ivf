@@ -1153,6 +1153,13 @@
                         valid = 0;
                     }
                 }
+                if(visit == 3 && $('.skip_cycle:checked').val() == 'yes'){
+                    $('.skip-cycle-error-msg').text('');
+                    if($('.skip_reason').val() == ''){
+                        $('.skip-cycle-error-msg').text('This field is required.');
+                        valid = 0;
+                    }
+                }
                 if(visit == 3 && $('select.seen-by-3').val() == ''){
                     $('.seen-by-error-3').text('Please select doctor');
                     $('html, body').animate({

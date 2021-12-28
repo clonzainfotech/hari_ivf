@@ -4971,6 +4971,36 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     
                 </div>  
+                @php
+                    $skipCycle = isset($historyData->skip_cycle) ? $historyData->skip_cycle : null;
+                    $skipCycleStatus = !empty($skipCycle) && $skipCycle == 'yes' ? '' : 'd-none';
+                @endphp
+                <div class="row ">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            Skip Cycle :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("data[skip_cycle]",'yes',!empty($skipCycle) && $skipCycle == 'yes'  ? true : false,['id'=>'ps_type_yes','class'=>'iui-yes-no-status','data-type'=>'skip-details' ,'disabled'])}}
+                            <label for="ps_type_yes">
+                                Yes
+                            </label>
+    
+                            {{Form::radio("data[skip_cycle]",'no',!empty($skipCycle) && $skipCycle == 'no'  ? true : false,['id'=>'ps_type_no','class'=>'iui-yes-no-status','data-type'=>'skip-details','disabled'])}}
+                            <label for="ps_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    {{Form::hidden('data[skip_cycle]',!empty($skipCycle) ? $skipCycle : '')}}
+                    <div class="{{'col-md-5 skip-details '.$skipCycleStatus}}">
+                        <div class="form-group">
+                            {{Form::text("data[skip_reason]",isset($historyData->skip_reason) ? $historyData->skip_reason : '',['class'=>'form-control','placeholder'=>'Skip cycle Reason'])}}
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="input-group">

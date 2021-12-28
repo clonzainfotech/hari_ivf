@@ -458,7 +458,8 @@ class IUIController extends AdminController
                     $msg = !empty($request->data['result']) ? 'Result '.ucfirst($request->data['result']) : null;
                     $followupDate = !empty($request->data['date']) ? $request->data['date'] : null;
                 }
-                if(!empty($request->data['result']) && $request->data['result'] == 'fail' && empty($request->iui_history_id) && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'negative')){
+                if((!empty($request->data['result']) && $request->data['result'] == 'fail' && empty($request->iui_history_id) && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'negative')) || (isset($request->data['skip_cycle']) && $request->data['skip_cycle'] == 'yes' && empty($request->iui_history_id))){
+                    
                     $iuiFirstVisitData = $this->IUI;
                     $iuiFirstVisitData->patients_id = $iuiPatientsData->patients_id;
                     $iuiFirstVisitData->seen_by = ($seenBy) ? $seenBy : Auth::user()->id;
@@ -667,6 +668,9 @@ class IUIController extends AdminController
                 // ivf data store
                 if($iuiStatus == 1){
                     $iui->cycle_status = 1;
+                }
+                if(isset($request->data['skip_cycle']) && $request->data['skip_cycle'] == 'yes'){
+                    $iui->cycle_status = 2;
                 }
                 if(!empty($request->data['ivf']) && $request->data['ivf'] == 'yes'){
                     $lastIui = $this->IUI->wherePatientsIdAndCycleNo($patientsId, $request->cycle_no)->first();
@@ -1208,8 +1212,8 @@ class IUIController extends AdminController
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
             $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->orderBy('id', 'DESC')->first();
             //if patient is currently in anc or ivf now convert in inf then fillup first visit auto
-            
-            if($lastAppointment && (!in_array($lastAppointment->category_id,[3,4])))
+            $firstVisit = $this->IUI->where('patients_id',$id)->first();
+            if($lastAppointment && (!in_array($lastAppointment->category_id,[3,4]) || empty($firstVisit)))
             {
                 $firstVisit = $this->IUI->where('patients_id',$id)->first();
                 $firstVisitHistory = null;
@@ -1689,11 +1693,16 @@ class IUIController extends AdminController
 
     // get all cycle of patient
     private function getCylcleNumber($patientsId){
-        $iuiCycleNo = $this->IUI->where('patients_id',$patientsId)->pluck('cycle_no','cycle_no')->toArray();
+        // $iuiCycleNo = $this->IUI->where('patients_id',$patientsId)->pluck('cycle_no','cycle_no')->toArray();
         $iuiHistoryCycleNo = $this->IuiHistory->where('patients_id',$patientsId)->groupBy('cycle_no')->pluck('cycle_no','cycle_no')->toArray();
-        $iuiCycleNo = array_unique(array_merge($iuiCycleNo,$iuiHistoryCycleNo));
-        $iuiCycleNo = array_combine($iuiCycleNo,$iuiCycleNo);
-        return ['cycle_number'=>$iuiCycleNo];
+        $dataForCycle = collect($this->IuiHistory
+                            ->wherePatientsId($patientsId)
+                            ->get());
+        $dataForCycle_value = $dataForCycle->mapWithKeys(function($value){
+            $description = json_decode($value->description);
+            return [$value->cycle_no  => $value->cycle_no.' '.(isset($description->skip_cycle) && $description->skip_cycle == 'yes' ? ' - Skip : '.$description->skip_reason : '')];
+        })->all();
+        return ['cycle_number'=>$dataForCycle_value];
     }
 
     // get time status to time wise and this is used in print

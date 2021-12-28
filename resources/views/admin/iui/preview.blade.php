@@ -2970,8 +2970,13 @@
                                     $vascularity_of_endo = ['1' => "Up to Zone 1",'2' => "Up to Zone 2",'3' => "Up to Zone 3",'4' => "Up to Zone 4"];
                                     $dateAndInjectionData = [];
                                     $inducingDateArray = [];
+                                    $skipValue = 0;
                                     if(!empty($prevAppointmentDate)){
                                         $appointmentDate = $prevAppointmentDate;
+                                    }
+                                    if(isset($data->skip_cycle) && $data->skip_cycle == 'yes')
+                                    {
+                                        $skipValue = 1;
                                     }
                                     if($row->visit == 2){
                                         $appointmentDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
@@ -3274,6 +3279,30 @@
                             </tbody>
                         </table>
                     @endif
+                    @if($skipValue == 1) 
+                    @php
+                            $visitDate = \Carbon\Carbon::parse($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
+                            $diff = \Carbon\Carbon::parse(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
+                            $diff = $diff + 1;
+                    @endphp
+                    {{-- <div class="col-md-12"> --}}
+                        <h5 class=""><u>Skip Cycle:</u></h5>
+                        <table class="module-report-table study-report-table">
+                            <thead>
+                                <tr>
+                                    <th>Follow UP</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{$visitDate}}</td>
+                                    <td>{{$lastHistoryData->skip_reason}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {{-- </div> --}}
+                @endif
                     <h4 class="mt-2 text-left"><u>Medicine:</u></h4>
                     <table class="module-report-table study-report-table">
                         <thead>

@@ -4883,8 +4883,13 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             $iuiData = [];
                                             $inducingDateArray = [];
                                             $iuiExtraVisit = null;
+                                            $skipValue = 0;
                                             if(!empty($prevAppointmentDate)){
                                                 $appointmentDate = $prevAppointmentDate;
+                                            }
+                                            if(isset($data->skip_cycle) && $data->skip_cycle == 'yes')
+                                            {
+                                                $skipValue = 1;
                                             }
                                             if($row->visit == 2){
                                                 $appointmentDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
@@ -5560,6 +5565,32 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             </div>
                                             <div class="row child-no-box">
                                                 {{-- <div class="row"> --}}
+                                                    <div class="col-md-1 pr-0">
+                                                        <label class="vertical-form-label pr-0">
+                                                            Skip Cycle :
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="radio is-conceived">
+                                                            {{Form::radio("data[skip_cycle]",'yes',false,['id'=>'skip_type_yes','class'=>'iui-yes-no-status skip_cycle','data-type'=>'skip-details'])}}
+                                                            <label for="skip_type_yes">
+                                                                Yes
+                                                            </label>
+                                
+                                                            {{Form::radio("data[skip_cycle]",'no',true,['id'=>'skip_type_no','class'=>'iui-yes-no-status skip_cycle','data-type'=>'skip-details'])}}
+                                                            <label for="ps_type_no">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="{{'col-md-5 skip-details d-none'}}">
+                                                        <div class="form-group">
+                                                            {{Form::text("data[skip_reason]",null,['class'=>'form-control skip_reason','placeholder'=>'Skip cycle Reason'])}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-danger skip-cycle-error-msg"></div>
+                                                </div>
+                                                <div class="row child-no-box">
                                                     <div class="col-md-4">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
@@ -5606,7 +5637,30 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                 </td>
                             </tfoot>
                         </table>
-                        
+                        @if($skipValue == 1) 
+                            @php
+                                    $visitDate = \Carbon\Carbon::parse($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
+                                    $diff = \Carbon\Carbon::parse(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
+                                    $diff = $diff + 1;
+                            @endphp
+                            {{-- <div class="col-md-12"> --}}
+                                <h5 class=""><u>Skip Cycle:</u></h5>
+                                <table class="table follicular-table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Follow UP</th>
+                                            <th>Reason</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{$visitDate}}</td>
+                                            <td>{{$lastHistoryData->skip_reason}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {{-- </div> --}}
+                        @endif
                         <h4 class=""><u>Medicine:</u></h4>
                         <table class="table follicular-table table-bordered">
                             <thead>
