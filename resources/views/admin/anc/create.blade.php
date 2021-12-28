@@ -685,6 +685,12 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                     {{Form::text("p_obstratics[abortion][abortion_data][1][when_where]",'',['class'=>'form-control'])}}
                                                 </div>
                                             </div>
+                                            <div class='col-md-4'>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>Abortion Reason : &nbsp;</span>
+                                                    {{Form::text("p_obstratics[abortion][abortion_data][1][reason]",'',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="abortion-data">
                                         </div>
@@ -977,6 +983,12 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                 <div class="input-group">
                                                     <span class="input-group-addon">When / Where : &nbsp;</span>
                                                     {{Form::text("p_obstratics[second_marriage][abortion][abortion_data][1][when_where]",'',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                            <div class='col-md-4 second-marriage-life-data'>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>Abortion Reason : &nbsp;</span>
+                                                    {{Form::text("p_obstratics[second_marriage][abortion][abortion_data][1][reason]",'',['class'=>'form-control'])}}
                                                 </div>
                                             </div>
                                         </div>

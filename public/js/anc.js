@@ -1571,7 +1571,7 @@ function abortionData(abortionNo){
             "</div>"+
             "<div class='row abortion-visible-"+i+"'>"+
             "<div class='col-md-1'></div>"+
-            "<div class='col-md-4 abortion-naturally'>"+
+            "<div class='col-md-3 abortion-naturally'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[abortion][abortion_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type p-ho-type" data-id="abortion-when-where-'+i+'">'+
             '<option value="">Select Conceived By</option>'+
@@ -1587,6 +1587,12 @@ function abortionData(abortionNo){
             "<span class='input-group-addon'>When / Where : &nbsp;</span>"+
             '<input type="text" name="p_obstratics[abortion][abortion_data]['+i+'][when_where]" class="form-control">'+
             "</div>"+
+            "</div>"+
+            "<div class='col-md-4'>"+
+                "<div class='input-group'>"+
+                    "<span class='input-group-addon'>Abortion Reason : &nbsp;</span>"+
+                    '<input type="text" name="oh[abortion][abortion_data]['+i+'][reason]" class="form-control">'+
+                "</div>"+
             "</div>"+
             "</div>";
     }
@@ -1648,7 +1654,7 @@ function secondAbortionData(secondAbortionNo){
             "</div>"+
             "<div class='row second-marriage-life-data second-abortion-data-parent'>"+
             "<div class='col-md-1'></div>"+
-            "<div class='col-md-4 second-abortion-naturally second-marriage-life-data'>"+
+            "<div class='col-md-3 second-abortion-naturally second-marriage-life-data'>"+
             "<div class='form-group'>"+
             '<select name="p_obstratics[second_marriage][abortion][abortion_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type second-p-ho-type" data-id="second-abortion-when-where-'+i+'">'+
             '<option value="">Select Conceived By</option>'+
@@ -1664,6 +1670,12 @@ function secondAbortionData(secondAbortionNo){
             "<span class='input-group-addon'>When / Where : &nbsp;</span>"+
             '<input type="text" name="p_obstratics[second_marriage][abortion][abortion_data]['+i+'][when_where]" class="form-control">'+
             "</div>"+
+            "</div>"+
+            "<div class='col-md-4 second-marriage-life-data'>"+
+                "<div class='input-group'>"+
+                    "<span class='input-group-addon'>Abortion Reason : &nbsp;</span>"+
+                    '<input type="text" name="oh[second_marriage][abortion][abortion_data]['+i+'][reason]" class="form-control">'+
+                "</div>"+
             "</div>"+
             "</div>";
     }

@@ -1232,44 +1232,47 @@ class IVFController extends AdminController
             $isNewCycle = true;
             $lastCycleNo= null;
             $ivfReport = false;
-            $firstVisit = $this->IVF->where('patients_id',$id)->first();
+            $firstIvfVisit = $this->IVF->where('patients_id',$id)->first();
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
             $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->orderBy('id', 'DESC')->first();
             if($lastAppointment)
             {
-                if(!in_array($lastAppointment->category_id,[1,2]) || empty($firstVisit))
+                if(!in_array($lastAppointment->category_id,[1,2]) && empty($firstIvfVisit))
                 {
-                    $firstVisit = $this->IVF->where('patients_id',$id)->first();
-                    if(!$firstVisit)
-                    {
-                        $firstVisit = $this->IUI->where('patients_id',$id)->first();
-                    }
-                    $checkExistIVF = $this->IVF->where('patients_id',$id)->first();
-                    if($firstVisit && !$checkExistIVF)
-                    {
-                        $ivf = $this->IVF;
-                        $ivf->patients_id = $id;
-                        $ivf->seen_by = $firstVisit->seen_by;
-                        $ivf->rmo_doctor = $firstVisit->rmo_doctor;
-                        $ivf->created_by = $firstVisit->created_by;
-                        $ivf->patients_info = $firstVisit->patients_info;
-                        $ivf->h_o = $firstVisit->h_o;
-                        $ivf->c_o = $firstVisit->c_o;
-                        $ivf->o_h = $firstVisit->o_h;
-                        $ivf->m_h = $firstVisit->m_h;
-                        $ivf->ho_rx = $firstVisit->ho_rx;
-                        $ivf->investigation = $firstVisit->investigation;
-                        $ivf->husband_factor = $firstVisit->husband_factor;
-                        $ivf->patients_details_ho = $firstVisit->patients_details_ho;
-                        $ivf->o_e = $firstVisit->o_e;
-                        $ivf->plan_management = json_encode(array('ivf_details'=>null,'plan'=>1));
-                        $ivf->possible_case_of_infertility = $firstVisit->possible_case_of_infertility;
-                        $ivf->treatment = $firstVisit->treatment;
-                        $ivf->lmp_date = $firstVisit->lmp_date;
-                        // dd($ivf);
-                        $ivf->save();
-                        // $view = redirect('iui/history/'.encrypt($id));
-                    }
+                    // if(empty($firstIvfVisit))
+                    // {
+                        $firstVisit = $this->IVF->where('patients_id',$id)->first();
+                        if(!$firstVisit)
+                        {
+                            $firstVisit = $this->IUI->where('patients_id',$id)->first();
+                        }
+                        $checkExistIVF = $this->IVF->where('patients_id',$id)->first();
+                        if($firstVisit && !$checkExistIVF)
+                        {
+                            $ivf = $this->IVF;
+                            $ivf->patients_id = $id;
+                            $ivf->seen_by = $firstVisit->seen_by;
+                            $ivf->rmo_doctor = $firstVisit->rmo_doctor;
+                            $ivf->created_by = $firstVisit->created_by;
+                            $ivf->patients_info = $firstVisit->patients_info;
+                            $ivf->h_o = $firstVisit->h_o;
+                            $ivf->c_o = $firstVisit->c_o;
+                            $ivf->o_h = $firstVisit->o_h;
+                            $ivf->m_h = $firstVisit->m_h;
+                            $ivf->ho_rx = $firstVisit->ho_rx;
+                            $ivf->investigation = $firstVisit->investigation;
+                            $ivf->husband_factor = $firstVisit->husband_factor;
+                            $ivf->patients_details_ho = $firstVisit->patients_details_ho;
+                            $ivf->o_e = $firstVisit->o_e;
+                            $ivf->plan_management = json_encode(array('ivf_details'=>null,'plan'=>1));
+                            $ivf->possible_case_of_infertility = $firstVisit->possible_case_of_infertility;
+                            $ivf->treatment = $firstVisit->treatment;
+                            $ivf->lmp_date = $firstVisit->lmp_date;
+                            // dd($ivf);
+                            $ivf->save();
+                            // $view = redirect('iui/history/'.encrypt($id));
+                        }
+                    // }
                 }
             }
             

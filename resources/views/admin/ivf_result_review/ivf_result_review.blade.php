@@ -13,14 +13,26 @@
     <div class="col-md-12">
         <div class="card">
             <div class="header">
-                <h2><strong>Ivf Result Review</strong>
-                </h2>
-                <ul class="header-dropdown">
-                    <li>
-                            <a href="{{URL::to('ivf-result-review')}}" target="_blank" class="btn btn-primary pull-right">Back</a>
-                            <a href="" target="_blank" class="btn btn-primary pull-right">Print</a>
-                    </li>
-                </ul>
+                <div class="row">
+                    <div class="col-md-4">
+                    <h2><strong>Ivf Result Review</strong>
+                    </h2>
+                    </div>
+                    <div class="col-md-8">
+                    {{-- <ul class="header-dropdown">
+                        <li> --}}
+                                <a href="{{URL::to('ivf-result-review')}}" class="btn btn-primary pull-right">Back</a>
+                                <a href="{{URL::to('patient-history/'.encrypt($patient->id))}}" target="_blank" class="btn btn-primary pull-right">View History</a>
+                                <a href="{{url('ivf/ivfedit/'.encrypt($patient->id))}}" class="" target="_blank">
+                                    <button class="btn btn-primary pull-right">Visit-1</button>
+                                </a>
+                                <a href="{{URL::to('get-all-report/'.encrypt($patient->id).'?status=ivf')}}" target="_blank" class="">
+                                    <button class="btn btn-primary pull-right">View Reports</button>
+                                </a>
+                        {{-- </li>
+                    </ul> --}}
+                    </div>
+                </div>
             </div>
             <div class="body">
                 <div class="col-md-12 col-lg-12">
@@ -69,7 +81,33 @@
                                                     <b>Previous history of Abortions and reason for abortion : </b>
                                                 </label>
                                             </div>
-                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="vertical-form-label pr-0">
+                                                    <b>Reports : </b>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">TSH : &nbsp;</span>
+                                                    {{Form::text("data[tsh]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->tsh) ? $ivfResultReviewDetail->tsh: '',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">AMH : &nbsp;</span>
+                                                    {{Form::text("data[amh]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->amh) ? $ivfResultReviewDetail->amh: '',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Others : &nbsp;</span>
+                                                    {{Form::text("data[other]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->other) ? $ivfResultReviewDetail->other: '',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -78,39 +116,46 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading" role="tab" id="headingThree_2">
                                 <h4 class="panel-title">
-                                    <a class="" role="button" data-toggle="collapse"data-parent="#ultgrasound" href="#ultgrasound" aria-expanded="true" aria-controls="ultgrasound">2. Ultgrasound parameters(at time of Progesterone support)</a></h4>
+                                    <a class="" role="button" data-toggle="collapse"data-parent="#ultgrasound" href="#ultgrasound" aria-expanded="true" aria-controls="ultgrasound">2. Ultgrasound parameters</a></h4>
                                 </div>
                                 <div id="ultgrasound" class="panel-collapse collapse show" role="tabpanel"
                                     aria-labelledby="headingThree_2">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="col-md-12 pr-0">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">Serum Progestrone : &nbsp;</span>
-                                                    {{Form::text("data[serum_progestrone]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->serum_progestrone) ? $ivfResultReviewDetail->serum_progestrone: '' ,['class'=>'form-control'])}}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 pr-0">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">AMH : &nbsp;</span>
-                                                    {{Form::text("data[amh]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->amh) ? $ivfResultReviewDetail->amh: '',['class'=>'form-control'])}}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 pr-0">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">TSH : &nbsp;</span>
-                                                    {{Form::text("data[tsh]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->tsh) ? $ivfResultReviewDetail->tsh: '',['class'=>'form-control'])}}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 pr-0">
+                                            
+                                            <div class="col-md-4 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Utreus : &nbsp;</span>
                                                     {{Form::text("data[utreus]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->utreus) ? $ivfResultReviewDetail->utreus: '',['class'=>'form-control'])}}
                                                 </div>
                                             </div>
+                                            <div class="col-md-4 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Tubal Factor(TL) : &nbsp;</span>
+                                                    {{Form::text("data[tubal_factor]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->tubal_factor) ? $ivfResultReviewDetail->tubal_factor: '',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Ovarian Factor : &nbsp;</span>
+                                                    {{Form::text("data[ovarian_factor]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovarian_factor) ? $ivfResultReviewDetail->ovarian_factor: '',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Day of Serum Progestrone : &nbsp;</span>
+                                                    {{Form::text("data[day_of_serum_progestrone]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->day_of_serum_progestrone) ? $ivfResultReviewDetail->day_of_serum_progestrone: '' ,['class'=>'form-control datetimepicker'])}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Serum Progestrone : &nbsp;</span>
+                                                    {{Form::text("data[serum_progestrone]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->serum_progestrone) ? $ivfResultReviewDetail->serum_progestrone: '' ,['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
                                             <div class="col-md-12 pr-0">
                                                 <div class="input-group">
-                                                    <span class="input-group-addon">Endometrial : &nbsp;</span>
+                                                    <span class="input-group-addon">Endometrial Thickness : &nbsp;</span>
                                                     {{Form::text("data[endometrial]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->endometrial) ? $ivfResultReviewDetail->endometrial: '',['class'=>'form-control'])}}
                                                 </div>
                                             </div>
@@ -120,19 +165,10 @@
                                                     {{Form::text("data[endometrial_vascularity]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->endometrial_vascularity) ? $ivfResultReviewDetail->endometrial_vascularity: '',['class'=>'form-control'])}}
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 pr-0">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">Tubal Factor(TL) : &nbsp;</span>
-                                                    {{Form::text("data[tubal_factor]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->tubal_factor) ? $ivfResultReviewDetail->tubal_factor: '',['class'=>'form-control'])}}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 pr-0">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">Ovarian Factor : &nbsp;</span>
-                                                    {{Form::text("data[ovarian_factor]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovarian_factor) ? $ivfResultReviewDetail->ovarian_factor: '',['class'=>'form-control'])}}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 pr-0">
+                                            
+                                            
+                                            
+                                            {{-- <div class="col-md-6 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Endometriosis : &nbsp;</span>
                                                     {{Form::text("data[endometriosis]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->endometriosis) ? $ivfResultReviewDetail->endometriosis: '',['class'=>'form-control'])}}
@@ -143,7 +179,7 @@
                                                     <span class="input-group-addon">Past History(TB, Generic, DM, HTN) : &nbsp;</span>
                                                     {{Form::text("data[past_history]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->past_history) ? $ivfResultReviewDetail->past_history: '',['class'=>'form-control'])}}
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -288,7 +324,13 @@
 @section('page-script')
 <script src="{{asset('assets/js/pages/ui/notifications.js')}}"></script>
     <script type="text/javascript">
-        
+        $('.datetimepicker').bootstrapMaterialDatePicker({
+            format: 'dddd DD MMMM YYYY',
+            // minDate:new Date(),
+            clearButton: true,
+            time:false,
+            weekStart: 1
+        });
         $(document).on('click','.submit',function(e){
             e.preventDefault();
             var formData = new FormData($(".ivf-result-review")[0]);

@@ -1212,51 +1212,54 @@ class IUIController extends AdminController
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
             $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->orderBy('id', 'DESC')->first();
             //if patient is currently in anc or ivf now convert in inf then fillup first visit auto
-            $firstVisit = $this->IUI->where('patients_id',$id)->first();
-            if($lastAppointment && (!in_array($lastAppointment->category_id,[3,4]) || empty($firstVisit)))
+            $firstIuiVisit = $this->IUI->where('patients_id',$id)->first();
+            if($lastAppointment)
             {
-                $firstVisit = $this->IUI->where('patients_id',$id)->first();
-                $firstVisitHistory = null;
-                $is_IUI_firstVisit = 0;
-                if($firstVisit)
+                if(!in_array($lastAppointment->category_id,[3,4]) && empty($firstIuiVisit))
                 {
-                    $firstVisitHistory = $this->IuiHistory->where('patients_id',$id)->where('visit',4)->where('cycle_no',$firstVisit->cycle_no)->first();
-                    $cycleNo = ($firstVisit) ? $firstVisit->cycle_no + 1 : 1;
-                    $is_IUI_firstVisit = !empty($firstVisitHistory) ? 1 : 0;
-                }
-                if(!$firstVisit)
-                {
-                    $firstVisit = $this->IVF->where('patients_id',$id)->first();
-                    $cycleNo = 1;
-                    $is_IUI_firstVisit = 1;
-                }
-                $iuiHistory = $this->IuiHistory->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
-                $checkExistIUI = $this->IUI->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
-                if($firstVisit && $is_IUI_firstVisit == 1)
-                {
-                    $iui = $this->IUI;
-                    $iui->patients_id = $id;
-                    $iui->seen_by = $firstVisit->seen_by;
-                    $iui->rmo_doctor = $firstVisit->rmo_doctor;
-                    $iui->created_by = $firstVisit->created_by;
-                    $iui->patients_info = $firstVisit->patients_info;
-                    $iui->h_o = $firstVisit->h_o;
-                    $iui->c_o = $firstVisit->c_o;
-                    $iui->o_h = $firstVisit->o_h;
-                    $iui->m_h = $firstVisit->m_h;
-                    $iui->ho_rx = $firstVisit->ho_rx;
-                    $iui->investigation = $firstVisit->investigation;
-                    $iui->husband_factor = $firstVisit->husband_factor;
-                    $iui->patients_details_ho = $firstVisit->patients_details_ho;
-                    $iui->o_e = $firstVisit->o_e;
-                    $iui->plan_management = $firstVisit->plan_management;
-                    $iui->possible_case_of_infertility = $firstVisit->possible_case_of_infertility;
-                    $iui->treatment = $firstVisit->treatment;
-                    $iui->lmp_date = $firstVisit->lmp_date;
-                    $iui->cycle_no = $cycleNo;
-                    $iui->cycle_status = 1;
-                    $iui->save();
-                    // $view = redirect('iui/history/'.encrypt($id));
+                    $firstVisit = $this->IUI->where('patients_id',$id)->first();
+                    $firstVisitHistory = null;
+                    $is_IUI_firstVisit = 0;
+                    if($firstVisit)
+                    {
+                        $firstVisitHistory = $this->IuiHistory->where('patients_id',$id)->where('visit',4)->where('cycle_no',$firstVisit->cycle_no)->first();
+                        $cycleNo = ($firstVisit) ? $firstVisit->cycle_no + 1 : 1;
+                        $is_IUI_firstVisit = !empty($firstVisitHistory) ? 1 : 0;
+                    }
+                    if(!$firstVisit)
+                    {
+                        $firstVisit = $this->IVF->where('patients_id',$id)->first();
+                        $cycleNo = 1;
+                        $is_IUI_firstVisit = 1;
+                    }
+                    $iuiHistory = $this->IuiHistory->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
+                    $checkExistIUI = $this->IUI->where('patients_id',$id)->where('cycle_no',$cycleNo)->first();
+                    if($firstVisit && $is_IUI_firstVisit == 1)
+                    {
+                        $iui = $this->IUI;
+                        $iui->patients_id = $id;
+                        $iui->seen_by = $firstVisit->seen_by;
+                        $iui->rmo_doctor = $firstVisit->rmo_doctor;
+                        $iui->created_by = $firstVisit->created_by;
+                        $iui->patients_info = $firstVisit->patients_info;
+                        $iui->h_o = $firstVisit->h_o;
+                        $iui->c_o = $firstVisit->c_o;
+                        $iui->o_h = $firstVisit->o_h;
+                        $iui->m_h = $firstVisit->m_h;
+                        $iui->ho_rx = $firstVisit->ho_rx;
+                        $iui->investigation = $firstVisit->investigation;
+                        $iui->husband_factor = $firstVisit->husband_factor;
+                        $iui->patients_details_ho = $firstVisit->patients_details_ho;
+                        $iui->o_e = $firstVisit->o_e;
+                        $iui->plan_management = $firstVisit->plan_management;
+                        $iui->possible_case_of_infertility = $firstVisit->possible_case_of_infertility;
+                        $iui->treatment = $firstVisit->treatment;
+                        $iui->lmp_date = $firstVisit->lmp_date;
+                        $iui->cycle_no = $cycleNo;
+                        $iui->cycle_status = 1;
+                        $iui->save();
+                        // $view = redirect('iui/history/'.encrypt($id));
+                    }
                 }
             }
             $iui = $this->IUI->wherePatientsId($id)->orderBy('id','DESC')->first();

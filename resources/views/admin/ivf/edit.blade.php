@@ -955,7 +955,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-1"></div>
-                                                        <div class="{{'col-md-4 abortion-naturally '.$abortionNaturally}}">
+                                                        <div class="{{'col-md-3 abortion-naturally '.$abortionNaturally}}">
                                                             <div class="form-group">
                                                                 {{Form::select("oh[abortion][abortion_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 abortion-ho-type p-ho-type','data-id'=>'abortion-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                                             </div>
@@ -971,6 +971,12 @@
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">When / Where : &nbsp;</span>
                                                                 {{Form::text("oh[abortion][abortion_data][".$key."][when_where]",!empty($value->when_where) ? $value->when_where : null,['class'=>'form-control'])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-4'>
+                                                            <div class='input-group'>
+                                                                <span class='input-group-addon'>Abortion Reason : &nbsp;</span>
+                                                                {{Form::text("oh[abortion][abortion_data][".$key."][reason]",isset($value->reason) && !empty($value->reason) ? $value->reason : null,['class'=>'form-control'])}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1404,7 +1410,7 @@
                                                     </div>
                                                     <div class="row second-marriage-life-data">
                                                         <div class="col-md-1"></div>
-                                                        <div class="{{'col-md-4 second-marriage-life-data second-abortion-naturally '.$abortionNaturally}}">
+                                                        <div class="{{'col-md-3 second-marriage-life-data second-abortion-naturally '.$abortionNaturally}}">
                                                             <div class="form-group">
                                                                 {{Form::select("oh[second_marriage][abortion][abortion_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 abortion-ho-type second-p-ho-type','data-id'=>'second-abortion-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                                             </div>
@@ -1419,6 +1425,12 @@
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">When / Where : &nbsp;</span>
                                                                 {{Form::text("oh[second_marriage][abortion][abortion_data][".$key."][when_where]",!empty($value->when_where) ? $value->when_where : null,['class'=>'form-control'])}}
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-4 second-marriage-life-data'>
+                                                            <div class='input-group'>
+                                                                <span class='input-group-addon'>Abortion Reason : &nbsp;</span>
+                                                                {{Form::text("oh[second_marriage][abortion][abortion_data][".$key."][reason]",isset($value->reason) && !empty($value->reason) ? $value->reason : null,['class'=>'form-control'])}}
                                                             </div>
                                                         </div>
                                                     </div>
