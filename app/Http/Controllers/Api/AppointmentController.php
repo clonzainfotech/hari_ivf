@@ -603,7 +603,7 @@ class AppointmentController extends ApiController
         if($patientData)
         {
             $appointmentData = collect($this->Appointment->select('id','patients_id','date','time','category_id')->where('patients_id',$patientData->patients_id)->orderBy('id','DESC')->get())->map(function($q){
-                $q->status = date('Y-m-d') > $q->date ? 1 : 0;
+                $q->status = date('Y-m-d') >= $q->date ? 1 : 0;
                 $q->profile_picture = $q->getPatientsDetails['profile_picture'];
                 $q->category = $q->categoryDetails['name']; 
                 $q->category_id = $q->categoryDetails['id']; 
