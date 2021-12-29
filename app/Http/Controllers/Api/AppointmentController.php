@@ -51,11 +51,12 @@ class AppointmentController extends ApiController
                     foreach ($appointmentRequestData as $value) 
                     {
                         $utersWeek = null;
+                        $oldDate = null;
                         $lastAppointment = $this->Appointment->where('patients_id', $patientId)->where('date',$value->date)->orderBy('id','DESC')->first();
                         if($lastAppointment)
                         {
                             $value->id = $lastAppointment->id;
-                            $value->date = \Carbon\Carbon::parse($value->date)->format('d-m-Y');
+                            // $value->date = \Carbon\Carbon::parse($value->date)->format('d-m-Y');
                             $categoryData = $lastAppointment->category_id;
                             
                             if($lastAppointment->category_id == 5 || $lastAppointment->category_id == 6)
@@ -66,10 +67,11 @@ class AppointmentController extends ApiController
                                     $mhData = json_decode($anc->m_h);
                                     $lmdDate = $mhData->last_menstrual_date;
                                     $oldDate = \Carbon\Carbon::parse($lmdDate)->format('Y-m-d');
-                                    $utersWeek = \Carbon\Carbon::parse($oldDate)->diffInWeeks(\Carbon\Carbon::parse($value->date)->format('Y-m-d'));
+                                    // $utersWeek = \Carbon\Carbon::parse($oldDate)->diffInWeeks(\Carbon\Carbon::parse($value->date)->format('Y-m-d'));
                                 }
                             }
-                            
+                        }   
+                        $utersWeek =  \Carbon\Carbon::parse(!empty($oldDate) ? $oldDate : date('Y-m-d'))->diffInWeeks(\Carbon\Carbon::parse($value->date)->format('Y-m-d')); 
                             $value->category = $categoryData ? $lastAppointment['categoryDetails']['name'] : null; 
                             $value->category_id = $categoryData;
                             $currentDate = \Carbon\Carbon::now()->format('d-m-Y');
@@ -77,6 +79,7 @@ class AppointmentController extends ApiController
                             $book = $value->is_book;
                             $status = $book == 0 ? 'Pending' : 'Rejected';
                             $value->reason = $value->remark;
+                            $value->oldDate = $oldDate;
                             if($value->created_by){
                                 // if (strtotime($value->date) < strtotime($currentDate) && $value->is_done == 0) {
                                 //     $status = "Nsot Visited";
@@ -95,9 +98,9 @@ class AppointmentController extends ApiController
                                 }
                             }
                             $value->status = $status;
-                            $value->profile_picture = $lastAppointment['getPatientsDetails']['profile_picture'];
+                            // $value->profile_picture = $lastAppointment['getPatientsDetails']['profile_picture'];
                             unset($value->is_done,$value->yearKey,$value->categoryDetails,$value->getPatientsDetails,$value->appontment_request_id,$value->is_book,$value->arrival_time,$value->created_by);
-                        }
+                        // }
                         $value->profile_picture = $patients->profile_picture;
                         $value->reason = $value->remark;
                         $value->week = $utersWeek;
