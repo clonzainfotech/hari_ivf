@@ -2356,7 +2356,6 @@ class IVFController extends AdminController
     */
     public function updateTransferReport(Request $request) {
         try {
-            // dd($request->update_ivf_transfer_report_id);
             $ivfTransferId = decrypt($request->update_ivf_transfer_report_id);
             $transferReport = $this->IvfTransferReport->whereId($ivfTransferId)->first();
             $transferReport->indication = $request->indication;
@@ -3455,14 +3454,13 @@ class IVFController extends AdminController
         try
         {
             $pId = decrypt($pId);
-            // dd($pId);
             $patient = $this->OpdPatients->find($pId);
             $ivf = $this->IVF->where('patients_id',$pId)->first();
-            // dd($ivf);
             $ivfResultReview = $this->IvfResultReview->where('patients_id',$pId)->where('plan',$plan)->where('cycle_no',$cycle_no)->first();
+            $ivfReport = $this->IvfPlanReport->where('patients_id',$pId)->where('plan',1)->where('cycle_no',$cycle_no)->first();
             $ivfResultReviewDetail = !empty($ivfResultReview) ? json_decode($ivfResultReview->description) : null;
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
-            return view('admin.ivf_result_review.ivf_result_review',compact('patient','hospitalDoctor','ivf','ivfResultReviewDetail','plan','cycle_no'));
+            return view('admin.ivf_result_review.ivf_result_review',compact('patient','hospitalDoctor','ivf','ivfReport','ivfResultReviewDetail','plan','cycle_no'));
         }
         catch(Exception $e)
         {

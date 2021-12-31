@@ -17,6 +17,8 @@
     $ovary = !empty($o_e->ovary) ? $o_e->ovary : null;
     $right_ovary = isset($ovary->right->details) ? implode(', ',$ovary->right->details) : null;
     $left_ovary = isset($ovary->left->details) ? implode(', ',$ovary->left->details) : null;
+    $ivfReport = !empty($ivfReport) ? json_decode($ivfReport->description) : null;
+    // dd($ivfReport);
 
 @endphp
 @section('content')
@@ -219,25 +221,25 @@
                                             <div class="col-md-6 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Semen analysis : &nbsp;</span>
-                                                    {{Form::text("data[semen_analysis]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->semen_analysis) ? $ivfResultReviewDetail->semen_analysis: '',['class'=>'form-control'])}}
+                                                    {{Form::text("data[semen_analysis]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->semen_analysis) ? $ivfResultReviewDetail->semen_analysis: (!empty($ivfReport->ovum->count) ? $ivfReport->ovum->count : ''),['class'=>'form-control'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-6 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Ovum Quality : &nbsp;</span>
-                                                    {{Form::text("data[ovum_quality]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovum_quality) ? $ivfResultReviewDetail->ovum_quality: '',['class'=>'form-control'])}}
+                                                    {{Form::text("data[ovum_quality]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovum_quality) ? $ivfResultReviewDetail->ovum_quality: (!empty($ivfReport->ovum->quality) ? $ivfReport->ovum->quality : ''),['class'=>'form-control'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-4 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Sperm Quality : &nbsp;</span>
-                                                    {{Form::text("data[sperm_quality]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->sperm_quality) ? $ivfResultReviewDetail->sperm_quality: '',['class'=>'form-control'])}}
+                                                    {{Form::text("data[sperm_quality]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->sperm_quality) ? $ivfResultReviewDetail->sperm_quality: (!empty($ivfReport->ovum->semenreport) ? $ivfReport->ovum->semenreport : ''),['class'=>'form-control'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-4 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Embryo Grade : &nbsp;</span>
-                                                    {{Form::text("data[embryo_grade]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->embryo_grade) ? $ivfResultReviewDetail->embryo_grade: '',['class'=>'form-control'])}}
+                                                    {{Form::text("data[embryo_grade]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->embryo_grade) ? $ivfResultReviewDetail->embryo_grade: (!empty($ivfReport->ovum->blastcyst_rate) ? $ivfReport->ovum->blastcyst_rate : ''),['class'=>'form-control'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-4 pr-0">
@@ -261,7 +263,7 @@
                                             <div class="col-md-4 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Pickup D/B : &nbsp;</span>
-                                                    {{Form::text("data[pickup]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->pickup) ? $ivfResultReviewDetail->pickup: '',['class'=>'form-control'])}}
+                                                    {{Form::text("data[pickup]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->pickup) ? $ivfResultReviewDetail->pickup: (!empty($ivfReport->pickup) ? $ivfReport->pickup : ''),['class'=>'form-control datetimepicker'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-4 pr-0">
