@@ -3408,42 +3408,7 @@ class IVFController extends AdminController
             }
         }
     }
-    /**
-     * return Ivf patient list
-     * @return  view
-     * @param 
-     */
-    public function getIvfResultReview(Request $request)
-    {
-        try
-        {
-            if($request->ajax())
-            {
-                $ivfPatients = $this->IvfHistory->orderBy('created_at','desc')->groupBy('patients_id');
-                if($request->search)
-                {
-                    $search = $request->search;
-                    $ivfPatients = $ivfPatients->where(function($query) use($search) {
-                        $query
-                        ->orWhereHas('getPatientsDetails', function($query) use($search) {
-                            $query->where('name','LIKE',$search.'%')->orWhere('code','LIKE',$search.'%');
-                        });
-                    });
-                }
-                $ivfPatients = $ivfPatients->paginate(100);
-                $data['status'] = 1;
-                $data['ivfPatients'] = View::make('admin.ivf_result_review.data',compact('ivfPatients'))->render();
-                return $data;  
-            }
-            return view('admin.ivf_result_review.index');
-
-        }
-        catch(Exception $e)
-        {
-            log::Debug($e);
-            abort(500);
-        }
-    }
+    
     /**
      * return Ivf Result Review related Detail
      * @return  view
@@ -3460,7 +3425,7 @@ class IVFController extends AdminController
             $ivfReport = $this->IvfPlanReport->where('patients_id',$pId)->where('plan',1)->where('cycle_no',$cycle_no)->first();
             $ivfResultReviewDetail = !empty($ivfResultReview) ? json_decode($ivfResultReview->description) : null;
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
-            return view('admin.ivf_result_review.ivf_result_review',compact('patient','hospitalDoctor','ivf','ivfReport','ivfResultReviewDetail','plan','cycle_no'));
+            return view('admin.ivf.ivf_result_review',compact('patient','hospitalDoctor','ivf','ivfReport','ivfResultReviewDetail','plan','cycle_no'));
         }
         catch(Exception $e)
         {
@@ -3490,7 +3455,7 @@ class IVFController extends AdminController
             $ivfResultReview->save();
             if($request->is_print && $request->is_print == 1)
             {
-                $ivfResultReviewPrint = View::make('admin.ivf_result_review.preview',compact('ivfResultReview','ivf'))->render();
+                $ivfResultReviewPrint = View::make('admin.ivf.ivf_result_review_preview',compact('ivfResultReview','ivf'))->render();
                 return ['status'=>2,'data'=>$ivfResultReviewPrint];
             }
             return ['status'=>1];
