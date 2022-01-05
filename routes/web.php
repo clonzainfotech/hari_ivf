@@ -244,6 +244,9 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('income-manager/delete/{id}','IncomeManagerController@delete');
     Route::get('income-category','IncomeManagerController@incomecategory');
 
+    //procedure
+    Route::get('procedures','ProcedureController@index');
+
     // report
     Route::resource('report','ReportController');
     Route::any('category-report','ReportController@getCategoryReport');

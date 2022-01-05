@@ -72,7 +72,8 @@ class AppointmentRequestController extends AdminController
                     $patient = $this->OpdPatients->find($appointmentRequests->patients_id);
                     if(!empty($patient->device_token))
                     {
-                        $this->sendNotification($appointmentRequests->patients_id,$patient->device_token,$patient->name,$appointment->date,$aTime,1);
+                        $body = 'Dear ,'.ucwords($patient->name).' . This is Confirmation that you have booked appointment on '.\Carbon\Carbon::parse($appointment->date)->format('d M Y').' at '.$appointment->time.'. Your Appointment has been Approved. Thank You.';
+                        $this->sendNotification($appointmentRequests->patients_id,$patient->device_token,$body,null);
                     }
                     return 'true';
                     // return $appointmentData['status'];
@@ -130,9 +131,10 @@ class AppointmentRequestController extends AdminController
                 $patient = $this->OpdPatients->find($appRequestData->patients_id);
                     if(!empty($patient->device_token))
                     {
-                        $this->sendNotification($appointmentRequests->patients_id,$patient->device_token,$patient->name,$appRequestData->appointment_date,null,0);
+                        $body = 'Dear ,'.ucwords($patient->name).' . This is Inform you that you have booked appointment on '.\Carbon\Carbon::parse($appRequestData->appointment_date)->format('d M Y').' is Rejected due to some reason. For more information contact to Radha IVF center. Thank You.';
+                        $this->sendNotification($appointmentRequests->patients_id,$patient->device_token,$body,null);
                     }
-                //$this->Notification::sendNotificationToPatients($apRequestId);
+                    //$this->Notification::sendNotificationToPatients($apRequestId);
                 return ['status' => true];
             }
             return ['status' => false];

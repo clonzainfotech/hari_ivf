@@ -40,6 +40,9 @@ $file = url(Auth::user()->profile_picture);
         @if(in_array(Auth::user()->role,[1,2,3,6,7,8]))
             <li class="nav-menu-font"><a href="{{URL::to('testimonials')}}" class="{{ Request::segment(1) === 'testimonials' ? 'active open' : null }}"><span>Testimonials</span></a></li>
         @endif
+        @if(in_array(Auth::user()->role,[1,2,3,6,7,8]))
+            <li class="nav-menu-font"><a href="{{URL::to('procedures')}}" class="{{ Request::segment(1) === 'procedures' ? 'active open' : null }}"><span>Procedures</span></a></li>
+        @endif
           
         <li class="float-right mt-1 dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

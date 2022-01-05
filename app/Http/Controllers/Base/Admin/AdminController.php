@@ -522,6 +522,7 @@ class AdminController extends BaseController
         $patientnotify->save();
         $patientsId = decrypt($request->pId);
         $now = Carbon::now()->format('Y-m-d');
+        $patients = $this->OpdPatients->find($patientsId);
         $updateApooitnment = $this->Appointment->where('patients_id',$patientsId)->where('date',$now)->update(['in_consulting_room'=>1]);
 
         $options = array(
@@ -535,6 +536,8 @@ class AdminController extends BaseController
             $options
         );
         $user = ucwords(strtoupper(\Auth::user()->name));
+        $body = 'Dear ,'.$name.'. '.$user .' is Calling you in OPD Number '.$patientnotify->opd_area.' . Please Follow the Information and take your Visit. Thank you.';
+        $this->sendNotification($patientsId,$patients->device_token,$body,1);
         $data = [
             'name' => $patientnotify->name,
             'category' => $patientnotify->category,
@@ -542,7 +545,7 @@ class AdminController extends BaseController
             'id' => $patientnotify->id,
             'user' => $user
         ] ;
-            log::debug(env('PUSHER_APP_KEY'));
+
         $pusher->trigger('notify-channel', 'App\\Events\\Notify', $data);
     }
 

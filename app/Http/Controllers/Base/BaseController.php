@@ -85,6 +85,7 @@ use App\Models\HtmlPage;
 use App\Models\PatientSignup;
 use App\Models\IvfPaymentReminder;
 use App\Models\IvfResultReview;
+use App\Models\ProcedureList;
 
 
 
@@ -172,6 +173,8 @@ class BaseController extends Controller
         $this->PatientSignup = new PatientSignup;
         $this->IvfPaymentReminder = new IvfPaymentReminder;
         $this->IvfResultReview = new IvfResultReview;
+        $this->ProcedureList = new ProcedureList;
+
 
     }
 
@@ -214,25 +217,19 @@ class BaseController extends Controller
     }
 
     //send push notification when approve or reject appointment
-    public function sendNotification($patients_id,$device_tokens,$patient_name,$date,$time = null, $is_approved)
+    public function sendNotification($patients_id,$device_tokens,$body,$vibrate)
     {
         $SERVER_API_KEY = config('app.FCM_SERVER_KEY');
-        if($is_approved == 1)
-        {
-            $body = 'Dear ,'.ucwords($patient_name).' . This is Confirmation that you have booked appointment on '.\Carbon\Carbon::parse($date)->format('d M Y').' at '.$time.'. Your Appointment has been Approved. Thank You.';
-        }
-        else
-        {
-            $body = 'Dear ,'.ucwords($patient_name).' . This is Inform you that you have booked appointment on '.\Carbon\Carbon::parse($date)->format('d M Y').' is Rejected due to some reason. For more information contact to Radha IVF center. Thank You.';
-        }
+        
         $message = array(
-            "title" => "Appointment", 
-            "body" => $body
+            "title" => $vibrate == 1 ? "Doctor Calling" : 'Appointment', 
+            "body" => $body,
         );
         // payload data, it will vary according to requirement
         $data = [
             "to" => $device_tokens, // for multiple device ids
-            "notification" => $message
+            "notification" => $message,
+            "data" => array("doctor_call" => $vibrate == 1 ? true : false),
         ];
         $dataString = json_encode($data);
     
@@ -251,9 +248,10 @@ class BaseController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
                
         $response = curl_exec($ch);
-      
         curl_close($ch);
         $this->storeAppointmentNotification($patients_id,$body);
+        dd($response);
+        // dd($response);
         return $response;
     }
 
