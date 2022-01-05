@@ -1,9 +1,24 @@
 @extends('layouts.main')
-@section('parentPageTitle', 'Expense Manager')
-@section('title', 'Expense Manager')
+@section('parentPageTitle', 'Procedure List')
+@section('title', 'Procedure List')
 @section('page-style')
-
-
+<style>
+    .procedure-content
+    {
+        border: 2px solid #b7b8bc;
+        border-radius: 5px;
+        padding: 10px;
+        line-height: 24px;
+        /* box-shadow: 0px 1px 4px 0px rgb(7 96 105); */
+    }
+    .procedure-content ul li{
+        list-style: none;
+    }
+    .procedure-content ul
+    {
+        padding-left: 10px;
+    }
+</style>
 
 @stop
 @section('content')
@@ -12,7 +27,7 @@
         <div class="col-md-12">
             <div class="card patients-list">
                 <div class="header">
-                    <h2><strong>Procedure</strong></h2>
+                    <h2><strong>This week Procedures</strong></h2>
                     <ul class="header-dropdown">
                         
                     </ul>
@@ -22,7 +37,7 @@
                     <!-- Nav tabs -->
                     <div class="col-md-12">
                             <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                {{-- <div class="col-lg-3 col-md-3 col-sm-3">
                                     <div class="input-group"><input type="text" class="form-control daterange" autocomplete="off" placeholder="Select Date">
                                     </div>
                                 </div>
@@ -35,7 +50,7 @@
                                             </span>
                                         </div>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     <!-- Tab panes -->

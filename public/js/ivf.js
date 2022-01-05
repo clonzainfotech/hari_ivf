@@ -2335,6 +2335,7 @@ $(document).ready(function(){
                 var Difference_In_Time = date2.getTime() - lmpdate.getTime();
                 var diff = Math.ceil(Difference_In_Time / (1000 * 3600 * 24)) + 1;
                 var sDay = parseInt($('.last-s-days').val()) + i;
+                
                 protocolData += "<tr>"+
                                     "<td class='width-80 protocol-day'><input type='text' name='data[protocol]["+i+"][day]' value='"+diff+"' class='form-control'></td>"+
                                     "<td><span class='days-number'>s"+sDay+"</span><input type='hidden' name='data[protocol]["+i+"][s_day]' value="+sDay+" class='s-days-number' id='s-days-"+i+"'></td>"+
@@ -2351,11 +2352,13 @@ $(document).ready(function(){
                                                     "<td><input type='text' name='data[protocol]["+i+"][fsh_brand_name]' class='form-control fsh-brand-data fsh-brand-"+i+"'></td><td><input type='text' name='data[protocol]["+i+"][antagonist]' class='form-control antagonist-data antagonist-"+i+"'></td>";
                                     // protocolData += "<td><input type='text' name='data[protocol]["+i+"][time]' value='"+time+"' class='form-control timepicker width-80'></td>"+
                                      protocolData +="</tr>";
+                                     protocolData += "<input class='last_protocol' data-sday='"+sDay+"' name='last_protocol' type='hidden' value='"+diff+"'></input>";
                     lastDate = dateData;
             }
             protocolData += "</tbody></table>";
             $('.add-row').data('id',i);
             $('.add-row').removeClass('d-none');
+            $('.remove-protocol-row').removeClass('d-none');
             $('.protocol-table').html(protocolData);
             $('.dose').selectpicker('refresh');
             $('.datetimepicker').bootstrapMaterialDatePicker({
@@ -2384,6 +2387,9 @@ $(document).ready(function(){
     }
 
     function addRowProtocol(id,day){
+        var last_sday = $('.last_protocol:last').data('sday');
+        var last_day = $('.last_protocol:last').val();
+        
         var totalDate = $('.protocol-date').length;
         var date = new Date($('#history-lmpdate-'+totalDate).val());
         if(date == 'Invalid Date'){
@@ -2391,8 +2397,10 @@ $(document).ready(function(){
         }
         var dateData = date.setDate(date.getDate() + 1);
         var dateData = moment(date).format('dddd DD MMMM YYYY');
-        var day = day + 1;
-        var sDay = parseInt($('#s-days-'+(id - 1)).val()) + 1;
+        // var day = day + 1;
+        // var sDay = parseInt($('#s-days-'+(id - 1)).val()) + 1;
+        var day = parseInt(last_day) + 1;
+        var sDay = parseInt(last_sday) + 1;
         var protocolData = '';
         var injectionValue = $('select.injection-1').val();
         var hmg = $('.hmg-1').val();
@@ -2416,6 +2424,8 @@ $(document).ready(function(){
                                             "<td><input type='text' name='data[protocol]["+id+"][fsh_brand_name]' value='"+fshBrand+"' class='form-control fsh-brand-data fsh-brand-"+id+"'></td><td><input type='text' name='data[protocol]["+id+"][antagonist]' value='"+antagonistValue+"' class='form-control antagonist-data antagonist-"+id+"'></td>";
                             // protocolData += "<td><input type='text' name='data[protocol]["+id+"][time]' value='"+time+"' class='form-control timepicker width-80'></td>"+
                             protocolData += "</tr>";
+                            protocolData += "<input class='last_protocol' data-sday='"+sDay+"' name='last_protocol' type='hidden' value='"+day+"'></input>";
+                            
         $('.protocol-data-row').append(protocolData);
         setInjectionValue(injectionValue);
         $('.dose').selectpicker('refresh');
@@ -2766,6 +2776,12 @@ $(document).ready(function(){
     $(document).on('click','.medicine-data-remove',function(){
         $(this).closest('div.row').remove();
     })
+    $(document).on('click','.remove-protocol-row',function(){
+        if($('.protocol-table table tbody tr').length > 1)
+        {
+            $('.protocol-table table tbody tr:last').remove();
+        }
+    });
     function dateDiffernce(next_date)
     {
         var date1 = new Date();

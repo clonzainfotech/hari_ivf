@@ -13,6 +13,7 @@ use View;
 use Log;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class ProcedureController extends AdminController
 {
@@ -25,14 +26,16 @@ class ProcedureController extends AdminController
     public function index(Request $request){
         if ($request->ajax()) {
 
-            $procedure = $this->ProcedureList->get();
-
+            $procedure = $this->ProcedureList;
+            $procedure = collect($procedure->get())->map(function ($query) {
+                        $query->day = carbon::parse($query->date)->format('l');
+                        $query->day_date = carbon::parse($query->date)->format('l').' ('.carbon::parse($query->date)->format('d-m-Y').')';
+                        return $query;
+                    });
+            $procedure = $procedure->groupBy('day');
             return [
                 'data' => View::make('admin.procedure_list.data', compact('procedure'))->render()
             ];
-            // return response()->json([
-            //     'data' => View::make('admin.procedure_list.data', compact('procedure'))->render()
-            // ]);
         }
         return view('admin.procedure_list.index');
     }

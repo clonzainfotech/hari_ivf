@@ -1261,6 +1261,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                        <a class="btn btn-primary btn-icon btn-icon-mini btn-round remove-protocol-row d-none float-right" data-id="5" data-day="0"><i class="material-icons">remove</i></a>
                                                         <a class="btn btn-primary btn-icon btn-icon-mini btn-round add-row d-none" data-id="5" data-day="0"><i class="material-icons">add</i></a>
                                                         {{-- table append for protocol --}}
                                                         <div class="protocol-table"></div>
@@ -4884,7 +4885,9 @@
                                         </div>
                                     </div>
                                     @if($pStatus == 1)
+                                        <a class="btn btn-primary btn-icon btn-icon-mini btn-round remove-protocol-row d-none" data-id="5" data-day="0"><i class="material-icons">remove</i></a>
                                         <a class="btn btn-primary btn-icon btn-icon-mini btn-round add-row d-none" data-id="5" data-day="0"><i class="material-icons">add</i></a>
+
                                         {{-- table append for protocol --}}
                                         <div class="protocol-table"></div>
                                         <br>

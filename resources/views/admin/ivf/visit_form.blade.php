@@ -1793,6 +1793,7 @@
         </div>
         @if($ivf->plan == 1 && !empty($ivfData->protocol))
             <br>
+            <a class="btn btn-primary btn-icon btn-icon-mini btn-round remove-protocol-row d-none float-right" data-id="5" data-day="0"><i class="material-icons">remove</i></a>
             <a class="btn btn-primary btn-icon btn-icon-mini btn-round add-row" data-id="5" data-day="{{$protocolDays}}"><i class="material-icons">add</i></a>
             {{-- table append for protocol --}}
             <div class="protocol-table">
@@ -1852,6 +1853,7 @@
                                     </td>
                                 </tr>
                             @endif
+                            {{Form::hidden('last_protocol',$row->day,['class'=>'last_protocol','data-sday'=>$row->s_day])}}
                         @endforeach
                     </tbody>
                 </table>
