@@ -246,6 +246,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
 
     //procedure
     Route::get('procedures','ProcedureController@index');
+    Route::get('procedure-update-remark','ProcedureController@updateRemark');
 
     // report
     Route::resource('report','ReportController');

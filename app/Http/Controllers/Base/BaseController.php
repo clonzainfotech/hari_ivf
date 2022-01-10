@@ -250,7 +250,6 @@ class BaseController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
         $this->storeAppointmentNotification($patients_id,$body);
-        dd($response);
         // dd($response);
         return $response;
     }

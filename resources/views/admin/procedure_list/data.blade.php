@@ -26,7 +26,22 @@
                                     <li class=""><b>{{ucwords($row->getPatientsDetails['name'])}}</b></li>
                                     <li class="">{{$row->getPatientsDetails['mobile_number'].(!empty($row->getPatientsDetails['other_mobile_number']) ? ' , '.$row->getPatientsDetails['other_mobile_number'] : '')}}</li>
                                     <li class="font-bold">{{ucwords($row->procedure)}}</li>
-                                    <li class=""><span>Detail : </span>{{ucwords($row->description)}}</li>
+                                    <li class=""><span><b>Detail : </b></span>{{ucwords($row->description)}}</li>
+                                    <li class="">
+                                        <div class="{{'edit-remark-data edit-remark-'.$row->id}}">
+                                            @if($row->remark)
+                                            <span><b>Remark : </b></span>{!!wordwrap($row->remark, 40,"<br>\n") !!}
+                                                <span class="edit-remark">
+                                                    <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->remark}}" data-procedureid="{{encrypt($row->id)}}" data-id="{{$row->id}}">edit</i>
+                                                </span>
+                                            @else
+                                            <span><b>Remark : </b></span>
+                                                <span class="edit-remark">
+                                                    <i class="material-icons edit-remark-icon" data-value="{{$row->remark}}" data-procedureid="{{encrypt($row->id)}}" data-id="{{$row->id}}">add</i>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

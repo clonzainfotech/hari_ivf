@@ -79,6 +79,9 @@
     </div>
 @stop
 @section('page-script')
+    <script src="{{asset('assets/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
+    <script src="{{asset('assets/js/pages/ui/notifications.js')}}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <script type="text/javascript">
         var page = '';
         var search = '';
@@ -122,6 +125,56 @@
             });
             
         });
+        $(document).on('click','.edit-remark-icon',function(e){
+            e.preventDefault();
+            $(this).addClass('appointment-selected-tr');
+            var dId = $(this).data('id');
+            var procedureId = $(this).data('procedureid');
+            var value = $(this).data('value');
+            if($('.remark-data').hasClass('remark-val')){
+                var previousId = $('.remark-val').data('id');
+                var previousRemark = $('.remark-val').data('value');
+                var data = "<div class='edit-remark-data edit-remark-'"+previousId+"'>"+
+                    wordwrap(""+previousRemark+"", 30,'<br>\n')+
+                    "<span class='edit-remark'>"+
+                        "<i class='material-icons edit-remark-icon' data-value="+previousRemark+" data-id="+previousId+">edit</i>"+
+                    "</span>"+
+                "</div>";
+                $('.edit-remark-'+previousId).html(data);
+            }
+            var remarkData = "<input type ='text' name='total' value='"+value+"' class='form-control remark-val remark-data remark-value-"+dId+"' data-procedureId='"+procedureId+"' data-value='"+value+"' data-id="+dId+">";
+            $('.edit-remark-'+dId).html(remarkData);
+        });
+        $(document).on('blur','.remark-data',function(){
+            var remark = $(this).val();
+            var procedureId = $(this).data('procedureid');
+            var remarkValue = 'remark='+remark+'&procedure_id='+procedureId;
+            updateRemark(remarkValue,'blur');
+        });
+
+        $(document).on('keyup','.remark-data',function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                var remark = $(this).val();
+                var procedureId = $(this).data('procedureid');
+                var remarkValue = 'remark='+remark+'&procedure_id='+procedureId;
+                updateRemark(remarkValue,'keyup');
+            }
+        });
+        //update remark
+        function updateRemark(remarkValue,type){
+            $.ajax({
+                url: "{{URL::to('procedure-update-remark')}}?"+remarkValue,
+                dataType: 'json',
+            }).done(function(data) {
+                if(type == 'blur'){
+                    showNotification('bg-blue', 'Remark changed successfully.', 'bottom', 'right', "", "");
+                }
+                getProcedureListData(qstring);
+            }).fail(function() {
+
+            });
+        }
         // get all expense data
         function getProcedureListData(qstring){
             $.ajax({

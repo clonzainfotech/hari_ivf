@@ -39,90 +39,25 @@ class ProcedureController extends AdminController
         }
         return view('admin.procedure_list.index');
     }
-     /**
-    * Store note
-    * @param  \Illuminate\Http\Request 
-    * @return \Illuminate\Http\Response
-    */
-    public function store(Request $request) {
-        $this->validate($request,[
-            'note' => 'required|max:200',
-        ]);
-        try {
-            $note =  $this->Note;
-            $note->discription = $request->note;
-            $note->user_id = Auth::id();
-            $note->save();
-
-            return [
-                'status' => true,
-            ];
-
-        } catch (Exception $e) {
-            log::debug($e);
-            abort(500);
-        }
-    }
-
-    /**
-    * delete note
-    * @param  \Illuminate\Http\Request 
-    * @return \Illuminate\Http\Response
-    */
-    public function delete($id){
-
-        $noteId = decrypt($id);
-        try {
-            $note = $this->Note->find($noteId);
-            $note->delete();
-
-            return [
-                'status' => true,
-                'message' => 'Successfully deleted note'
-            ];
-        } catch (Exception $e) {
-            return [
-                'status' => false,
-                'message' => 'Please try again later'
-            ];
-        }
-    }
-
-    /**
-    * Get note list
-    * @param  \Illuminate\Http\Request 
-    * @return \Illuminate\Http\Response
-    */
-    public function getAllNotes(Request $request){
-        if ($request->ajax()) {
-
-            $notes = $this->Note->whereUserId(Auth::id())->get();
-
-            return response()->json([
-                View::make('admin.home.note_data', compact('notes'))->render()
-            ]);
-        }
-        return view('admin.home.dashboard');
-    }
-
-    /**
-    * Get note data using id
-    * @param  \Illuminate\Http\Request 
-    * @return \Illuminate\Http\Response
-    */
-    public function editNoteData(Request $request) {
-        try {
-            $noteId = decrypt($request->note_id);
-        } catch (Exception $exception) {
-            return 'false';
-        }
-        $noteData = $this->Note->whereId($noteId)->first();
-        return json_encode($noteData);
-    }
+    
    /**
     * Update note
     * @param  \Illuminate\Http\Request 
     * @return \Illuminate\Http\Response
     */
-   
+    public function updateRemark(Request $request)
+    {
+        try{
+            $procedure_id = decrypt($request->procedure_id);
+            $procedureData = $this->ProcedureList->find($procedure_id);
+            $procedureData->remark = $request->remark;
+            $procedureData->save();
+            return ['status'=>true];
+        }catch(Exception $e){
+            return [
+                'status' => false,
+                'message' => 'Internal server error'
+            ];
+        }
+    }
 }
