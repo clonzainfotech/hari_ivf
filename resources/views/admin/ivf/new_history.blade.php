@@ -22,7 +22,10 @@
         <div class="col-sm-12 col-md-6 col-lg-3">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12 roomtype_name">
-                    <h5>Pick Up</h5>
+                    @php
+                        $ivf_sd = isset($planManagement->pick_with_sd) && $planManagement->pick_with_sd == 'yes' ? true : false;
+                    @endphp
+                    <h5>Pick Up {{($ivf_sd) ? '(IVF - SD)' : ''}}</h5>
                 </div>
             </div>
             @php

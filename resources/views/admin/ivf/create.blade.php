@@ -3142,9 +3142,17 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         {{Form::select("plan_of_management[plan]",['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'],'',[
-                                                            'class'=>'form-control select-padding-0 plan',
+                                                            'class'=>'form-control select-padding-0 plan ivf-plan',
                                                             'placeholder'=>'Plan'
                                                         ])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1 div-pick-with-sd d-none">
+                                                    <div class="checkbox">
+                                                        {{Form::checkbox('plan_of_management[pick_with_sd]','yes','',['id'=>'pick_with_sd','class'=>'plan-management'])}}
+                                                        <label for="pick_with_sd">
+                                                            IVF-SD
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3488,7 +3496,14 @@
                 });
 
             });
-
+            $(document).on('change','select.ivf-plan',function(e){
+                var plan = $(this).val();
+                $('.div-pick-with-sd').addClass('d-none');
+                if(plan == '1')
+                {
+                    $('.div-pick-with-sd').removeClass('d-none');
+                }
+            });
             $(document).on('keyup','.next-day',function(){
                 var selectedAppointmentId = $('.selected-tr').data('id');
                 var day = $('.next-day').val();

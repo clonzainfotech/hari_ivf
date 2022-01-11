@@ -1579,6 +1579,7 @@ class IVFController extends AdminController
             $data['dataForSamecycle_value'] = $dataForSamecycle_value;
             $data['dataConceiveCycle'] = $dataConceiveCycle;
             $data['isIvfappointment'] = !empty($isIvfappointment) ? true : false;
+            $data['planManagement'] = $planManagement;
             if($request->ajax()){
                 $data['history'] = View::make('admin.ivf.edit',$data)->render();
                 return $data;
