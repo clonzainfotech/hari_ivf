@@ -48,6 +48,7 @@ class AuthApiController extends ApiController
         // if($user_data){
         //     $user = $user_data;
         // }
+        //for app register patients
         if($login_type == 'mobile')
         {
             $patient = $this->PatientSignup->where('mobile_number',$request->only($login_type))->first();
@@ -75,7 +76,7 @@ class AuthApiController extends ApiController
                 'is_new' => $is_new
             ];
            
-           $data = $this->SmsManager::sendOtpToPatients($userId);
+           $data = $this->SmsManager::sendOtpToPatients($userId,$user_data->mobile_number);
             // dd('ere');
             return $this->sendResponse('Send otp for verification.',$success);
         }
@@ -117,9 +118,10 @@ class AuthApiController extends ApiController
             {
                 $user = $this->OpdPatients->where('id', $pid)->where('otp',$request->otp)->first();
             }
+            //for app register patients
             if(!$user)
             {
-                $user = $this->PatientSignup->where('id', $pid)->first();
+                $user = $this->PatientSignup->where('id', $pid)->where('otp',$request->otp)->first();
             }
             $PatientToken = $this->PatientToken;
             if($user) {

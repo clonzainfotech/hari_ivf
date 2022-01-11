@@ -195,7 +195,7 @@ class SmsManager extends BaseModel
         }
     }
 
-    public static function sendOtpToPatients($userId) {
+    public static function sendOtpToPatients($userId,$mobile_no) {
         $module = __FUNCTION__;
         $smsData = [];
         $smsData['module'] = $module;
@@ -205,7 +205,12 @@ class SmsManager extends BaseModel
         $smsData['templateid'] = 0;
         $smsData['message'] = config('app.'.$smsData['module']);
 
-        $patients = OpdPatients::whereId($userId)->first();
+        $patients = OpdPatients::whereMobileNumber($mobile_no)->first();
+        //for app register patients
+        if(!$patients)
+        {
+            $patients = PatientSignup::whereMobileNumber($mobile_no)->first();
+        }
 
         $getotp = $patients->otp;
 
