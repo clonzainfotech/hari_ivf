@@ -16,7 +16,9 @@
     $uterus = $o_e->uterus->type == 2 ? $o_e->uterus->details : 'Normal';
     $ovary = !empty($o_e->ovary) ? $o_e->ovary : null;
     $right_ovary = isset($ovary->right->details) ? implode(', ',$ovary->right->details) : null;
+    $right_afcs = !empty($ovary->right->afcs) ? $ovary->right->afcs : null;
     $left_ovary = isset($ovary->left->details) ? implode(', ',$ovary->left->details) : null;
+    $left_afcs = !empty($ovary->left->afcs) ? $ovary->left->afcs : null;
     $ivfReport = !empty($ivfReport) ? json_decode($ivfReport->description) : null;
     $abortion_reason = [];
     $total_abortion = null;
@@ -174,9 +176,9 @@
                                             <div class="col-md-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon col-md-2">Ovarian Factor Right:</span>
-                                                    {{Form::text('data[ovarian_factor_right]',!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovarian_factor_right) ? $ivfResultReviewDetail->ovarian_factor_right: $right_ovary,['class'=>'form-control col-sm-4','placeholder'=>'Right Ovary'])}}
+                                                    {{Form::text('data[ovarian_factor_right]',!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovarian_factor_right) ? $ivfResultReviewDetail->ovarian_factor_right: $right_afcs.(!empty($right_ovary) ? ' - '.$right_ovary : ''),['class'=>'form-control col-sm-4','placeholder'=>'Right Ovary'])}}
                                                     <span class="input-group-addon col-md-2">Ovarian Factor left:</span>
-                                                    {{Form::text('data[ovarian_factor_left]',!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovarian_factor_left) ? $ivfResultReviewDetail->ovarian_factor_left: $left_ovary,['class'=>'form-control col-sm-4','placeholder'=>'Left Ovary'])}}
+                                                    {{Form::text('data[ovarian_factor_left]',!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->ovarian_factor_left) ? $ivfResultReviewDetail->ovarian_factor_left: $left_afcs.(!empty($left_ovary) ? ' - '.$left_ovary : ''),['class'=>'form-control col-sm-4','placeholder'=>'Left Ovary'])}}
                                                     {{-- {{Form::text('visit_charges_desc','',['class'=>'form-control col-sm-4 drvisit_charge_day','placeholder'=>'Days'])}} --}}
                                                 </div>
                                             </div>
@@ -189,7 +191,7 @@
                                             <div class="col-md-6 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Day of Serum Progestrone : &nbsp;</span>
-                                                    {{Form::text("data[day_of_serum_progestrone]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->day_of_serum_progestrone) ? $ivfResultReviewDetail->day_of_serum_progestrone: '' ,['class'=>'form-control datetimepicker'])}}
+                                                    {{Form::text("data[day_of_serum_progestrone]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->day_of_serum_progestrone) ? $ivfResultReviewDetail->day_of_serum_progestrone: $sp2_start ,['class'=>'form-control datetimepicker'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-6 pr-0">

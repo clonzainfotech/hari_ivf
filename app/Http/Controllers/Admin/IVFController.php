@@ -3462,13 +3462,24 @@ class IVFController extends AdminController
         try
         {
             $pId = decrypt($pId);
+            $sp2_start = null;
             $patient = $this->OpdPatients->find($pId);
             $ivf = $this->IVF->where('patients_id',$pId)->first();
             $ivfResultReview = $this->IvfResultReview->where('patients_id',$pId)->where('plan',$plan)->where('cycle_no',$cycle_no)->first();
             $ivfReport = $this->IvfPlanReport->where('patients_id',$pId)->where('plan',1)->where('cycle_no',$cycle_no)->first();
             $ivfResultReviewDetail = !empty($ivfResultReview) ? json_decode($ivfResultReview->description) : null;
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
-            return view('admin.ivf.ivf_result_review',compact('patient','hospitalDoctor','ivf','ivfReport','ivfResultReviewDetail','plan','cycle_no'));
+            $ivfHistory = $this->IvfHistory->where('patients_id',$pId)->where('plan',$plan)->where('cycle_no',$cycle_no)->get();
+            foreach($ivfHistory as $history)
+            {
+                $description = json_decode($history->description);
+                $collectData = !empty($description->collection) ? $description->collection : [];
+                if(in_array('progesterone',$collectData) && !empty($description->progesterone->type) && !empty($description->progesterone_date))
+                {
+                    $sp2_start =  $description->progesterone_date ;
+                }
+            }
+            return view('admin.ivf.ivf_result_review',compact('patient','hospitalDoctor','ivf','ivfReport','ivfResultReviewDetail','plan','cycle_no','sp2_start'));
         }
         catch(Exception $e)
         {

@@ -173,7 +173,7 @@ class AppointmentRequestController extends AdminController
         try{
             if($request->ajax()) 
             {
-                $patients = $this->PatientSignup->where('is_approved','0');
+                $patients = $this->PatientSignup->where('is_approved','0')->orderBy('created_at','desc');
                 if($request->search)
                 {
                     $search = $request->search;
