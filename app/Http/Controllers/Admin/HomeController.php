@@ -345,7 +345,7 @@ class HomeController extends AdminController
             // $appointment = $this->Appointment->whereIn('category_id',$category);
             $nowDate = Carbon::now()->format('Y-m-d');
             $authUserId = Auth::user()->id;
-            $appointment = $this->Appointment
+            $appointment = $this->Appointment->select('*',DB::raw('TIMESTAMPDIFF(minute, concat(date," ",time), concat(date," ",arrival_time))as duration'))
                     ->where('is_procedure',0)
                     ->where('category_id', '!=', 7)
                     ->whereNotNull('arrival_time');
@@ -410,7 +410,10 @@ class HomeController extends AdminController
             // }
             if($request->date && $startDate == $nowDate && $endDate == $nowDate){
                 $appointment = $appointment
+                                            
                                             ->orderBy(DB::raw('ISNULL(arrival_time), is_done'), 'ASC')
+                                            ->orderBy('duration','asc')
+
                                             ->orderBy(DB::raw('ISNULL(arrival_time), arrival_time'), 'ASC')
                                             // ->orderBy('is_done','ASC')
                                             ->orderBy('date','ASC');
