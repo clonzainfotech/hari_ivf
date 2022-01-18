@@ -23,14 +23,16 @@
                 <div class="body">
                     {{-- <div class="col-md-12"> --}}
                         <div class="col-md-3">
-                            <ul class="nav nav-tabs padding-0">
-                                <div class="input-group">
-                                    <input type="text" class="form-control search-word" placeholder="Search by word" readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                    <span class="input-group-addon search-border">
-                                        <i class="zmdi zmdi-search"></i>
-                                    </span>
-                                </div>
-                            </ul>
+                            <form method="post" autocomplete="off" action="">
+                                <ul class="nav nav-tabs padding-0">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control search-word" placeholder="Search by word" autocomplete="off">
+                                        <span class="input-group-addon search-border">
+                                            <i class="zmdi zmdi-search"></i>
+                                        </span>
+                                    </div>
+                                </ul>
+                            </form>
                         </div>
                     {{-- </div> --}}
                     <!-- Tab panes -->
@@ -118,23 +120,6 @@
             });
         });
 
-        $(document).on('click','.apt-reject',function () {
-            var patient_signup_id = $(this).data('id');
-            swal({
-                title: 'Are you sure?',
-                text: "You want to Reject this Patient !",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#00cfd1",
-                confirmButtonText: "Yes!",
-                closeOnConfirm: false,
-                cancelButtonClass: 'btn btn-danger',
-            }, function () {
-                window.location.href = '{{URL::to("/reject-patient")}}?booking_id='+patient_signup_id;
-                $('.showSweetAlert').hide();
-            });
-        });
-        
     </script>
 
 @stop

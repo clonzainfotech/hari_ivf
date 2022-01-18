@@ -19,7 +19,9 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-4">
-                                <input type="text" class="form-control daterange" placeholder="Select Date">
+                                <form method="post" autocomplete="off" action="">
+                                    <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                </form>
                             </div>
                             <div class="col-md-4">
                                 {{ Form::select('patient_id',$patientsData,'',[
@@ -30,14 +32,16 @@
                                 ])}}
                             </div>
                             <div class="col-md-3">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no"  readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
+                                <form method="post" autocomplete="off" action="">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no" autocomplete="off">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </form>
                             </div>
                         </div>
                     </div>

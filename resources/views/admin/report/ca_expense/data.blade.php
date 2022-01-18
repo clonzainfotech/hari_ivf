@@ -3,7 +3,7 @@
         <tr>
             <th colspan="24" class="text-center headline">OPD</th>
         </tr>
-        <tr class="thead">
+        <tr>
             <th>Sr No</th>
             <th>Date</th>
             <th>Patient Name</th>
@@ -27,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        @php 
+        @php
             $number = $totalUsg = $totalUsgLeft = $totalUsgRight = 0;
             $count = count($usg);
         @endphp
@@ -35,9 +35,9 @@
         <tr>
             <th colspan="24" class="sub-headline">USG</th>
         </tr>
-        
+
             @foreach ($usg as $key => $value)
-                @php 
+                @php
                     if($key > 0) {
                         $number++;
                     }
@@ -51,7 +51,7 @@
                 @endphp
                 @if ($number < $count)
                     <tr>
-                        @php 
+                        @php
                             $totalUsgLeft +=  $usg[$number]->getAppointmentCharges['usg'];
                         @endphp
                         <td>{{ ((($usg->currentPage() - 1 ) * $usg->perPage() ) + $loop->iteration) . '.'}}</td>
@@ -68,7 +68,7 @@
                         <td class="expense-icon">{{(isset($bank_details[$usg[$number]->getAppointmentCharges['bank_id']])) ? $bank_details[$usg[$number]->getAppointmentCharges['bank_id']] : ''}}</td>
                         <td class="expense-icon">{{$usg[$number]->getAppointmentCharges['detail']}}</td>
                         <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$usg[$number]->getAppointmentCharges['id']}}" data-class="AppointmentCharges">edit</i></td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -103,7 +103,7 @@
                 <th class="bt-none" >Total :</th>
                 <th class="grand-total-top-border">
                     <div class="lower-border">
-                        {{ $totalUsg }} 
+                        {{ $totalUsg }}
                     </div>
                 </th>
                 <td class="bt-none" colspan='7'>
@@ -113,7 +113,7 @@
         {{-- @else
             <td colspan='12' class="text-center">No records available</td> --}}
         @endif
-        @php 
+        @php
             $number = $totalHormon = $totalHormonLeft = $totalHormonRight = 0;
             $count = count($hormon);
             // dd($count);
@@ -123,7 +123,7 @@
             <th colspan="24" class="sub-headline">Hormon</th>
         </tr>
             @foreach ($hormon as $key => $value)
-                @php 
+                @php
                     if ($key > 0) {
                         $number++;
                     }
@@ -138,7 +138,7 @@
                 @endphp
                 @if ($number < $count)
                     <tr>
-                        @php 
+                        @php
                             $totalHormonLeft +=  $hormon[$number]->amount;
                         @endphp
                         <td>{{ ((($hormon->currentPage() - 1 ) * $hormon->perPage()) + $loop->iteration) . '.' }}</td>
@@ -155,7 +155,7 @@
                         <td class="expense-icon">{{(isset($bank_details[$hormon[$number]->bank_id])) ? $bank_details[$hormon[$number]->bank_id] : ''}}</td>
                         <td class="expense-icon">{{$hormon[$number]->detail}}</td>
                         <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$hormon[$number]->id}}" data-class="IndoorDeposit">edit</i></td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -184,7 +184,7 @@
                 @php
                     $totalHormon = $totalHormonLeft + $totalHormonRight;
                 @endphp
-                
+
             @endforeach
             <tr class="bt-none" >
                 <td class="bt-none" colspan="3"></td>
@@ -197,7 +197,7 @@
         {{-- @else
             <td colspan='12' class="text-center">No records available</td> --}}
         @endif
-        @php 
+        @php
         $number = $totalIui = $totalIuiLeft = $totalIuiRight = 0;
         $count = count($iui);
     @endphp
@@ -205,7 +205,7 @@
         <tr>
             <th colspan="24" class="sub-headline">IUI</th>
         </tr>
-        
+
             @foreach ($iui as $key => $value)
                 @php
                     if($key > 0) {
@@ -221,7 +221,7 @@
                 @endphp
                 @if ($number < $count)
                     <tr>
-                        @php 
+                        @php
                             $totalIuiLeft +=  $iui[$number]->amount;
                         @endphp
                         <td>{{ ((($iui->currentPage() - 1 ) * $iui->perPage()) + $loop->iteration) . '.' }}</td>
@@ -239,13 +239,13 @@
                         <td class="expense-icon">{{$iui[$number]->detail}}</td>
                         <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$iui[$number]->id}}" data-class="IndoorDeposit">edit</i></td>
 
-                        @php 
+                        @php
                             if($count > 8) {
                                 $number++;
                             }
                         @endphp
                         @if ($count > 8 && $number < $count)
-                            
+
                             @php
                                 $totalIuiRight +=  $iui[$number]->amount;
                             @endphp
@@ -282,7 +282,7 @@
         {{-- @else
             <td colspan='12' class="text-center">No records available</td> --}}
         @endif
-        @php 
+        @php
             $number = $totalIvf = $totalIvfLeft = $totalIvfRight = 0;
             $count = count($ivf);
         @endphp
@@ -290,9 +290,9 @@
         <tr>
             <th colspan="24" class="sub-headline">IVF</th>
         </tr>
-        
+
             @foreach($ivf as $key => $value)
-                @php 
+                @php
                     if($key > 0) {
                         $number++;
                     }
@@ -325,7 +325,7 @@
                         <td class="expense-icon">{{$ivf[$number]->detail}}</td>
                         <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$ivf[$number]->id}}" data-class="IndoorDeposit">edit</i></td>
 
-                        @php 
+                        @php
                             if($count > 8) {
                                 $number++;
                             }
@@ -348,7 +348,7 @@
                             <td class="expense-icon">{{(isset($bank_details[$ivf[$number]->bank_id])) ? $bank_details[$ivf[$number]->bank_id] : ''}}</td>
                             <td class="expense-icon">{{$ivf[$number]->detail}}</td>
                             <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$ivf[$number]->id}}" data-class="IndoorDeposit">edit</i></td>
-                            
+
                         @endif
                     </tr>
                 @endif
@@ -666,7 +666,7 @@
         <tr>
             <th colspan="24" class="sub-headline">Indoor</th>
         </tr>
-       
+
             <tr>
                 <th colspan="24" class="sub-headline">Invoices</th>
             </tr>
@@ -705,7 +705,7 @@
                         <td class="expense-icon">{{$indoorCash[$number]['get_invoice']['detail']}}</td>
                         <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$indoorCash[$number]['get_invoice']['id']}}" data-class="IndoorInvoice">edit</i></td>
 
-                        @php 
+                        @php
                             if($count > 8) {
                                 $number++;
                             }
@@ -786,7 +786,7 @@
                         <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$indoorCaseDeposit[$number]['id']}}" data-class="IndoorDeposit">edit</i></td>
 
 
-                        @php 
+                        @php
                             if($count > 8){
                                 $number++;
                             }
@@ -874,7 +874,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -951,7 +951,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -1024,7 +1024,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -1101,7 +1101,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -1174,7 +1174,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -1251,7 +1251,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -1324,7 +1324,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -1401,7 +1401,7 @@
                                 @endphp
                             </div>
                         </td>
-                        @php 
+                        @php
                             if ($count > 8) {
                                 $number++;
                             }
@@ -1465,7 +1465,7 @@
             </tr>
         </thead>
         <tbody>
-            @php 
+            @php
                 $number = $totalIncome = $totalIncomeLeft = $totalIncomeRight = 0;
                 $count = count($income);
             @endphp
@@ -1473,9 +1473,9 @@
             <tr>
                 <th colspan="24" class="sub-headline">Income</th>
             </tr>
-            
+
                 @foreach ($income as $key => $value)
-                    @php 
+                    @php
                         if ($key > 0) {
                             $number++;
                         }
@@ -1490,7 +1490,7 @@
                     @endphp
                     @if ($number < $count)
                         <tr>
-                            @php 
+                            @php
                                 $totalIncomeLeft +=  $income[$number]->amount;
                             @endphp
                             <td>{{ ((($income->currentPage() - 1 ) * $income->perPage()) + $loop->iteration) . '.' }}</td>
@@ -1510,7 +1510,7 @@
                             <td class="expense-icon">{{$income[$number]->detail}}</td>
                             <td class="expense-icon"><i class="material-icons expense-modal pencil-icon a-time" data-id="{{$income[$number]->id}}" data-class="IncomeManager">edit</i></td>
 
-                            @php 
+                            @php
                                 if ($count > 8) {
                                     $number++;
                                 }
@@ -1550,7 +1550,7 @@
             {{-- @else
                 <td colspan='12' class="text-center">No records available</td> --}}
             @endif
-            @php 
+            @php
             $number = $totalExpense = $totalExpenseLeft = $totalExpenseRight = 0;
             $count = count($expense);
         @endphp
@@ -1558,9 +1558,9 @@
             <tr>
                 <th colspan="24" class="sub-headline">Expense</th>
             </tr>
-        
+
                 @foreach ($expense as $key => $value)
-                    @php 
+                    @php
                         if ($key > 0) {
                             $number++;
                         }
@@ -1573,7 +1573,7 @@
                     @endphp
                     @if ($number < $count)
                         <tr>
-                            @php 
+                            @php
                                 $totalExpenseLeft += $expense[$number]->amount;
                             @endphp
                             <td>{{ ((($expense->currentPage() - 1 ) * $expense->perPage()) + $loop->iteration) . '.' }}</td>
@@ -1593,7 +1593,7 @@
                             <td class="expense-icon">{{$expense[$number]->detail}}</td>
                             <td class="expense-icon"><i class="material-icons expense-icon expense-modal pencil-icon a-time" data-id="{{$expense[$number]->id}}" data-class="ExpenseManager">edit</i></td>
 
-                            @php 
+                            @php
                                 if($count > 8){
                                     $number++;
                                 }
@@ -1679,7 +1679,7 @@
                                     @endphp
                                 </div>
                             </td>
-                            @php 
+                            @php
                                 if ($debitCount > 8) {
                                     $number++;
                                 }

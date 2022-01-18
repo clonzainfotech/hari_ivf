@@ -1,6 +1,6 @@
 @extends('layouts.main')
-@section('parentPageTitle', 'IUI Appointment')
-@section('title', 'Add IUI Appointment')
+@section('parentPageTitle', 'Infertility Appointment')
+@section('title', 'Add Infertility Appointment')
 
 @section('page-style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
@@ -70,7 +70,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <h2><strong>IUI Appointment</strong></h2>
+                    <h2><strong>Infertility Appointment</strong></h2>
                     <ul class="header-dropdown col-md-6 text-right">
                         <li class="w-50">
                             {{Form::select("date",$iuiHistoryDate,'',['class'=>'form-control select-padding-0 iui-date','placeholder'=>'Select Date'])}}
@@ -102,7 +102,7 @@
                                     <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
                                     <a href="{{URL::to('iui')}}" class="btn btn-default">Cancel</a>
                                 </div>
-                            {{Form::close()}}    
+                            {{Form::close()}}
                         </div>
                     </div>
                 </div>
@@ -121,11 +121,11 @@
     <script type="text/javascript">
         var code = '';
         var patientsId = $('.patients-id').val();
-        
+
         $(document).ready(function(){
             getIuiData();
             $('.complain-multi .show-tick').addClass('d-none');
-            
+
             $(document).on('click','.submit',function(e){
                 e.preventDefault();
                 if($('select.seen-by').val() == ''){
@@ -151,7 +151,7 @@
             });
 
         });
-        
+
         function extraIuiFormData(data){
             $.ajax({
                 url:'{{URL::to("iui/store-extra-visit")}}',
@@ -177,7 +177,7 @@
                     }, 300);
                 }
                 else{
-                    
+
                 }
             });
         }
@@ -192,7 +192,7 @@
             }).done(function(data){
                 if(data.status == 1){
                     $('.iui-extra-data').html(data.extra_visit_data);
-                    $(function () { 
+                    $(function () {
                         //Datetimepicker plugin
                         $('.datetimepicker').bootstrapMaterialDatePicker({
                             format: 'dddd DD MMMM YYYY',

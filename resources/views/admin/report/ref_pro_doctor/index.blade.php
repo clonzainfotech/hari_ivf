@@ -22,6 +22,7 @@
                             </div> -->
                             <div class="col-ms-3 col-sm-3">
                                 <div class="form-group daterange">
+                                    <form method="post" autocomplete="off" action="">
                                     {{ Form::text('daterange', '',  [
                                         'id' => 'daterange',
                                         'class' => 'form-control',
@@ -30,10 +31,11 @@
                                         'data-provide'=> 'datepicker',
                                         'autocomplete'=>'off'
                                     ]) }}
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 anc">
-                            
+
                                 {{ Form::select('patient_id',$appointment,'',[
                                     'class'=>'form-control select-padding-0 patient-id',
                                     'placeholder'=>'Select Patient',
@@ -62,7 +64,7 @@
                                     <button class="btn btn-primary print-infertility m-0">
                                         Print
                                     </button>
-                                </a>    
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -179,14 +181,14 @@
                  qstring = 'page=' + page + '&patient_id='+patientId+ '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId +'&ref_pro_id='+refProId;
                 getReferenceDoctorProData(qstring);
             });
-            
-         
+
+
             $(document).on('change','select.ref-doctor-id',function(){
                 refDocId = $(this).val();
                  qstring = 'page=' + page + '&patient_id='+patientId+ '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId +'&ref_pro_id='+refProId+'&ref_doc_id='+refDocId;
                 getReferenceDoctorProData(qstring);
             });
-        
+
             $(document).on('click', '.ivf-package', function () {
                 var packageId = $(this).data('id');
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&package_id='+packageId;

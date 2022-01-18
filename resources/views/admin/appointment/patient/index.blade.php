@@ -34,13 +34,14 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control daterange" placeholder="Select Bithday Date">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-card-giftcard candor-color" title="Birthday Selection"></i>
-                                        </span>
-                                    </div>
-
+                                    <form method="post" autocomplete="off" action="">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control daterange" placeholder="Select Bithday Date">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-card-giftcard candor-color" title="Birthday Selection"></i>
+                                            </span>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     {{ Form::select('patient_id',$patients,'',[
@@ -59,14 +60,16 @@
                                     ])}}
                                 </div>
                                 <div class="col-md-3">
+                                    <form method="post" autocomplete="off" action="">
                                     <ul class="nav nav-tabs padding-0">
                                         <div class="input-group">
-                                            <input type="text" class="form-control search-mobile-number" placeholder="Search by area & mobile no" readonly="readonly" onfocus="this.removeAttribute('readonly')">
+                                            <input type="text" class="form-control search-mobile-number" placeholder="Search by area & mobile no" autocomplete="off">
                                             <span class="input-group-addon search-border">
                                                 <i class="zmdi zmdi-search"></i>
                                             </span>
                                         </div>
                                     </ul>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +111,7 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 @section('modal')
     <div class="modal fade" id="label-modal" tabindex="-1" role="dialog">
@@ -256,7 +259,7 @@
         });
         $(document).on('click','.procedure-print',function(){
             var procedure_name = $('.procedure_name').val();
-            
+
             $('.procedure-date').addClass('d-none');
             if(procedure_name == ''){
                 $('.procedure-date').removeClass('d-none');

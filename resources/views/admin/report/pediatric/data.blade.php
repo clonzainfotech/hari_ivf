@@ -1,6 +1,6 @@
 <table class="table m-b-0 table-hover font" id="category-report-table">
     <thead>
-        <tr class="thead">
+        <tr>
             <th>Sr No</th>
             <th>Date</th>
             <th>Patient</th>
@@ -8,14 +8,14 @@
             <th>Note</th>
             <th>Created By</th>
             <th>Amount</th>
-            
+
         </tr>
     </thead>
     <?php
         $i = 0;
         $j = 1;
         $totalOpd = 0;
-        $totalIpd = 0;  
+        $totalIpd = 0;
     ?>
     <tbody>
         <tr>
@@ -42,7 +42,7 @@
                         $j++;
                         $total +=  $row->amount;
                         $totalOpd += $row->amount;
-                    @endphp  
+                    @endphp
             @endforeach
             @php
                 $i++;
@@ -50,7 +50,7 @@
             <tr>
                 <td colspan="6"></td>
                 <td class="sub-headline upper-border">{{$total}}</td>
-                
+
             </tr>
         @empty
             <td colspan="7" class="text-center">No records available</td>
@@ -71,10 +71,10 @@
             @php
                 $j++;
                 $totalIpd += $data->getInvoice['grand_total_amt'];
-            @endphp  
+            @endphp
         @empty
             <td colspan="7" class="text-center">No records available</td>
-            
+
         @endforelse
         <tr>
             <td colspan="6"></td>
@@ -84,7 +84,7 @@
 </table>
 <table class="table m-b-0 table-hover font" id="category-report-table">
     <thead>
-        <tr class="thead">
+        <tr>
             <th>Sr No</th>
             <th>Date</th>
             <th>Patient</th>
@@ -92,13 +92,13 @@
             <th>Note</th>
             <th>Created By</th>
             <th>Amount</th>
-            
+
         </tr>
     </thead>
     <?php
         $i = 0;
         $j = 1;
-        $totalExpense = 0;  
+        $totalExpense = 0;
     ?>
     <tbody>
         @forelse($expense as $rowlist => $data)
@@ -122,7 +122,7 @@
                         $j++;
                         $total +=  $row->amount;
                         $totalExpense += $row->amount;
-                    @endphp  
+                    @endphp
                 {{-- @endforeach --}}
             @endforeach
             @php

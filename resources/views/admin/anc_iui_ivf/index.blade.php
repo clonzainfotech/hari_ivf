@@ -16,7 +16,11 @@
                     <!-- Nav tabs -->
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-3"><input type="text" class="form-control daterange" placeholder="Select Date"></div>
+                            <div class="col-md-3">
+                                <form method="post" autocomplete="off" action="">
+                                    <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                </form>
+                            </div>
                             <div class="col-md-3">
                                 <ul class="nav nav-tabs padding-0">
                                     {{Form::select('patient_id',$patients,'',[
@@ -28,16 +32,18 @@
                                 </ul>
                             </div>
                             <div class="col-md-3">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group"> 
-                                        <input type="number" class="form-control search-word" placeholder="Search by word" readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
+                                <form method="post" autocomplete="off" action="">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control search-word" placeholder="Search by word" autocomplete="off">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </form>
                             </div>
-                            
+
                             <div class="col-md-1">
                                 <a href="javascript:void(0);">
                                     <button class="btn btn-primary print-all m-0">
@@ -203,7 +209,7 @@
             });
         });
         </script>
-        @if(in_array(Auth::user()->role,[1,3])) 
+        @if(in_array(Auth::user()->role,[1,3]))
             <script type="text/javascript">
             $(document).on('dblclick', '.anc-iui-ivf-edit', function(event) {
                 var patientId = $(this).data('id');
@@ -333,28 +339,28 @@
                     dataType: 'json',
                     }).done(function(data) {
                         $('.'+appendClass).html(data.data);
-                        
+
                         // $(data.data).insertAfter($(this));
                         // function () {
                         $('.'+appendClass).slideDown('medium');
-                        // }, 
+                        // },
                         // function () {
                         //     $('ul.file_menu').slideUp('medium');
                         // }
-                        
+
                     }).fail(function() {
 
                     })
                 }
-                
+
                 });
-           
+
         // });
         $(document).on("click", function(event){
             var $trigger = $(".patient_dropdown");
             if($trigger !== event.target && !$trigger.has(event.target).length){
                 $(".appointment_dropdown_content").slideUp("fast");
-            }            
+            }
         });
     </script>
 @stop

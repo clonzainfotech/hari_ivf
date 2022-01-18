@@ -27,16 +27,18 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-4 col-sm-6">
-                                <div class="form-group daterange">
-                                    {{ Form::text('daterange', '',  [
-                                        'id' => 'daterange',
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Select Date',
-                                        'data-date-container' => '#myModalId',
-                                        'data-provide'=> 'datepicker',
-                                        'autocomplete'=>'off'
-                                    ]) }}
-                                </div>
+                                <form method="post" autocomplete="off" action="">
+                                    <div class="form-group daterange">
+                                        {{ Form::text('daterange', '',  [
+                                            'id' => 'daterange',
+                                            'class' => 'form-control',
+                                            'placeholder' => 'Select Date',
+                                            'data-date-container' => '#myModalId',
+                                            'data-provide'=> 'datepicker',
+                                            'autocomplete'=>'off'
+                                        ]) }}
+                                    </div>
+                                </form>
                             </div>
                             <div class="col-md-4 col-sm-6">
                                 {{Form::select('report_days',[1=>'Daily',2=>'Monthly',3=>'Yearly'],'',['class'=>'form-control select-padding-0 report-days','placeholder'=>'Select report days'])}}

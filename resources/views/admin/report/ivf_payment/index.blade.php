@@ -37,7 +37,7 @@
                             <button class="btn btn-primary print-sms-report">
                                 Print
                             </button>
-                           
+
                         </a>
                     </li>
                 </ul> --}}
@@ -46,7 +46,9 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-3">
-                            <input type="text" class="form-control daterange" placeholder="Select Date">
+                            <form method="post" autocomplete="off" action="">
+                                <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                            </form>
                         </div>
                         <div class="col-md-3 anc">
                             {{ Form::select('patient_id',$patients,'',[
@@ -57,7 +59,7 @@
                             ])}}
                         </div>
                         <div class="col-md-6 text-right">
-                        
+
                             {{-- <a href="{{url('ivf-payment-report/remaining_payment')}}">
                                 <button class="btn btn-primary">
                                     Remaining Payment
@@ -69,7 +71,7 @@
                                 </button>
                             </a>
                         </div>
-                    </div>    
+                    </div>
                 </div>
                 <div class="tab-content m-t-10">
                     <div class="ivf-payment-data">
@@ -175,7 +177,7 @@
                     w.window.print();
                 }
             }).fail(function() {
-                
+
             });
         }
 
@@ -199,7 +201,7 @@
                     $('.change-ivfpayment-'+data.id).removeClass('disabled');
                 }
             }).fail(function() {
-                
+
             });
         }
 

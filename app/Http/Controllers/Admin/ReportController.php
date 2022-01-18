@@ -1812,7 +1812,7 @@ class ReportController extends AdminController
                 $clomiphene = "Clomiphene Citrate";
                 $data ['cc'] = $this->IuiHistory::where('visit', 2 )->where('description','like', '%'.$clomiphene.'%')->groupBy('patients_id')->orderBy('id','DESC')->get()->count();
                 $ltz= "ltz";
-                $data ['ltc'] = $this->IuiHistory::where('visit', 2 )->where('description','like', '%'.$ltz.'%')->groupBy('patients_id')->orderBy('id','DESC')->get()->count();
+                $data ['ltz'] = $this->IuiHistory::where('visit', 2 )->where('description','like', '%'.$ltz.'%')->groupBy('patients_id')->orderBy('id','DESC')->get()->count();
                 $consive = "consive";
                 $data ['consive'] = $this->IuiHistory::where('visit', 4 )->where('description','like', '%'.$consive.'%')->groupBy('patients_id')->orderBy('id','DESC')->get()->count();
                 $fail = "fail";

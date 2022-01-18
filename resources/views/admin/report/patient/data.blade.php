@@ -1,6 +1,6 @@
 <table class="table m-b-0 table-hover font" id="report-table">
     <thead>
-        <tr class="thead">
+        <tr>
             <th>Sr No</th>
             <th>Date</th>
             <th>Category</th>
@@ -9,7 +9,7 @@
             <th>Payment</th>
             <th>Amount</th>
         </tr>
-        
+
     </thead>
     <tbody>
         <td class="patientdata-loader" colspan="7">
@@ -22,8 +22,8 @@
             </div>
         </td>
         @php
-            $i = 1;   
-            $totalIncome = 0; 
+            $i = 1;
+            $totalIncome = 0;
         @endphp
          <tr>
             <td colspan="7" class="sub-headline">Total Patients : {{ count($patientReportOpd)}}</td>
@@ -34,9 +34,9 @@
                     <td colspan="7" class="sub-headline">{{ $rowList }}</td>
                 </tr>
             @endif
-            
+
             @php
-                $grandTotal = 0;    
+                $grandTotal = 0;
             @endphp
             @if (count($data) > 0)
                 @php
@@ -44,7 +44,7 @@
                 @endphp
                 @forelse($data as $row)
                     <tr data-id="{{encrypt($row->id)}}">
-                        
+
                         <td>{{ ($i++) . '.' }}</td>
                         <td>
                             @if(isset($row['is_final_invoice']) && isset($row['amount']))
@@ -119,7 +119,7 @@
                                         $extraField1 = $extraField[0];
                                         $extraField2 = $extraField[1];
                                         if($extraField1[1] != null) {
-                                            $total += $extraField1[1];    
+                                            $total += $extraField1[1];
                                         }
                                         if($extraField2[1] != null) {
                                             $total += $extraField2[1];

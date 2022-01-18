@@ -42,14 +42,16 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-4">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control search" placeholder="Search...">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
+                                <form method="post" autocomplete="off" action="">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control search" placeholder="Search...">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </form>
                             </div>
                             <div class="col-md-4">
                                 {{Form::select('status',['1'=>'Active','2'=>'Deactive'],'',['class'=>'form-control select-padding-0 testimonial-status-value','placeholder'=>'Select Status'])}}

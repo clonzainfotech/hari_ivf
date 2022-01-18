@@ -26,6 +26,7 @@
                             <div class="row">
                                 <div class="col-md-5 col-sm-5">
                                     <div class="form-group daterange">
+                                        <form method="post" autocomplete="off" action="">
                                         {{ Form::text('daterange', '',  [
                                             'id' => 'daterange',
                                             'class' => 'form-control',
@@ -34,6 +35,7 @@
                                             'data-provide'=> 'datepicker',
                                             'autocomplete' => 'off'
                                         ]) }}
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="col-md-5 col-sm-7">

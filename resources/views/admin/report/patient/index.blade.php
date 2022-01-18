@@ -40,6 +40,7 @@
                         <div class="row">
                             <div  class="col-lg-2 col-md-6 col-sm-6">
                                 <div class="form-group daterange">
+                                    <form method="post" autocomplete="off" action="">
                                     {{ Form::text('daterange', '',  [
                                         'id' => 'daterange',
                                         'class' => 'form-control',
@@ -47,6 +48,7 @@
                                         'data-provide'=> 'datepicker',
                                         'autocomplete' => 'off'
                                     ]) }}
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
@@ -84,7 +86,7 @@
                                     </label>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="row advanced-search d-none">
                             <div class="col-lg-3 col-md-6 col-sm-3">
@@ -96,7 +98,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-3">
-                                <div class="form-group">                                
+                                <div class="form-group">
                                     {{ Form::date('allIncome_toDate','',[
                                         'class'=>'form-control category allIncome_toDate',
                                         'placeholder'=>'Select From Date',
@@ -124,7 +126,7 @@
     <script src="{{asset('assets/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
     <script src="{{asset('assets/js/pages/ui/notifications.js')}}"></script>
     <script type="text/javascript">
-        
+
         var search = '';
         var pId = '';
         var category = '';
@@ -136,7 +138,7 @@
         var qstring = 'fromdate=' + fromdate + '&todate=' + todate ;
 
         $(document).ready(function(){
-            
+
             getPatientData(qstring);
             $('input[name="daterange"]').daterangepicker({
                 locale: {
@@ -161,7 +163,7 @@
                 qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category;
                 getPatientData(qstring);
             });
-           
+
         });
             $(document).on('change','.advanced_search',function(){
                 $('.advanced-search').addClass('d-none')
@@ -182,7 +184,7 @@
                 getPatientData(qstring);
 
             });
-        
+
             $(document).on('change','select.patient', function() {
                 var dId = $(this).data('id');
                 $('.patient-'+dId).val('');
@@ -203,7 +205,7 @@
                     url: "{{URL::to('patient-report')}}?" + qstring,
                     dataType: 'json',
                     }).done(function(data) {
-                        
+
                         $('.patient-data').html(data);
                         $('.patientdata-loader').addClass('d-none');
                         $('.cutdata').removeClass('d-none');
@@ -218,7 +220,7 @@
             qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&isprint=1';
             $.ajax({
                 url: "{{URL::to('patient-report')}}?" + qstring,
-                
+
                 dataType: 'json',
             }).done(function(data) {
                 w = window.open(window.location.href,"_blank");

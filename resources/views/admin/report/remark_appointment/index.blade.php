@@ -19,6 +19,7 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="form-group daterange">
+                                    <form method="post" autocomplete="off" action="">
                                     {{ Form::text('daterange', '',  [
                                         'id' => 'daterange',
                                         'class' => 'form-control',
@@ -27,6 +28,7 @@
                                         'data-provide'=> 'datepicker',
                                         'autocomplete' => 'off'
                                     ]) }}
+                                    </form>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6 anc">
@@ -38,14 +40,16 @@
                                 ])}}
                             </div>
                             <div class="col-md-3">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control search-remark" placeholder="Search by Remark" readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
+                                <form method="post" autocomplete="off" action="">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control search-remark" placeholder="Search by Remark" autocomplete="off">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </form>
                             </div>
                             <div class="col-md-5"></div>
                             {{-- <div class="col-md-1">
@@ -53,7 +57,7 @@
                                     <button class="btn btn-primary print-remark-report m-0">
                                         Print
                                     </button>
-                                </a>    
+                                </a>
                             </div> --}}
                         </div>
                     </div>
@@ -89,13 +93,6 @@
 @stop
 @section('page-script')
     <script type="text/javascript">
-        $(".daterange").daterangepicker({
-            locale: {
-                direction: 'drop-down-date-range',
-                cancelLabel: 'Clear',
-                format: 'D/M/Y'
-            }
-        });
         var qstring = '';
         var page = '';
         var patientId = '';
@@ -162,7 +159,7 @@
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&isprint=1'+'&fromdate=' + fromdate + '&todate=' + todate;
                 getRemarkAppointmentData(qstring);
             });
-            
+
         });
 
         // get all category data

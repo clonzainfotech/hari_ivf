@@ -25,7 +25,7 @@
         .anc-details-close{
             margin-top: -22px !important;
         }
-        
+
         .G-sac-border
         {
             border: 2px solid #b9afaf !important;
@@ -42,7 +42,7 @@
     <div class="row clearfix">
         <div class="col-md-12 p-0">
             <div class="card patients-list">
-                <div class="header d-flex">
+                <div class="header row">
                     <div class="col-md-6">
                         @php
                             $careOf = (!empty($ancData->getPatients['reference_doctor_id']) && isset($referenceDoctor[$ancData->getPatients['reference_doctor_id']])) ? $referenceDoctor[$ancData->getPatients['reference_doctor_id']] : '';
@@ -111,7 +111,7 @@
 
                                 </div>
                                 {{Form::hidden('patients_id',$patientsId,['class'=>'patients-id'])}}
-                                
+
                                 <div class="col-sm-12">
                                     @if(empty($ancId) && empty($ancHistoryId) && !empty($todayAncVisit))
                                         <span class="text-danger today-visit-fillup"></span><br>
@@ -197,7 +197,7 @@
             <div class="modal-content">
                 <div class="modal-header header-bottom-border">
 
-                
+
                 <div class="row">
                     <div class="col-md-12">
                         <h5 class="modal-title" id="myModalLabel">ANC History</h5>
@@ -212,7 +212,7 @@
 
                 <div class="modal-footer footer-top-border text-right d-inline-block">
                     <button type="button" class="btn btn-primary waves-effect" data-dismiss="modal">CLOSE</button>
-                    
+
                 </div>
             </div>
         </div>
@@ -251,7 +251,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             $('.anc-date').val(ancDate);
             $('.anc-date').selectpicker('refresh');
         }
-       
+
         getAncHistoryData(qstring);
 
         $(document).on('click','.submit',function(e){
@@ -264,7 +264,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             if(this.value==1){
                 formData.append('isprint', 1);
             }
-            
+
             if(this.value==2){
                 formData.append('is_pdf', 1);
                 $(this).prop('disabled',true);
@@ -272,7 +272,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             if(this.value==3){
                 formData.append('isprint', 3);
             }
-            var date = moment(new Date($('.next-date').val())).format('dddd DD MMMM YYYY');           
+            var date = moment(new Date($('.next-date').val())).format('dddd DD MMMM YYYY');
             if($('.is-notAvailable').val() == 1)
             {
                 swal({
@@ -307,11 +307,11 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                 $('.preview-file-modal').modal('hide');
                 $('.anc-details-data').html('');
                 $('.preview-file-modal').modal('show');
-                
+
                 ancQstring = 'patient_id='+patientsId+'&status='+status+'&type='+type+'&anc_id='+anc_id;
                 getANCHistoryData(ancQstring);
             }
-            
+
         });
         $(document).on('click','.preview-file',function(e){
             e.preventDefault();
@@ -320,10 +320,10 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             $('.preview-file-modal').modal('hide');
             $('.anc-details-data').html('');
             $('.preview-file-modal').modal('show');
-            
+
             ancQstring = 'patient_id='+patientsId+'&status='+status+'&type='+type+'&anc_id='+anc_id;
             getANCHistoryData(ancQstring);
-            
+
         });
 
         // $(document).on('click','.next-appointment-form',function(e){
@@ -503,7 +503,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             }, 1000);
             return false;
         }
-        
+
         return true;
     }
 
@@ -670,7 +670,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         var gSacValue = $('.g-sac-1').val();
         $(".blighted-ovum:checked").each(function() {
                 var isBlighted = $(this).val();
-                
+
                 if($(this).val() == 'no')
                 {
                     isGynec = 0;
@@ -747,7 +747,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
 
     var medicinesValue = @json($medicines);
     var weekData = @json($weekData);
-    
+
 </script>
 <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
 @stop

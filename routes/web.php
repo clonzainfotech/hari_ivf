@@ -62,7 +62,7 @@ Route::get('report/{type}/{patientsId}','Base\Admin\AdminController@patientRepor
 Route::get('ancdata/{patientsId}','Admin\GetANCDataController@getANCData');
 Route::get('anchistorydata/{patientsId}/{anccreatedate}','Admin\GetANCDataController@getANCHistoryData');
 Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
-
+    Route::post('saverec','HomeController@saverec')->name('saverec');
     // dashboard
     Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
     Route::post('/search-patient-data','HomeController@searchPatientData')->name('search-patient-data');
@@ -205,7 +205,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('get-ivf-report/{id}','IVFController@getIvfHistoryReport');
     Route::get('get-ivf-followup-date', 'IVFController@getIvfFollowupDate');
     Route::get('ivf-result-review', 'IVFController@getIvfResultReview');
-    Route::get('ivf-result-review/{id}/{plan}/{cycleNo}', 'IVFController@getIvfResultReviewDetail');
+    Route::get('ivf-result-review/{id}', 'IVFController@getIvfResultReviewDetail');
     Route::post('store-ivf-result-review', 'IVFController@storeIvfResultReviewDetail');
 
     Route::get('ivf-payment/{patientsId}','IVFController@ivfPayment');
@@ -230,7 +230,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('expense-manager','ExpenseManagerController@store');
     Route::get('expense-manager/create','ExpenseManagerController@create');
     Route::get('expense-manager/{id}/edit','ExpenseManagerController@edit');
-    Route::post('expense-manager/{id}','ExpenseManagerController@update');
+    Route::put('expense-manager/{id}','ExpenseManagerController@update');
     Route::get('expense-manager/delete/{id}','ExpenseManagerController@delete');
     Route::resource('expense-category','ExpencecategoryController');
     Route::post('expense-category/update','ExpencecategoryController@update');
@@ -240,13 +240,9 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('income-manager','IncomeManagerController@store');
     Route::get('income-manager/create','IncomeManagerController@create');
     Route::get('income-manager/{id}/edit','IncomeManagerController@edit');
-    Route::post('income-manager/{id}','IncomeManagerController@update');
+    Route::put('income-manager/{id}','IncomeManagerController@update');
     Route::get('income-manager/delete/{id}','IncomeManagerController@delete');
     Route::get('income-category','IncomeManagerController@incomecategory');
-
-    //procedure
-    Route::get('procedures','ProcedureController@index');
-    Route::get('procedure-update-remark','ProcedureController@updateRemark');
 
     // report
     Route::resource('report','ReportController');
@@ -395,7 +391,6 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('patient','PatientsController@index');
     Route::get('editpatient/{id}','PatientsController@edit');
     Route::get('create-patient','PatientsController@create');
-    Route::get('reject-patient','PatientsController@delete');
     Route::put('update-patient/{id?}','PatientsController@update');
     Route::any('patient-report','PatientsController@getPatientReport');
     Route::get('get-all-report/{id}','PatientsController@getAllReports');

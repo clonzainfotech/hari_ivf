@@ -36,7 +36,9 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-lg-3">
-                            <input type="text" class="form-control daterange" placeholder="Select Date">
+                            <form method="post" autocomplete="off" action="">
+                                <input type="text" class="form-control daterange" placeholder="Select Date">
+                            </form>
                         </div>
                         <div class="col-md-7"></div>
 
@@ -52,7 +54,7 @@
                                 </button>
                             </a>
                         </div>
-                    </div>                        
+                    </div>
                 </div>
                 <div class="tab-content m-t-10">
                     <div class="ivf-payment-data">
@@ -131,10 +133,10 @@
                     w.window.print();
                 }
             }).fail(function() {
-                
+
             });
         }
 
-        
+
     </script>
 @stop

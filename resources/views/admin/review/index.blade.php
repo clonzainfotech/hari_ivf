@@ -46,14 +46,16 @@
                                 ])}}
                             </div>
                             <div class="col-md-4">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control search-mobile-number" placeholder="Search by mobile no">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
+                                <form method="post" autocomplete="off" action="">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control search-mobile-number" placeholder="Search by mobile no">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </form>
                             </div>
                             <div class="col-md-2 mb-2">
                                 <a href="javascript:void(0);">
@@ -82,7 +84,7 @@
         var roleId = '';
         var search = '';
         $(document).ready(function(){
-    
+
             getReviewData(qstring);
 
             $(document).on('change', 'select.patient-id', function() {
@@ -108,7 +110,7 @@
                 qstring = 'page=' + page + '&patient_id=' + patientId + '&role_id=' + roleId+'&search='+search;
                 getReviewData(qstring);
             });
-        
+
             $(document).on('click','.review-delete',function(){
                 reviewId = $(this).data('id');
                 showConfirmMessage();

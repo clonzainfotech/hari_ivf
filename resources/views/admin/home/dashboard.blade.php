@@ -26,10 +26,13 @@
     </div>
     <div class="col-lg-1 col-md-1 ml-auto">
     </div>
+    <div class="col-md-4">
+
+    </div>
 </div>
 
 <div class="row clearfix dashboard">
-    
+
         <div class="col-lg-3 col-md-6">
             <a href="{{URL::to('appointment')}}">
                 <div class="card">
@@ -605,7 +608,6 @@
         </div>
     </div>
 @stop
-
 @section('page-script')
     <script type="text/javascript">
                         var totalanc = '';
@@ -1163,6 +1165,7 @@
                         resize: true
                     });
                     </script>
+
 @stop
 
 

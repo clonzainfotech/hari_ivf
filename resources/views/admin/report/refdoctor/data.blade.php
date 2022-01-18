@@ -1,6 +1,6 @@
 <table class="table m-b-0 table-hover font" id="category-report-table">
     <thead>
-        <tr class="thead">
+        <tr>
             <th>Sr No</th>
             <th>Date</th>
             <th>Patient Name</th>
@@ -8,7 +8,7 @@
             <th>Category</th>
             <th>Service Given</th>
             <th>Amount</th>
-            
+
         </tr>
     </thead>
     <tbody>
@@ -23,11 +23,11 @@
         </td>
         <?php
             $i = 1;
-            $grandTotal = $totalRecievedAmount = $total = $totalNetAmount = $totalIui = 0;  
+            $grandTotal = $totalRecievedAmount = $total = $totalNetAmount = $totalIui = 0;
 
         ?>
         @forelse ($refDoctorReport as $refdoctor => $rowList)
-            @php 
+            @php
                 $doctorName = (strtolower(substr($refdoctor, 0, 3)) == 'dr.') ? ucwords(strtolower(substr($refdoctor, 3))) : ucwords(strtolower($refdoctor));
             @endphp
             <tr class="refdocdata">
@@ -86,7 +86,7 @@
                                 -
                             @endif
                         @endif
-                        
+
                     </td>
                     <td>
                         <div class="amount">
@@ -97,16 +97,16 @@
                             @endif
                         </div>
                     </td>
-                   
+
                 </tr>
-        
+
             @endforeach
             <tr class="refdocdata">
                 <td class="bt-none" colspan="5"></td>
                 <th class="bt-none" colspan="1">Total :</th>
                 <th class="grand-total-top-border">{{$totalNetAmount}}</th>
-                @php 
-                    $grandTotal += $totalNetAmount; 
+                @php
+                    $grandTotal += $totalNetAmount;
                 @endphp
                 <td class="bt-none"></td>
             </tr>

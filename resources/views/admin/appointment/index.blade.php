@@ -77,7 +77,9 @@
                     <div class="col-md-12">
                             <div class="row">
                                 <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <input type="text" class="form-control daterange" placeholder="Select Date">
+                                    <form method="post" autocomplete="off" action="">
+                                        <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                    </form>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     {{Form::select('patient_id',$patientsData,'',[
@@ -88,17 +90,21 @@
                                     ])}}
                                 </div>
                                 <div class="col-md-3">
-                                    <ul class="nav nav-tabs padding-0">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control search-mobile-number" placeholder="Search by Word" readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                            <span class="input-group-addon search-border">
-                                                <i class="zmdi zmdi-search"></i>
-                                            </span>
-                                        </div>
-                                    </ul>
+                                    <form method="post" autocomplete="off" action="">
+                                        <ul class="nav nav-tabs padding-0">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control search-mobile-number" placeholder="Search by Word" autocomplete="off">
+                                                <span class="input-group-addon search-border">
+                                                    <i class="zmdi zmdi-search"></i>
+                                                </span>
+                                            </div>
+                                        </ul>
+                                    </form>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6 ">
-                                    <input type="text" class="form-control usg_reason" placeholder="Search by Usg Reason" readonly="readonly" onfocus="this.removeAttribute('readonly')">
+                                    <form method="post" autocomplete="off" action="">
+                                        <input type="text" class="form-control usg_reason" placeholder="Search by Usg Reason" autocomplete="off">
+                                    </form>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -133,7 +139,7 @@
                                         'data-live-search' => 'true'
                                     ])}}
                                 </div>
-                               
+
                             </div>
                         </div>
                     <!-- Tab panes -->

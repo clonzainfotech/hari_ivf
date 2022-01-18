@@ -88,7 +88,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
             </small>
         </h5>
     @endif
-    
+
     <h5 class="autoRemark">
     @if (isset($ancFirst_patientsObstratics->gpal_status) && !empty($ancFirst_patientsObstratics->gpal_status))
             *GPAL Status:
@@ -121,14 +121,14 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
             @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['vdrl']))
-            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['vdrl_date']))   
+            @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['vdrl_date']))
                 &nbsp;&nbsp;&nbsp;*VDRL:
                 <small>
                     {{$ancAutoRemark['vdrl']}}
                 </small>
             @endif
         @endif
-        
+
         @if($ancAutoRemark && !empty($ancAutoRemark['late_concept']))
             @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['late_concept_date']))
                 &nbsp;&nbsp;&nbsp;*Late Conception:
@@ -147,7 +147,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 <small>
                     {{$ancAutoRemark['position']}}
                 </small>
-            @endif 
+            @endif
         @endif
         @if($ancAutoRemark && !empty($ancAutoRemark['liquor']) && ($ancAutoRemark['liquor'] == 'oligo' || $ancAutoRemark['liquor'] == 'poly'))
             @if(empty($ancCreatedDate) || (!empty($ancCreatedDate) && $ancCreatedDate >= $ancAutoRemark['liquor_date']))
@@ -165,7 +165,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 </small>
             @endif
         @endif
-        
+
     </h5>
 </span>
 @if ($isGsac == true && empty($ancId))
@@ -923,7 +923,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         'class'=>'gynec-remark'
                     ])}}
                     <label for="is_patient_remark">
-                      
+
                     </label>
                 </div>
                 <div class="col-md-12">
@@ -1040,6 +1040,13 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
             <div class="form-group">
                 {{Form::select('rmo_doctor',$rmoDoctor,(!empty($ancId) || !empty($ancHistoryId)) ? $ancData->rmo_doctor : null,['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
             </div>
+        </div>
+        <div class="col-md-4">
+            <script src="http://127.0.0.1/ycandorivf/public/js/record/recorder.js"></script>
+            <script src="http://127.0.0.1/ycandorivf/public/js/record/Fr.voice.js"></script>
+            <script src="http://127.0.0.1/ycandorivf/public/js/record/recordapp.js"></script>
+            <a class="btn btn-danger btn-sm text-white" id="record" data-action="start">Start Recording</a>
+            <input type="hidden" id="saverecurl" value="{{URL::to("saverec")}}">
         </div>
     </div>
     <div class="{{$class}}">
@@ -2172,7 +2179,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         <div class="form-group">
                             {{Form::text("mh[age_of_manopause]",!empty($mh->age_of_manopause) ? $mh->age_of_manopause : null,['class'=>'form-control','placeholder'=>'Age Of Manopause'])}}
                         </div>
-                        
+
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
@@ -2651,7 +2658,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 <div class="row">
                     <div class="col-md-1 pr-0">
                         <label class="vertical-form-label pr-0">
-                            Select child : 
+                            Select child :
                         </label>
                     </div>
                     {{Form::hidden('oe[oe_no]',!empty($oe->oe_no) ? $oe->oe_no : 1, [
@@ -2779,7 +2786,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                 else {
                                     array_push($utdataArray,$value);
                                 }
-                                
+
                             }
                         }
                     @endphp
@@ -2798,7 +2805,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                     $utWeekStatus = '';
                                     $utWeekStatus2 = 'd-none';
                                 }
-                                
+
                             @endphp
                                 <div class="{{'child-no-box G-sac-border'}}">
                                     @if($utType == 'yes')
@@ -2882,7 +2889,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                                 <span class="{{'crl-text-'.$key}}">{{!empty($value->crl_details) ? $value->crl_details : null}}</span>
                                                 {{Form::hidden("oe[utdata][".$key."][crl_details]",!empty($value->crl_details) ? $value->crl_details : null,['class'=>'crl-val-'.$key])}}
                                             </div>
-                                            
+
                                         </div>
                                         <div class="row">
                                             <div class="{{'col-md-1 female-type-data-'.$key.' blighted-ovum-data pr-0 blighted-ovum-data-'.$key.' d-none'}}">
@@ -2941,7 +2948,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                         $pData = !empty($value->oe_ut_sac_1) && ($weekData[$value->oe_ut_sac_1] >= 30 || $value->oe_ut_sac_1 == 22) ? '' : 'd-none';
                                         $liquorSubData = !empty($value->liquor_type) && ($value->liquor_type == 'oligo' || $value->liquor_type == 'poly') ? '' : 'd-none';
                                     @endphp
-                                    
+
                                     <div class="{{'row fcp-data-'.$key.' wks-data-'.$key.' fefal-reduction-' . $key.' '.$fcpLiquorData}}">
                                         <div class="{{'col-md-1 pr-0 liquor-data-'.$key .' '.$fcpLiquorData}}">
                                             <label class="vertical-form-label pr-0 green-lable">
@@ -3425,7 +3432,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         </div>
                     @endif
                 </div>
-               
+
 
                 <div class="row">
                     {{-- <div class="col-md-2 checkbox">
@@ -4730,7 +4737,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <label for="termination_term_lscs">
                                LSCS
                             </label>
-                            
+
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -4870,7 +4877,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     </span>
                     {{-- {{Form::text("oe[follow_up]", '',['class'=>'form-control datetimepicker followup followup-date'])}} --}}
                     {{Form::text("oe[follow_up]", '',['class'=>'form-control datetimepicker followup next-date'])}}
-                    
+
                     {{Form::hidden("appointment_time", '',['class'=>'form-control next-time'])}}
                     {{Form::hidden('is_follow_up',1,['class'=>'is-followup'])}}
                     {{Form::hidden('is_notAvailable',0,['class'=>'is-notAvailable'])}}
@@ -4909,9 +4916,6 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
     });
     $('.usg-images').imageUploader({
         imagesInputName: 'usg[images]',
-        maxSize:10485760,
-        mimes:[['image/jpeg', 'image/png', 'image/jpg']],
-        extensions:['.jpg', '.jpeg', '.png','.pdf'],
     });
     $('.ho-past-data').selectize({
         create: true,

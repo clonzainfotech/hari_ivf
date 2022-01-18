@@ -41,6 +41,7 @@
                             <div class="row">
                                 <div class="col-md-4 col-sm-12">
                                     <div class="form-group daterange">
+                                        <form method="post" autocomplete="off" action="">
                                         {{ Form::text('daterange', '',  [
                                             'id' => 'daterange',
                                             'class' => 'form-control',
@@ -49,6 +50,7 @@
                                             'data-provide'=> 'datepicker',
                                             'autocomplete'=>'off'
                                         ]) }}
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-6">
@@ -295,7 +297,7 @@
                 w.window.print();
             });
         });
-        
+
         $(document).on('click','.report-payment-type',function(){
             reportPaymentType = 2;
             $('.report-payment-type').not(this).prop('checked', false);
@@ -329,19 +331,19 @@
             }).done(function (data) {
                 $('.report-loader').css('display','none');
                 $('.caExpense-report-data').removeClass('d-none');
-                
+
                 $('.caExpense-report-data').html(data);
                 if(reportPaymentType == 2)
                 {
                     $('table td.expense-icon').addClass('d-none');
                     $('table th.expense-icon').addClass('d-none');
                 }
-                
+
             }).fail(function () {
 
             });
         }
-        
+
         $(document).on('click', '.expense-modal', function () {
            ca_expense_row_id = $(this).data('id');
            ca_expense_table = $(this).data('class');
@@ -350,14 +352,14 @@
            $('.invoice_no').val('');
            $('select.bank_id').val('');
            $('textarea.detail').val('');
-           
+
            $.ajax({
                 url: "{{URL::to('ca-expense-report/getCaExpense')}}?" + getDataString,
                 dataType: 'json',
             }).done(function (data) {
                 if(data.status == 1)
                 {
-                $('#expense-modal').modal('show');   
+                $('#expense-modal').modal('show');
                 $('.txt_amount').val(data.data.txt_amount);
                 $('.invoice_no').val(data.data.invoice_no);
                 $('select.bank_id').val(data.data.bank_id);
@@ -378,7 +380,7 @@
             }).fail(function () {
 
             });
-           
+
         });
         $(document).on('click','.ca-expense-save',function(){
             var txt_amount = $('.txt_amount').val();
@@ -423,7 +425,7 @@
                     }
                 });
             }
-            
+
         });
     </script>
 

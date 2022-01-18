@@ -34,6 +34,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group daterange">
+                                        <form method="post" autocomplete="off" action="">
                                         {{ Form::text('daterange', '',  [
                                             'id' => 'daterange',
                                             'class' => 'form-control',
@@ -42,6 +43,7 @@
                                             'data-provide'=> 'datepicker',
                                             'autocomplete'=>'off'
                                         ]) }}
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="col-md-1 checkbox">
@@ -277,7 +279,7 @@
                 qstring = 'usg=' + usg + '&hormon=' + hormon + '&iui=' + iui + '&ivf=' + ivf + '&mainCollection=' + mainCollection + '&income=' + income + '&expense=' + expense + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId+'&payment_type='+reportPaymentType;
                 getCollectionReportData(qstring);
             }
-            
+
         });
 
         $(document).on('click', '.export-collection-report', function () {

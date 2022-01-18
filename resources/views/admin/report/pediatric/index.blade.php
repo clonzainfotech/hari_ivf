@@ -27,17 +27,19 @@
                             <div class="row">
                                 <div class="col-md-4 col-sm-12">
                                     <div class="form-group daterange">
-                                        {{ Form::text('daterange', '',  [
-                                            'id' => 'daterange',
-                                            'class' => 'form-control',
-                                            'placeholder' => 'Select Date',
-                                            'data-date-container' => '#myModalId',
-                                            'data-provide'=> 'datepicker',
-                                            'autocomplete'=>'off'
-                                        ]) }}
+                                        <form method="post" autocomplete="off" action="">
+                                            {{ Form::text('daterange', '',  [
+                                                'id' => 'daterange',
+                                                'class' => 'form-control',
+                                                'placeholder' => 'Select Date',
+                                                'data-date-container' => '#myModalId',
+                                                'data-provide'=> 'datepicker',
+                                                'autocomplete'=>'off'
+                                            ]) }}
+                                        </form>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     <div class="tab-content m-t-10">
@@ -62,7 +64,7 @@
         var page = '';
         var fromdate = moment(new Date()).format('YYYY-MM-DD');
         var todate = moment(new Date()).format('YYYY-MM-DD');
-        
+
         var qstring = '?fromdate=' + fromdate + '&todate=' + todate;
 
         $(document).ready(function () {
@@ -81,7 +83,7 @@
                 todate = picker.endDate.format('YYYY-MM-DD');
                 qstring = '?fromdate=' + fromdate + '&todate=' + todate;
                 getPedReportData(qstring);
-                
+
             });
             $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
                 // Reset values
@@ -92,7 +94,7 @@
                 todate = '';
                 qstring = '?fromdate=' + fromdate + '&todate=' + todate;
                 getPedReportData(qstring);
-                
+
             });
 
             getPedReportData(qstring);
@@ -113,7 +115,7 @@
                         w.document.close();
                         w.window.print();
                     });
-                
+
         });
 
         // get all collection report data
@@ -129,7 +131,7 @@
 
             });
         }
-       
+
     </script>
 
 @stop

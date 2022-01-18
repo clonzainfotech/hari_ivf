@@ -3,7 +3,7 @@ use App\Models\IndoorDeposit;
 ?>
 <table class="table m-b-0 table-hover font" id="category-report-table">
     <thead>
-        <tr class="thead">
+        <tr>
             <th>Sr No</th>
             <th>Date</th>
             <th>Patient</th>
@@ -12,13 +12,13 @@ use App\Models\IndoorDeposit;
             <th>Net Price</th>
             <th>Amount</th>
             <th>Profit</th>
-            
+
         </tr>
     </thead>
     <?php
         $i = 0;
         $j = 1;
-        $grandTotal = $totalRecievedAmount = $total = $totalNetAmount = $totalProfit = 0;  
+        $grandTotal = $totalRecievedAmount = $total = $totalNetAmount = $totalProfit = 0;
     ?>
     <tbody>
         @forelse($injManager as $rowlist => $data)
@@ -26,7 +26,7 @@ use App\Models\IndoorDeposit;
                 <td colspan="8" class="sub-headline">{{ ucWords(strtolower($rowlist))}}</td>
             </tr>
             @foreach($data as $row)
-            
+
                 @php
 
                 // $date = \Carbon\Carbon::parse($data[$i]->created_at)->format('Y-m-d');
@@ -49,7 +49,7 @@ use App\Models\IndoorDeposit;
                         $totalProfit += ($row->amount - ($row->net_price * $row->qty)) > 0 ? $row->amount - ($row->net_price * $row->qty) : 0;
                         $total += $row->amount;
                         $totalNetAmount += ($row->net_price * $row->qty);
-                    @endphp  
+                    @endphp
                 {{-- @endforeach --}}
             @endforeach
             @php

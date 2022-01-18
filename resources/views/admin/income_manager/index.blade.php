@@ -36,8 +36,11 @@
                     <div class="col-md-12">
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-3">
-                                    <div class="input-group"><input type="text" class="form-control daterange" autocomplete="off" placeholder="Select Date">
-                                    </div>
+                                    <form method="post" autocomplete="off" action="">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control daterange" autocomplete="off" placeholder="Select Date">
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3">
                                     {{Form::select('categoryId',$expensecategory,'',['class'=>'form-control select-padding-0 category','placeholder'=>'Select Category'])}}
@@ -46,14 +49,16 @@
                                     {{Form::select('payment_method',[1=>'Cash',2=>'Debit Card',3=>'Credit Card',4=>'Cheque'],'',['class'=>'form-control select-padding-0 payment-method','placeholder'=>'Select Payment Method'])}}
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <ul class="nav nav-tabs padding-0">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control search" placeholder="Search..." readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                            <span class="input-group-addon search-border">
-                                                <i class="zmdi zmdi-search"></i>
-                                            </span>
-                                        </div>
-                                    </ul>
+                                    <form method="post" autocomplete="off" action="">
+                                        <ul class="nav nav-tabs padding-0">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control search" placeholder="Search..." autocomplete="off">
+                                                <span class="input-group-addon search-border">
+                                                    <i class="zmdi zmdi-search"></i>
+                                                </span>
+                                            </div>
+                                        </ul>
+                                    </form>
                                 </div>
                             </div>
                         </div>

@@ -185,12 +185,12 @@ function complaintWiseMedicines(value,type,mType,hovalue,isIvf=null,isSp2=false,
                 meData += "</select>";
             $('.medicine-picker').html(meData);
             $('select.medicine-co').val(Object.values(data.medicineArray));
-            
+
             $('.old-medicine-data').val(Object.values(data.medicineArray).toString())
             $.each(data.medicines, function(mKey, mValue) {
                 // differenceMedicine = mValue.get_medicines_data.name.toString().replace(/[!@#$&()\\`.+,/\"%\-*{}[|:;'<>~?^_=\] ]/g, '_');
                 differenceMedicine = mValue.get_medicines_data.name.toString();
-                
+
                 var header = differenceMedicine.slice(0,3).toUpperCase();
             var notinject = "";
             var dose = {"1":"Daily","2":"Once a week","3":"Twice a week","4":"Stat","5":"SOS","6":"Alternate Day"};
@@ -208,31 +208,31 @@ function complaintWiseMedicines(value,type,mType,hovalue,isIvf=null,isSp2=false,
                 madicineData += "<div class='col-md-1 notinject'><div class='form-group'><select name='"+ name +"["+differenceMedicine+"][quantity]' class='form-control'>";
                 $.each(medqty, function(key, value) {
                     madicineData +=  '<option value="' + key + '"' + ( key == mValue.get_medicines_data.quantity ? 'selected' : '') + '>'+value+'</option>';
-                });      
-                madicineData += "</select></div></div>";   
+                });
+                madicineData += "</select></div></div>";
                 madicineData += "<div class='col-md-1 notinject'><div class='form-group'><select name='"+ name +"["+differenceMedicine+"][quantity_2]' class='form-control'>";
                 $.each(medqty, function(key, value) {
                     madicineData +=  '<option value="' + key + '"' + ( key == mValue.get_medicines_data.quantity_2 ? 'selected' : '') + '>'+value+'</option>';
-                });      
-                madicineData += "</select></div></div>";    
+                });
+                madicineData += "</select></div></div>";
                 madicineData += "<div class='col-md-1 notinject'><div class='form-group'><select name='"+ name +"["+differenceMedicine+"][quantity_3]' class='form-control'>";
                 $.each(medqty, function(key, value) {
                     madicineData +=  '<option value="' + key + '"' + ( key == mValue.get_medicines_data.quantity_3 ? 'selected' : '') + '>'+value+'</option>';
-                });      
-                madicineData += "</select></div></div>";    
+                });
+                madicineData += "</select></div></div>";
                 madicineData += "<div class='col-md-1 notinject'><div class='form-group'><select name='"+ name +"["+differenceMedicine+"][quantity_4]' class='form-control'>";
                 $.each(medqty, function(key, value) {
                     madicineData +=  '<option value="' + key + '"' + ( key == mValue.get_medicines_data.quantity_4 ? 'selected' : '') + '>'+value+'</option>';
-                });      
-                madicineData += "</select></div></div>";    
+                });
+                madicineData += "</select></div></div>";
                  // medicine_time
                  var medicine_time = {"1":"IV","2":"IM","3":"SC","4":'Oral',"5":'P/V',"6":"P/A"};
                  madicineData += "<div class='col-md-3 isinject'><div class='form-group'><select name='"+ name +"["+differenceMedicine+"][medicine_time]' class='form-control select-padding-0 dose' multiple='true' title='Select Medicine Time'>";
                  $.each(medicine_time, function(key, value) {
                      madicineData +=  '<option value="' + key + '"' + ((mValue.get_medicines_data != null &&  mValue.get_medicines_data.medicine_time != null &&($.inArray(key, mValue.get_medicines_data.medicine_time) != -1)) ? 'selected' : '') + '>'+value+'</option>';
                  });
-                 
-                 madicineData += "</select></div></div>";       
+
+                 madicineData += "</select></div></div>";
                 // end quantity
                 // empty stomach and after meal
                 var medicine_status = {"1":"જમ્યા પછી","2":"જમ્યા પહેલાં","3":"માસિકની જગ્યાએ મુકવી"};
@@ -279,7 +279,7 @@ function complaintWiseMedicines(value,type,mType,hovalue,isIvf=null,isSp2=false,
 // check selected data
 function checkOvaryValue(arr){
     var status = 0;
-    var overy_number = ['8','9','10','11','12','13','13.5','14','14.5','15','15.5','16','16.5','17','17.5','18','18.5','19','19.5','20','20.5','21','21.5','22','22.5','23','24']; 
+    var overy_number = ['8','9','10','11','12','13','13.5','14','14.5','15','15.5','16','16.5','17','17.5','18','18.5','19','19.5','20','20.5','21','21.5','22','22.5','23','24'];
     for(i=0; i<arr.length; i++){
         if(jQuery.inArray(arr[i], overy_number) >= 0) {
             overy_replace = arr[i].replace(".", "-");

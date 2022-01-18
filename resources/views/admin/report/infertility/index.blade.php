@@ -16,52 +16,54 @@
                 <div class="body">
                     <!-- Nav tabs -->
                     <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <input type="text" class="form-control daterange" placeholder="Select Date">
+                        <form method="post" autocomplete="off" action="">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3">
+                                    <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-6 anc">
+                                    {{ Form::select('patient_id',$patients,'',[
+                                        'class'=>'form-control select-padding-0 patient-id',
+                                        'placeholder'=>'Select Patient',
+                                        'id' => 'patient_id',
+                                        'data-live-search' => 'true'
+                                    ])}}
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-6 anc">
+                                    {{ Form::select('patient_status',[1=>'Active',2=>'Deactive'],'',[
+                                        'class'=>'form-control select-padding-0 patient-status',
+                                        'placeholder'=>'Select Patient Status',
+                                        'id' => 'patient_id',
+                                        'data-live-search' => 'true'
+                                    ])}}
+                                </div>
+                                <div class="col-lg-2 col-md-3">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no" autocomplete="off">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-2 col-md-6 col-sm-6 anc">
+                                    {{ Form::select('report_type',[1=>'IVF',2=>'IUI'],'1',[
+                                        'class'=>'form-control select-padding-0 report_type',
+                                        'placeholder'=>'Select Report Type',
+                                        'id' => 'patient_id',
+                                        'data-live-search' => 'true'
+                                    ])}}
+                                </div>
+                                <div class="col-md-1">
+                                    <a href="javascript:void(0);">
+                                        <button class="btn btn-primary print-infertility m-0" type="button">
+                                            Print
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 anc">
-                                {{ Form::select('patient_id',$patients,'',[
-                                    'class'=>'form-control select-padding-0 patient-id',
-                                    'placeholder'=>'Select Patient',
-                                    'id' => 'patient_id',
-                                    'data-live-search' => 'true'
-                                ])}}
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-6 anc">
-                                {{ Form::select('patient_status',[1=>'Active',2=>'Deactive'],'',[
-                                    'class'=>'form-control select-padding-0 patient-status',
-                                    'placeholder'=>'Select Patient Status',
-                                    'id' => 'patient_id',
-                                    'data-live-search' => 'true'
-                                ])}}
-                            </div>
-                            <div class="col-md-3">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no" autocomplete="off">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
-                            </div>
-                            <div class="col-md-1">
-                                <a href="javascript:void(0);">
-                                    <button class="btn btn-primary print-infertility m-0">
-                                        Print
-                                    </button>
-                                </a>    
-                            </div>
-                            <div class="col-lg-2 col-md-6 col-sm-6 anc">
-                                {{ Form::select('report_type',[1=>'IVF',2=>'IUI'],'1',[
-                                    'class'=>'form-control select-padding-0 report_type',
-                                    'placeholder'=>'Select Report Type',
-                                    'id' => 'patient_id',
-                                    'data-live-search' => 'true'
-                                ])}}
-                            </div>
-                        </div>
+                        </form>
                     </div>
                     <!-- Tab panes -->
                     <div class="tab-content m-t-10">
@@ -176,7 +178,7 @@
                 qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&search='+search+'&isprint=1';
                 getInfertilityData(qstring);
             });
-            
+
             $(document).on('click', '.ivf-package', function () {
                 var packageId = $(this).data('id');
                 qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&search='+search+'&package_id='+packageId;

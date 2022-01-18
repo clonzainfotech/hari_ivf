@@ -18,11 +18,13 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                <form method="post" autocomplete="off" action="">
+                                    <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                </form>
                             </div>
-                             
+
                             <div class="col-lg-3 col-md-3 col-sm-3 anc">
-                            
+
                                 {{ Form::select('patient_id',$patients,'',[
                                     'class'=>'form-control select-padding-0 patient-id',
                                     'placeholder'=>'Select Patient',
@@ -51,7 +53,7 @@
                                     <button class="btn btn-primary print-infertility m-0">
                                         Print
                                     </button>
-                                </a>    
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -215,7 +217,7 @@
                 qstring = 'page=' + page + '&patient_id='+patientId+ '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId +'&ref_doc_id='+refDocId;;
                 getReferenceDoctorProData(qstring);
             });*/
-            
+
             $(document).on('change','select.ref-doctor-id',function(){
                 refDocId = $(this).val();
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&patient_status='+patientStatus+'&ref_pro_id='+refProId+'&date='+date+'&ref_doc_id='+refDocId;
@@ -227,7 +229,7 @@
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&isprint=1';
                 getReferenceDoctorProData(qstring);
             });*/
-            
+
             $(document).on('click', '.ivf-package', function () {
                 var packageId = $(this).data('id');
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&package_id='+packageId;
@@ -302,7 +304,9 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                <form method="post" autocomplete="off" action="">
+                                    <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                </form>
                             </div>
                             <!-- <div class="col-ms-3 col-sm-3">
                                 <div class="form-group daterange">
@@ -317,7 +321,7 @@
                                 </div>
                             </div> -->
                             <div class="col-lg-3 col-md-3 col-sm-3 anc">
-                            
+
                                 {{ Form::select('patient_id',$appointment,'',[
                                     'class'=>'form-control select-padding-0 patient-id',
                                     'placeholder'=>'Select Patient',
@@ -346,7 +350,7 @@
                                     <button class="btn btn-primary print-infertility m-0">
                                         Print
                                     </button>
-                                </a>    
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -457,7 +461,7 @@
                 getReferenceDoctorProData(qstring);
             });
 
-           
+
 
             $(document).on('change','select.patient-status',function(e){
                 e.preventDefault();
@@ -482,7 +486,7 @@
                 getReferenceDoctorProData(qstring);
             });*/
 
-            
+
 
                $(document).on('click', '.pagination a', function (event) {
                 event.preventDefault();
@@ -515,7 +519,7 @@
                  qstring = 'page=' + page + '&patient_id='+patientId+ '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId +'&ref_pro_id='+refProId;
                 getReferenceDoctorProData(qstring);
             });*/
-            
+
             $(document).on('change','select.ref-doctor-id',function(){
                 refDocId = $(this).val();
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&patient_status='+patientStatus+'&ref_pro_id='+refProId+'&date='+date+'&ref_doc_id='+refDocId;
@@ -532,7 +536,7 @@
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&isprint=1';
                 getReferenceDoctorProData(qstring);
             });*/
-            
+
             $(document).on('click', '.ivf-package', function () {
                 var packageId = $(this).data('id');
                 qstring = 'page='+page+'&patient_id='+patientId+'&search='+search+'&package_id='+packageId;
@@ -594,7 +598,7 @@
             if($request->ajax()){
                 $patients = $this->OpdPatients->whereNotIn('reference_doctor_id',[3,500,90,107,452,471,489,1,32,387,30]);
 
-               
+
            /* $patients = $this->OpdPatients
                 ->join('appointments','appointments.patients_id','=','patients.id')
                 ->whereNotIn('patients.reference_doctor_id',[3,500,90,107,452,471,489,1,32,387,30]);
@@ -624,7 +628,7 @@
                     $patients = $patients->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $iuiReport = $iuiReport->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
                 }
-                
+
                 $patientId = $request->patient_id;
                 if($patientId) {
                     $patients = $patients->where('id',$patientId);
@@ -651,7 +655,7 @@
                     $patients = $patients->orderBy('id','DESC')->get();
                     $data['status'] = 2;
                     $data['report_data'] = View::make('admin.report.ref_pro_doctor.preview',compact('patients'))->render();
-                    return $data;    
+                    return $data;
                 }*/
              /*   $patients = $patients->orderBy('id','DESC')->paginate(50);
                 $data['status'] = 1;
@@ -665,7 +669,7 @@
     }*/
 
 
-    
+
 
             /*if($request->date){
                 $date = explode("-",$request->date);

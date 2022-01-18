@@ -29,20 +29,24 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-4">
-                                <input type="text" class="form-control daterange" placeholder="Select Date">
+                                <form method="post" autocomplete="off" action="">
+                                    <input type="text" class="form-control daterange" placeholder="Select Date" autocomplete="off">
+                                </form>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 {{Form::select('patient_id',$patients,'',['class'=>'form-control select-padding-0 patient-id','placeholder'=>'Select Patient','id' => 'patient_id','data-live-search' => 'true'])}}
                             </div>
                             <div class="col-md-3">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no" readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
+                                <form method="post" autocomplete="off" action="">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control search-mobile-number" placeholder="Search by mobile no" autocomplete="off">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </form>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 {{Form::select('charge_type',['1'=>'Hormon','2'=>'IVF','3'=>'IUI'],'',['class'=>'form-control select-padding-0 charge_type','placeholder'=>'Select Charge Category'])}}
@@ -105,7 +109,7 @@
                                     {{Form::number('amount','',['class'=>'form-control amount form-required','placeholder'=>'Amount','min'=>1])}}
                                     <span class="form-error-msg amt-error d-none">This Field is Required</span>
                                 </div>
-                                
+
                             </div>
                             <div class="form-group col-md-12 mt-1">
                                 <div class="col-md-4">
@@ -139,11 +143,11 @@
                                 <div class="col-md-6">
                                     {{Form::select('payment_type',['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],'',['class'=>'form-control payment-method','placeholder'=>'Select Payment Type'])}}
                                     <span class="form-error-msg payment-method-error d-none">This Field is Required</span>
-                                    
+
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <!-- footer -->
                     <div class="modal-footer w-100 justify-content-center">
@@ -350,7 +354,7 @@
                     isValid = 0;
                     return false;
                 }
-                
+
                 if(isValid == 1)
                 {
                     $.ajax({
@@ -378,8 +382,8 @@
 
                     });
                 }
-                
-                
+
+
             });
         });
         $(document).on('click','.receipt-hormon',function(){
@@ -396,7 +400,7 @@
                     w.document.close();
                     w.window.print();
                 }
-                
+
             }).fail(function(error){
 
             });

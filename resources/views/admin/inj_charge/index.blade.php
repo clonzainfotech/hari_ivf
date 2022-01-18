@@ -5,7 +5,7 @@
 
 @stop
 @php
-  $type= ["1"=>'Hormon','2'=>'IVF','3'=>'IUI'];  
+  $type= ["1"=>'Hormon','2'=>'IVF','3'=>'IUI'];
 @endphp
 @section('content')
 
@@ -38,14 +38,16 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-4">
-                                <ul class="nav nav-tabs padding-0">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control search" placeholder="Search..." readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                        <span class="input-group-addon search-border">
-                                            <i class="zmdi zmdi-search"></i>
-                                        </span>
-                                    </div>
-                                </ul>
+                                <form method="post" autocomplete="off" action="">
+                                    <ul class="nav nav-tabs padding-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control search" placeholder="Search..." autocomplete="off">
+                                            <span class="input-group-addon search-border">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </span>
+                                        </div>
+                                    </ul>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -133,7 +135,7 @@
                                 </div>
                                 <span class="form-error-msg quantity-error w-100"></span>
                             </div>
-                            
+
                         </div>
                         <!-- footer -->
                         <div class="modal-footer mt-3 time-footer">
@@ -204,7 +206,7 @@
             }).done(function (data) {
                 if(data.status == 1)
                 {
-                    $('#inj-modal').modal('show');   
+                    $('#inj-modal').modal('show');
                     $('.inj_name').val(data.injection.name);
                     $('.net_amount').val(data.injection.net_price);
                     $('.mrp').val(data.injection.mrp);
@@ -281,7 +283,7 @@
                     }
                 });
             }
-            
+
         });
         // get all category data
         function getInjectionData(qstring){

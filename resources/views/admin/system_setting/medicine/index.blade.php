@@ -24,7 +24,7 @@
                         <div class="col-md-5">
                             <h5>Medicines Settings</h5>
                         </div>
-                        
+
                         <div class="col-md-7 text-right">
                             <a href="{{URL::to('medicines-mapping/'.encrypt(1))}}">
                                 <button class="btn btn-primary print-sms-report">
@@ -37,7 +37,7 @@
                                 </button>
                             </a>
                             <a href="#" class="btn btn-primary add-medicine" data-toggle="modal" data-target="#medicine-modal">Add Medicine</a>
-                            <button class="btn btn-primary delete_all">Delete Medicins</button>   
+                            <button class="btn btn-primary delete_all">Delete Medicins</button>
                         </div>
                     </div>
                 </div>
@@ -47,19 +47,21 @@
             <div class="card">
                 <div class="header">
                     <div class="col-md-3 text-right">
-                        <ul class="nav nav-tabs padding-0">
-                            <div class="input-group">
-                                <input type="text" class="form-control search-medicine" placeholder="Search..." readonly="readonly" onfocus="this.removeAttribute('readonly')">
-                                <span class="input-group-addon search-border">
-                                    <i class="zmdi zmdi-search"></i>
-                                </span>
-                            </div>
-                        </ul>
+                        <form method="post" autocomplete="off" action="">
+                            <ul class="nav nav-tabs padding-0">
+                                <div class="input-group">
+                                    <input type="text" class="form-control search-medicine" placeholder="Search..." autocomplete="off">
+                                    <span class="input-group-addon search-border">
+                                        <i class="zmdi zmdi-search"></i>
+                                    </span>
+                                </div>
+                            </ul>
+                        </form>
                     </div>
                 </div>
                 <div class="body">
                     <div class="tab-content m-t-10">
-                    
+
                         <div class="medicines-data"></div>
                     </div>
                 </div>
@@ -227,9 +229,9 @@
             $(document).on('click', '.edit-medicine', function () {
                 var mId = $(this).data('mid');
                 mId = 'm_id='+mId;
-                
+
                 getMedicine(mId);
-                
+
             });
 
             $(document).on('click', '.add-medicine', function () {
@@ -252,14 +254,14 @@
             $('.tab_qty').css('display','block');
             $('.inj_medicine_time').css('display','none');
             $('.tab_medicine_status').css('display','block');
-            
+
             $(document).on('keyup','.name',function(){
                 var medicine_name = $(this).val();
                 displayMedicineField(medicine_name);
             });
         });
         //display field based on medicine name
-        
+
         function displayMedicineField(medicine_name)
         {
             var header = medicine_name.slice(0,3).toUpperCase();
@@ -275,7 +277,7 @@
                 var dose_array = ["7","8","9","10"];
                 //display only dose_array option
                 // $('div.dose .dropdown-menu li').each(function() {
-                //     var index = $(this).attr('data-original-index'); 
+                //     var index = $(this).attr('data-original-index');
                 //     if(jQuery.inArray(index, dose_array) == -1){
                 //         $(this).remove();
                 //     }
@@ -286,9 +288,9 @@
             }
             else{
                 var dose_array = ["7","8","9","10"];
-                //hide dose_array option 
+                //hide dose_array option
                 $('div.dose .dropdown-menu li').each(function() {
-                    var index = $(this).attr('data-original-index'); 
+                    var index = $(this).attr('data-original-index');
                     if(jQuery.inArray(index, dose_array) !== -1){
                         $(this).remove();
                     }
@@ -312,7 +314,7 @@
                     w.window.print();
                 }
             }).fail(function() {
-                
+
             });
         }
 
@@ -327,7 +329,7 @@
                 if(data.status == 2){
                     var errorData = data.error;
                     var madicineData = '';
-                    $.each(errorData, function(key, value) {   
+                    $.each(errorData, function(key, value) {
                        $('.'+key+'-error').text(value);
                     });
                 }
@@ -369,7 +371,7 @@
                    $('.m-time').selectpicker('refresh');
                    $('.status').selectpicker('refresh');
                 displayMedicineField(medicneData.name);
-                //    $('.m-time').selectpicker('refresh'); 
+                //    $('.m-time').selectpicker('refresh');
                }
             }).fail(function(error) {
 
@@ -421,17 +423,17 @@
 
          $(document).on('click','.delete_all',function(){
 
-            var allVals = [];  
-            $(".sub_chk:checked").each(function() {  
+            var allVals = [];
+            $(".sub_chk:checked").each(function() {
                 allVals.push($(this).attr('data-id'));
-            });  
+            });
 
-            if(allVals.length <=0)  
-            {  
+            if(allVals.length <=0)
+            {
                 showNotification('bg-blue', 'Please select Medicine', 'bottom', 'right', "", "");
-            } else {  
-                showConfirmMessage_deleteall(allVals); 
-            }  
+            } else {
+                showConfirmMessage_deleteall(allVals);
+            }
         });
 
            function showConfirmMessage_deleteall(allVals) {
@@ -454,7 +456,7 @@
         }
 
          function removeallMedicine(allVals){
-                var join_selected_values = allVals.join(","); 
+                var join_selected_values = allVals.join(",");
                  $.ajax({
                     url: "{{url('delete_selected_medicine')}}",
                     type: 'post',

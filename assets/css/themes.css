@@ -17,6 +17,42 @@
     background: transparent;
 }
 
+.recVisitButton{
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.recButton{
+    background-color: #004A7F;
+    -webkit-border-radius: 10px;
+    color: #FFFFFF;
+    font-family: Arial;
+    text-align: center;
+    text-decoration: none;
+    -webkit-animation: glowing 1500ms infinite;
+    -moz-animation: glowing 1500ms infinite;
+    -o-animation: glowing 1500ms infinite;
+    animation: glowing 1500ms infinite;
+}
+@-webkit-keyframes glowing {
+    0% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
+    50% { background-color: #FF0000; -webkit-box-shadow: 0 0 40px #FF0000; }
+    100% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
+}
+
+
+@keyframes pulse{
+    0%{
+        box-shadow: 0px 0px 5px 0px rgba(173,0,0,.3);
+    }
+    65%{
+        box-shadow: 0px 0px 5px 13px rgba(173,0,0,.3);
+    }
+    90%{
+        box-shadow: 0px 0px 5px 13px rgba(173,0,0,0);
+    }
+}
 @font-face {
     font-family: roboto;
     src: url('../fonts/roboto/Roboto-Regular.ttf');
@@ -2097,13 +2133,6 @@ input[type=number]::-webkit-outer-spin-button {
     margin-right: 28px;
     margin-bottom: 21px;
 }
-.remove-protocol-row{
-    color: white !important;
-    padding: 5px !important;
-    float: right;
-    margin-right: 28px;
-    margin-bottom: 21px;
-}
 .injection-add, .injection-remove
 {
     color: white !important;
@@ -2698,7 +2727,7 @@ line-height: 6px !important;
 .card .body .table th.text-secondary
 {
     font-weight: 700 !important;
-    
+
 }
 .pick_up_table_tbody,
 .pick_up_table_thead
@@ -2759,9 +2788,9 @@ li.category-notification
     width: 372px;
     box-shadow: 0px 5px 7px -1px #c1c1c1;
     padding-bottom: 0px;
-    padding: 0px; 
+    padding: 0px;
 }
-    
+
 .dropdown-menu:before
 {
     content: "";
@@ -2776,8 +2805,8 @@ li.category-notification
     padding:10px 15px;
     border-radius: 3px 3px 0px 0px;
     background-color: #f4f4f4;
-    
-}    
+
+}
 .notification-footer
 {
     padding:5px 15px;
@@ -2791,7 +2820,7 @@ li.category-notification
 .notification-box
 {
     padding: 10px 0px;
-    
+
 }
 i.notify{
 font-size: 22px !important;
@@ -2800,10 +2829,10 @@ font-size: 22px !important;
     background-color: #fa3e3e;
     border-radius: 2px;
     color: white;
-   
+
     padding: 1px 3px;
     font-size: 12px;
-    
+
     position: absolute; /* Position the badge within the relatively positioned button */
     top: -3px;
     right: -3px;
@@ -2817,13 +2846,13 @@ font-size: 22px !important;
 {
     border-bottom: 1px solid #1e5f63 !important;
 }
-@media (max-width: 640px) 
+@media (max-width: 640px)
 {
     .dropdown-menu{
     top: 50px;
     left: -16px;
     width: 290px;
-    
+
     }
 }
 .theme-cyan .nav-tabs .nav-link.active {
@@ -2834,8 +2863,11 @@ font-size: 22px !important;
 .nav-tabs .nav-link, .nav-tabs .nav-link:hover{
     color: #000;
 }
-#appointment-table thead>tr>th{
-    font-weight: 700 !important;
+.table thead>tr>th{
+    font-size: 13px;
+    font-family: roboto-bold;
+    border-bottom: 1px solid #dee2e6 !important;
+    background: #dee2e6;
 }
 .view-file-modal-dialog .follicular-table td,.view-file-modal-dialog .follicular-table th
 {
@@ -2846,7 +2878,7 @@ font-size: 22px !important;
 {
     font-size: 16px !important;
 }
-.view-file-modal-dialog .follicular-table,.view-file-modal-dialog .follicular-table div  
+.view-file-modal-dialog .follicular-table,.view-file-modal-dialog .follicular-table div
 {
     margin-bottom: 0px !important;
     margin-top: 0px !important;

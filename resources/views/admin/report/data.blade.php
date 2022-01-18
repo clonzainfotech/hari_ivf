@@ -1,6 +1,6 @@
 <table class="table m-b-0 table-hover font" id="report-table">
     <thead>
-        <tr class="thead">
+        <tr>
             <th>Sr No</th>
             <th>Date</th>
             <th>Rec No</th>

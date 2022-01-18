@@ -1,7 +1,7 @@
 @if($reportDatails['type']==1)
     <table class="table m-b-0 table-hover font" id="category-report-table">
         <thead>
-            <tr class="thead">
+            <tr>
                 <th>Sr No</th>
                 <th>Code</th>
                 <th>Patient Name</th>
@@ -70,7 +70,7 @@
 @else
     <table class="table m-b-0 table-hover" id="category-report-table">
         <thead>
-            <tr class="thead">
+            <tr>
                 <th>Category</th>
                 <th>Total Patient</th>
             </tr>
@@ -92,7 +92,7 @@
                 @if(!empty($reportDatails['allCategoryCount']))
                     <?php $total = 0;?>
                     @foreach($reportDatails['allCategoryCount'] as $row)
-                        <?php 
+                        <?php
                             $total = $total+$row->totalAppointment;
                         ?>
                         <tr>
