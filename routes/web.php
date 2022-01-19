@@ -259,6 +259,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('all-collection-report','ReportController@getAllCollectionReport');
     Route::get('hormon-inj-report','ReportController@getHormonInjectionReport');
     Route::get('pediatric-report','ReportController@getPedCollection');
+    Route::get('medicare-report','ReportController@getMedicareCollection');
     Route::get('analysis-report','ReportController@analysisReport');
 
 

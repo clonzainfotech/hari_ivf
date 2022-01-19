@@ -475,7 +475,15 @@
                                                         Pediatric Patient
                                                     </label>
                                                 </div>
-                                        </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="checkbox">
+                                                    {{Form::checkbox('is_medicare_patient',0,$bookingdata->is_medicare_patient,['class'=>'is_medicare_patient','id'=>'is_medicare_patient'])}}
+                                                    <label for="is_medicare_patient">
+                                                        Medicare Patient
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="row">
@@ -667,7 +675,7 @@
         function checkWeight(value) {
             $('.weight').val(validMobileNumber(value));
         }
-        $(document).on('click','.is_pediatric_patient',function(){
+        $(document).on('click','.is_pediatric_patien,.is_medicare_patient',function(){
             $(this).val(0);
             if($(this).prop('checked') == true)
             {

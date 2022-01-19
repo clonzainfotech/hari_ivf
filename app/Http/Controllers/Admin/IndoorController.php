@@ -244,6 +244,7 @@ class IndoorController extends AdminController
             $indoorbookdata->created_by = Auth::user()->id;
             $indoorbookdata->room_id = $request->room;
             $indoorbookdata->is_pediatric_patient = $request->is_pediatric_patient;
+            $indoorbookdata->is_medicare_patient = $request->is_medicare_patient;
             // $roomBedId = $request->room_bed;
             // if ($request->indoor_bed == null) {
 
@@ -483,6 +484,7 @@ class IndoorController extends AdminController
             $bookupdatedata->price = $this->IndoorType->whereId($request->room_type)->value('price');
             $bookupdatedata->remark = $request->remark;
             $bookupdatedata->is_pediatric_patient = $request->is_pediatric_patient;
+            $bookupdatedata->is_medicare_patient = $request->is_medicare_patient;
             $produreData = $request->pro;
             $prodataids = '';
             if(is_array($produreData))

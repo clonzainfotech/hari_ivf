@@ -486,6 +486,14 @@
                                                         </label>
                                                     </div>
                                             </div>
+                                            <div class="col-md-4">
+                                                <div class="checkbox">
+                                                    {{Form::checkbox('is_medicare_patient',0,'',['class'=>'is_medicare_patient','id'=>'is_medicare_patient'])}}
+                                                    <label for="is_medicare_patient">
+                                                        Medicare Patient
+                                                    </label>
+                                                </div>
+                                        </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="row">
@@ -719,7 +727,7 @@
                 return value;
             }
         }
-        $(document).on('click','.is_pediatric_patient',function(){
+        $(document).on('click','.is_pediatric_patient,.is_medicare_patient',function(){
             $(this).val(0);
             if($(this).prop('checked') == true)
             {

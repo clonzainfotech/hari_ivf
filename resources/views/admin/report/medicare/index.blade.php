@@ -1,6 +1,6 @@
 @extends('layouts.main')
-@section('parentPageTitle', 'Pediatric Report')
-@section('title', 'Pediatric Report')
+@section('parentPageTitle', 'Medicare Report')
+@section('title', 'Medicare Report')
 @section('page-style')
     <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
@@ -10,7 +10,7 @@
         <div class="col-md-12">
             <div class="card patients-list">
                 <div class="header">
-                    <h2><strong>Pediatric Collection report</strong></h2>
+                    <h2><strong>Medicare Collection report</strong></h2>
                     <ul class="header-dropdown">
                         <li>
                             <a href="javascript:void(0);">
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="pediatric-report-data table-responsive active">
+                        <div class="medicare-report-data table-responsive active">
                             <!-- table data here include -->
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                     var isprint = 1;
                     qstring = '?fromdate=' + fromdate + '&todate=' + todate;
                     $.ajax({
-                        url: "{{URL::to('pediatric-report')}}" + qstring,
+                        url: "{{URL::to('medicare-report')}}" + qstring,
                         data: {isprint : isprint},
                         dataType: 'json',
                     }).done(function (data) {
@@ -122,11 +122,11 @@
         function getPedReportData(qstring) {
             $('.report-loader').css('display','block');
             $.ajax({
-                url: "{{URL::to('pediatric-report')}}" + qstring,
+                url: "{{URL::to('medicare-report')}}" + qstring,
                 dataType: 'json',
             }).done(function (data) {
                 $('.report-loader').css('display','none');
-                $('.pediatric-report-data').html(data.report_data);
+                $('.medicare-report-data').html(data.report_data);
             }).fail(function () {
 
             });

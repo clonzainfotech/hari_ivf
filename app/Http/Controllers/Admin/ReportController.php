@@ -1840,4 +1840,68 @@ class ReportController extends AdminController
             abort(500);
         }
     }
+     /**
+    * Get Medicare Collection Report
+    * @param  \Illuminate\Http\Request $request
+    * @return \Illuminate\Http\Response
+    */
+    public function getmedicareCollection(Request $request)
+    {
+        try{
+            if($request->ajax())
+            {
+                //opd
+                $category = $this->ExpenseCategory->where('is_medicare',1)->whereType('1')->whereStatus('1')->pluck('id','id');
+                $income = $this->IncomeManager->whereIn('income_category',$category);
+                $expenseCategory = $this->ExpenseCategory->where('is_medicare',1)->whereType('2')->whereStatus('1')->pluck('id','id');
+                $expense = $this->ExpenseManager->whereIn('expense_category',$expenseCategory);
+                //ipd
+                $indoorBook = $this->IndoorBook->with('getInvoice')->where('is_medicare_patient',1)->where('is_final_invoice',1)->whereNotNull('final_invoice_date')->orderBy('id','DESC');
+                $fromdate = $request->fromdate;
+                $todate = $request->todate;
+                if($fromdate || $todate){
+                    $fromdate = $fromdate;
+                    $todate = $todate;
+                    $expense = $expense->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $income = $income->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                }
+                $income = collect($income->get())->map(function ($query){
+                    $query->income_category = $query->getExpenseCategory['name'];
+                    return $query;
+                });
+                $income = $income->groupBy('income_category');
+
+                $expense = collect($expense->get())->map(function ($query){
+                    $query->expense_category = $query->getExpenseCategory['name'];
+                    return $query;
+                });
+                $expense = $expense->groupBy('expense_category');
+                $indoorBook = collect($indoorBook->get())
+                    ->map(function ($query) {
+                        $procedureName = implode(', ', $this->IndoorProcedure
+                            ->whereIn('id', explode(',', $query->procedure_id))
+                            ->pluck('name')
+                            ->toArray());
+                        $query->procedure_name = $procedureName;
+                        $query->date = $query->final_invoice_date;
+                        return $query; 
+                    });
+                if($request->isprint == 1)
+                {
+                    $data['status'] = 1;
+                    $data['report_data'] = View::make('admin.report.medicare.preview',compact('income','expense','indoorBook'))->render();
+                    return $data;
+                }
+                $data['status'] = 1;
+                $data['report_data'] = View::make('admin.report.medicare.data',compact('income','expense','indoorBook'))->render();
+                return $data;
+            }
+            return view('admin.report.medicare.index');
+        }
+        catch(Exception $e){
+            log::debug($e);
+            abort(500);
+        }
+    }
 }
