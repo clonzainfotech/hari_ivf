@@ -230,7 +230,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('expense-manager','ExpenseManagerController@store');
     Route::get('expense-manager/create','ExpenseManagerController@create');
     Route::get('expense-manager/{id}/edit','ExpenseManagerController@edit');
-    Route::put('expense-manager/{id}','ExpenseManagerController@update');
+    Route::post('expense-manager/{id}','ExpenseManagerController@update');
     Route::get('expense-manager/delete/{id}','ExpenseManagerController@delete');
     Route::resource('expense-category','ExpencecategoryController');
     Route::post('expense-category/update','ExpencecategoryController@update');
@@ -240,7 +240,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::post('income-manager','IncomeManagerController@store');
     Route::get('income-manager/create','IncomeManagerController@create');
     Route::get('income-manager/{id}/edit','IncomeManagerController@edit');
-    Route::put('income-manager/{id}','IncomeManagerController@update');
+    Route::post('income-manager/{id}','IncomeManagerController@update');
     Route::get('income-manager/delete/{id}','IncomeManagerController@delete');
     Route::get('income-category','IncomeManagerController@incomecategory');
 

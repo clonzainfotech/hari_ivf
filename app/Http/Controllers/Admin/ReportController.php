@@ -1742,13 +1742,47 @@ class ReportController extends AdminController
         try{
             if($request->ajax())
             {
+                $paymentType = $request->payment_type;
                 //opd
+                
                 $category = $this->ExpenseCategory->where('is_pediatric',1)->whereType('1')->whereStatus('1')->pluck('id','id');
                 $income = $this->IncomeManager->whereIn('income_category',$category);
                 $expenseCategory = $this->ExpenseCategory->where('is_pediatric',1)->whereType('2')->whereStatus('1')->pluck('id','id');
                 $expense = $this->ExpenseManager->whereIn('expense_category',$expenseCategory);
                 //ipd
                 $indoorBook = $this->IndoorBook->with('getInvoice')->where('is_pediatric_patient',1)->where('is_final_invoice',1)->whereNotNull('final_invoice_date')->orderBy('id','DESC');
+                if(!empty($paymentType) || $paymentType != 0)
+                {
+                    $paymentMethodValueData = [1=>2,2=>1,3=>3,4=>4,5=>5];
+                    $incomePaymentType = $paymentMethodValueData[$paymentType];
+                    $income = $this->IncomeManager->whereIn('income_category',$category)->where('payment_method',$incomePaymentType)->select("*",
+                    \DB::raw('
+                        (CASE
+                            WHEN payment_method = "1" THEN "Cash"
+                            WHEN payment_method = "2" THEN "Swipe"
+                            WHEN payment_method = "3" THEN "Cheque"
+                            WHEN payment_method = "4" THEN "UPI"
+                            WHEN payment_method = "4" THEN "NEFT"
+                        END)
+                        AS payment_mode')
+                    )->orderBy('id', 'desc');
+                    $expense = $this->ExpenseManager->whereIn('expense_category',$expenseCategory)->where('payment_method',$incomePaymentType)->select("*",
+                        \DB::raw('
+                            (CASE
+                                WHEN payment_method = "1" THEN "Cash"
+                                WHEN payment_method = "2" THEN "Swipe"
+                                WHEN payment_method = "3" THEN "Cheque"
+                                WHEN payment_method = "4" THEN "UPI"
+                                WHEN payment_method = "4" THEN "NEFT"
+                            END)
+                            AS payment_mode')
+                            )->orderBy('id', 'desc');
+                    $indoorBook = $indoorBook->where(function($query) use($paymentType){
+                            $query->whereHas('getInvoice', function($query) use($paymentType) {
+                                $query->where('payment_mode', $paymentType);
+                            });
+                        });
+                }
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
                 if($fromdate || $todate){
@@ -1850,13 +1884,47 @@ class ReportController extends AdminController
         try{
             if($request->ajax())
             {
+                $paymentType = $request->payment_type;
                 //opd
+                
                 $category = $this->ExpenseCategory->where('is_medicare',1)->whereType('1')->whereStatus('1')->pluck('id','id');
                 $income = $this->IncomeManager->whereIn('income_category',$category);
                 $expenseCategory = $this->ExpenseCategory->where('is_medicare',1)->whereType('2')->whereStatus('1')->pluck('id','id');
                 $expense = $this->ExpenseManager->whereIn('expense_category',$expenseCategory);
                 //ipd
                 $indoorBook = $this->IndoorBook->with('getInvoice')->where('is_medicare_patient',1)->where('is_final_invoice',1)->whereNotNull('final_invoice_date')->orderBy('id','DESC');
+                if(!empty($paymentType) || $paymentType != 0)
+                {
+                    $paymentMethodValueData = [1=>2,2=>1,3=>3,4=>4,5=>5];
+                    $incomePaymentType = $paymentMethodValueData[$paymentType];
+                    $income = $this->IncomeManager->whereIn('income_category',$category)->where('payment_method',$incomePaymentType)->select("*",
+                    \DB::raw('
+                        (CASE
+                            WHEN payment_method = "1" THEN "Cash"
+                            WHEN payment_method = "2" THEN "Swipe"
+                            WHEN payment_method = "3" THEN "Cheque"
+                            WHEN payment_method = "4" THEN "UPI"
+                            WHEN payment_method = "4" THEN "NEFT"
+                        END)
+                        AS payment_mode')
+                    )->orderBy('id', 'desc');
+                    $expense = $this->ExpenseManager->whereIn('expense_category',$expenseCategory)->where('payment_method',$incomePaymentType)->select("*",
+                        \DB::raw('
+                            (CASE
+                                WHEN payment_method = "1" THEN "Cash"
+                                WHEN payment_method = "2" THEN "Swipe"
+                                WHEN payment_method = "3" THEN "Cheque"
+                                WHEN payment_method = "4" THEN "UPI"
+                                WHEN payment_method = "4" THEN "NEFT"
+                            END)
+                            AS payment_mode')
+                            )->orderBy('id', 'desc');
+                    $indoorBook = $indoorBook->where(function($query) use($paymentType){
+                            $query->whereHas('getInvoice', function($query) use($paymentType) {
+                                $query->where('payment_mode', $paymentType);
+                            });
+                        });
+                }
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
                 if($fromdate || $todate){
@@ -1885,7 +1953,7 @@ class ReportController extends AdminController
                             ->toArray());
                         $query->procedure_name = $procedureName;
                         $query->date = $query->final_invoice_date;
-                        return $query; 
+                        return $query;
                     });
                 if($request->isprint == 1)
                 {

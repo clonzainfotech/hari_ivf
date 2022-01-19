@@ -39,6 +39,60 @@
                                         </form>
                                     </div>
                                 </div>
+                                <div class="col-md-1 checkbox">
+                                    {{Form::checkbox('report_payment_type','2',true,[
+                                        'id'=>'cash_box',
+                                        'class'=>'report-payment-type',
+                                    ])}}
+                                    <label for="cash_box">
+                                        Cash
+                                    </label>
+                                </div>
+                                <div class="col-md-1 checkbox">
+                                    {{Form::checkbox('report_payment_type','1','',[
+                                        'id'=>'swipe_box',
+                                        'class'=>'report-payment-type',
+                                    ])}}
+                                    <label for="swipe_box">
+                                        Swipe
+                                    </label>
+                                </div>
+                                <div class="col-md-1 checkbox">
+                                    {{Form::checkbox('report_payment_type','5','',[
+                                        'id'=>'neft_box',
+                                        'class'=>'report-payment-type',
+                                    ])}}
+                                    <label for="neft_box">
+                                        NEFT
+                                    </label>
+                                </div>
+                                <div class="col-md-1 checkbox">
+                                    {{Form::checkbox('report_payment_type','3','',[
+                                        'id'=>'cheque_box',
+                                        'class'=>'report-payment-type',
+                                    ])}}
+                                    <label for="cheque_box">
+                                        Cheque
+                                    </label>
+                                </div>
+                                <div class="col-md-1 checkbox">
+                                    {{Form::checkbox('report_payment_type','4','',[
+                                        'id'=>'upi_box',
+                                        'class'=>'report-payment-type',
+                                    ])}}
+                                    <label for="upi_box">
+                                        UPI
+                                    </label>
+                                </div>
+                                <div class="col-md-1 checkbox">
+                                    {{Form::checkbox('report-payment-type','0','',[
+                                        'id'=>'all_box',
+                                        'class'=>'report-payment-type',
+                                    ])}}
+                                    <label for="all_box">
+                                        All
+                                    </label>
+                                </div>
 
                             </div>
                         </div>
@@ -64,8 +118,8 @@
         var page = '';
         var fromdate = moment(new Date()).format('YYYY-MM-DD');
         var todate = moment(new Date()).format('YYYY-MM-DD');
-
-        var qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+        var reportPaymentType = 2;
+        var qstring = '?fromdate=' + fromdate + '&todate=' + todate+'&payment_type='+reportPaymentType;
 
         $(document).ready(function () {
 
@@ -81,7 +135,7 @@
 
                 fromdate = picker.startDate.format('YYYY-MM-DD');
                 todate = picker.endDate.format('YYYY-MM-DD');
-                qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+                qstring = '?fromdate=' + fromdate + '&todate=' + todate+'&payment_type='+reportPaymentType;
                 getPedReportData(qstring);
 
             });
@@ -92,7 +146,7 @@
                 // Destroy and rebuild daterangepicker to clear data
                 fromdate = '';
                 todate = '';
-                qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+                qstring = '?fromdate=' + fromdate + '&todate=' + todate+'&payment_type='+reportPaymentType;
                 getPedReportData(qstring);
 
             });
@@ -103,7 +157,7 @@
         $(document).on('click', '.print-pedia-report', function () {
 
                     var isprint = 1;
-                    qstring = '?fromdate=' + fromdate + '&todate=' + todate;
+                    qstring = '?fromdate=' + fromdate + '&todate=' + todate+'&payment_type='+reportPaymentType;
                     $.ajax({
                         url: "{{URL::to('medicare-report')}}" + qstring,
                         data: {isprint : isprint},
@@ -117,7 +171,16 @@
                     });
 
         });
-
+        $(document).on('click','.report-payment-type',function(){
+            reportPaymentType = 2;
+            $('.report-payment-type').not(this).prop('checked', false);
+            $('.all_type_payment').prop('checked', false);
+            if($(this).is(':checked')){
+                reportPaymentType = $(this).val();
+            }
+            qstring = '?fromdate=' + fromdate + '&todate=' + todate+'&payment_type='+reportPaymentType;
+            getPedReportData(qstring);
+        });
         // get all collection report data
         function getPedReportData(qstring) {
             $('.report-loader').css('display','block');

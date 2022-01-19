@@ -175,7 +175,7 @@ class IncomeManagerController extends AdminController
     public function update(Request $request,$id){
         try{
             // $id = decrypt($id);
-            // dd($id);
+            // dd($income);
             $income = $this->IncomeManager->find($id);
             $rule = [
                 'date' => 'required',
@@ -189,7 +189,7 @@ class IncomeManagerController extends AdminController
                     ->withErrors($valid->errors())
                     ->withInput();
             }
-            // dd($income);
+            
             $income->date = Carbon::parse($request->date)->format('Y-m-d');
             $income->amount = $request->amount;
             $income->payment_method = $request->payment_method;
