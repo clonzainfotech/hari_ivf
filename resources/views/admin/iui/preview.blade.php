@@ -3282,12 +3282,12 @@
                         </table>
                     @endif
                     @if($skipValue == 1) 
-                    @php
-                            $visitDate = \Carbon\Carbon::parse($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
-                            $diff = \Carbon\Carbon::parse(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
-                            $diff = $diff + 1;
-                    @endphp
-                    {{-- <div class="col-md-12"> --}}
+                        @php
+                                $visitDate = \Carbon\Carbon::parse($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
+                                $diff = \Carbon\Carbon::parse(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
+                                $diff = $diff + 1;
+                        @endphp
+                        {{-- <div class="col-md-12"> --}}
                         <h5 class=""><u>Skip Cycle:</u></h5>
                         <table class="module-report-table study-report-table">
                             <thead>
@@ -3303,8 +3303,11 @@
                                 </tr>
                             </tbody>
                         </table>
-                    {{-- </div> --}}
-                @endif
+                        {{-- </div> --}}
+                    @endif
+                    @if(isset($lastHistoryData->naturally_conceive) && $lastHistoryData->naturally_conceive == 'yes' && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] == 2) 
+                            <h6><span class="font-"><b>Result : </b>Naturally Conceive</span></h6>
+                    @endif
                     <h4 class="mt-1 text-left"><u>Medicine:</u></h4>
                     <table class="module-report-table study-report-table">
                         <thead>

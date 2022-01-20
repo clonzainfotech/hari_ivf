@@ -5691,6 +5691,9 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                 </table>
                             {{-- </div> --}}
                         @endif
+                        @if(isset($lastHistoryData->naturally_conceive) && $lastHistoryData->naturally_conceive == 'yes' && $iuiHistoryData[count($iuiHistoryData)-1]['cycle_status'] == 2) 
+                                <h6><span class="font-"><b>Result : </b>Naturally Conceive</span></h6>
+                        @endif
                         <h4 class=""><u>Medicine:</u></h4>
                         <table class="table follicular-table table-bordered">
                             <thead>

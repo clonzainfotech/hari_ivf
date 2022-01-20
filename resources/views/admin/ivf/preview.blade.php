@@ -3288,6 +3288,9 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                         </table>
                     </div>
                 @endif
+                @if(isset($lastHistoryData->naturally_conceive) && $lastHistoryData->naturally_conceive == 'yes' && $lastHistory->cycle_status == 2) 
+                    <h6><span class="font-"><b>Result : </b>Naturally Conceive</span></h6>
+                @endif
                 @if(!empty($lastHistoryData->transfer->result_type))
                     @php
                         $visitDate = \Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y');
@@ -3628,6 +3631,9 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             </tbody>
                         </table>
                     </div>
+                @endif
+                @if(isset($lastHistoryData->naturally_conceive) && $lastHistoryData->naturally_conceive == 'yes' && $lastHistory->cycle_status == 2) 
+                    <h6><span class="font-"><b>Result : </b>Naturally Conceive</span></h6>
                 @endif
                 @if(!empty($lastHistoryData->transfer->result_type))
                     @php

@@ -1705,6 +1705,9 @@
                                 </table>
                             </div>
                         @endif
+                        @if(isset($lastCycleData->naturally_conceive) && $lastCycleData->naturally_conceive == 'yes' && $cycle[count($cycle)-1]['cycle_status'] == 2) 
+                                <h6><span class="font-"><b>Result : </b>Naturally Conceive</span></h6>
+                        @endif
                         @if(!empty($lastCycleData->transfer->result_type))
                             @php
                                 $visitDate = \Carbon\Carbon::parse($cycle[count($cycle)-1]['created_at'])->format('d-m-Y');
@@ -2771,6 +2774,9 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+                                                    @endif
+                                                    @if(isset($lastHistoryData->naturally_conceive) && $lastHistoryData->naturally_conceive == 'yes' && $lastHistory->cycle_status == 2) 
+                                                            <h6><span class="font-"><b>Result : </b>Naturally Conceive</span></h6>
                                                     @endif
                                                     @if($isTransfer)
                                                      {{-- result --}}
