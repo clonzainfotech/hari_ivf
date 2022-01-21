@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="row mt-2 advanced-search-box d-none">
-                        <div class="col-lg-4 col-md- col-sm-6">
+                        <div class="col-lg-3 col-md- col-sm-6">
                             {{Form::select('reference_doctor',$referenceDoctor, '',[
                                 'class'=>'form-control select-padding-0 reference-doctor',
                                 'placeholder'=>'Select Reference',
@@ -71,7 +71,7 @@
                                 'data-live-search' => 'true'
                             ])}}
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
                             {{Form::select('hospital_doctor',$hospitalDoctor, '',[
                                 'class'=>'form-control select-padding-0 hospital-doctor',
                                 'placeholder'=>'Select Hospital Doctor',
@@ -87,7 +87,7 @@
                             ])}}
 
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6 ">
+                        <div class="col-lg-3 col-md-6 col-sm-6 ">
                             {{Form::select('category',$categoryData,'',[
                                 'class'=>'form-control select-padding-0 category',
                                 'placeholder'=>'Select Category',
