@@ -79,6 +79,14 @@
                             ])}}
 
                         </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            {{Form::select('seen_by_doctor',$hospitalDoctor, '',[
+                                'class'=>'form-control select-padding-0 seen-by-doctor',
+                                'placeholder'=>'Select SeenBy Doctor',
+                                'data-live-search' => 'true'
+                            ])}}
+
+                        </div>
                         <div class="col-lg-4 col-md-6 col-sm-6 ">
                             {{Form::select('category',$categoryData,'',[
                                 'class'=>'form-control select-padding-0 category',
@@ -140,25 +148,26 @@
         var patientId = '';
         var referenceDoctorId = '';
         var hospitalDoctorId = '';
+        var seenByDoctorId = '';
 
         $(document).ready(function(){
             $(document).on('click','.cancelBtn',function(e){
                 e.preventDefault();
                 $('.daterange').val('');
                 date = $('.daterange').val();
-                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
+                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
             $(document).on('keyup','.search-word',function(){
                 search = $(this).val();
-                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
+                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
 
             $(document).on('click','.applyBtn',function(e){
                 event.preventDefault();
                 date = $('.daterange').val();
-                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
+                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
 
@@ -168,30 +177,35 @@
             $(document).on('click', '.pagination a',function(event){
                 event.preventDefault();
                 page=$(this).attr('href').split('page=')[1];
-                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
+                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
 
             $(document).on('change','select.patient-id',function(){
                 patientId = $(this).val();
-                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
+                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
 
             $(document).on('click', '.print-all', function () {
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&search='+search+'&isprint=1';
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&search='+search+'&isprint=1'+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
 
             $(document).on('change','select.reference-doctor',function(){
                 referenceDoctorId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' +categoryId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' +categoryId+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
 
             $(document).on('change','select.hospital-doctor',function(){
                 hospitalDoctorId = $(this).val();
-                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' +categoryId;
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' +categoryId+'&seen_by_doctor='+seenByDoctorId;
+                getAncIuiIvf(qstring);
+            });
+            $(document).on('change','select.seen-by-doctor',function(){
+                seenByDoctorId = $(this).val();
+                qstring = 'page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&search='+search+'&categoryId=' +categoryId+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
             $(document).on('change','.advanced_search',function(){
@@ -204,7 +218,7 @@
 
             $(document).on('change', 'select.category', function () {
                 categoryId = $(this).val();
-                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search;
+                qstring ='page='+page+'&patient_id='+patientId+'&date='+date+'&reference_doctor_id='+referenceDoctorId+'&hospital_doctor_id='+hospitalDoctorId+'&categoryId=' + categoryId+'&search='+search+'&seen_by_doctor='+seenByDoctorId;
                 getAncIuiIvf(qstring);
             });
         });
