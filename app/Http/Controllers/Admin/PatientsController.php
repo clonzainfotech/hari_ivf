@@ -612,12 +612,10 @@ class PatientsController extends AdminController
                     {
                         // $preview = 0;
                         $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
-                        // $history[$created_at] = $preview;
                     }
                     else
                     {
                         $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
-                        // $history[$created_at] = $preview;
                     }
                 }
                 $ivfExtra = $this->IvfExtraVisit->where('patient_id',$pId)->where('created_at',$date)->first();
@@ -628,7 +626,6 @@ class PatientsController extends AdminController
                     $preview = 0;
                     $created_at = Carbon::parse($ivfExtra->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['IVF'][$ivfExtra->cycle_no.'/'.(isset($planData[$ivfExtra->plan]) ? $planData[$ivfExtra->plan] : '')] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
-                    // $history[$created_at] = $preview;
                 }
                 $ivf = $this->IVF->where('patients_id',$pId)->where('created_at',$date)->first();
                 if($ivf && $category_id == 1)
@@ -637,14 +634,12 @@ class PatientsController extends AdminController
                     $created_at = Carbon::parse($ivf->created_at)->format('Y-m-d H:i');
                     $cycle_no = 0;
                     $plan = 0;
-                    // $history[$created_at] = $preview;
                     $history[$created_at]['IVF'][''] = app('App\Http\Controllers\Admin\IVFController')->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
                 }
             }
             // //iui
             if($category_id == 3 || $category_id == 4)
             {
-                // $preview = [];
                 $iui = $this->IuiHistory->where('patients_id',$pId)->where('created_at',$date)->first();
                 if($iui)
                 {
@@ -652,7 +647,6 @@ class PatientsController extends AdminController
                     $preview = $iui->visit - 1;
                     $created_at = Carbon::parse($iui->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['IUI'][$iui->cycle_no] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id);
-                    // $history[$created_at] = $preview;
                 }
                 $iuiExtra = $this->IuiExtraVisit->where('patient_id',$pId)->where('created_at',$date)->first();
                 if($iuiExtra)
@@ -661,7 +655,6 @@ class PatientsController extends AdminController
                     $preview = 0;
                     $created_at = Carbon::parse($iuiExtra->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['IUI'][$iuiExtra->cycle_no] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id);
-                    // $history[$created_at] = $preview;
                 }
                 $iui = $this->IUI->where('patients_id',$pId)->where('created_at',$date)->first();
                 if($iui && $category_id == 3)
@@ -670,7 +663,6 @@ class PatientsController extends AdminController
                     $preview = 0;
                     $created_at = Carbon::parse($iui->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['IUI'][''] = app('App\Http\Controllers\Admin\IUIController')->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id);
-                    // $history[$created_at] = $preview;
                 }
                 $iuiReport = $this->IUIReport->where('patients_id',$pId)->where('created_at',$date)->first();
                 if($iuiReport)
@@ -691,14 +683,12 @@ class PatientsController extends AdminController
                 {
                     $created_at = Carbon::parse($anc->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['ANC'][''] = app('App\Http\Controllers\Admin\ANCController')->getAncAppointmentWiseVisit($date,$patient_id,$anc->anc_id);
-                    // $history[$created_at] = $created_at;
                 }
                 $anc = $this->ANC->where('patients_id',$pId)->where('created_at',$date)->first();
                 if($anc && $category_id == 5)
                 {
                     $created_at = Carbon::parse($anc->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['ANC'][''] = app('App\Http\Controllers\Admin\ANCController')->getAncAppointmentWiseVisit($date,$patient_id,$anc->id);
-                    // $history[$created_at] = $created_at;
                 }
             }
             if($category_id == 18)
@@ -709,7 +699,6 @@ class PatientsController extends AdminController
                 {
                     $created_at = Carbon::parse($gynec->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['GYNEC'][''] = app('App\Http\Controllers\Admin\GynecController')->getGynecAppointmentWiseVisit($date,$patient_id);
-                    // $history[$created_at] = $created_at;
                 }
             }
             if($category_id == 22)
@@ -720,11 +709,9 @@ class PatientsController extends AdminController
                 {
                     $created_at = Carbon::parse($stich->created_at)->format('Y-m-d H:i');
                     $history[$created_at]['STICH'][''] = app('App\Http\Controllers\Admin\StichController')->getStichAppointmentWiseVisit($date,$patient_id);
-                    // $history[$created_at] = $created_at;
                 }
             }
         }
-        // dd(krsort($history));
         return view('admin.appointment.patient.patient_history',compact('patients','history','referenceDoctor'));
     }
     /**

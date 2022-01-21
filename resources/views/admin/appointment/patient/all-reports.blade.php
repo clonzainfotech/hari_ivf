@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="row">
-		@php
+		{{-- @php
 			if(empty($status))
 			{
 				$ancReport = '';
@@ -64,8 +64,8 @@
 				$gynecReport = !empty($status) && $status == 'gynec' ? '' : 'd-none';
 			}
 			
-		@endphp
-        <div class="{{'col-md-12 '.$ancReport}}">
+		@endphp --}}
+        <div class="{{'col-md-12 '}}">
             <div class="card">
                 <div class="header">
                     <div class="row">
@@ -157,7 +157,7 @@
                 </div>
             </div>
         </div>
-        <div class="{{'col-md-12 '.$ivfReport}}">
+        <div class="{{'col-md-12 '}}">
             <div class="card">
                 <div class="header">
                     <div class="row">
@@ -249,7 +249,7 @@
                 </div>
             </div>
         </div>
-		<div class="{{'col-md-12 '.$iuiReport}}">
+		<div class="{{'col-md-12 '}}">
             <div class="card">
                 <div class="header">
                     <div class="row">
@@ -341,7 +341,7 @@
                 </div>
             </div>
         </div>
-		<div class="{{'col-md-12 '.$gynecReport}}">
+		<div class="{{'col-md-12 '}}">
             <div class="card">
                 <div class="header">
                     <div class="row">
