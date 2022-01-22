@@ -40,9 +40,7 @@
 						@endphp
                         <h2><strong class="text-secondary"> {{ucwords($patientsDetails->name)}}</strong>{{' care of '.$careOf}}</h2>
                     </div>
-                    {{-- <div class="col-md-6 text-right">
-                        <a href="{{url()->previous()}}" class="btn btn-primary m-n2">Back</a>
-                    </div> --}}
+                    
                 </div>
             </div>
         </div>

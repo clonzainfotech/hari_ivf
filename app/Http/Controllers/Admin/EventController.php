@@ -57,7 +57,7 @@ class EventController extends AdminController
                 'time' => 'required',
                 // 'startDate' => 'required|date|after_or_equal:'. date('Y-m-d'),
                 // 'endDate' => 'required|date|after_or_equal:startDate',
-                'event_picture' => 'nullable|image',
+                'event_picture' => 'nullable|mimes:jpg,png,jpeg',
             ];
 
             $validator = Validator::make($request->all(),$rule);
@@ -153,7 +153,7 @@ class EventController extends AdminController
                 'time' => 'required',
                 // 'startDate' => 'required|date|after_or_equal:'. date('Y-m-d'),
                 // 'endDate' => 'required|date|after_or_equal:startDate',
-                'event_picture' => 'nullable|image',
+                'event_picture' => 'nullable|mimes:jpg,png,jpeg',
                 'status' => 'required',
             ];
 
