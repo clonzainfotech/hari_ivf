@@ -17,14 +17,14 @@
             <td>{{((($patients->currentPage() - 1 ) * $patients->perPage()) + $loop->iteration) . '.'}}</td>
             <td>{{$row->code}}</td>
             <td>{{$row->name}}</td>
-            <th>{{$row->lastDoneAppointmentData['id']}}
-                <div class="{{'edit-follow-data edit-follow-'.$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">
+            <td>{{$row->lastDoneAppointmentData['id']}}
+                {{-- <div class="{{'edit-follow-data edit-follow-'.$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">
                     {{$prevAppointmentDate}}
                         <span class="edit-follow">
                             <i class="material-icons edit-remark-icon pencil-icon ml-0" data-value="{{$prevAppointmentDate}}" data-id="{{$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">edit</i>
                         </span>
-                </div></th>
-
+                </div></th> --}}
+            </td>   
             <td>
                 
                 <a href="{{URL::to('get-medicine/'.encrypt($row->id))}}" class="btn btn-primary btn-sm m-0">View</a>

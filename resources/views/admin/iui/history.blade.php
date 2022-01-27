@@ -1240,6 +1240,7 @@
             submitIUIVisit(iuiData);
             
         }
+        var url = "{{URL::to('iui')}}";
         function submitIUIVisit(iuiData)
         {
             $.ajax({

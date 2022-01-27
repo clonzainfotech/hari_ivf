@@ -68,6 +68,7 @@ class MedicalController extends AdminController
             }
             return view('admin.medical.index',compact('patientsData'));
         }catch(Exception $e){
+            log::debug($e);
             abort(500);
         }
     }
