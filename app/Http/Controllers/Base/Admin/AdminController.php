@@ -103,13 +103,15 @@ class AdminController extends BaseController
             $appointmentData->updated_by = Auth::user()->id;
             $appointmentData->save();
         }else{
+            
+
             if($appointmentData['date'] != $date && $appointmentData['date'] < $date){
                 $appointment = $this->Appointment;
                 $appointment->date = $date;
                 $appointment->is_procedure = $isProcedure;
                 $appointment->remark = !empty($data['remark']) ? $data['remark'] : null;
                 $appointment->time = (!empty($data['time'])) ? Carbon::parse($data['time'])->format('H:i:s') : null;
-                $appointment->arrival_time = null;
+                $appointment->arrival_time = !empty($data['arrival_time']) ? $data['arrival_time'] : null;
                 $categoryId = $appointmentData->category_id;
                 $ancCategoryId = 5;
                 switch (true) {

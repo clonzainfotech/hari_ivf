@@ -194,4 +194,52 @@ class AppointmentRequestController extends AdminController
             abort(500);
         }
     }
+
+    /**
+    * Add emergency appointment
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+    public function emergencyAppointment(Request $request,$patientsId)
+    {
+        try
+        {
+            $patientsId = decrypt($patientsId);
+            $appointment = $this->Appointment->where('patients_id',$patientsId)->orderBy('id','DESC')->first();
+            $requestData = new \Illuminate\Http\Request();
+            $date = date('Y-m-d');
+            $requestData->replace(['date' => $date,'status'=>true]);
+            $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
+
+            if(!empty($nextAppontment['time']) || (!empty($nextAppontment['time']) || $nextAppontment['time'] == 0)){
+                $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
+                $appointmentTime = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
+                $date = !empty($nextAppontment['date']) ? $nextAppontment['date'] : $date;
+            }
+            if($appointment && $appointment['date'] != $date){
+                $appointmentData['appointmentId'] = encrypt($appointment->id);
+                $appointmentData['date'] = $date;
+                $appointmentData['arrival_time'] = date('H:i');
+                $appointmentData['category'] = ($appointment->category_id == 10 || $appointment->category_id == 13) ? 6 : $appointment->category_id;
+                $appointmentData['isAnc'] = false;
+                $appointmentData['time'] = $appointmentTime;
+                $appointmentData['is_procedure'] = 0;
+                $appointmentData['remark'] = '';
+                $nextAppointment = $this->nextAppointmentData($appointmentData);
+            }
+            $latestAppointment = $appointment = $this->Appointment->where('date',$date)->where('patients_id',$patientsId)->where('is_done',0)->first();
+            if($latestAppointment)
+            {
+                $appointmentCharges = $this->AppointmentCharges;
+                $appointmentCharges->appointment_id = $latestAppointment->id;
+                $appointmentCharges->created_by = Auth::user()->id;
+                $appointmentCharges->updated_at = date('Y-m-d H:i:s');
+                $data = $appointmentCharges->save();
+            }
+            return redirect()->back();
+        }catch(\Exception $e){
+            log::Debug($e);
+            abort(500);
+        }
+    }
 }

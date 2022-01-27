@@ -956,9 +956,13 @@ class IVFController extends AdminController
                         $followupDate = $transferDate;
                     }
                     // if(!empty($request->data['progesterone']['type']) || (isset($request->data['collection']) && in_array('trigger', $request->data['collection']))){
-                        if(isset($request->data['collection']) && in_array('trigger', $request->data['collection'])){
+                    if(isset($request->data['collection']) && in_array('trigger', $request->data['collection'])){
                         $isProcudure = 1;
                         $appointment_remark = 'For Trigger';
+                    }
+                    if(!empty($request->data['progesterone']['type']) && isset($request->data['collection']) && in_array('progesterone', $request->data['collection']))
+                    {
+                        $appointment_remark = 'For Transfer';
                     }
                     if($followupDate){
                         $currentDate = date('Y-m-d');

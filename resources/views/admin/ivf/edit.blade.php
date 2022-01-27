@@ -1805,12 +1805,12 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("ho_rx[iui][status]",'yes',!empty($hoRx->iui) && $hoRx->iui->status == 'yes' ? true : false,['id'=>'ho_iui_yes','class'=>'iui-yes-no-status','data-type'=>'ho-iui-type'])}}
+                                                    {{Form::radio("ho_rx[iui][status]",'yes',!empty($hoRx->iui) && isset($hoRx->iui->status) && $hoRx->iui->status == 'yes' ? true : false,['id'=>'ho_iui_yes','class'=>'iui-yes-no-status','data-type'=>'ho-iui-type'])}}
                                                     <label for="ho_iui_yes">
                                                         Yes
                                                     </label>
 
-                                                    {{Form::radio("ho_rx[iui][status]",'no',!empty($hoRx->iui) && $hoRx->iui->status == 'no' ? true : false,['id'=>'ho_iui_no','class'=>'iui-yes-no-status','data-type'=>'ho-iui-type'])}}
+                                                    {{Form::radio("ho_rx[iui][status]",'no',!empty($hoRx->iui) && isset($hoRx->iui->status) && $hoRx->iui->status == 'no' ? true : false,['id'=>'ho_iui_no','class'=>'iui-yes-no-status','data-type'=>'ho-iui-type'])}}
                                                     <label for="ho_iui_no">
                                                         No
                                                     </label>

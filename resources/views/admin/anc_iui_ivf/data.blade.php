@@ -168,6 +168,9 @@
                                 <button class="btn btn-danger btn-sm notify-patient" id="{{encrypt($row->patients_id)}}"  onclick="callPatient('{{$name}}','{{$cName}}',this)">Call Patient</button>
                             @endif
                         @endif
+                        @if($row->date != date('Y-m-d'))
+                            <a href="{{url('emergency-appointment/'.encrypt($row->patients_id))}}"><button class="btn btn-sm emergency-patient" id="{{encrypt($row->patients_id)}}">Emergency</button></a>
+                        @endif
                     </td>
                 @endif
             </tr>

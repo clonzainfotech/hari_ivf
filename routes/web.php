@@ -135,6 +135,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('appointment-request','AppointmentRequestController@index');
     Route::post('appointment-request/{id}/approve','AppointmentRequestController@appointmentApprove');
     Route::post('appointment-request/{id}/reject','AppointmentRequestController@appointmentReject');
+    Route::get('emergency-appointment/{id}','AppointmentRequestController@emergencyAppointment');
 
     //self Booking
     Route::get('self-booking','AppointmentRequestController@getSelfBookingList');
