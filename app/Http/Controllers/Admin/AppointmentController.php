@@ -54,7 +54,8 @@ class AppointmentController extends AdminController
             $nowDate = Carbon::now()->format('Y-m-d');
 
             if($request->ajax()){
-                $appointment = $this->Appointment->select('*',DB::raw('TIMESTAMPDIFF(minute, concat(date," ",time), concat(date," ",arrival_time))as duration'));
+                // $appointment = $this->Appointment->select('*',DB::raw('TIMESTAMPDIFF(minute, concat(date," ",time), concat(date," ",arrival_time))as duration'));
+                $appointment = $this->Appointment;
                 // dd($appointment->first());
                     // $appointment = $this->Appointment->where('is_procedure',0);
                     // ->where('category_id', '!=', 7);
@@ -119,7 +120,6 @@ class AppointmentController extends AdminController
                     $date = explode("-",$request->date);
                     $startDate = Carbon::createFromFormat('d/m/Y', trim($date[0]))->format('Y-m-d');
                     $endDate = Carbon::createFromFormat('d/m/Y', trim($date[1]))->format('Y-m-d');
-                    // dd($startDate);
                     if($date){
                         $pId = $this->Appointment->whereBetween('date', [$startDate, $endDate])->pluck('patients_id','patients_id')->toArray();
                         $patientsData = $this->getPatients($pId);
@@ -140,16 +140,12 @@ class AppointmentController extends AdminController
                 }
                 if($request->date && $startDate == $nowDate && $endDate == $nowDate){
                     $appointment = $appointment
-                                                ->orderBy(DB::raw('ISNULL(arrival_time)'), 'ASC')
-                                                // ->orderBy(DB::raw('ISNULL(arrival_time), arrival_time'), 'ASC')
-                                                // ->orderBy('arrival_time','desc')
-                                                ->orderBy('date','asc')
-
-                                                ->orderBy(DB::raw('ISNULL(time)'), 'ASC')
-                                                // ->orderBy(DB::raw('ISNULL(time), time'), 'ASC')
-                                                // ->orderBy('time','asc')
-                                                ->orderBy('is_done','ASC')
-                                                ->orderBy('duration','asc');
+                    ->orderBy(DB::raw('ISNULL(arrival_time), arrival_time'), 'ASC')
+                    // ->orderBy('arrival_time','ASC')
+                    ->orderBy('date','asc')
+                    ->orderBy(DB::raw('ISNULL(time), time'), 'ASC')
+                    // ->orderBy('time','asc')
+                    ->orderBy('is_done','ASC');
 
                 }else{
                     $appointment = $appointment->orderBy('date','asc')
@@ -170,11 +166,6 @@ class AppointmentController extends AdminController
                         });
                     }
                     $appointment = $appointment->orderBy('id','DESC')->get();
-                    // $appointment = collect($appointment)->map(function($query){
-                    //     $query->apt_status = '345';
-                    //     return $query;
-                    // });
-                    // dd($appointment);
                     $data['status'] = 2;
                     $data['appointmentData'] = View::make('admin.appointment.appointment_print',compact('appointment'))->render();
                     return $data;
@@ -182,11 +173,7 @@ class AppointmentController extends AdminController
                 $appointment = $appointment->paginate(100);
                 foreach($appointment as $row){
                     $row->next_appointment = true;
-                    $time = Carbon::parse($row->time);
-                    // $time = new DateTime(date('Y-m-d').' '.$row->time);
-                    $arrival_time = !empty($row->arrival_time) ? Carbon::parse($row->arrival_time) : null;
-                    $row->apt_status = !empty($arrival_time) ? $time->diffInSeconds($arrival_time) : 0;
-                    // $row->apt_status = $arrival_time;
+                   
                     $patients = $this->getPatientsLastAppoinment($row->patients_id);
                     if(!empty($patients['lastAppointment'])){
                         $row->next_appointment = false;

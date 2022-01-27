@@ -1124,7 +1124,7 @@ class IVFController extends AdminController
                         $procedureList->patients_id = $patientsId;
                         $procedureList->date = Carbon::parse($pickUpDate)->format('Y-m-d');
                         $procedureList->procedure = 'Coming for PickUp';
-                        $procedureList->description = null;
+                        $procedureList->description = 'Trigger Date : '.$pickUpDateTime;
                         $procedureList->save();
                     }
                     if(!empty($request->data['progesterone']['type']) && isset($request->data['collection']) && in_array('progesterone', $request->data['collection']))
