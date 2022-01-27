@@ -1071,7 +1071,11 @@ class IUIController extends AdminController
                     $categoryPatientData['category_id'] = !empty($request->category) ? $request->category : 4;
                     $nextAppontment = $this->storeCategoryNotification($categoryPatientData);
 
-                    $procedureList = $this->ProcedureList;
+                    $procedureList = $this->ProcedureList->where('patients_id',$patientsId)->first();
+                    if(empty($procedureList))
+                    {
+                        $procedureList = $this->ProcedureList;
+                    }
                     $procedureList->patients_id = $patientsId;
                     $procedureList->date = Carbon::parse($iuiDtaeAndTime)->format('Y-m-d');
                     $procedureList->procedure = 'Coming for IUI';

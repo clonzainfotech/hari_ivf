@@ -1096,7 +1096,7 @@ class IVFController extends AdminController
                     }
                 }
                 // }
-                if(!$request->ivf_visit_id){
+                //add notification and procedure list 
                     $followDate = !empty($followDate) ? date('d M Y',strtotime($followDate)) : null;
                     $triggerDate = !empty($request['data']['trigger_date'])  ? date('d M Y',strtotime($request['data']['trigger_date'])) : null;
                     if($triggerDate){
@@ -1120,12 +1120,17 @@ class IVFController extends AdminController
                         $categoryPatientData['category_id'] = !empty($request->category) ? $request->category : 2;
                         $nextAppontment = $this->storeCategoryNotification($categoryPatientData);
 
-                        $procedureList = $this->ProcedureList;
+                        $procedureList = $this->ProcedureList->where('patients_id',$patientsId)->first();
+                        if(empty($procedureList))
+                        {
+                            $procedureList = $this->ProcedureList;
+                        }
                         $procedureList->patients_id = $patientsId;
                         $procedureList->date = Carbon::parse($pickUpDate)->format('Y-m-d');
                         $procedureList->procedure = 'Coming for PickUp';
-                        $procedureList->description = 'Trigger Date : '.$pickUpDateTime;
+                        $procedureList->description = 'PickUp Date : '.Carbon::parse($pickUpDateTime)->format('d-m-Y H:i A');
                         $procedureList->save();
+                        
                     }
                     if(!empty($request->data['progesterone']['type']) && isset($request->data['collection']) && in_array('progesterone', $request->data['collection']))
                     {
@@ -1138,7 +1143,11 @@ class IVFController extends AdminController
                         $nextAppontment = $this->storeCategoryNotification($categoryPatientData);
 
                         //add in procedure table
-                        $procedureList = $this->ProcedureList;
+                        $procedureList = $this->ProcedureList->where('patients_id',$patientsId)->first();
+                        if(empty($procedureList))
+                        {
+                            $procedureList = $this->ProcedureList;
+                        }
                         $procedureList->patients_id = $patientsId;
                         $procedureList->date = Carbon::parse($followDate)->format('Y-m-d');
                         $procedureList->procedure = 'Coming for Transfer';
@@ -1165,14 +1174,19 @@ class IVFController extends AdminController
                             $description = 'Hystroscopy - '.$request->investigation['hystroscopy']['detail'].' / Laproscopy - '.$request->investigation['laproscopy']['detail'];
                         }
                         
-                        $procedureList = $this->ProcedureList;
+                        $procedureList = $this->ProcedureList->where('patients_id',$patientsId)->first();
+                        if(empty($procedureList))
+                        {
+                            $procedureList = $this->ProcedureList;
+                        }
                         $procedureList->patients_id = $patientsId;
                         $procedureList->date = Carbon::parse($followDate)->format('Y-m-d');
                         $procedureList->procedure = $procedure;
                         $procedureList->description = $description;
                         $procedureList->save();
                     }
-                    
+                if(!$request->ivf_visit_id){
+                
                     if($ivfStatus == 1){
                         $this->SmsManager::sendReferenceDoctor($msg,$seenBy->name,$followDate,$patientsId);
                     }

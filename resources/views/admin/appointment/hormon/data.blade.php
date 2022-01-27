@@ -1,5 +1,6 @@
 @php
     $pMethod = ['1'=>'Swipe','2'=>'Cash','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'];
+    $total = 0;
 @endphp
 <table class="table m-b-0" id="hormon-table">
     <thead>
@@ -38,6 +39,9 @@
             </div>
         </td>
         @forelse($hormon as $key=>$row)
+        @php
+            $total = $total + $row->amount;
+        @endphp
             <tr class="hormondata" data-id="{{encrypt($row->id)}}" data-type="{{$row->charge_type}}">
                 <td>{{((($hormon->currentPage() - 1 ) * $hormon->perPage() ) + $loop->iteration) . '.'}}</td>
                 <td>{{ucwords(strtolower($row->getPatients['name']))}}</td>
@@ -92,6 +96,14 @@
         @empty
             <td colspan="15" class="text-center hormondata">No records available</td>
         @endforelse
+        <tr>
+            <td colspan=""></td>
+            <td colspan=""></td>
+            <td colspan=""></td>
+            <td class="font-bold">Total : </td>
+            <td class="font-bold">{{$total}}</td>
+            <td colspan="10"></td>
+        </tr>
     </tbody>
 </table>
 {{$hormon->links()}}
