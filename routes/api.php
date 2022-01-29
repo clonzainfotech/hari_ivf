@@ -26,6 +26,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
     Route::get('/getQ_A', 'HomeController@getQAns');
     Route::get('getHtmlPages','HomeController@getHtmlPages');
     Route::post('getRegisterStatus','AuthApiController@registerStatus');
+    Route::get('get-question/{id?}','FaqController@index');
 
     Route::middleware('APIToken')->group(function () {
         // Logout
@@ -103,6 +104,15 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         //Appointment sloat
         Route::get('getappointmentDoctorList','AppointmentController@appointmentDoctorList');
         Route::post('getSloatBookCount','AppointmentController@getSloatBookCount');
+
+        //Faq
+        Route::post('add-question','FaqController@addQuestion');
+        Route::post('add-answer','FaqController@addAnswer');
+        Route::post('update-question','FaqController@updateQuestion');
+        Route::post('update-answer','FaqController@updateAnswer');
+        Route::post('delete-answer','FaqController@deleteAnswer');
+        Route::post('delete-question','FaqController@deleteQuestion');
+        
     });
 
 });

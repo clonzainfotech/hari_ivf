@@ -86,6 +86,8 @@ use App\Models\PatientSignup;
 use App\Models\IvfPaymentReminder;
 use App\Models\IvfResultReview;
 use App\Models\ProcedureList;
+use App\Models\FaqAnswer;
+use App\Models\FaqQuestion;
 
 
 
@@ -174,6 +176,8 @@ class BaseController extends Controller
         $this->IvfPaymentReminder = new IvfPaymentReminder;
         $this->IvfResultReview = new IvfResultReview;
         $this->ProcedureList = new ProcedureList;
+        $this->FaqQuestion = new FaqQuestion;
+        $this->FaqAnswer = new FaqAnswer;
 
 
     }
