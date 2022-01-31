@@ -843,7 +843,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     <div class="panel-title header-print-title">History of Rx taken elsewhere</div>
                                 </td>
                             </tr>
-                            @if($hoRx->taken->status == 'yes')
+                            @if(isset($hoRx->taken->status) && $hoRx->taken->status == 'yes')
                                 <tr>
                                     @if(isset($hoRx->taken->status) && ($hoRx->taken->status == 'yes') && isset($hoRx->taken->how_much_no) && $hoRx->taken->how_much_no > 0)
                                         <tr>
@@ -887,7 +887,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     @endif
                                 </tr>
                             @endif
-                            @if($hoRx->iui->status == 'yes')
+                            @if(isset($hoRx->iui->status) && $hoRx->iui->status == 'yes')
                                 <tr>
                                     @if(isset($hoRx->iui->status) && ($hoRx->iui->status == 'yes'))
                                         @if(!empty($hoRx->iui->details))
