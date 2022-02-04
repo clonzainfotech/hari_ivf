@@ -1666,9 +1666,8 @@ class ReportController extends AdminController
                         'getAppointmentCharges',
                     ])
                     ->orderBy('id', 'desc');
-
-
-                if($fromdate || $todate){
+                if($fromdate || $todate)
+                {
                     $usg = $usg->whereBetween('date', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
                     $hormon = $hormon->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
                     $iui = $iui->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
@@ -1973,10 +1972,12 @@ class ReportController extends AdminController
                 $data_total = $this->IUI->groupBy('patients_id')->whereHas('getPatientsDetails');
                 $data_oldinf = $this->IuiHistory->groupBy('patients_id')->whereHas('getPatientsDetails');
                 // $data_drop = $this->IuiHistory::where('visit', '<', 4 )->where('created_at', '<', (new \Carbon\Carbon)->submonths(2))->groupBy('patients_id')->orderBy('id','DESC')->pluck('patients_id','patients_id')->toArray();
-                $data_drop = $this->Appointment->whereHas('getPatientsDetails')->whereIn('category_id',[3,4])->where('date', '<', (new \Carbon\Carbon)->submonths(1))->groupBy('patients_id')->orderBy('id','DESC');
+                $data_drop = $this->Appointment->whereHas('getPatientsDetails')->whereHas('getAppointmentCharges')->whereIn('category_id',[3,4])->where('date', '<', (new \Carbon\Carbon)->submonths(1))->groupBy('patients_id')->orderBy('id','DESC');
+                $data_newIvf = $this->Appointment->whereHas('getAppointmentCharges')->whereIn('category_id',[3])->groupBy('patients_id')->orderBy('id','DESC');
+                $data_continue = $this->Appointment->whereIn('category_id',[3,4])->where('date', '>', (new \Carbon\Carbon)->now()->format('Y-m-d'))->groupBy('patients_id')->orderBy('id','DESC');
                 $clomiphene = "Clomiphene Citrate";
                 $data_cc = $this->IuiHistory::where('visit', 2 )->whereHas('getPatientsDetails')->where('description','like', '%'.$clomiphene.'%')->groupBy('patients_id')->orderBy('id','DESC');
-                $ltz= "ltz";
+                $ltz= "letroze";
                 $data_ltz = $this->IuiHistory::where('visit', 2 )->whereHas('getPatientsDetails')->where('description','like', '%'.$ltz.'%')->groupBy('patients_id')->orderBy('id','DESC');
                 $consive = "consive";
                 $data_consive = $this->IuiHistory::where('visit', 4 )->whereHas('getPatientsDetails')->where('description','like', '%'.$consive.'%')->groupBy('patients_id')->orderBy('id','DESC');
@@ -1993,16 +1994,20 @@ class ReportController extends AdminController
                     $fromdate = $fromdate;
                     $todate = $todate;
                     // $injManager = $injManager->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
-                    $data_total = $data_total->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    // $data_total = $data_total->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $data_newIvf = $data_newIvf->whereBetween(\DB::raw('DATE(date)'), [$fromdate, $todate]);
                     $data_oldinf = $data_oldinf->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $data_drop = $data_drop->whereBetween(\DB::raw('DATE(date)'), [$fromdate, $todate]);
                     $data_drop = $data_drop->whereBetween(\DB::raw('DATE(date)'), [$fromdate, $todate]);
                     $data_cc = $data_cc->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $data_ltz = $data_ltz->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $data_consive = $data_consive->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $data_fail = $data_fail->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $data_skip = $data_skip->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $data_continue = $data_continue->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                 }
                 $data_total = $data_total->pluck('patients_id','patients_id')->toArray();
+                $data_newIvf = $data_newIvf->pluck('patients_id','patients_id')->toArray();
                 $data_oldinf = $data_oldinf->pluck('patients_id','patients_id')->toArray();
                 $data_drop = $data_drop->pluck('patients_id','patients_id')->toArray();
                 $data_cc = $data_cc->get()->pluck('patients_id','patients_id')->toArray();
@@ -2010,12 +2015,13 @@ class ReportController extends AdminController
                 $data_consive = $data_consive->get()->pluck('patients_id','patients_id')->toArray();
                 $data_fail = $data_fail->pluck('patients_id','patients_id')->toArray();
                 $data_skip = $data_skip->pluck('patients_id','patients_id')->toArray();
+                $data_continue = $data_continue->pluck('patients_id','patients_id')->toArray();
                 
                 $data['total'] = count($data_total);
                 $data['oldinf'] = count($data_oldinf);
-                $data ['newinf'] = ($data['total'] - $data['oldinf']) > 0 ? $data['total'] - $data['oldinf'] : 0;
+                $data ['newinf'] = count($data_newIvf);
                 $data ['drop'] = count($data_drop);
-                $data ['continue'] = ($data['total'] - $data['drop']) > 0 ? $data['total'] - $data['drop'] : 0;
+                $data ['continue'] = count($data_continue);
                 $data ['cc'] = count($data_cc);
                 $data ['ltz'] = count($data_ltz);
                 $data ['consive'] = count($data_consive);
@@ -2030,8 +2036,8 @@ class ReportController extends AdminController
                 }
                 if($key == 'new-inf')
                 {
-                    $new_inf_ids = array_diff($data_total,$data_oldinf);
-                    $patients = $patients->whereIn('id',$new_inf_ids);
+                    // $new_inf_ids = array_diff($data_total,$data_oldinf);
+                    $patients = $patients->whereIn('id',$data_newIvf);
                 }
                 if($key == 'old-inf')
                 {
@@ -2039,8 +2045,8 @@ class ReportController extends AdminController
                 }
                 if($key == 'continue-inf')
                 {
-                    $continue_ids = ($data['total'] - $data['drop']) > 0 ? array_diff($data_total,$data_drop) : [];
-                    $patients = $patients->whereIn('id',$continue_ids);
+                    // $continue_ids = ($data['total'] - $data['drop']) > 0 ? array_diff($data_total,$data_drop) : [];
+                    $patients = $patients->whereIn('id',$data_continue);
                 }
                 if($key == 'drop-inf')
                 {
