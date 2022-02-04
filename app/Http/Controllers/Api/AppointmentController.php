@@ -685,7 +685,7 @@ class AppointmentController extends ApiController
                                 ->find($lastAppointment->id)
                                 ->update([
                                     'appointment_date' => $request->date,
-                                    'appointment_time' => $request->time,
+                                    'appointment_time' => $request->time
                                 ]);
                             $msg = "Your appointment is in pending";
                         }
