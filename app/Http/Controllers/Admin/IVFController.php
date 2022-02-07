@@ -3490,7 +3490,7 @@ class IVFController extends AdminController
             if($request->ajax()) 
             {
                
-                $ivfResultReview = $this->IvfResultReview;
+                $ivfResultReview = $this->IvfResultReview->orderBy('created_at','desc');
                 $ivfResultReview = $ivfResultReview->paginate(100);
                 $data['status'] = 1;
                 $data['data'] = View::make('admin.ivf_result_review.data',compact('ivfResultReview'))->render();

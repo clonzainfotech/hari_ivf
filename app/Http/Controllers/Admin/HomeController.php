@@ -475,6 +475,7 @@ class HomeController extends AdminController
         $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
         $typeOfData = [1=>'Primary',2=>'Secondary'];
         $data = '';
+        $result = '';
         if($request->category && in_array($request->category,[5,6,10,13]))
         {
             $ancHistory = $this->AncHistory->where('patients_id','=',$patients_id)
@@ -628,11 +629,19 @@ class HomeController extends AdminController
             $totalAttemptCycle .= 'FET-OD - Total Cycle : '.($ivfFetOdCycle - $ivfFetOdCycleSkip).' (Skip : '.($ivfFetOdCycleSkip).') <br>';
             $totalAttemptCycle .= 'FET-ED -Total Cycle : '.($ivfFetEdCycle - $ivfFetEdCycleSkip).' (Skip : '.($ivfFetEdCycleSkip).') <br>';
             // $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
+            $check_ivf_result = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<=',$appoitmentDate)->orderBy('id','desc')->first();
+            if($check_ivf_result)
+            {
+                $ivf_result = json_decode($check_ivf_result->description);
+                
+                $result = $ivf_result->is_transfer == 'yes' ? "IVF Result (".(\Carbon\Carbon::parse($ivf_result->follow_up)->format('d-m-Y')).')' : '';
+            }
             $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
             <p><span class="font-bold candor-color">Patient Age : </span>'.$opdPatient->age.' Years'.'</p>
             <p><span class="font-bold candor-color">Attempt Of Cycle : </span><span class="attempt-cycle">'.$totalAttemptCycle.'</span></p>
             <p><span class="font-bold candor-color">Current Plan : </span>'.$plan_type.'</p>
-            <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>';
+            <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>
+            <p><span class="font-bold candor-color">Result : </span>'.$result.'</p>';
             $packages = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->get();
                 // dd($packages);
 
@@ -694,12 +703,20 @@ class HomeController extends AdminController
                 $currentData = json_decode($currentHistory->description);
                 $remark = !empty($currentData->remark) ? $currentData->remark : '';
             }
+            $check_iui_result = $this->IuiHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<=',$appoitmentDate)->orderBy('id','desc')->first();
+            if($check_iui_result)
+            {
+                $iui_result = json_decode($check_iui_result->description);
+                
+                $result = $iui_result->ovalution == 'yes' ? "IUI Result (".(\Carbon\Carbon::parse($iui_result->follow_up)->format('d-m-Y')).')' : '';
+            }
             $data = '<p><span class="font-bold candor-color">Marriage Life : </span>'.$ml.'</p>
             <p><span class="font-bold candor-color">Patient Age : </span>'.$opdPatient->age.' Years'.'</p>
             <p><span class="font-bold candor-color">Attempt Of Cycle : </span>'.$no_cycle.'</p>
             <p><span class="font-bold candor-color">Current Cycle : </span>'.$current_cycle.'</p>
             <p><span class="font-bold candor-color">Plan : </span>'.$plan.'</p>
             <p><span class="font-bold candor-color">Remark : </span>'.$remark.'</p>
+            <p><span class="font-bold candor-color">Result : </span>'.$result.'</p>
             <p><span class="font-bold candor-color"> Last Cycle Plan: </span>'.$last_cycle_plan.'</p>';
         }
         

@@ -125,15 +125,20 @@ class AuthApiController extends ApiController
             }
             $PatientToken = $this->PatientToken;
             if($user) {
-                $token = $this->apiToken;
-                $PatientToken->patients_id = $user->id;
-                $PatientToken->token = $token;
-                $PatientToken->save();
-                $user->is_verify=1;
-                $user->save();
-                $user->token = $token;
-                $user->is_new =  0;
-                if (empty($user->code)) {
+                $user->token = 'no-token';
+                if(isset($user->code))//for self booking
+                {
+                    $token = $this->apiToken;
+                    $PatientToken->patients_id = $user->id;
+                    $PatientToken->token = $token;
+                    $PatientToken->save();
+                    $user->is_verify=1;
+                    $user->save();
+                    $user->token = $token;
+                    $user->is_new =  0;
+                }
+                if (empty($user->code)) 
+                {
                     $user->is_new = 1; 
                 }
                 $success = [

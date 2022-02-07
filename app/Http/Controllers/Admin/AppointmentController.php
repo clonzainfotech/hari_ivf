@@ -1475,6 +1475,7 @@ class AppointmentController extends AdminController
                 $plan = '';
                 $cycle_no = '';
                 $no_cycle = 0;
+                $result = '';
                 $planData = ['1'=>'Self','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
                 $currentHistory = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->orderBy('id','desc')->first();
                 if(!$currentHistory)
@@ -1512,12 +1513,22 @@ class AppointmentController extends AdminController
                 $ivfFetOdCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','3')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
                 $ivfFetEdCycleSkip = count($this->IvfHistory->where('patients_id',$patients_id)->where('description->skip_cycle','yes')->where('plan','4')->groupBy('cycle_no')->orderBy('created_at','desc')->get());
 
+                $check_ivf_result = $this->IvfHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<=',$appoitmentDate)->orderBy('id','desc')->first();
+                if($check_ivf_result)
+                {
+                    $ivf_result = json_decode($check_ivf_result->description);
+                    
+                    $result = $ivf_result->is_transfer == 'yes' ? "IVF Result (".(\Carbon\Carbon::parse($ivf_result->follow_up)->format('d-m-Y')).')' : '';
+                }
+
                 $totalAttemptCycle = 'PickUp - Total Cycle : '.($ivfSelfCycle - $ivfSelfCycleSkip).' (Skip : '.($ivfSelfCycleSkip).') <br>';
                 $totalAttemptCycle .= 'FET - Total Cycle : '.($ivfFetCycle - $ivfFetCycleSkip).' (Skip : '.($ivfFetCycleSkip).') <br>';
                 $totalAttemptCycle .= 'FET-OD - Total Cycle : '.($ivfFetOdCycle - $ivfFetOdCycleSkip).' (Skip : '.($ivfFetOdCycleSkip).') <br>';
                 $totalAttemptCycle .= 'FET-ED -Total Cycle : '.($ivfFetEdCycle - $ivfFetEdCycleSkip).' (Skip : '.($ivfFetEdCycleSkip).') <br>';
                 $data .= '<p><span class="font-bold candor-color">Attempt Cycle : </span><span class="attempt-cycle">'.$totalAttemptCycle.'</span></p>';
                 $data .= '<p><span class="font-bold candor-color">Current Plan: </span>'.(!empty($plan) ? $planData[$plan] : '').'</p>';
+                $data .= '<p><span class="font-bold candor-color">Result: </span>'.$result.'</p>';
+                
                 foreach($packages as $key => $package)
                 {
                     $totalAmount = $this->IndoorDeposit->where('patient_id',$patients_id)->where('ivf_payment_id',$package->id)->sum('amount');
@@ -1569,9 +1580,12 @@ class AppointmentController extends AdminController
                         $lmpDate = $description->lmp->date; 
                     }
                 }
-                if($this->IuiHistory->where('patients_id',$patients_id)->where('visit',4)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'!=',$appoitmentDate)->orderBy('id','desc')->first())
+                $check_iui_result = $this->IuiHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<=',$appoitmentDate)->orderBy('id','desc')->first();
+                if($check_iui_result)
                 {
-                    $remark = "IUI Result";
+                    $iui_result = json_decode($check_iui_result->description);
+                    
+                    $remark = $iui_result->ovalution == 'yes' ? "IUI Result (".(\Carbon\Carbon::parse($iui_result->follow_up)->format('d-m-Y')).')' : '';
                 }
                 $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
                         <p><span class="font-bold candor-color">LMP Date : </span>'.(!empty($lmpDate) ? \Carbon\Carbon::parse($lmpDate)->format('d-m-Y') : '').'</p>
