@@ -585,7 +585,7 @@ class AdminController extends BaseController
     public function storeCategoryNotification($data)
     {
         $categoryNotification =  $this->CategoryNotification->whereDate('date',$data['date'])->where('patients_id',$data['patients_id'])->where('category_id',$data['category_id'])->get();
-        if(!$categoryNotification)
+        if(!empty($categoryNotification))
         {
             $categoryNotification = $this->CategoryNotification;
             $categoryNotification->patients_id = $data['patients_id'];
