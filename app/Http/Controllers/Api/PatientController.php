@@ -230,6 +230,7 @@ class PatientController extends ApiController
                 }
                 $ivfAllVisit = $this->IVF->where('patients_id', $patients)->get();
                 $ivfAllHistoryVisit = $this->IvfHistory->where('patients_id',$patients)->get();
+                $ivfAllExtraVisit = $this->IvfExtraVisit->where('patient_id',$patients)->get();
                 if($ivfAllVisit)
                 {
                     foreach($ivfAllVisit as $ivfVisit)
@@ -280,8 +281,23 @@ class PatientController extends ApiController
                     
                     }
                 }
+                if($ivfAllExtraVisit)
+                {
+                    foreach($ivfAllExtraVisit as $ivfExtraVisit)
+                    {
+                        $reportDate = Carbon::parse($ivfExtraVisit->created_at)->format('Y-m-d H:i:s');
+                        $investigationHistoryData = !empty($ivfExtraVisit->oe) ? json_decode($ivfExtraVisit->oe,true) : '';
+                       
+                        if(!empty($investigationHistoryData['blood_report']['image']))
+                        {
+                            $data[] = array('date' => $reportDate,"category"=> 'IVF',"report_type" => 'Blood Report','url' => $investigationHistoryData['blood_report']['image']);
+                        }
+                    }
+                }
                 $iuiAllVisit = $this->IUI->where('patients_id', $patients)->get();
                 $iuiAllHistoryVisit = $this->IuiHistory->where('patients_id',$patients)->get();
+                $iuiAllExtraVisit = $this->IuiExtraVisit->where('patient_id',$patients)->get();
+                
                 if($iuiAllVisit)
                 {
                     foreach($iuiAllVisit as $iuiVisit)
@@ -319,6 +335,18 @@ class PatientController extends ApiController
                         if(!empty($investigationHistoryData['usg']['images']))
                         {
                             $data[] = array('date' => $reportDate,"category"=> 'IUI',"report_type" => 'USG Report','url' => $investigationHistoryData['usg']['images']);
+                        }
+                    }
+                }
+                if($iuiAllExtraVisit)
+                {
+                    foreach($iuiAllExtraVisit as $iuiExtraVisit)
+                    {
+                        $reportDate = Carbon::parse($iuiExtraVisit->created_at)->format('Y-m-d H:i:s');
+                        $investigationHistoryData = !empty($iuiExtraVisit->oe) ? json_decode($iuiExtraVisit->oe,true) : '';
+                        if(!empty($investigationHistoryData['blood_report']['image']))
+                        {
+                            $data[] = array('date' => $reportDate,"category"=> 'IUI',"report_type" => 'Blood Report','url' => $investigationHistoryData['blood_report']['image']);
                         }
                     }
                 }
