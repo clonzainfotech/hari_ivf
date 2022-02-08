@@ -394,6 +394,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'login'],function(){
     Route::get('patient','PatientsController@index');
     Route::get('editpatient/{id}','PatientsController@edit');
     Route::get('create-patient','PatientsController@create');
+    Route::get('/reject-patient','PatientsController@delete');
     Route::put('update-patient/{id?}','PatientsController@update');
     Route::any('patient-report','PatientsController@getPatientReport');
     Route::get('get-all-report/{id}','PatientsController@getAllReports');

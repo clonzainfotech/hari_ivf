@@ -1095,7 +1095,7 @@ class ReportController extends AdminController
     // remark appointment generate
     public function remarkAppointment(Request $request){
         try{
-            $patients = $this->OpdPatients->pluck('name','id')->toArray();
+            $patients = $this->OpdPatients->where('is_approved',1)->pluck('name','id')->toArray();
             if($request->ajax()){
                 $appointment = $this->Appointment->whereNotNull('remark');
                 $patientId = $request->patient_id;
@@ -1808,7 +1808,7 @@ class ReportController extends AdminController
     {
         try{
             $injection = $this->InjectionCharge->pluck('name','name');
-            $patients = $this->OpdPatients->pluck('name','id')->toArray();
+            $patients = $this->OpdPatients->where('is_approved',1)->pluck('name','id')->toArray();
             if($request->ajax()){
                 $injManager = $this->InjectionManager;
                 if(!empty($request->inj))

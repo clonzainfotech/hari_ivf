@@ -49,16 +49,16 @@ class AuthApiController extends ApiController
         //     $user = $user_data;
         // }
         //for app register patients
-        if($login_type == 'mobile')
-        {
-            $patient = $this->PatientSignup->where('mobile_number',$request->only($login_type))->first();
-            if($patient)
-            {
-                $user_data = $patient;
-                // return $this->sendNotApproved('Please contact to Radha Candor IVF Hospital of Approve your Request');
-            }
+        // if($login_type == 'mobile')
+        // {
+        //     $patient = $this->PatientSignup->where('mobile_number',$request->only($login_type))->first();
+        //     if($patient)
+        //     {
+        //         $user_data = $patient;
+        //         // return $this->sendNotApproved('Please contact to Radha Candor IVF Hospital of Approve your Request');
+        //     }
 
-        }
+        // }
         if($user_data) {
             // $user_new = $user->is_verify = 0;
             $user_data->mobile_number=$request->input('login');
@@ -106,10 +106,10 @@ class AuthApiController extends ApiController
                 return $this->sendError($validator->errors()->first(), 422);
             }
             $patient = $this->OpdPatients->where('id', $pid)->first();
-            if(!$patient)
-            {
-                $patient = $this->PatientSignup->where('id', $pid)->first();
-            }
+            // if(!$patient)
+            // {
+            //     $patient = $this->PatientSignup->where('id', $pid)->first();
+            // }
             if($patient && $patient->mobile_number == '9825604838')
             {
                 $user = $this->OpdPatients->where('id', $pid)->first();
@@ -119,10 +119,10 @@ class AuthApiController extends ApiController
                 $user = $this->OpdPatients->where('id', $pid)->where('otp',$request->otp)->first();
             }
             //for app register patients
-            if(!$user)
-            {
-                $user = $this->PatientSignup->where('id', $pid)->where('otp',$request->otp)->first();
-            }
+            // if(!$user)
+            // {
+            //     $user = $this->PatientSignup->where('id', $pid)->where('otp',$request->otp)->first();
+            // }
             $PatientToken = $this->PatientToken;
             if($user) {
                 $user->token = 'no-token';
@@ -164,8 +164,8 @@ class AuthApiController extends ApiController
             'last_name' => 'required',
             'surname' => 'required',
             'dob' => 'required',
-            'mobile_number' => 'nullable|numeric|unique:patients|unique:patients_signup|digits:10',
-            'other_mobile_number' => 'nullable|numeric|unique:patients|unique:patients_signup|digits:10',
+            'mobile_number' => 'nullable|numeric|unique:patients|digits:10',
+            'other_mobile_number' => 'nullable|numeric|unique:patients|digits:10',
             'gender' => 'required',
             'residence' => 'required',
             'main_area' => 'required',
@@ -179,9 +179,9 @@ class AuthApiController extends ApiController
         if($validator->fails()){
             return $this->sendError($validator->errors()->first(), 422);
         }
-        $patient = $this->PatientSignup;
+        $patient = $this->OpdPatients;
         $patient->name = trim($request->first_name).' '.trim($request->last_name).' '.trim($request->surname);
-        // dd($patient->name);
+
         $patient->dob = Carbon::parse($request->dob)->format('Y-m-d');
         $patient->residence = $request->residence;
         $patient->mobile_number = $request->mobile_number;
@@ -190,12 +190,16 @@ class AuthApiController extends ApiController
         $patient->main_area = $request->main_area;
         $patient->city = $request->city;
         $patient->state = $request->state;
-        $patient->reference_doctor = $request->reference_doctor;
-        $patient->reference_patient = $request->reference_patient;
-        $patient->other_reference = $request->other;
-        $patient->reason = $request->reason;
+        // $patient->reference_doctor = $request->reference_doctor;
+        // $patient->reference_patient = $request->reference_patient;
+        // $patient->other_reference = $request->other;
+        $patient->is_pregnant = $request->reason;
+        $patient->is_approved = 0;
         $patient->save();
-        
+        $generateCode = $this->generateCode($patient->id,$patient->name);
+        $patient = $this->OpdPatients->whereId($patient->id)->first();
+        $patient->code = $generateCode['code'];
+        $patient->save();
         return $this->sendResponse('Register Successfully.',$patient);
             
     }
@@ -235,9 +239,9 @@ class AuthApiController extends ApiController
         if($validator->fails()){
             return $this->sendError($validator->errors()->first(), 422);
         }
-        $opdPatient = OpdPatients::where('mobile_number',$request->mobile_number)->first();
-        $patient = $this->PatientSignup->where('mobile_number',$request->mobile_number)->where('is_approved',1)->first();
-        if($patient || $opdPatient)
+        $opdPatient = OpdPatients::where('mobile_number',$request->mobile_number)->where('is_approved',1)->first();
+        // $patient = $this->PatientSignup->where('mobile_number',$request->mobile_number)->where('is_approved',1)->first();
+        if($opdPatient)
         {
             return $this->sendResponse('Your Request is Approved Successfully');
         }
@@ -245,6 +249,23 @@ class AuthApiController extends ApiController
         {
             return $this->sendError('Please contact to Radha Candor IVF Hospital for Approve your Request');
         }
+    }
+     /**
+    * Generate patient code
+    * @param  \Illuminate\Http\Request $patientsId, $name
+    * @return \Illuminate\Http\Response
+    */
+    private function generateCode($patientsId, $name){
+        $name = preg_replace('/\s+/', ' ', $name);
+        $name = explode(' ', $name);
+        $code = strtoupper($name[0][0]);
+
+        $code .= (!empty($name[1])) ? strtoupper($name[1][0]) : 'R';
+        $code .= (!empty($name[2])) ? strtoupper($name[2][0]) : 'R';
+
+        $code .= $patientsId;
+        $code = preg_replace('/[^A-Za-z0-9\-]/', 'R', $code);
+        return ['code'=>$code];
     }
 }
 

@@ -79,7 +79,7 @@ class ExpenseManagerController extends AdminController
 
     public function create(){
         $category = $this->Category->whereStatus(1)->pluck('name','id');
-        $patients = $this->OpdPatients->pluck('name','id');
+        $patients = $this->OpdPatients->where('is_approved',1)->pluck('name','id');
         $expensecategory = $this->ExpenseCategory->where('type','=','2')->whereStatus(1)->pluck('name','id');
         return view('admin.expense_manager.create',compact('category','expensecategory','patients'));
     }
@@ -162,7 +162,7 @@ class ExpenseManagerController extends AdminController
             $data['expense'] = $expense;
             return $data;
         }
-        $patients = $this->OpdPatients->pluck('name','id');
+        $patients = $this->OpdPatients->where('is_approved',1)->pluck('name','id');
         $expensecategory = $this->ExpenseCategory->where('type','=','2')->whereStatus(1)->pluck('name','id');
         return view('admin.expense_manager.edit',compact('expense','expensecategory','patients'));
     }

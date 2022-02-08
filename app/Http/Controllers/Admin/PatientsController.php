@@ -26,12 +26,12 @@ class PatientsController extends AdminController
             $doctor = $this->getDoctor();
             $referenceDoctor = $doctor['referenceDoctor'];
             $city = $this->City->pluck('name','name');
-            $patients = collect($this->OpdPatients->orderBy('name','ASC')->pluck('name', 'id'))
+            $patients = collect($this->OpdPatients->orderBy('name','ASC')->where('is_approved',1)->pluck('name', 'id'))
                 ->map(function ($query) {
                     $query = ucwords(strtolower($query));
                     return $query;
                 });
-            $patient = $this->OpdPatients->select("*",
+            $patient = $this->OpdPatients->where('is_approved',1)->select("*",
                 \DB::raw('
                     (CASE
                         WHEN gender = "1" THEN "Male"
@@ -123,7 +123,7 @@ class PatientsController extends AdminController
             if($request->booking_id)
             {
                 $self_bookingId = decrypt($request->booking_id);
-                $patient = $this->PatientSignup->select('*',DB::raw('reason as is_pregnant'))->where('id',$self_bookingId)->first();
+                $patient = $this->OpdPatients->where('id',$self_bookingId)->first();
                 // dd($patient);
             }
             $city = $this->City->pluck('name','name');
@@ -209,7 +209,7 @@ class PatientsController extends AdminController
                 if($request->self_bookingId)
                 {
                     $user_id = Auth::user()->id;
-                    $self_booking = $this->PatientSignup->where('id',decrypt($request->self_bookingId))->update(['is_approved' => '1','approved_by'=>$user_id]);
+                    $self_booking = $this->OpdPatients->where('id',decrypt($request->self_bookingId))->update(['is_approved' => '1']);
                 }
                 if (!$request->code) {
                 $generateCode = $this->generateCode($patient->id,$patient->name);
@@ -239,12 +239,11 @@ class PatientsController extends AdminController
     * @return \Illuminate\Http\Response
     */
     public function delete(Request $request) {
-        $patient = $this->PatientSignup;
+        $patient = $this->OpdPatients;
         $patientId = $request->booking_id;
         if($patientId != null){
             $patientId = decrypt($patientId);
-            // dd($patientId);
-            $patient = $this->PatientSignup->where('id',$patientId);
+            $patient = $this->OpdPatients->where('is_approved',0)->where('id',$patientId);
             $patient->delete();
             return redirect()->back();
         }
@@ -262,7 +261,7 @@ class PatientsController extends AdminController
             $patientReportHormon = [];
 
             $patient = $this->getPatients();
-            $pMobileNumber = $this->OpdPatients->pluck('mobile_number','id')->toArray();
+            $pMobileNumber = $this->OpdPatients->where('is_approved',1)->pluck('mobile_number','id')->toArray();
             $category = $this->Category->pluck('name','id')->toArray();
             $pIds = [];
             if($request->ajax()){

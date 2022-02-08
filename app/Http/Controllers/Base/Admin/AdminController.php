@@ -21,7 +21,7 @@ class AdminController extends BaseController
      * @return Collection
      */
     public function getPatients($pId = null) {
-        $patients = $this->OpdPatients->orderBy('name','ASC');
+        $patients = $this->OpdPatients->where('is_approved',1)->orderBy('name','ASC');
         if(!empty($pId)){
             $patients = $patients->whereIn('id',$pId);
         }
@@ -48,7 +48,7 @@ class AdminController extends BaseController
      * @return mixed
      */
     public function getPatientscode() {
-        return $this->OpdPatients->pluck('code','code');
+        return $this->OpdPatients->where('is_approved',1)->pluck('code','code');
     }
 
     /**

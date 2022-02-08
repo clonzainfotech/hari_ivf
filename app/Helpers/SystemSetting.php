@@ -89,7 +89,7 @@
     function getSelfBookingCount()
     {
         $now = date('Y-m-d');
-        $selfBookingCount = DB::table('patients_signup')->whereDate('created_at',$now)->count();
+        $selfBookingCount = DB::table('patients')->whereDate('created_at',$now)->where('is_approved',0)->count();
         return $selfBookingCount;
     }
 

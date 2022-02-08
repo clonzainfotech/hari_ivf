@@ -592,7 +592,7 @@
 
  /*public function referenceDoctorProReport(Request $request){
         try{
-            $patients = $this->OpdPatients->pluck('name','id');
+            $patients = $this->OpdPatients->where('is_approved',1)->pluck('name','id');
             $referenceDoctorPro = $this->ReferenceDoctorPro->pluck('name','id');
             $referenceDoctor = $this->ReferenceDoctor->pluck('name','id');
             if($request->ajax()){
