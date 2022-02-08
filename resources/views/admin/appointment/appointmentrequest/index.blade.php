@@ -55,8 +55,12 @@
                                             <td class="patient_name">{{strtolower($requests->getPatients['name'])}}</td>
                                             <td >{{ \Carbon\Carbon::parse($requests->created_at)->format('d-m-Y h:i A')}}</td>
                                             <td>
-                                                <a class="apt-approve" data-id="{{encrypt($requests->id)}}"><span class="badge is-bill badge-success">Approve</span></a>
-                                                <a class="apt-reject" data-id="{{encrypt($requests->id)}}" data-target="#reject-modal" data-toggle="modal"><span class="badge is-bill badge-danger">Reject</span></a>
+                                                @if($requests->getPatients['is_approved'] == 1)
+                                                    <a class="apt-approve" data-id="{{encrypt($requests->id)}}"><span class="badge is-bill badge-success">Approve</span></a>
+                                                    <a class="apt-reject" data-id="{{encrypt($requests->id)}}" data-target="#reject-modal" data-toggle="modal"><span class="badge is-bill badge-danger">Reject</span></a>
+                                                @else
+                                                    <a class="" data-id=""><span class="badge badge-danger">New Patient</span></a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @empty
