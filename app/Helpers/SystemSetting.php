@@ -2,6 +2,7 @@
     use App\Models\OvaryDetail;
     use App\Models\DurationData;
     use App\Models\Appointment;
+    use App\Models\AppointmentRequest;
     use App\User;
     
     function systemSetting() {
@@ -91,6 +92,14 @@
         $now = date('Y-m-d');
         $selfBookingCount = DB::table('patients')->whereDate('created_at',$now)->where('is_approved',0)->count();
         return $selfBookingCount;
+    }
+
+    function getOnlineAppointmentCount()
+    {
+        $now = date('Y-m-d');
+        $onlineAppointmentCount = AppointmentRequest::whereHas('getPatients')->where('is_book',0)->whereDate('appointment_date','>=',$now)->count();
+        
+        return $onlineAppointmentCount;
     }
 
     function getANCNumberToWOrd($number){

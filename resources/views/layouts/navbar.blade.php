@@ -4,6 +4,8 @@ if (is_file(Auth::user()->profile_picture))
 {
 $file = url(Auth::user()->profile_picture);
 }
+$systemSetting = systemSetting();
+$onlineAppointmentCount = getOnlineAppointmentCount();
 @endphp
     
 <style type="text/css">
@@ -43,7 +45,10 @@ $file = url(Auth::user()->profile_picture);
         @if(in_array(Auth::user()->role,[1,2,3,6,7,8]))
             <li class="nav-menu-font"><a href="{{URL::to('procedures')}}" class="{{ Request::segment(1) === 'procedures' ? 'active open' : null }}"><span>Procedures</span></a></li>
         @endif
-          
+        @if($onlineAppointmentCount > 0)
+        <li class="nav-menu-font "><a href="{{URL::to('appointment-request')}}" class="text-danger font-bold"><div class="blink_me">NEW APPOINTMENT</div></a></li>
+        @endif
+           
         <li class="float-right mt-1 dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="lgn-usr-name">
@@ -55,7 +60,7 @@ $file = url(Auth::user()->profile_picture);
                 <li><a href="{{route('logout')}}">Logout</a></li>
             </ul>
         </li>
-        <li class="float-right col-md-3 mt-lg-4 patient-search-bar">
+        <li class="float-right col-md-2 mt-lg-4 patient-search-bar">
             {{ Form::open([
                 'url'=>'search-patient-data',
                 'method'=>'post',
