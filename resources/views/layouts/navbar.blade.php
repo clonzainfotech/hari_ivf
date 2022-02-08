@@ -45,9 +45,9 @@ $onlineAppointmentCount = getOnlineAppointmentCount();
         @if(in_array(Auth::user()->role,[1,2,3,6,7,8]))
             <li class="nav-menu-font"><a href="{{URL::to('procedures')}}" class="{{ Request::segment(1) === 'procedures' ? 'active open' : null }}"><span>Procedures</span></a></li>
         @endif
-        {{-- @if($onlineAppointmentCount > 0) --}}
+        @if($onlineAppointmentCount > 0)
         <li class="nav-menu-font "><a href="{{URL::to('appointment-request')}}" class="text-danger font-bold"><div class="blink_me">NEW APPOINTMENT</div></a></li>
-        {{-- @endif --}}
+        @endif
            
         <li class="float-right mt-1 dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
