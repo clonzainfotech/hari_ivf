@@ -35,7 +35,11 @@ class AppointmentController extends ApiController
             $patientData = $this->PatientToken->where('token', $token)->first();
             if(!empty($patientData)){
                 $patientId = $patientData->patients_id;
-                $patients = $this->OpdPatients->find($patientId);
+                $patients = $this->OpdPatients->where('is_approved',1)->where('id',$patientId)->first();
+                if(empty($patients))
+                {
+                    return $this->sendError('Patient is not approved');
+                }
                 $appointmentData = $this->Appointment::select('id','date','time','created_by','is_done','category_id','appontment_request_id','arrival_time','is_procedure',DB::raw("DATE_FORMAT(date,'%Y') as yearKey"))
                                         ->where('patients_id', $patientId)
                                         ->orderBy('date','desc')

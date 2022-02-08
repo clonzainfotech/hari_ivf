@@ -26,7 +26,7 @@ class ProcedureController extends AdminController
     public function index(Request $request){
         if ($request->ajax()) {
             $old_procedures = $this->ProcedureList->whereDate('date','<',carbon::now()->format('Y-m-d'))->delete();
-            $procedure = $this->ProcedureList;
+            $procedure = $this->ProcedureList->orderBy('date','asc');
             $procedure = collect($procedure->get())->map(function ($query) {
                         $query->day = carbon::parse($query->date)->format('l');
                         $query->date = carbon::parse($query->date)->format('d-m-Y');
