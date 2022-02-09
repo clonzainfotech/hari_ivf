@@ -5954,6 +5954,10 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
             {
                 $('.result_fail').prop("checked", true);
             }
+            if($(this).val() == 'positive')
+            {
+                $('.result_conceive').prop("checked", true);
+            }
         })
         $(document).ready(function(){
             $('.datetime').multiDatesPicker({
