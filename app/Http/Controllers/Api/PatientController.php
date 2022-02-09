@@ -320,6 +320,10 @@ class PatientController extends ApiController
                         {
                             $data[] = array('date' => $reportDate,"category"=> 'IUI',"report_type" => 'Blood Report','url' => $investigationReport['blood_report']['image']);
                         }
+                        if(!empty($investigationReport['hsa_report']['images']))
+                        {
+                            $data[] = array('date' => $reportDate,"category"=> 'IUI',"report_type" => 'HSA Report','url' => $investigationReport['hsa_report']['images']);
+                        }
                     }
                 }
                 if($iuiAllHistoryVisit)
