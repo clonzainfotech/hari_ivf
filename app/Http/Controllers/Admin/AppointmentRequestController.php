@@ -61,7 +61,7 @@ class AppointmentRequestController extends AdminController
                         $appointment->time = $aTime;
                         $appointment->created_by = Auth::User()->id;
                         $appointment->seen_by = $appointmentRequests->seen_by;
-                        $appointment->category_id = $lastAppointment->category_id;
+                        $appointment->category_id = !empty($lastAppointment) ? $lastAppointment->category_id : null;
                         $appointment->patients_id = $appointmentRequests->patients_id;
                         $appointment->appontment_request_id = $apRequestId;
                         $appointment->save();
@@ -115,6 +115,7 @@ class AppointmentRequestController extends AdminController
                 }
             }
         }catch(Exception $e){
+            log::Debug($e);
             abort(500);
         }
     }

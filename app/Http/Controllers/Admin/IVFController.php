@@ -1754,8 +1754,8 @@ class IVFController extends AdminController
                     $isForm = true;
                     // $plan = $ivfHistory->plan;
                     $lastIvfHistory = json_decode($cycleData->description);
-                    $protocolIvfHistoryData = $this->IvfHistory->wherePatientsId($id)->where('description->protocol',"NOT LIKE",'%[]%')->orderBy('id','DESC')->first();
-                    if($protocolIvfHistoryData){
+                    $protocolIvfHistoryData = $this->IvfHistory->wherePatientsId($id)->whereCycleNo($cNumber)->where('description->protocol',"NOT LIKE",'%[]%')->orderBy('id','DESC')->first();
+                    if(!empty($protocolIvfHistoryData)){
                         $lastProtocolData = json_decode($protocolIvfHistoryData->description);
                         $protocolTable = !empty($lastProtocolData->protocol) ? $lastProtocolData->protocol : [];
                         $countProtocolTable = count((array)$protocolTable);
