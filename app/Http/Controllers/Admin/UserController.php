@@ -164,8 +164,8 @@ class UserController extends AdminController
             $data['data'] = View::make('admin.user.data',compact('user'))->render();
             return $data; 
         }
-
-        return view('admin.user.index');
+        $role = $this->UserRole->pluck('role','id');
+        return view('admin.user.index',compact('role'));
     }
 
     // open create user page
