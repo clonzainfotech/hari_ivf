@@ -3497,7 +3497,44 @@ class IVFController extends AdminController
             {
                
                 $ivfResultReview = $this->IvfResultReview->orderBy('created_at','desc');
-                $ivfResultReview = $ivfResultReview->paginate(100);
+
+               
+                $fromdate = Carbon::parse($request->fromdate)->format('Y-m-d');
+                $todate = Carbon::parse($request->todate)->format('Y-m-d');
+                if($request->ivf_review_type && ($fromdate || $todate))
+                {
+                    $ivf_review_type = $request->ivf_review_type;
+                    if($ivf_review_type == '1')//transfer Date
+                    {
+                        $ivfResultReviewIds = collect($ivfResultReview->get())->map(function ($query) use($fromdate,$todate)
+                        {
+                            $resultDate = !empty($query->getTransferDate()) ? Carbon::parse($query->getTransferDate())->format('Y-m-d') : '';
+                            if($resultDate >= $fromdate && $resultDate <= $todate)
+                            {
+                                return $query;
+                            }
+                        });
+                        $ivfResultReview = $ivfResultReview->whereIn('id',$ivfResultReviewIds->pluck('id','id'));
+
+                    }
+                    if($ivf_review_type == 2)//result Date
+                    {
+                        $ivfResultReviewIds = collect($ivfResultReview->get())->map(function ($query) use($fromdate,$todate)
+                        {
+                            $transferDate = !empty($query->getResult()) ? Carbon::parse($query->getResult()['follow_up'])->format('Y-m-d') : (!empty($query->getTransferDate()) ? Carbon::parse($query->getTransferDate())->addDays(14)->format('Y-m-d') : null);
+                            if($transferDate >= $fromdate && $transferDate <= $todate)
+                            {
+                                return $query;
+                            }
+                        });
+                        $ivfResultReview = $ivfResultReview->whereIn('id',$ivfResultReviewIds->pluck('id','id'));
+                    }
+                }
+                $ivfResultReview = collect($ivfResultReview->get())->map(function ($query){
+                    $query->transfer_date = !empty($query->getTransferDate()) ? $query->getTransferDate() : '';
+                    $query->result_date = !empty($query->getResult()) ? Carbon::parse($query->getResult()['follow_up'])->format('d-M-Y') : (!empty($query->getTransferDate()) ? Carbon::parse($query->getTransferDate())->addDays(14)->format('d-M-Y') : null);
+                    return $query;
+                })->sortByDesc('transfer_date');
                 $data['status'] = 1;
                 $data['data'] = View::make('admin.ivf_result_review.data',compact('ivfResultReview'))->render();
                 return $data; 

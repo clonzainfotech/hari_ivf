@@ -227,6 +227,9 @@
                 <tr>
                     <td><span class="candor-color font-bold">ET D/B : </span>{{!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->et) ? $ivfResultReviewDetail->et: ''}}</td>
                 </tr>
+                <tr>
+                    <td><span class="candor-color font-bold">laboratory Remark : </span>{{!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->laboratory_remark) ? $ivfResultReviewDetail->laboratory_remark: ''}}</td>
+                </tr>
             </tbody>
         </table>
         

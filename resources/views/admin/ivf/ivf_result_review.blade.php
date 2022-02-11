@@ -306,6 +306,12 @@
                                                     {{Form::text("data[et]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->et) ? $ivfResultReviewDetail->et: '',['class'=>'form-control'])}}
                                                 </div>
                                             </div>
+                                            <div class="col-md-12 pr-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">laboratory Remark : &nbsp;</span>
+                                                    {{Form::text("data[laboratory_remark]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->laboratory_remark) ? $ivfResultReviewDetail->laboratory_remark: '',['class'=>'form-control'])}}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
