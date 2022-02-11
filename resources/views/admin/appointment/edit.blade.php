@@ -115,7 +115,7 @@
                                                                 'class'=>'form-control select-padding-0 category_data',
                                                                 'placeholder'=>'Select Category',
                                                                 'required',
-                                                                ($appointment->category_id == 7) ? 'disabled' : ''
+                                                                ($appointment->category_id == 7 || $appointment->is_done == 1) ? 'disabled' : ''
                                                             ])}}
                                                         </div>
                                                         <span class="form-error-msg">
