@@ -128,17 +128,7 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        {{Form::select('role',[
-                                            1=>'Main Admin',
-                                            2=>'Reception',
-                                            3=>'Doctor',
-                                            4=>'Accountant',
-                                            5=>'Medical',
-                                            6=>'IVF',
-                                            7=>'IUI',
-                                            8=>'ANC',
-                                            9=>'Telly Caller'
-                                        ],$user->role,['class'=>'form-control select-padding-0 user-roles','placeholder'=>'Select Role'])}}
+                                        {{Form::select('role',$role,$user->role,['class'=>'form-control select-padding-0 user-roles','placeholder'=>'Select Role'])}}
                                     </div>
                                     <span class="form-error-msg user_error role">
                                         {{$errors->first('role')}}

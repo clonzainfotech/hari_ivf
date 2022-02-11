@@ -170,7 +170,8 @@ class UserController extends AdminController
 
     // open create user page
     public function create(){
-        return view('admin.user.create');
+        $role = $this->UserRole->pluck('role','id');
+        return view('admin.user.create',compact('role'));
     }
 
 
@@ -272,7 +273,8 @@ class UserController extends AdminController
             $data['User'] = $User;
             return $data;
         }
-        return view('admin.user.edit',compact('user'));
+        $role = $this->UserRole->pluck('role','id');
+        return view('admin.user.edit',compact('user','role'));
     }
     // update 
     public function update(Request $request){

@@ -121,17 +121,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                {{Form::select('role',[
-                                    1=>'Main Admin',
-                                    2=>'Reception',
-                                    3=>'Doctor',
-                                    4=>'Accountant',
-                                    5=>'Medical',
-                                    6=>'IVF',
-                                    7=>'IUI',
-                                    8=>'ANC',
-                                    9=>'Telly Caller'
-                                ],'',[
+                                {{Form::select('role',$role,'',[
                                     'class'=>'form-control select-padding-0 user-roles',
                                     'placeholder'=>'Select Role',
                                     'id'=>'role'

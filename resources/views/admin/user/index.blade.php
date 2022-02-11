@@ -48,7 +48,7 @@
                                     {{Form::select('status',['1'=>'Active','2'=>'Deactive'],'',['class'=>'form-control select-padding-0 user-status-value','placeholder'=>'Select Status'])}}
                                 </div>
                                 <div class="col-md-4">
-                                    {{Form::select('role',[1=>'Main Admin',2=>'Reception',3=>'Doctor',4=>'Accountant',5=>'Medical',6=>'IVF',7=>'IUI',8=>'ANC',9=>'Telly Caller'],'',['class'=>'form-control select-padding-0 user-role','placeholder'=>'Select Role'])}}
+                                    {{Form::select('role',$role,'',['class'=>'form-control select-padding-0 user-role','placeholder'=>'Select Role'])}}
                                 </div>
                             </div>
                         </div>

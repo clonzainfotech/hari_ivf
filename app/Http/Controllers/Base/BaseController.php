@@ -88,6 +88,7 @@ use App\Models\IvfResultReview;
 use App\Models\ProcedureList;
 use App\Models\FaqAnswer;
 use App\Models\FaqQuestion;
+use App\Models\UserRole;
 
 
 
@@ -178,6 +179,7 @@ class BaseController extends Controller
         $this->ProcedureList = new ProcedureList;
         $this->FaqQuestion = new FaqQuestion;
         $this->FaqAnswer = new FaqAnswer;
+        $this->UserRole = new UserRole;
 
 
     }
