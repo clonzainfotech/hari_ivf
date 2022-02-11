@@ -63,11 +63,12 @@
                     @endif
 
                     {{--visit--}}
-                    @if(in_array(Auth::user()->role,[1,3,6,7,8]))
+                    @if(in_array(Auth::user()->role,[1,3,6,7,8,10]))
                     <li class="visit {{ Request::segment(1) === 'anc-iui-ivf' || (Request::segment(1) === 'report' && !empty(Request::segment(2))) || Request::segment(1) === 'anc' || Request::segment(1) === 'iui' || Request::segment(1) === 'ivf' || Request::segment(1) === 'call-reminder' || Request::segment(1) === 'iui-result' || Request::segment(1) === 'get-anc-report' || Request::segment(1) === 'advice-report-list' || Request::segment(1) === 'ivf-result-review' ? 'active open' : null }}">
                         <a href="javascript:void(0);"  class="menu-toggle waves-effect waves-block">
                         <span>VISIT</span></a>
                         <ul class="ml-menu" style="display: none;">
+                            @if(in_array(Auth::user()->role,[1,3,6,7,8]))
                             <li class="{{ Request::is('anc-iui-ivf*') == 'anc-iui-ivf*' ? 'sub active open' : null }}">
                                 <a href="{{URL::to('anc-iui-ivf')}}">
                                     <span>APPOINTMENTS</span>
@@ -83,7 +84,10 @@
                                 <span>IVF Result Review </span></a></li>
                             <li class="{{ Request::segment(1) === 'call-reminder' ? 'sub active open' : null }}"><a href="{{URL::to('call-reminder')}}"><span>IUI Call Reminder</span></a></li>
                             <li class="{{ Request::segment(1) === 'iui-result' ? 'sub active open' : null }}"><a href="{{URL::to('iui-result')}}"><span>IUI Result</span></a></li>
-                            <li class="{{ Request::segment(1) === 'advice-report-list' ? 'sub active open' : null }}"><a href="{{URL::to('advice-report-list')}}"><span>Advice Report List</span></a></li>
+                            @endif
+                            @if(in_array(Auth::user()->role,[1,3,6,7,8,10]))
+                                <li class="{{ Request::segment(1) === 'advice-report-list' ? 'sub active open' : null }}"><a href="{{URL::to('advice-report-list')}}"><span>Advice Report List</span></a></li>
+                            @endif
                         </ul>
                     </li>
                     @endif
