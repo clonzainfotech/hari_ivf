@@ -2387,8 +2387,8 @@ $(document).ready(function(){
     }
 
     function addRowProtocol(id,day){
-        var last_sday = $('.last_protocol:last').data('sday');
-        var last_day = $('.last_protocol:last').val();
+        var last_sday = $('.protocol-data-row:first .last_protocol:last').data('sday');
+        var last_day = $('.protocol-data-row:first .last_protocol:last').val();
         
         var totalDate = $('.protocol-date').length;
         var date = new Date($('#history-lmpdate-'+totalDate).val());
@@ -2422,7 +2422,7 @@ $(document).ready(function(){
                             protocolData += "<td><input type='text' name='data[protocol]["+id+"][hmg]' value='"+hmg+"' class='form-control hmg-data hmg-"+id+"'></td>"+
                                             "<td><input type='text' name='data[protocol]["+id+"][hmg_brand_name]' value='"+hmgBrand+"' class='form-control hmg-brand-data hmg-brand-"+id+"'></td><td><input type='text' name='data[protocol]["+id+"][fsh]' value='"+fsh+"' class='form-control fsh-data fsh-"+id+"'></td>"+
                                             "<td><input type='text' name='data[protocol]["+id+"][fsh_brand_name]' value='"+fshBrand+"' class='form-control fsh-brand-data fsh-brand-"+id+"'></td><td><input type='text' name='data[protocol]["+id+"][antagonist]' value='"+antagonistValue+"' class='form-control antagonist-data antagonist-"+id+"'></td>";
-                            // protocolData += "<td><input type='text' name='data[protocol]["+id+"][time]' value='"+time+"' class='form-control timepicker width-80'></td>"+
+                            protocolData += "<td><input type='text' name='data[protocol]["+id+"][time]' value='' class='form-control timepicker width-80'></td>";
                             protocolData += "</tr>";
                             protocolData += "<input class='last_protocol' data-sday='"+sDay+"' name='last_protocol' type='hidden' value='"+day+"'></input>";
                             

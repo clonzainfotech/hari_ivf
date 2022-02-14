@@ -293,7 +293,6 @@ class IVFController extends AdminController
     */
     public function store(Request $request){
         try{
-            // dd($request);
             $isProcudure = 0;
             $appointmentTime = null;
             if($request->appointment_time){
@@ -1383,11 +1382,38 @@ class IVFController extends AdminController
                 }
                 if(isset($lastIvfHistory->plan) && !empty($lastIvfHistory->plan) && $ivfHistory->visit == 2 && (!isset($lastIvfHistory->skip_cycle) || $lastIvfHistory->skip_cycle != 'yes'))
                 {
+                    // dd('sdf');
                     // $lastIvfHistory->plan = 2;
                     // $ivfHistory->description = json_encode($lastIvfHistory);
                     $transferIvf = $this->IvfHistory->wherePatientsId($id)->wherePlan($lastIvfHistory->plan)->orderBy('id','desc')->first();
                     $newCycle_no = !empty($transferIvf) ? $transferIvf->cycle_no+1 : 1;
                     $extraVisit = $this->IvfExtraVisit->wherePatientId($id)->where('plan',$ivfHistory->plan)->where('cycle_no',$ivfHistory->cycle_no)->update(['plan'=>$lastIvfHistory->plan,'cycle_no' => $newCycle_no]);
+                    if($lastIvfHistory->plan == 1)
+                    {
+                        $description = $lastIvfHistory;
+                        // dd($description->lmp->date);
+                        $lmpDate = \Carbon\Carbon::parse($description->lmp->date)->format('d-m-Y');
+                        $diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::now());
+                        $protocol = [];
+                        $followUp_diff = \Carbon\Carbon::parse($description->follow_up)->diffInDays(\Carbon\Carbon::now());
+                        for($i = 1; $i<=($followUp_diff+1); $i++)
+                        {
+                            $diff = $diff + 1;
+                            $protocol[$i]['day'] = $diff;
+                            $protocol[$i]['s_day'] = $i;
+                            $protocol[$i]['date'] = \Carbon\Carbon::parse($lmpDate)->addDays($i)->format('D d M Y');
+                            $protocol[$i]['injection'] = null;
+                            $protocol[$i]['hmg'] = null;
+                            $protocol[$i]['hmg_brand_name'] = null;
+                            $protocol[$i]['fsh'] = null;
+                            $protocol[$i]['fsh_brand_name'] = null;
+                            $protocol[$i]['antagonist'] = null;
+                            $protocol[$i]['time'] = null;
+                        }
+                        $description->protocol = $protocol;
+                        $ivfHistory->description = json_encode($description);
+
+                    }
                     $ivfHistory->plan = $lastIvfHistory->plan;
                     $ivfHistory->cycle_no = $newCycle_no;
                     $ivfHistory->cycle_status = 1;
