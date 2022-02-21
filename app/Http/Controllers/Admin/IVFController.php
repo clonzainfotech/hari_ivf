@@ -1124,10 +1124,57 @@ class IVFController extends AdminController
                         {
                             $procedureList = $this->ProcedureList;
                         }
+                        $pickUp_detail = '';
+                        if(!empty($data['trigger']['hcg']['status']))
+                        {
+                            $pickUp_detail .= ' / HCG : (';
+                            
+                            if(!empty($data['trigger']['hcg']['dose']))
+                            {
+                                $pickUp_detail .= ' Dose - '.$data['trigger']['hcg']['dose'];
+                            }
+                            
+                            if(!empty($data['trigger']['hcg']['brand']))
+                            {
+                                $pickUp_detail .= ', Brand - '.$data['trigger']['hcg']['brand'];
+                            }
+                            $pickUp_detail .= ')';
+                        }
+                        if(!empty($data['trigger']['decapeptyl']['status']))
+                        {
+                            $pickUp_detail .= ' / Decapeptyl : (';
+                            
+                            if(!empty($data['trigger']['decapeptyl']['dose']))
+                            {
+                                $pickUp_detail .= ' Dose - '.$data['trigger']['decapeptyl']['dose'];
+                            }
+                            
+                            if(!empty($data['trigger']['decapeptyl']['brand']))
+                            {
+                                $pickUp_detail .= ' Brand - '.$data['trigger']['decapeptyl']['brand'];
+                            }
+                            $pickUp_detail .= ')';
+                        }
+                        if(!empty($data['trigger']['ovutring']['status']))
+                        {
+                            $pickUp_detail .= ' / Ovutring : (';
+                            
+                            if(!empty($data['trigger']['ovutring']['dose']))
+                            {
+                                $pickUp_detail .= ' Dose - '.$data['trigger']['ovutring']['dose'];
+                            }
+                            
+                            if(!empty($data['trigger']['ovutring']['brand']))
+                            {
+                                $pickUp_detail .= ' Brand - '.$data['trigger']['ovutring']['brand'];
+                            }
+                            $pickUp_detail .= ')';
+                        }
+                        
                         $procedureList->patients_id = $patientsId;
                         $procedureList->date = Carbon::parse($pickUpDate)->format('Y-m-d');
                         $procedureList->procedure = 'Coming for PickUp';
-                        $procedureList->description = 'PickUp Date : '.Carbon::parse($pickUpDateTime)->format('d-m-Y H:i A');
+                        $procedureList->description = 'PickUp Date : '.Carbon::parse($pickUpDateTime)->format('d-m-Y H:i A'). $pickUp_detail;
                         $procedureList->save();
                         
                     }
