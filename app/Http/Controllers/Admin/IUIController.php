@@ -679,7 +679,7 @@ class IUIController extends AdminController
                     $iuiSecondVisitData = !empty($iuiSecondVisit) ? json_decode($iuiSecondVisit->description) : null;
                     
                     $checkIvf = $this->IVF->wherePatientsId($lastIui->patients_id)->first();
-                    $ivf = (!$checkIvf) ? $this->IVF : $this->IVF->wherePatientsId($lastIui->patients_id)->first();
+                    $ivf = (empty($checkIvf)) ? $this->IVF : $this->IVF->wherePatientsId($lastIui->patients_id)->first();
                     $ivf->patients_id = $lastIui->patients_id;
                     $ivf->created_by = $lastIui->created_by;
                     $ivf->patients_info = $lastIui->patients_info;
@@ -697,7 +697,8 @@ class IUIController extends AdminController
                     $ivf->treatment = $lastIui->treatment;
                     $ivf->lmp_date = !empty($iuiSecondVisitData->lmp->date) ? Carbon::parse($iuiSecondVisitData->lmp->date)->format('Y-m-d') : Carbon::parse(!empty($request->data['lmp']['date']) ? $request->data['lmp']['date'] : date('y-m-d'))->format('Y-m-d');
                     $ivf->save();
-                    if($lastIUIHistory)
+
+                    if(!empty($lastIUIHistory))
                     {
                         $inducingInjectionData = $this->inducingInjection()['inj'];
                         $injectionData = ['1'=>'Only HMG','2'=>'Only FSH','3'=>'FSH + HMG','4'=>'Lupride','5'=>'Letrozole + HMG','6'=>'Letrozole + FSH','7'=>'Clomiphene Citrate + HMG','8'=>'Clomiphene Citrate + FSH','9'=>'Antagonist'];

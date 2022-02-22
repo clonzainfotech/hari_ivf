@@ -1280,7 +1280,8 @@
         }
         // get form data
         function getIuiData(histdate,cycleNo){
-            var iuiDate = $('select.iui-date').val();
+            // var iuiDate = $('select.iui-date').val();
+            var iuiDate = '';
             var cycleData = '';
             if(typeof cycleNo != 'undefined'){
                 cycleData = '&iui_cycle_no='+cycleNo;
