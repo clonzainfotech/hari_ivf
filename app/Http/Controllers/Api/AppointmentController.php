@@ -803,6 +803,7 @@ class AppointmentController extends ApiController
             if(\Carbon\Carbon::parse($request->date)->format('l') == 'Sunday')
             {
                 $sloats = ['10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00'];
+                $message = 'Sorry for inconvenience '.$doctor->name.' not available on this date prefer other Doctor or Dates';
             }
             foreach($sloats as $sloat)
             {
