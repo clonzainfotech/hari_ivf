@@ -446,6 +446,13 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                     </label>
                                                 </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                {{Form::text("p_obstratics[child][child_data][1][ho_term_details]", '', [
+                                                    'placeholder' => 'Term Details',
+                                                    'class'=>'form-control',
+                                                    'id'=>'term_details'
+                                                ])}}
+                                            </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
                                                     {{Form::radio("p_obstratics[child][child_data][1][child_type]",'single','',['id'=>'child_type_single'])}}
@@ -463,13 +470,23 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                {{Form::text("p_obstratics[child][child_data][1][ho_term_details]", '', [
-                                                    'placeholder' => 'Term Details',
-                                                    'class'=>'form-control',
-                                                    'id'=>'term_details'
-                                                ])}}
+                                            <div class="col-sm-2">
+                                                {{Form::select("p_obstratics[child][child_data][1][ho_gender][]",[''=>'Select Child Gender','male'=>'Male','female'=>'Female'],'',['class'=>'form-control select-child-type','data-id'=>'','multiple'])}}
+                                                {{-- <div class="radio is-conceived">
+                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
+                                                    <label for="ho_male">
+                                                        Male
+                                                    </label>
+
+                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
+                                                    <label for="ho_female">
+                                                        Female
+                                                    </label>
+                                                </div> --}}
                                             </div>
+                                        </div>
+                                        <div class="row child-data-parent d-none">
+                                            <div class="col-md-1"></div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
                                                     {{Form::radio("p_obstratics[child][child_data][1][ho_type_value]",'normal',true,['id'=>'normal'])}}
@@ -487,25 +504,6 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                         Instrumental
                                                     </label>
                                                 </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <br />
-                                        <div class="row child-data-parent d-none">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-sm-2">
-                                                {{Form::select("p_obstratics[child][child_data][1][ho_gender][]",['male'=>'Male','female'=>'Female'],'',['class'=>'form-control ','data-id'=>'','multiple'])}}
-                                                {{-- <div class="radio is-conceived">
-                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
-                                                    <label for="ho_male">
-                                                        Male
-                                                    </label>
-
-                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
-                                                    <label for="ho_female">
-                                                        Female
-                                                    </label>
-                                                </div> --}}
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
@@ -538,7 +536,7 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                     {{Form::text("p_obstratics[child][child_data][1][expired_year]",'',['class'=>'form-control','placeholder'=>'Expired Year'])}}
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Live Health Year : &nbsp;</span>
                                                     {{Form::text("p_obstratics[child][child_data][1][live_health_year]",'',['class'=>'form-control'])}}
@@ -774,6 +772,13 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                     </label>
                                                 </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                {{Form::text("p_obstratics[second_marriage][child][child_data][1][ho_term_details]", '', [
+                                                    'placeholder' => 'Term Details',
+                                                    'class'=>'form-control',
+                                                    'id'=>'second_merriage_term_details'
+                                                ])}}
+                                            </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
                                                     {{Form::radio("p_obstratics[second_marriage][child][child_data][1][child_type]",'single','',['id'=>'child_type_single'])}}
@@ -791,12 +796,36 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                {{Form::text("p_obstratics[second_marriage][child][child_data][1][ho_term_details]", '', [
-                                                    'placeholder' => 'Term Details',
-                                                    'class'=>'form-control',
-                                                    'id'=>'second_merriage_term_details'
-                                                ])}}
+                                            <div class="col-sm-2">
+                                                {{Form::select("p_obstratics[second_marriage][child][child_data][1][ho_gender][]",['male'=>'Male','female'=>'Female'],'',['class'=>'form-control ','data-id'=>'','multiple'])}}
+                                                {{-- <div class="radio is-conceived">
+                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
+                                                    <label for="ho_male">
+                                                        Male
+                                                    </label>
+
+                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
+                                                    <label for="ho_female">
+                                                        Female
+                                                    </label>
+                                                </div> --}}
+                                            </div>
+                                            
+                                            {{-- <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_gender]",'male','',['id'=>'second_ho_male'])}}
+                                                    <label for="second_ho_male">
+                                                        Male
+                                                    </label>
+                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_gender]",'female','',['id'=>'second_ho_female'])}}
+                                                    <label for="second_ho_female">
+                                                        Female
+                                                    </label>
+                                                </div>
+                                            </div> --}}
+                                        </div>
+                                        <div class="row second-marriage-life-data second-child-data-parent d-none">
+                                            <div class="col-sm-1">
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
@@ -815,36 +844,6 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
                                                         Instrumental
                                                     </label>
                                                 </div>
-                                            </div>
-                                            {{-- <div class="col-sm-2">
-                                                <div class="radio is-conceived">
-                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_gender]",'male','',['id'=>'second_ho_male'])}}
-                                                    <label for="second_ho_male">
-                                                        Male
-                                                    </label>
-                                                    {{Form::radio("p_obstratics[second_marriage][child][child_data][1][ho_gender]",'female','',['id'=>'second_ho_female'])}}
-                                                    <label for="second_ho_female">
-                                                        Female
-                                                    </label>
-                                                </div>
-                                            </div> --}}
-                                        </div>
-                                        <div class="row second-marriage-life-data second-child-data-parent d-none">
-                                            <div class="col-sm-1">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                {{Form::select("p_obstratics[second_marriage][child][child_data][1][ho_gender][]",['male'=>'Male','female'=>'Female'],'',['class'=>'form-control ','data-id'=>'','multiple'])}}
-                                                {{-- <div class="radio is-conceived">
-                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
-                                                    <label for="ho_male">
-                                                        Male
-                                                    </label>
-
-                                                    {{Form::radio("p_obstratics[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
-                                                    <label for="ho_female">
-                                                        Female
-                                                    </label>
-                                                </div> --}}
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
@@ -3664,6 +3663,8 @@ $wnlArray = ['1'=>"Normal",'2'=>"Abnormal"];
             $(document).on('click','.blighted-ovum',function(){
                 checkGynec();
             });
+            console.log($('select.select-child-type option:first').text());
+            $('select.select-child-type option:first').prop("disabled",true);
         });
 
         function ancFormData(data,next=null){
