@@ -36,17 +36,21 @@
             @php $totalNetAmount = 0; @endphp
             @foreach ($rowList as $row)
                 @php
-                    $totalNetAmount += ($row->charge_type == 3) ? $row->amount : $row->netamount;
+                    $totalNetAmount += ($row->charge_type == 3) ? $row->amount : (($row->is_final_invoice == 1) ? $row->getInvoice['grand_total_amt'] : $row->netamount);
+
+                    // $totalNetAmount += ($row->charge_type == 3) ? $row->amount : $row->netamount;
                 @endphp
                 <tr class="refdocdata">
                     <td>{{ ($i++) . '.' }}</td>
-                    <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
-                    <td>{{ ($row->charge_type == 3) ? strtoupper(@  $row->getPatients['name']) : strtoupper(@$row->getAppointment->getPatientsDetails['name']) }}</td>
-                    <td>{{ ($row->charge_type == 3) ? $row->getPatients['mobile_number'] : @$row->getAppointment->getPatientsDetails['mobile_number']}}</td>
-                     <td>{{ucfirst(@$row->getAppointment->categoryDetails['name'])}}</td>
+                    <td>{{ ($row->final_invoice_date) ? \Carbon\Carbon::parse($row->final_invoice_date)->format('d-m-Y') : \Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                    <td>{{ ($row->charge_type == 3) ? strtoupper(@$row->getPatients['name']) : (($row->is_final_invoice == 1) ? strtoupper($row->getPatientsDetails['name']) : strtoupper($row->getAppointment->getPatientsDetails['name'])) }}</td>
+                    <td>{{ ($row->charge_type == 3) ? strtoupper(@$row->getPatients['mobile_number']) : (($row->is_final_invoice == 1) ? strtoupper($row->getPatientsDetails['mobile_number']) : strtoupper($row->getAppointment->getPatientsDetails['mobile_number']))}}</td>
+                    <td>{{ucfirst(@$row->getAppointment->categoryDetails['name'])}}</td>
                     <td class="procedure-font">
                         @if ($row->charge_type == 3)
                             IUI
+                        @elseif($row->procedure_id)
+                                {{isset($row->procedure_name) ? $row->procedure_name : ''}}
                         @else
                             @if ($row->total = 0)
                                 -
@@ -92,6 +96,8 @@
                         <div class="amount">
                             @if ($row->charge_type == 3)
                                 {{$row->amount}}
+                            @elseif($row->is_final_invoice == 1)
+                                {{(!empty($row->getInvoice['grand_total_amt']) ) ?  $row->getInvoice['grand_total_amt'] : 0}}
                             @else
                                 {{$row->netamount}}
                             @endif

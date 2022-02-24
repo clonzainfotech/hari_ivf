@@ -385,12 +385,12 @@ class ReportController extends AdminController
             $charge_type = !empty($request->type) ? $request->type : null;
             if($request->ajax()){
 
-                $refDoctorReport = $this->AppointmentCharges->where(function($query) {
-                    $query->whereHas('getAppointment.getPatientsDetails', function($query) {
-                        $query->whereNotIn('reference_doctor_id', [1,12,32]);
-                    });
-                })
-                    ->orderBy('id', 'DESC');
+                // $refDoctorReport = $this->AppointmentCharges->where(function($query) {
+                //     $query->whereHas('getAppointment.getPatientsDetails', function($query) {
+                //         $query->whereNotIn('reference_doctor_id', [1,12,32]);
+                //     });
+                // })
+                //     ->orderBy('id', 'DESC');
 
 
                 //OPD
@@ -398,26 +398,49 @@ class ReportController extends AdminController
                 if(empty($charge_type) || $charge_type == 1 || $charge_type == 5 || $charge_type == 6)
                 {
 
-                    $iuiReport = $this->IndoorDeposit
-                    ->whereNotIn('reference_doctor_id', [1,12,32])
-                    ->where([
-                        ['charge_type', '=', [1,2,3]],
-                        ['case_type', '=', 'Credit'],
-                    ])
-                    ->orderBy('id', 'DESC');
+                    $refDoctorReport = $this->AppointmentCharges->where(function($query) {
+                        $query->whereHas('getAppointment.getPatientsDetails', function($query) {
+                            $query->whereNotIn('reference_doctor_id', [1,12,32]);
+                        });
+                    })
+                        ->orderBy('id', 'DESC');
+                    // $iuiReport = $this->IndoorDeposit
+                    // ->whereNotIn('reference_doctor_id', [1,12,32])
+                    // ->whereIn('charge_type', [1,2,3])
+                    // ->where([
+                    //     ['case_type', '=', 'Credit'],
+                    // ])
+                    // ->orderBy('id', 'DESC');
                 }
                 //INDOOR
                 if(!empty($charge_type) && $charge_type == 4)
                 {
-
-                    $iuiReport = $this->IndoorDeposit
-                    ->whereNotIn('reference_doctor_id', [1,12,32])
-                    ->where([
-                        ['charge_type','=', 4],
-                        ['case_type', '=', 'Credit'],
-                    ])
+                    $refDoctorReport = $this->IndoorBook
+                    ->whereIsFinalInvoice(1)
+                    ->whereNotNull('final_invoice_date')
+                    ->with([
+                        'getInvoice',
+                        'getPatientsDetails'
+                    ])->where(function($query) {
+                        $query->whereHas('getPatientsDetails', function($query) {
+                            $query->whereNotIn('reference_doctor_id', [1,12,32]);
+                        });
+                    })
                     ->orderBy('id', 'DESC');
                 }
+                // //IPD(invoice)
+                // if(!empty($charge_type) && $charge_type == 2)
+                // {
+
+                //     $iuiReport = $this->IndoorBook
+                //     ->whereIsFinalInvoice(1)
+                //     ->whereNotNull('final_invoice_date')
+                //     ->with([
+                //         'getInvoice',
+                //         'getPatientsDetails'
+                //     ])
+                //     ->orderBy('id', 'DESC');
+                // }
 
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
@@ -425,7 +448,7 @@ class ReportController extends AdminController
                     $fromdate = $fromdate;
                     $todate = $todate;
                     $refDoctorReport = $refDoctorReport->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
-                    $iuiReport = $iuiReport->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
+                    // $iuiReport = $iuiReport->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate. ' 23:59:59']);
                 }
 
                 $categoryId = !empty($request->categoryId) ? [$request->categoryId] : [];
@@ -450,27 +473,45 @@ class ReportController extends AdminController
 
                 $referenceDoctorId = $request->reference_doctor_id;
 
-                if($referenceDoctorId){
+                if($referenceDoctorId){//opd
                     $refDoctorReport = $refDoctorReport->where(function($query) use ($referenceDoctorId) {
                         $query->whereHas('getAppointment.getPatientsDetails', function($query)  use ($referenceDoctorId) {
                             $query->where('reference_doctor_id', $referenceDoctorId);
                         });
                     });
-                    $iuiReport = $iuiReport->where('reference_doctor_id', $referenceDoctorId);
+                    if($charge_type == 4) // IPD
+                    {
+                        $refDoctorReport = $refDoctorReport->where(function($query) use ($referenceDoctorId) {
+                            $query->whereHas('getPatientsDetails', function($query)  use ($referenceDoctorId) {
+                                $query->where('reference_doctor_id', $referenceDoctorId);
+                            });
+                        });
+                    }
                 }
-
-                $refDoctorReport = collect($refDoctorReport->get())
+                if($charge_type == 4) // IPD
+                {
+                    $refDoctorReport = collect($refDoctorReport->get())
                     ->map(function ($query) {
-                        $query->reference_doctor_id = $query->getAppointment->getPatientsDetails['reference_doctor_id'];
+                        $query->reference_doctor_id = $query->getPatientsDetails['reference_doctor_id'];
+                        $query->reference_doctor_name = $query->getPatientsDetails->getReferenceDoctor['name'];
+                        $procedureName = implode(', ', $this->IndoorProcedure
+                            ->whereIn('id', explode(',', $query->procedure_id))
+                            ->pluck('name')
+                            ->toArray());
+                        $query->procedure_name = $procedureName;
                         return $query;
                     });
-
-
-                $iuiReport = $iuiReport->get();
-                $refDoctorReport = collect($refDoctorReport)->merge($iuiReport);
-                $refDoctorReport = $refDoctorReport->groupBy('getReferenceDoctors.name');
-
-
+                }
+                else//opd
+                {
+                    $refDoctorReport = collect($refDoctorReport->get())
+                    ->map(function ($query) {
+                        $query->reference_doctor_id = $query->getAppointment->getPatientsDetails['reference_doctor_id'];
+                        $query->reference_doctor_name = $query->getAppointment->getPatientsDetails->getReferenceDoctor['name'];
+                        return $query;
+                    });
+                }
+                $refDoctorReport = $refDoctorReport->groupBy('reference_doctor_name');
                 if($request->isprint==1){
                     return response()->json([
                         View::make('admin.report.refdoctor.preview', compact('refDoctorReport','reportDatails'))->render()
