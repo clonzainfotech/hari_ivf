@@ -1,4 +1,5 @@
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php
     $systemSetting = systemSetting();
     $html_favicon = isset($systemSetting->html_favicon) && !empty($systemSetting->html_favicon) ? $systemSetting->html_favicon : 'favicon.ico';
@@ -17,6 +18,7 @@
     $docter_2 = isset($systemSetting->docter_2) && !empty($systemSetting->docter_2) ? $systemSetting->docter_2 : null;
     $water_mark = isset($systemSetting->water_mark) && !empty($systemSetting->water_mark) ? $systemSetting->water_mark : null;
     ?>
+
     <style type="text/css">
         .invoice-receipt {
             font-family: 'Montserrat', Arial, Tahoma, sans-serif;
@@ -113,6 +115,14 @@
         {
             margin-top: 20px;
         }
+        @media(max-width: 991px) {
+            .dr-name h4 {
+                text-align: center
+            }
+            .watermark:before{
+                width: auto;
+            }
+        }
     </style>
     {{-- <link rel="stylesheet" href="{{asset('assets/css/themes.css')}}"> --}}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -129,24 +139,26 @@
                 <div class="invoice-receipt-th text-center"></div>
             </div>
             <div class="row" style="padding: 20px;">
-                <div class="col-xs-2 col-md-1"> @if (!empty($html_favicon))
+                <div class="col-xs-2 col-md-2"> @if (!empty($html_favicon))
                     
                         <img src="{{url('assets/' . $html_favicon)}}"  class="system-setting-favicon"/>
                    
                     @endif
                 </div>
-                <div class="col-xs-6 col-md-7">
-                     <div class="col-md-6">                
-                            <h1 class="title">Radha Hospital</h1>
-                        <h1 class="title" style="text-align: center !important; margin:0px !important;">&</h1>
-                        @if (!empty($header_logo))
-                        <img src="{{url('public/images/' . $header_logo)}}" class="system-setting-logo"/>
-                       @endif
-                    </div>
-                    <div class="col-md-6">
-                    </div>       
+                <div class="col-xs-10 col-md-6">
+                    <div class="row">
+                        <div class="col-md-12 text-center">         
+                            <div>       
+                                <h1 class="title">Radha Hospital</h1>
+                                <h1 class="title" style="text-align: center !important; margin:0px !important;">&</h1>
+                                @if (!empty($header_logo))
+                                    <img src="{{url('public/images/' . $header_logo)}}" class="system-setting-logo"/>
+                                @endif
+                            </div>
+                        </div>
+                    </div>     
                 </div>
-                <div class="col-xs-4 col-md-4">
+                <div class="col-xs-12 col-md-4 text-center dr-name">
                     <h4>
                         @php
                             if(!empty($docter_1))
@@ -159,7 +171,7 @@
                                 }
                             }
                         @endphp
-                        </h4><br>
+                        </h4>
                     <h4>
                         @php
                         if(!empty($docter_2))

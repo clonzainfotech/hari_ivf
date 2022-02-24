@@ -379,6 +379,11 @@ class AppointmentController extends ApiController
                                 $reportsData[] = $reportsArr;
                                 $url[] = url('get-iui-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_history=1');
                             }
+                            $iuiReport = $this->IUIReport->where('patients_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->first();
+                            if(!empty($iuiReport))
+                            {
+                                $url[] = url('get-iui-report?date='.$aptCreatedDate.'&patient_id='.encrypt($appointment->patients_id).'&is_iuiReport=1');
+                            }
                             $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$appointment->patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$aptCreatedDate)->first();
                             if(!empty($iuiExtraVisit))
                             {

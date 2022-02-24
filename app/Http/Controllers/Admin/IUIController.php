@@ -2513,63 +2513,73 @@ class IUIController extends AdminController
                 $patientId = decrypt($request->patient_id);
                 $iuiPatients = $this->OpdPatients->find($patientId);
                 $lastAppointmentData = $this->Appointment->where('patients_id',$patientId)->orderBy('id','DESC')->first();
-                $iuiData = $this->IUI->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
-                $iuiFirstVisit = $this->IUI->wherePatientsId($patientId)->first();
-                $getcycleNo = $this->IuiHistory->wherePatientsId($patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
-                $patient_view = 1;
-                if($iuiData)
+                if($request->is_iuiReport == 1)
                 {
-                    $patientInfo = json_decode($iuiData->patients_info);
-                    $patients_remark = !empty($patientInfo) ? $patientInfo->remark : '';
+                    $printPreview = 1;
+                    $iuiReport = $this->IUIReport->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                    return view('admin.iui.iuireportprint', compact('iuiReport','printPreview'));
                 }
-                if($getcycleNo)
+                else
                 {
-                    $description = json_decode($getcycleNo->description);
-                    $patients_remark = !empty($description) && isset($description->pt_remark) ? $description->pt_remark : '';
-                    $iuiHistoryData = collect($this->IuiHistory->wherePatientsId($patientId)->whereCycleNo($getcycleNo->cycle_no)->get());
-                    $iuiSecondVisit = $iuiHistoryData->where('visit',2)->first();
-                }
-                
-                    
-                    if($iuiSecondVisit){
-                        $iuiSecondVisit = json_decode($iuiSecondVisit->description);
+
+                    $iuiData = $this->IUI->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                    $iuiFirstVisit = $this->IUI->wherePatientsId($patientId)->first();
+                    $getcycleNo = $this->IuiHistory->wherePatientsId($patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                    $patient_view = 1;
+                    if($iuiData)
+                    {
+                        $patientInfo = json_decode($iuiData->patients_info);
+                        $patients_remark = !empty($patientInfo) ? $patientInfo->remark : '';
+                    }
+                    if($getcycleNo)
+                    {
+                        $description = json_decode($getcycleNo->description);
+                        $patients_remark = !empty($description) && isset($description->pt_remark) ? $description->pt_remark : '';
+                        $iuiHistoryData = collect($this->IuiHistory->wherePatientsId($patientId)->whereCycleNo($getcycleNo->cycle_no)->get());
+                        $iuiSecondVisit = $iuiHistoryData->where('visit',2)->first();
                     }
                     
-                    $iuiThirdVisit = $this->IuiHistory->wherePatientsId($patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->where('visit',3)->where('description->ovalution','yes')->first();
-                    if($iuiThirdVisit){
-                        $iuiThirdVisit = json_decode($iuiThirdVisit->description);
                         
+                        if($iuiSecondVisit){
+                            $iuiSecondVisit = json_decode($iuiSecondVisit->description);
+                        }
+                        
+                        $iuiThirdVisit = $this->IuiHistory->wherePatientsId($patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->where('visit',3)->where('description->ovalution','yes')->first();
+                        if($iuiThirdVisit){
+                            $iuiThirdVisit = json_decode($iuiThirdVisit->description);
+                            
+                        }
+                        // $iui->study_report = true;
+                        //if 2 report 
+                    // if($iuiData && $request->is_history == 1)
+                    // {
+                    //     $iuiData = $this->IuiHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                    //     if($iuiData && $iuiData->visit == 3){
+                    //         $iuiData->study_report = true;
+                    //     }
+                    // }
+                    if(!$iuiData || $request->is_history == 1){
+                        $iuiData = $this->IuiHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                        if($iuiData && $iuiData->visit == 3){
+                            $iuiData->study_report = true;
+                        }
                     }
-                    // $iui->study_report = true;
-                    //if 2 report 
-                // if($iuiData && $request->is_history == 1)
-                // {
-                //     $iuiData = $this->IuiHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
-                //     if($iuiData && $iuiData->visit == 3){
-                //         $iuiData->study_report = true;
-                //     }
-                // }
-                if(!$iuiData || $request->is_history == 1){
-                    $iuiData = $this->IuiHistory->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
-                    if($iuiData && $iuiData->visit == 3){
-                        $iuiData->study_report = true;
+                    $isExtraVisit = 0;
+                    $iuiExtraVisit = null;
+                    if($request->is_extraVisit == 1)
+                    {
+                        $isExtraVisit = 1;
+                        $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
+                        $oe = !empty($iuiExtraVisit) ? json_decode($iuiExtraVisit->oe) : null;
+                        $patients_remark = !empty($oe) && isset($oe->pt_remark) ? $oe->pt_remark : '';
                     }
-                }
-                $isExtraVisit = 0;
-                $iuiExtraVisit = null;
-                if($request->is_extraVisit == 1)
-                {
-                    $isExtraVisit = 1;
-                    $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
-                    $oe = !empty($iuiExtraVisit) ? json_decode($iuiExtraVisit->oe) : null;
-                    $patients_remark = !empty($oe) && isset($oe->pt_remark) ? $oe->pt_remark : '';
-                }
-                if(!$iuiData && empty($iuiExtraVisit)){
-                    return 'no record available';
-                }
-                $iui = $iuiData;
-                $printPreview = 1;
-                return view('admin.iui.preview', compact('patient_view','iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview','patients_remark','isExtraVisit','iuiExtraVisit','iuiPatients','isAppointmentView'));
+                    if(!$iuiData && empty($iuiExtraVisit)){
+                        return 'no record available';
+                    }
+                    $iui = $iuiData;
+                    $printPreview = 1;
+                    return view('admin.iui.preview', compact('patient_view','iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview','patients_remark','isExtraVisit','iuiExtraVisit','iuiPatients','isAppointmentView'));
+                }    
             }
         }catch(Exception $e){
             log::Debug($e);
