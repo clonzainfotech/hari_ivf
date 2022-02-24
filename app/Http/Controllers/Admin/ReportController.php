@@ -473,16 +473,21 @@ class ReportController extends AdminController
 
                 $referenceDoctorId = $request->reference_doctor_id;
 
-                if($referenceDoctorId){//opd
-                    $refDoctorReport = $refDoctorReport->where(function($query) use ($referenceDoctorId) {
-                        $query->whereHas('getAppointment.getPatientsDetails', function($query)  use ($referenceDoctorId) {
-                            $query->where('reference_doctor_id', $referenceDoctorId);
-                        });
-                    });
+                if($referenceDoctorId)
+                {//opd
+                    
                     if($charge_type == 4) // IPD
                     {
                         $refDoctorReport = $refDoctorReport->where(function($query) use ($referenceDoctorId) {
                             $query->whereHas('getPatientsDetails', function($query)  use ($referenceDoctorId) {
+                                $query->where('reference_doctor_id', $referenceDoctorId);
+                            });
+                        });
+                    }
+                    else
+                    {
+                        $refDoctorReport = $refDoctorReport->where(function($query) use ($referenceDoctorId) {
+                            $query->whereHas('getAppointment.getPatientsDetails', function($query)  use ($referenceDoctorId) {
                                 $query->where('reference_doctor_id', $referenceDoctorId);
                             });
                         });

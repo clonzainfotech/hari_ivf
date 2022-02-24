@@ -2003,7 +2003,7 @@
                                         </div>
                                         <div class="mb-2">
                                                 <span class="visit-lable">AGE / Weight:- </span> 
-                                                <span class="visit-lable-value">{{$lastAppointment->getPatientsDetails->age.'/ '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</span>
+                                                <span class="visit-lable-value">{{$lastAppointment->getPatientsDetails->age.'/ '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : $lastAppointment->getPatientsDetails->weight)}}</span>
                                         </div>
                                         <div class="mb-2">
                                                 <span class="visit-lable">Type & Year of infertility :- </span> 
