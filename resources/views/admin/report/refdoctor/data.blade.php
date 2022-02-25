@@ -97,7 +97,7 @@
                             @if ($row->charge_type == 3)
                                 {{$row->amount}}
                             @elseif($row->is_final_invoice == 1)
-                                {{(!empty($row->getInvoice['grand_total_amt']) ) ?  $row->getInvoice['grand_total_amt'] + $row->getInvoice['deposit_amt'] : 0}}
+                                {{$row->getInvoice['grand_total_amt'] + $row->getInvoice['deposit_amt']}}
                             @else
                                 {{$row->netamount}}
                             @endif
