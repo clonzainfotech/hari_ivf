@@ -396,6 +396,44 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                     'class'=>'form-control',
                                                 ])}}
                                             </div>
+                                            <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single'])}}
+                                                    <label for="child_type_single">
+                                                        Single
+                                                    </label>
+            
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins'])}}
+                                                    <label for="child_type_twins">
+                                                        Twins
+                                                    </label>
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple'])}}
+                                                    <label for="child_type_triple">
+                                                        Triple
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{Form::select("oh[child][child_data][".$key."][ho_gender][]",['male'=>'Male','female'=>'Female'],isset($row->ho_gender)  ? (is_array($row->ho_gender) ? array_filter($row->ho_gender) : array($row->ho_gender)) : '',['class'=>'form-control select-padding-0','data-id'=>'','multiple','title'=>'Select Child Gender'])}}
+                                                {{-- <div class="radio is-conceived">
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
+                                                    <label for="ho_male">
+                                                        Male
+                                                    </label>
+            
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
+                                                    <label for="ho_female">
+                                                        Female
+                                                    </label>
+                                                </div> --}}
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        <br />
+                                        <div class="row child-data-parent">
+                                            <div class="col-sm-1">
+                                            </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
                                                     {{Form::radio("oh[child][child_data][".$key."][ho_type]",'normal',!empty($row->ho_type_value) && $row->ho_type_value == 'normal' ? true : false,['id'=>'normal_'.$key])}}
@@ -413,24 +451,6 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                         Instrumental
                                                     </label>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div class="radio is-conceived">
-                                                    {{Form::radio("oh[child][child_data][".$key."][ho_gender]",'male',!empty($row->ho_gender) && $row->ho_gender == 'male' ? true : false,['id'=>'ho_male_'.$key])}}
-                                                    <label for={{'ho_male_'.$key}}>
-                                                        Male
-                                                    </label>
-
-                                                    {{Form::radio("oh[child][child_data][".$key."][ho_gender]",'female',!empty($row->ho_gender) && $row->ho_gender == 'female' ? true : false,['id'=>'ho_female_'.$key])}}
-                                                    <label for={{'ho_female_'.$key}}>
-                                                        Female
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row child-data-parent">
-                                            <div class="col-sm-1">
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
@@ -841,6 +861,44 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                     'class'=>'form-control',
                                                 ])}}
                                             </div>
+                                            <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single'])}}
+                                                    <label for="child_type_single">
+                                                        Single
+                                                    </label>
+            
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins'])}}
+                                                    <label for="child_type_twins">
+                                                        Twins
+                                                    </label>
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple'])}}
+                                                    <label for="child_type_triple">
+                                                        Triple
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{Form::select("oh[second_marriage][child][child_data][".$key."][ho_gender][]",['male'=>'Male','female'=>'Female'],isset($row->ho_gender)  ? (is_array($row->ho_gender) ? array_filter($row->ho_gender) : array($row->ho_gender)) : '',['class'=>'form-control select-padding-0','data-id'=>'','multiple','title'=>'Select Child Gender'])}}
+                                                {{-- <div class="radio is-conceived">
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
+                                                    <label for="ho_male">
+                                                        Male
+                                                    </label>
+            
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
+                                                    <label for="ho_female">
+                                                        Female
+                                                    </label>
+                                                </div> --}}
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        <br />
+                                        <div class="row second-marriage-life-data child-data-parent">
+                                            <div class="col-sm-1">
+                                            </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
                                                     {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type_value]",'normal',!empty($row->ho_type_value) && $row->ho_type_value == 'normal' ? true : false,['id'=>'second_normal_'.$key])}}
@@ -858,24 +916,6 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                         Instrumental
                                                     </label>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div class="radio is-conceived">
-                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_gender]",'male',!empty($row->ho_gender) && $row->ho_gender == 'male' ? true : false,['id'=>'second_ho_male_'.$key])}}
-                                                    <label for={{'second_ho_male_'.$key}}>
-                                                        Male
-                                                    </label>
-
-                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_gender]",'female',!empty($row->ho_gender) && $row->ho_gender == 'female' ? true : false,['id'=>'second_ho_female_'.$key])}}
-                                                    <label for={{'second_ho_female_'.$key}}>
-                                                        Female
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row second-marriage-life-data child-data-parent">
-                                            <div class="col-sm-1">
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
