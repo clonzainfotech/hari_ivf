@@ -397,6 +397,44 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     'class'=>'form-control',
                                                 ])}}
                                             </div>
+                                            <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single_'.$key])}}
+                                                    <label for="{{'child_type_single_'.$key}}">
+                                                        Single
+                                                    </label>
+            
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins_'.$key])}}
+                                                    <label for="{{'child_type_twins_'.$key}}">
+                                                        Twins
+                                                    </label>
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple_'.$key])}}
+                                                    <label for="{{'child_type_triple_'.$key}}">
+                                                        Triple
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{Form::select("oh[child][child_data][".$key."][ho_gender][]",['male'=>'Male','female'=>'Female'],isset($row->ho_gender)  ? (is_array($row->ho_gender) ? array_filter($row->ho_gender) : array($row->ho_gender)) : '',['class'=>'form-control select-padding-0','data-id'=>'','multiple','title'=>'Select Child Gender'])}}
+                                                {{-- <div class="radio is-conceived">
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
+                                                    <label for="ho_male">
+                                                        Male
+                                                    </label>
+            
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
+                                                    <label for="ho_female">
+                                                        Female
+                                                    </label>
+                                                </div> --}}
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                        <br />
+                                        <div class="row child-data-parent">
+                                            <div class="col-sm-1">
+                                            </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
                                                     {{Form::radio("oh[child][child_data][".$key."][ho_type_value]",'normal',!empty($row->ho_type_value) && $row->ho_type_value == 'normal' ? true : false,['id'=>'normal_'.$key])}}
@@ -414,24 +452,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         Instrumental
                                                     </label>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div class="radio is-conceived">
-                                                    {{Form::radio("oh[child][child_data][".$key."][ho_gender]",'male',!empty($row->ho_gender) && $row->ho_gender == 'male' ? true : false,['id'=>'ho_male_'.$key])}}
-                                                    <label for={{'ho_male_'.$key}}>
-                                                        Male
-                                                    </label>
-
-                                                    {{Form::radio("oh[child][child_data][".$key."][ho_gender]",'female',!empty($row->ho_gender) && $row->ho_gender == 'female' ? true : false,['id'=>'ho_female_'.$key])}}
-                                                    <label for={{'ho_female_'.$key}}>
-                                                        Female
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row child-data-parent">
-                                            <div class="col-sm-1">
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
@@ -470,7 +490,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     {{Form::text("oh[child][child_data][".$key."][expired_year]",!empty($row->expired_reason) ? $row->expired_reason : null ,['class'=>'form-control','placeholder'=>'Expired Reason'])}}
                                                 </div>
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Live Health Year : &nbsp;</span>
                                                     {{Form::text("oh[child][child_data][".$key."][live_health_year]",!empty($row->live_health_year) ? $row->live_health_year : null,['class'=>'form-control'])}}
@@ -850,6 +870,42 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     'class'=>'form-control',
                                                 ])}}
                                             </div>
+                                            <div class="col-sm-2">
+                                                <div class="radio is-conceived">
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single_'.$key])}}
+                                                    <label for="{{'child_type_single_'.$key}}">
+                                                        Single
+                                                    </label>
+            
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins_'.$key])}}
+                                                    <label for="{{'child_type_twins_'.$key}}">
+                                                        Twins
+                                                    </label>
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple_'.$key])}}
+                                                    <label for="{{'child_type_triple_'.$key}}">
+                                                        Triple
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                {{Form::select("oh[second_marriage][child][child_data][".$key."][ho_gender][]",['male'=>'Male','female'=>'Female'],isset($row->ho_gender)  ? (is_array($row->ho_gender) ? array_filter($row->ho_gender) : array($row->ho_gender)) : '',['class'=>'form-control select-padding-0','data-id'=>'','multiple','title'=>'Select Child Gender'])}}
+                                                {{-- <div class="radio is-conceived">
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'male','',['id'=>'ho_male'])}}
+                                                    <label for="ho_male">
+                                                        Male
+                                                    </label>
+            
+                                                    {{Form::radio("oh[child][child_data][1][ho_gender]",'female','',['id'=>'ho_female'])}}
+                                                    <label for="ho_female">
+                                                        Female
+                                                    </label>
+                                                </div> --}}
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row second-marriage-life-data child-data-parent">
+                                            <div class="col-sm-1">
+                                            </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
                                                     {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_type_value]",'normal',!empty($row->ho_type_value) && $row->ho_type_value == 'normal' ? true : false,['id'=>'second_normal_'.$key])}}
@@ -867,24 +923,6 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                         Instrumental
                                                     </label>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div class="radio is-conceived">
-                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_gender]",'male',!empty($row->ho_gender) && $row->ho_gender == 'male' ? true : false,['id'=>'second_ho_male_'.$key])}}
-                                                    <label for={{'second_ho_male_'.$key}}>
-                                                        Male
-                                                    </label>
-
-                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][ho_gender]",'female',!empty($row->ho_gender) && $row->ho_gender == 'female' ? true : false,['id'=>'second_ho_female_'.$key])}}
-                                                    <label for={{'second_ho_female_'.$key}}>
-                                                        Female
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row second-marriage-life-data child-data-parent">
-                                            <div class="col-sm-1">
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="radio is-conceived">
@@ -918,7 +956,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                                     {{$errors->first('reason')}}
                                                 </span>
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Live Health Year : &nbsp;</span>
                                                     {{Form::text("oh[second_marriage][child][child_data][".$key."][live_health_year]",!empty($row->live_health_year) ? $row->live_health_year : null,['class'=>'form-control'])}}

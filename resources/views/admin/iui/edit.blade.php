@@ -398,17 +398,17 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single'])}}
-                                                    <label for="child_type_single">
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single_'.$key])}}
+                                                    <label for="{{'child_type_single_'.$key}}">
                                                         Single
                                                     </label>
             
-                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins'])}}
-                                                    <label for="child_type_twins">
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins_'.$key])}}
+                                                    <label for="{{'child_type_twins_'.$key}}">
                                                         Twins
                                                     </label>
-                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple'])}}
-                                                    <label for="child_type_triple">
+                                                    {{Form::radio("oh[child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple_'.$key])}}
+                                                    <label for="{{'child_type_triple_'.$key}}">
                                                         Triple
                                                     </label>
                                                 </div>
@@ -863,17 +863,17 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single'])}}
-                                                    <label for="child_type_single">
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'single',!empty($row->child_type) && $row->child_type == 'single' ? true : false,['id'=>'child_type_single_'.$key])}}
+                                                    <label for="{{'child_type_single_'.$key}}">
                                                         Single
                                                     </label>
             
-                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins'])}}
-                                                    <label for="child_type_twins">
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'twins',!empty($row->child_type) && $row->child_type == 'twins' ? true : false,['id'=>'child_type_twins_'.$key])}}
+                                                    <label for="{{'child_type_twins_'.$key}}">
                                                         Twins
                                                     </label>
-                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple'])}}
-                                                    <label for="child_type_triple">
+                                                    {{Form::radio("oh[second_marriage][child][child_data][".$key."][child_type]",'triple',!empty($row->child_type) && $row->child_type == 'triple' ? true : false,['id'=>'child_type_triple_'.$key])}}
+                                                    <label for="{{'child_type_triple_'.$key}}">
                                                         Triple
                                                     </label>
                                                 </div>
