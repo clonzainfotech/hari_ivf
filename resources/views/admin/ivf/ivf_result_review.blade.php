@@ -285,7 +285,7 @@
                                             <div class="col-md-4 pr-0">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Pickup D/B : &nbsp;</span>
-                                                    {{Form::text("data[pickup]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->pickup) ? $ivfResultReviewDetail->pickup: (!empty($ivfReport->pickup) ? $ivfReport->pickup : ''),['class'=>'form-control datetimepicker'])}}
+                                                    {{Form::text("data[pickup]",!empty($ivfResultReviewDetail) && isset($ivfResultReviewDetail->pickup) ? $ivfResultReviewDetail->pickup: (!empty($ivfReport->pickup) ? $ivfReport->pickup : ''),['class'=>'form-control'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-4 pr-0">
