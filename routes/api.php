@@ -28,6 +28,9 @@ Route::prefix('v1')->namespace('Api')->group(function () {
     Route::post('getRegisterStatus','AuthApiController@registerStatus');
     Route::get('get-question/{id?}','FaqController@index');
 
+     //Doctor API
+     Route::post('/doctor-login', 'DoctorApi\LoginController@login');
+
     Route::middleware('APIToken')->group(function () {
         // Logout
         Route::get('/home', 'HomeController@home');
@@ -57,9 +60,9 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
         Route::get('/getPatient','UserController@edit');
         // Route::post('/updateprofile','UserController@update');
-        
+
         Route::post('/index','NotificationController@index');
-        
+
         Route::post('/logout', 'AuthApiController@logout');
 
         // our staff
@@ -67,7 +70,7 @@ Route::prefix('v1')->namespace('Api')->group(function () {
 
         //our doctor
         Route::get('ourdoctor','UserController@ourDoctor');
-      
+
         Route::get('about-us','UserController@aboutUs');
         Route::get('get_patient_report','PatientController@get_patient_report');
 
@@ -85,14 +88,14 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         Route::post('get_medicines','MedicineController@get_medicines');
 
         //patient's memory
-        
+
         Route::post('addPatientMemory','PatientController@addPatientMemory');
         Route::post('editPatientMemory','PatientController@editPatientMemory');
         Route::post('deletePatientMemory','PatientController@deletePatientMemory');
         Route::get('getPatientMemory','PatientController@getPatientMemory');
 
         //patient's weight list
-        
+
         Route::post('addPatientWeight','PatientController@addPatientWeight');
         Route::post('editPatientWeight','PatientController@editPatientWeight');
         Route::post('deletePatientWeight','PatientController@deletePatientWeight');
@@ -112,7 +115,13 @@ Route::prefix('v1')->namespace('Api')->group(function () {
         Route::post('update-answer','FaqController@updateAnswer');
         Route::post('delete-answer','FaqController@deleteAnswer');
         Route::post('delete-question','FaqController@deleteQuestion');
-        
+
+        //Doctor Notification
+        Route::post('doctor-explore','DoctorApi\LoginController@explore');
+        Route::post('doctor-appointment','DoctorApi\LoginController@appointment');
+        Route::post('doctor-notification','DoctorApi\LoginController@notification');
+        Route::post('doctor-profile','DoctorApi\LoginController@profile');
+
     });
 
 });
