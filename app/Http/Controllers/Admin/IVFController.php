@@ -3587,7 +3587,7 @@ class IVFController extends AdminController
             if($request->ajax()) 
             {
                
-                $ivfResultReview = $this->IvfResultReview->orderBy('created_at','desc');
+                $ivfResultReview = $this->IvfResultReview;
 
                
                 $fromdate = Carbon::parse($request->fromdate)->format('Y-m-d');
@@ -3627,7 +3627,7 @@ class IVFController extends AdminController
                     // dd(!empty($query->getResultValue()) ? $query->getResultValue()['transfer']['result_type']  : null);
                     $query->result = !empty($query->getResultValue() && isset($query->getResultValue()['transfer']['result_type'])) ? $query->getResultValue()['transfer']['result_type']  : '';
                     return $query;
-                })->sortByDesc('transfer_date');
+                });
                 $data['status'] = 1;
                 $data['data'] = View::make('admin.ivf_result_review.data',compact('ivfResultReview'))->render();
                 return $data; 
