@@ -65,8 +65,7 @@ class InjectionController extends AdminController
             if(!empty($injection))
             {
                 $data['status'] = 2;
-            return $data;
-
+                return $data;
             }
             if(!empty($request->injId))
             {
@@ -79,15 +78,13 @@ class InjectionController extends AdminController
                 $injection->quantity = $request->qty;
                 $injection->save();
                 $data['status'] = 1;
-            return $data;
+                return $data;
 
             }
             if(empty($injection) && empty($request->injId))
             {   
-                $injection = $this->Injection;
+                $injection = $this->Injection->where('type',$request->plan)->first();
                 $injection->name = $request->inj_name;
-                $injection->type = $request->plan;
-                $injection->category = $request->category;
                 $injection->net_price = $request->net_price;
                 $injection->quantity = $request->qty;
                 $injection->save();

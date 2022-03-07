@@ -31,6 +31,11 @@ class Appointment extends BaseModel
     public function getSeenBy(){
         return $this->belongsTo('App\user','seen_by','id');
     }
+    
+    public function lastAppointmentData(){
+        return $this->hasOne('App\Models\Appointment','patients_id','patients_id')->orderBy('id','DESC');
+    }
+
     public function nextAppointmentDate() {
         $date = self::where([
             ['id', '>', $this->id],

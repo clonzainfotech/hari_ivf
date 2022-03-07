@@ -67,15 +67,15 @@
 @section('page-script')
     <script type="text/javascript">
         var page = '';
-        var fromdate = moment(new Date()).format('YYYY-MM-DD');
-        var todate = moment(new Date()).format('YYYY-MM-DD');
+        // var fromdate = moment(new Date()).format('YYYY-MM-DD');
+        // var todate = moment(new Date()).format('YYYY-MM-DD');
         var search = '';
         var key = 'total';
         var currentTime = new Date();
         // First Date Of the month 
-        var startDateFrom = new Date(currentTime.getFullYear(),currentTime.getMonth(),1);
+        var fromdate = new Date(currentTime.getFullYear(),currentTime.getMonth(),1);
         // Last Date Of the Month 
-        var startDateTo = new Date();
+        var todate = new Date();
         var currentData = 'total';
         var plan_type = '';
         var qstring = '?fromdate=' + fromdate + '&todate=' + todate + '&search='+search+ '&key='+key+'&plan_type='+plan_type;
@@ -83,8 +83,8 @@
         $(document).ready(function () {
 
             $('input[name="daterange"]').daterangepicker({
-                startDate: startDateFrom,
-                endDate: startDateTo,
+                startDate: fromdate,
+                endDate: todate,
                 locale: {
                     
                     direction: 'drop-down-date-range',

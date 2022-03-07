@@ -1496,7 +1496,11 @@ class IVFController extends AdminController
             $fetOdCycleNo = last($fetOdCycle);
             $fetEdCycleNo = last($fetEdCycle);
             // $lastAppointment = $this->Appointment->where('patients_id',$id)->orderBy('id','DESC')->first();
-            $isIvfappointment = $this->Appointment->where('patients_id',$id)->where('date','>=',Carbon::now()->format('Y-m-d'))->whereIn('category_id',[1,2])->where('is_done',0)->orderBy('id','desc')->first();
+            $isIvfappointment = $this->Appointment->where('patients_id',$id)->where(function($query){
+                        $query->whereHas('lastAppointmentData', function($query) {
+                            return $query->whereIn('category_id',[1,2]);
+                        });
+                    })->first();
             $currentDate = Carbon::now()->format('Y-m-d');
             $newCycle = false;
             switch ($planTransfer) {
@@ -1645,7 +1649,7 @@ class IVFController extends AdminController
             $leftOvaryData = $this->OvaryDetail->where('type',1)->pluck('name','name');
             $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
             $doseData = $this->Dose->pluck('name','name');
-            $isIvfappointment = $this->Appointment->where('patients_id',$id)->where('date','>=',Carbon::now()->format('Y-m-d'))->whereIn('category_id',[1,2])->where('is_done',0)->orderBy('id','desc')->first();
+            // $isIvfappointment = $this->Appointment->where('patients_id',$id)->where('date','>=',Carbon::now()->format('Y-m-d'))->whereIn('category_id',[1,2])->where('is_done',0)->orderBy('id','desc')->first();
             $isIvf = 'no';
             $data['isIvf'] = $isIvf;
             $data['ivf'] = $ivf;
