@@ -105,7 +105,6 @@ class AdminController extends BaseController
             $appointmentData->updated_by = Auth::user()->id;
             $appointmentData->medical_note = !empty($lastAppointment) ? $lastAppointment->medical_note : '';
             $appointmentData->save();
-            dd('sf');
         }else{
             
 
