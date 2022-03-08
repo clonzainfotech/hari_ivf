@@ -372,6 +372,7 @@
                                                     'class'=>'form-control select-padding-0 medicine',
                                                     'id' => 'treatment-medicine',
                                                     'placeholder'=>'Enter medicine name',
+                                                    'data-live-search'=>"true",
                                                 ])}}
                                                 
                                             </div>

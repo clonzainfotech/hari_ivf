@@ -2032,6 +2032,10 @@ function medicineData(value) {
     var getUrl = window.location;
     var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
     var avoid = "anc";
+    if(getUrl.pathname.split('/')[1] == 'indoor')
+    {
+        var avoid = "indoor";
+    }
     baseUrl = baseUrl.replace(avoid,'');
     var difference = [];
     // jQuery.grep(value, function(el) {
