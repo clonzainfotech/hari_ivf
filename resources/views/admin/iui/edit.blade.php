@@ -4101,7 +4101,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-1">
                     <div class="col-md-1 pr-0">
                         <label class="vertical-form-label pr-0">
                             I.V.F :
@@ -4110,20 +4110,29 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     <div class="col-sm-2">
                         <div class="radio is-conceived">
                             {{Form::radio("data[ivf]",'yes',!empty($historyData->ivf) && $historyData->ivf == 'yes' ? true : false,[
+                                'class'=>'iui-yes-no-status ivf-transfer',
                                 'id'=>'ivf_status_yes',
-                                !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : ''
+                                !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : '','data-type'=>'ivf-plans'
                             ])}}
                             <label for="ivf_status_yes">
                                 Yes
                             </label>
                             {{Form::radio("data[ivf]",'no',!empty($historyData->ivf) && $historyData->ivf == 'no' ? true : false,[
+                                'class'=>'iui-yes-no-status ivf-transfer',
                                 'id'=>'ivf_status_no',
-                                !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : ''
+                                !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : '',
+                                'data-type'=>'ivf-plans'
                             ])}}
                             <label for="ivf_status_no">
                                 No
                             </label>
                         </div>
+                    </div>
+                    <div class="{{'col-md-5 ivf-plans d-none'}}">
+                        <div class="form-group">
+                            {{Form::select("data[ivf_plan]",['1'=>'Self','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'],null,['class'=>'form-control select-padding-0 ivf-transfer-plan','placeholder'=>'select IVF Plan'])}}
+                        </div>
+                        <span class="form-error-msg ivf-plans-msg"></span>
                     </div>
                 </div>
                 @php
@@ -5470,30 +5479,9 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             <div class="row child-no-box">
-                                                <div class="col-md-1 pr-0">
-                                                    <label class="vertical-form-label pr-0">
-                                                        I.V.F :
-                                                    </label>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <div class="radio is-conceived">
-                                                        {{Form::radio("data[ivf]",'yes',!empty($historyData->ivf) && $historyData->ivf == 'yes' ? true : false,[
-                                                            'id'=>'ivf_status_yes',
-                                                            !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : ''
-                                                        ])}}
-                                                        <label for="ivf_status_yes">
-                                                            Yes
-                                                        </label>
-                                                        {{Form::radio("data[ivf]",'no',!empty($historyData->ivf) && $historyData->ivf == 'no' ? true : false,[
-                                                            'id'=>'ivf_status_no',
-                                                            !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : ''
-                                                        ])}}
-                                                        <label for="ivf_status_no">
-                                                            No
-                                                        </label>
-                                                    </div>
-                                                </div>
+                                                
                                                 @php
                                                     $pStatus = !empty($historyData->p_s->type) && $historyData->p_s->type == 'yes' ? '' : 'd-none';
                                                 @endphp
@@ -5551,6 +5539,39 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                         <span class="input-group-addon">Temp : &nbsp;</span>
                                                         {{Form::text("data[le][temp]",!empty($historyData->le->temp) ? $historyData->le->temp : null,['class'=>'form-control'])}}
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="row child-no-box">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
+                                                        I.V.F :
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="radio is-conceived">
+                                                        {{Form::radio("data[ivf]",'yes', false,[
+                                                            'class'=>'iui-yes-no-status ivf-transfer',
+                                                            'id'=>'ivf_status_yes_third',
+                                                            'data-type'=>'ivf-plans'
+                                                        ])}}
+                                                        <label for="ivf_status_yes_third">
+                                                            Yes
+                                                        </label>
+                                                        {{Form::radio("data[ivf]",'no',true,[
+                                                            'class'=>'iui-yes-no-status ivf-transfer',
+                                                            'id'=>'ivf_status_no_third',
+                                                            'data-type'=>'ivf-plans'
+                                                        ])}}
+                                                        <label for="ivf_status_no_third">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="{{'col-md-5 ivf-plans d-none'}}">
+                                                    <div class="form-group">
+                                                        {{Form::select("data[ivf_plan]",['1'=>'Self','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'],null,['class'=>'form-control select-padding-0 ivf-transfer-plan','placeholder'=>'select IVF Plan'])}}
+                                                    </div>
+                                                    <span class="form-error-msg ivf-plans-msg"></span>
                                                 </div>
                                             </div>
                                             <div class="row child-no-box">

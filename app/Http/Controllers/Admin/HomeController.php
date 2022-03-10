@@ -416,9 +416,9 @@ class HomeController extends AdminController
                 $appointment = $appointment
                                             
                                             ->orderBy(DB::raw('ISNULL(arrival_time), is_done'), 'ASC')
-                                            ->orderBy('duration','asc')
+                                            // ->orderBy('duration','asc')
 
-                                            ->orderBy(DB::raw('ISNULL(arrival_time), arrival_time'), 'ASC')
+                                            ->orderBy(DB::raw('ISNULL(time), time'), 'ASC')
                                             // ->orderBy('is_done','ASC')
                                             ->orderBy('date','ASC');
             }else{

@@ -4820,14 +4820,18 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="col-sm-2">
                         <div class="radio is-conceived">
                             {{Form::radio("data[ivf]",'yes',!empty($historyData->ivf) && $historyData->ivf == 'yes' ? true : false,[
+                                'class'=>'iui-yes-no-status ivf-transfer',
                                 'id'=>'ivf_status_yes',
+                                'data-type'=>'ivf-plans',
                                 !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : ''
                             ])}}
                             <label for="ivf_status_yes">
                                 Yes
                             </label>
                             {{Form::radio("data[ivf]",'no',!empty($historyData->ivf) && $historyData->ivf == 'no' ? true : false,[
+                                'class'=>'iui-yes-no-status ivf-transfer',
                                 'id'=>'ivf_status_no',
+                                'data-type'=>'ivf-plans',
                                 !empty($historyData->ivf) && $historyData->ivf == 'yes' ? 'disabled' : ''
                             ])}}
                             <label for="ivf_status_no">
@@ -4835,6 +4839,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             </label>
                         </div>
                     </div>
+                    @php
+                    $ivf_plan_status = !empty($historyData->ivf) && $historyData->ivf == 'yes' ? '' : 'd-none';
+                    @endphp
+                    {{-- {{Form::select('data[co_type][]',$complaints,!empty($historyData->co_type) ? $historyData->co_type : null,['class'=>'form-control co-value co_value_data '.$cClass,'placeholder'=>'Enter complain','multiple'=>true,'data-type'=>'2'])}} --}}
+                    <div class="{{'col-md-5 ivf-plans '.$ivf_plan_status}}">
+                        <div class="form-group">
+                            {{Form::select("data[ivf_plan]",['1'=>'Self','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'],isset($historyData->ivf_plan) && !empty($historyData->ivf_plan) ? $historyData->ivf_plan :null,['class'=>'form-control select-padding-0 ivf-transfer-plan','placeholder'=>'select IVF Plan','disabled'])}}
+                        </div>
+                        <span class="form-error-msg ivf-plans-msg"></span>
+                    </div>
+
                     @php
                         $pStatus = !empty($historyData->p_s->type) && $historyData->p_s->type == 'yes' ? '' : 'd-none';
                     @endphp

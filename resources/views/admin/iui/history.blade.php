@@ -1117,6 +1117,7 @@
                 $('.seen-by-error-2').text('');
                 $('.seen-by-error-3').text('');
                 $('.seen-by-error-4').text('');
+                $('.ivf-plans-msg').text('');
                 if(visit == 2){
                     $('.plan-type-msg').text('');
                     $('.lmp-date-msg').text('');
@@ -1160,12 +1161,20 @@
                         valid = 0;
                     }
                 }
-                if(visit == 3 && $('select.seen-by-3').val() == ''){
+                if(visit == 3  && $('select.seen-by-3').val() == ''){
                     $('.seen-by-error-3').text('Please select doctor');
                     $('html, body').animate({
                         scrollTop: ($('.seen-by-3').offset().top - 150)
                     }, 1000);
                     return false;
+                }
+                if((visit == 2 || visit == 3 ) && $('.ivf-transfer:checked').val() == 'yes' && $('select.ivf-transfer-plan').val() == '') 
+                {
+                    $('.ivf-plans-msg').text('This field is required.');
+                    $('html, body').animate({
+                        scrollTop: ($('select.ivf-transfer-plan').offset().top - 150)
+                    }, 1000);
+                    valid = 0;
                 }
 
                 if(visit != 4){
@@ -1214,6 +1223,7 @@
             if(valid == 0){
                 return true;
             }
+
             var url = "{{URL::to('iui')}}";
             $('.iui-bill-preview').attr('disabled', true);
             $('.submit').prop('disabled', true);

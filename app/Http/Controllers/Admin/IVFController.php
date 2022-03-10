@@ -1427,11 +1427,8 @@ class IVFController extends AdminController
                         $planTransfer = 2;
                     }
                 }
-                if(isset($lastIvfHistory->plan) && !empty($lastIvfHistory->plan) && $ivfHistory->visit == 2 && (!isset($lastIvfHistory->skip_cycle) || $lastIvfHistory->skip_cycle != 'yes'))
+                if(isset($lastIvfHistory->plan) && !empty($lastIvfHistory->plan) && ($lastIvfHistory->plan != $ivfHistory->plan) && $ivfHistory->visit == 2 && (!isset($lastIvfHistory->skip_cycle) || $lastIvfHistory->skip_cycle != 'yes'))
                 {
-                    // dd('sdf');
-                    // $lastIvfHistory->plan = 2;
-                    // $ivfHistory->description = json_encode($lastIvfHistory);
                     $transferIvf = $this->IvfHistory->wherePatientsId($id)->wherePlan($lastIvfHistory->plan)->orderBy('id','desc')->first();
                     $newCycle_no = !empty($transferIvf) ? $transferIvf->cycle_no+1 : 1;
                     $extraVisit = $this->IvfExtraVisit->wherePatientId($id)->where('plan',$ivfHistory->plan)->where('cycle_no',$ivfHistory->cycle_no)->update(['plan'=>$lastIvfHistory->plan,'cycle_no' => $newCycle_no]);
@@ -1459,7 +1456,6 @@ class IVFController extends AdminController
                         }
                         $description->protocol = $protocol;
                         $ivfHistory->description = json_encode($description);
-
                     }
                     $ivfHistory->plan = $lastIvfHistory->plan;
                     $ivfHistory->cycle_no = $newCycle_no;

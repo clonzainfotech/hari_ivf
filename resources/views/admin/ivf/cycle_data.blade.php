@@ -2043,7 +2043,13 @@
                                                 </div>
                                                 <div class="col-md-10 pl-15">
                                                     <div class="mb-2">R :- {{isset($ivfSecondVisitData->oe) && !empty($ivfSecondVisitData->oe->ovary->right->afcs) ? $ivfSecondVisitData->oe->ovary->right->afcs : null}}</div>
+                                                    @if(!empty($ivfSecondVisitData->oe->ovary->right->details))
+                                                        <div class="mb-2">Right Detail :- {{implode(',',$ivfSecondVisitData->oe->ovary->right->details)}}</div>
+                                                    @endif
                                                     <div>L :- {{isset($ivfSecondVisitData->oe) && !empty($ivfSecondVisitData->oe->ovary->left->afcs) ? $ivfSecondVisitData->oe->ovary->left->afcs : null}}</div>
+                                                    @if(!empty($ivfSecondVisitData->oe->ovary->left->details))
+                                                        <div class="mb-2">Left Detail :- {{implode(',',$ivfSecondVisitData->oe->ovary->left->details)}}</div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
