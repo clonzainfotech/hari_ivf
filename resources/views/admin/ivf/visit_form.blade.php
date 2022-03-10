@@ -399,7 +399,7 @@
         {{-- ivf comman form --}}
         @php
             $semenFreezingValueData = ($ivf->plan == 3) && ($semenFreezing != 1) ? '' : 'd-none';
-            $embroyReadyValueData = ($ivf->plan == 3 || $ivfData->plan == 4) && ($embroyReady != 1) ? '' : 'd-none';
+            $embroyReadyValueData = ($ivf->plan == 3 || $ivf->plan == 4) && ($embroyReady != 1) ? '' : 'd-none';
         @endphp
         <div class="row mt-1">
             {{-- @if(($ivf->plan == 3) && (!isset($ivfData->collected->frozen->type) || empty($ivfData->collected->frozen->type) || $ivfData->collected->frozen->type != 'yes')) --}}

@@ -942,7 +942,7 @@ class IUIController extends AdminController
                                 $iuiData->follow_up = \Carbon\Carbon::parse($followupDate)->format('D d M Y');
                                 $createdAt = $iuiHistory->created_at;
                             }
-                            $iuiData->remark = !empty($description['remark']) ? $description['remark'].', Tranfer From IUI' : 'Tranfer From IUI';
+                            $iuiData->remark = !empty($description['remark']) ? $description['remark'].', Transfer From IUI' : 'Transfer From IUI';
                             $iuiHistory->description = json_encode($iuiData);
                             $ivfHistorydata[] = [
                                 "patients_id" => $iuiHistory->patients_id,
@@ -1001,7 +1001,7 @@ class IUIController extends AdminController
                         $description['is_transfer'] = "no";
                         $description['is_transfer_print'] = "no";
                         $description['skip_reason'] = null;
-                        $description['remark'] = !empty($description['remark']) ? $description['remark'].', Tranfer From IUI' : 'Tranfer From IUI';
+                        $description['remark'] = !empty($description['remark']) ? $description['remark'].', Transfer From IUI' : 'Transfer From IUI';
                         $description['plan'] = null;
                         $description['follow_up'] = \Carbon\Carbon::parse($followupDate)->format('D d M Y');
                         $newIvfHistory->description = json_encode($description);
@@ -1245,7 +1245,7 @@ class IUIController extends AdminController
         try{
             $id = decrypt($patientsId);
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
-            $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->whereIn('category_id',[1,3])->orderBy('id', 'DESC')->first();
+            $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->whereIn('category_id',[1,2])->orderBy('id', 'DESC')->first();
             //if patient is currently in anc or ivf now convert in inf then fillup first visit auto
             $firstIuiVisit = $this->IUI->where('patients_id',$id)->orderBy('created_at','desc')->first();
             if($lastAppointment)
