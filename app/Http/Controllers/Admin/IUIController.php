@@ -702,8 +702,11 @@ class IUIController extends AdminController
             {
                 $iui->vascularity_of_endo = !empty($request->data['vascularity_of_endo']) ? $request->data['vascularity_of_endo'] : 0;
             }
-            $iui->description = json_encode($data);
-                $iui->husband_factor = isset($request['h_factor']) ? json_encode($request['h_factor']) : null;
+            if($request->visit != 1)
+            {
+                $iui->description = json_encode($data);
+            }
+            $iui->husband_factor = isset($request['h_factor']) ? json_encode($request['h_factor']) : null;
             $iui->created_at = !empty($iui->created_at) ? $iui->created_at : Carbon::now()->format('Y-m-d H:i:s');
             $iui->created_by = Auth::user()->id;
             $iui->save();
