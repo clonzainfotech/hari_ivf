@@ -23,14 +23,25 @@ class FaqController extends ApiController
         {
             if(!empty($id))
             {
-                $question = $this->FaqQuestion->with('getAnswer')->where('id',$id)->orderBy('created_at','desc')->get();
+                $questions = $this->FaqQuestion->with('getAnswer')->where('id',$id)->orderBy('created_at','desc')->get();
             }
             else
             {
-                $question = $this->FaqQuestion->with('getAnswer')->orderBy('created_at','desc')->get();
-                
+                $questions = $this->FaqQuestion->with('getAnswer')->orderBy('created_at','desc')->get();
             }
-            return $this->sendResponse('Get Question Successfully',$question);
+            foreach($questions as $question)
+            {
+                $question->patient_name = $question->getPatient['name'];
+                $question->profile_picture = $question->getPatient['profile_picture'];
+                foreach($question->getAnswer as $answer)
+                {
+                    $answer->patient_name = $answer->getPatient['name'];
+                    $answer->profile_picture = $answer->getPatient['profile_picture'];
+                    unset($answer->getPatient);
+                }
+                unset($question->getPatient);
+            }
+            return $this->sendResponse('Get Question Successfully',$questions);
         }
         catch(Exception $e)
         {
