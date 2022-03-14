@@ -267,6 +267,7 @@ Route::group(['middleware'=>'checkDB'],function(){
         Route::get('pediatric-report','ReportController@getPedCollection');
         Route::get('medicare-report','ReportController@getMedicareCollection');
         Route::get('analysis-report','ReportController@analysisReport');
+        Route::get('ref-patient-report','PatientsController@getReferencePatientList');
 
 
         // infertility report data

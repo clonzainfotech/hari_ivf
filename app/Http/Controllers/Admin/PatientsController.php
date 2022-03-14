@@ -852,9 +852,7 @@ class PatientsController extends AdminController
 
                         }
                     }
-
                     $record->advice_report = (!empty($investigationData) ? implode(', ',$investigationData) : '').(!empty($otherReport) ? ', '.$otherReport : '');
-                    
                 }
                 $data['status'] = 1;
                 $data['adviceReport'] = View::make('admin.report_advice_list.data',compact('appointment'))->render();
@@ -863,7 +861,37 @@ class PatientsController extends AdminController
             return view('admin.report_advice_list.index', compact('patients'));
         }catch(Exception $e){
             log::Debug($e);
-            abort(500);
+        }
+    }
+
+    /**
+     * return patients list 
+     * @return  array
+     * @param 
+     */
+    public function getReferencePatientList(Request $request)
+    {
+        try
+        {
+            if($request->ajax())
+            {
+                $patient = $this->OpdPatients->whereNotNull('reference_pt_name');
+                $search = $request->search;
+                if($search){
+                    $patient = $patient->where(function($query) use($search) {
+                        $query->where('reference_pt_name','LIKE',$search.'%')->orWhere('reference_pt_mobile','LIKE',$search.'%');
+                    });
+                }
+                $patient = $patient->paginate(100);
+                $data['status'] = 1;
+                $data['patients'] = View::make('admin.report.ref_patient_list.data',compact('patient'))->render();
+                return $data;
+            }
+            return view('admin.report.ref_patient_list.index');
+        }
+        catch(Execption $e)
+        {
+            log::Debug($e);
         }
     }
 }
