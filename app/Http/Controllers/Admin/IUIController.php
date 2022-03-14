@@ -445,6 +445,7 @@ class IUIController extends AdminController
                     }
                     $followupDate = !empty($request->data['plan']['follow_up']) ? $request->data['plan']['follow_up'] : null;
                 }
+                
                 if($request->visit == 3){
                     $seenBy = $request->seen_by_3;
                     $iui->seen_by = $seenBy;
@@ -603,6 +604,7 @@ class IUIController extends AdminController
 
                     // }
                 }
+
                 if(!empty($request->data['inducing'])){
                     $inducing_date = explode(',',$request->data['inducing']['date']);
                     foreach($inducing_date as $key => $inducing_date)
@@ -651,15 +653,24 @@ class IUIController extends AdminController
                     $data['hsa_report']['images'] = $hsaOldImages;
                 }
                
+                if(!empty($request->data['ivf']) && $request->data['ivf'] == 'yes' && !empty($request->data['ivf_plan']))
+                {
+                    $data['remark'] = !empty($request->data['remark']) ? $request->data['remark'].', Transfer in IVF' : 'Transfer in IVF';
+                    $iui->cycle_status = 2;
+                    
+                }
+                $iui->description = json_encode($data);
                 
                 if(!empty($request->data['oe']['ovary']['right']['details']) || !empty($request->data['oe']['ovary']['left']['details'])){
                     $rightData = !empty($request->data['oe']['ovary']['right']['details']) ? $request->data['oe']['ovary']['right']['details'] : [];
                     $leftData = !empty($request->data['oe']['ovary']['left']['details']) ? $request->data['oe']['ovary']['left']['details'] : [];
                     $data = array_unique (array_merge ($rightData, $leftData));
+
                     if(!empty($data) && array_filter($data)){
                         $this->addOvaryAbnormalData($data);
                     }
                 }
+
                 // if(!empty($request->data['treatment']['medicinedata'])){
                 //     $this->medicineData($request->data['treatment']['medicinedata']);
                 //     $this->treatmentData($request->data['treatment']);
@@ -671,13 +682,6 @@ class IUIController extends AdminController
                 if((isset($request->data['skip_cycle']) && $request->data['skip_cycle'] == 'yes') || (isset($request->data['naturally_conceive']) && $request->data['naturally_conceive'] == 'yes')){
                     $iui->cycle_status = 2;
                 }
-                if(!empty($request->data['ivf']) && $request->data['ivf'] == 'yes' && !empty($request->data['ivf_plan']))
-                {
-                    $data['remark'] = !empty($request->data['remark']) ? $request->data['remark'].', Transfer in IVF' : 'Transfer in IVF';
-                    $iui->cycle_status = 2;
-                    
-                }
-                $iui->description = json_encode($data);
             }
             
             if($request->visit == 4){
@@ -690,7 +694,6 @@ class IUIController extends AdminController
                     $this->IUI->wherePatientsId($patientsId)->orderBy('id','DESC')->update(['cycle_status'=>'2']);
                     $iui->cycle_status = 2;
                 }
-                
             }
             if(!empty($request->data['co_type'])){
                 $this->complaintStore($request->data);
@@ -703,13 +706,12 @@ class IUIController extends AdminController
             {
                 $iui->vascularity_of_endo = !empty($request->data['vascularity_of_endo']) ? $request->data['vascularity_of_endo'] : 0;
             }
-            
             $iui->husband_factor = isset($request['h_factor']) ? json_encode($request['h_factor']) : null;
             $iui->created_at = !empty($iui->created_at) ? $iui->created_at : Carbon::now()->format('Y-m-d H:i:s');
             $iui->created_by = Auth::user()->id;
             $iui->save();
             //tranfer in IVF
-            if($request->visit != 1)
+            if($request->visit != 1 && !empty($request->data['ivf']) && $request->data['ivf'] == 'yes' && !empty($request->data['ivf_plan']))
             {
                 $lastIUIHistory = null;
                 $planData = ['1'=>'Pick Up','2'=>'FET','3'=>'FET-OD','4'=>'FET-ED'];
