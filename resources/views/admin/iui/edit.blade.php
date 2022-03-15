@@ -5254,11 +5254,11 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             </td>
                                             <td> {{$currentDateDiff+1}}</td>
                                             <td class=""> 
-                                                <input class="{{$right_class_name.' border-none bg-transparent'}}" name="data[ovary][ovary_type][right][details]" type="text">
+                                                <textarea class="{{$right_class_name.' border-none bg-transparent'}}" name="data[ovary][ovary_type][right][details]" type="text" rows="2"></textarea>
                                                 <i class="material-icons td-right-overy-{{$prevAppointmentDate}} overy-popup" data-class='{{'td-right-overy-'.$prevAppointmentDate}}'>keyboard</i>
                                             </td>
                                             <td class="">
-                                                <input class="{{$left_class_name.' border-none bg-transparent'}}" name="data[ovary][ovary_type][left][details]" type="text">
+                                                <textarea class="{{$left_class_name.' border-none bg-transparent'}}" name="data[ovary][ovary_type][left][details]" type="text"  rows="2"></textarea>
                                                 <i class="material-icons td-left-overy-{{$prevAppointmentDate}} overy-popup" data-class='{{'td-left-overy-'.$prevAppointmentDate}}'>keyboard</i>
                                             </td>
                                             <td class=""> 

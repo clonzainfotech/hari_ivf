@@ -2863,12 +2863,12 @@ font-size: 22px !important;
 .nav-tabs .nav-link, .nav-tabs .nav-link:hover{
     color: #000;
 }
-.table thead>tr>th{
+/* .table thead>tr>th{
     font-size: 13px;
     font-family: roboto-bold;
     border-bottom: 1px solid #dee2e6 !important;
     background: #dee2e6;
-}
+} */
 .view-file-modal-dialog .follicular-table td,.view-file-modal-dialog .follicular-table th
 {
     padding: 0px !important;

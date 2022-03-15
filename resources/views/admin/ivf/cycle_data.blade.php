@@ -612,11 +612,11 @@
                                             <td></td>
                                             <td></td>
                                             <td>
-                                                <input class="{{$right_class_name.' border-none bg-transparent form-control'}}" name="data[ovary][ovary_type][right][details]" type="text">
+                                                <textarea class="{{$right_class_name.' border-none bg-transparent form-control'}}" name="data[ovary][ovary_type][right][details]" type="text" row="2"></textarea>
                                                 <i class="material-icons td-right-overy-{{$prevAppointmentDate}} overy-popup" data-class='{{'td-right-overy-'.$prevAppointmentDate}}'>keyboard</i>
                                             </td>
                                             <td>
-                                                <input class="{{$left_class_name.' border-none bg-transparent form-control'}}" name="data[ovary][ovary_type][left][details]" type="text">
+                                                <textarea class="{{$left_class_name.' border-none bg-transparent form-control'}}" name="data[ovary][ovary_type][left][details]" type="text" row="2"></textarea>
                                                     <i class="material-icons td-left-overy-{{$prevAppointmentDate}} overy-popup" data-class='{{'td-left-overy-'.$prevAppointmentDate}}'>keyboard</i>
                                             </td>
                                             <td>{{Form::text("data[et_details]",'',['class'=>'form-control  border-none bg-transparent','placeholder'=>'Enter ET Details'])}}</td>
