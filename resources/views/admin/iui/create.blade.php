@@ -2412,6 +2412,17 @@
                                             <div class="row">
                                                 <div class="col-md-1 pr-0">
                                                     <label class="vertical-form-label pr-0">
+                                                        USG Report :
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-8 pr-0 usg-type">
+                                                    <div class="usg-images"></div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1 pr-0">
+                                                    <label class="vertical-form-label pr-0">
                                                         Blood Report :
                                                     </label>
                                                 </div>
@@ -3492,6 +3503,9 @@
         });
         $('.hsa-images').imageUploader({
             imagesInputName: 'investigation[hsa_report][images]',
+        });
+        $('.usg-images').imageUploader({
+            imagesInputName: 'investigation[usg][images]',
         });
         $(document).ready(function(){
             $('.complain-multi .show-tick').addClass('d-none');

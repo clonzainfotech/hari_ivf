@@ -1401,6 +1401,14 @@
                         preloadedInputName: 'hsa_report_old'
                     });
                 }
+                if(data.usgImages != 'null') 
+                {
+                    $('.usg-images').imageUploader({
+                        preloaded: jQuery.parseJSON(data.usgImages),
+                        imagesInputName: 'investigation[usg][images]',
+                        preloadedInputName: 'usg_old'
+                    });
+                }
                 if(data.historyData != null)
                 {
                     if(data.bloodImages != 'null')
@@ -1428,16 +1436,29 @@
                             preloadedInputName: 'hsa_report_old'
                         });
                     }
+                    if(data.usgImages != 'null')
+                    {
+                        $('.usg-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.usgImages),
+                            imagesInputName: 'investigation[usg][images]',
+                            preloadedInputName: 'usg_old'
+                        });
+                        $('.data-usg-images').imageUploader({
+                            preloaded: jQuery.parseJSON(data.usgImages),
+                            imagesInputName: 'data[usg][images]',
+                            preloadedInputName: 'usg_old'
+                        });
+                    }
                     
                 }
-                if(data.historyData != null && data.usgImages != 'null')
-                {
-                    $('.data-usg-images').imageUploader({
-                        preloaded: jQuery.parseJSON(data.usgImages),
-                        imagesInputName: 'data[usg][images]',
-                        preloadedInputName: 'usg_old'
-                    });
-                }
+                // if(data.historyData != null && data.usgImages != 'null')
+                // {
+                //     $('.data-usg-images').imageUploader({
+                //         preloaded: jQuery.parseJSON(data.usgImages),
+                //         imagesInputName: 'data[usg][images]',
+                //         preloadedInputName: 'usg_old'
+                //     });
+                // }
                 $('.view-file-edit-modal').modal('hide');
                 $('.select-padding-0').selectpicker('refresh');
                 follicleUpdateType($('.follicle').val());

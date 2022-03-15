@@ -147,6 +147,7 @@ class IUIController extends AdminController
             $bloodOldImages = [];
             $usgOldImages = [];
             $hsaOldImages = [];
+            $usgOldImages = [];
             if($request->visit == 1){
                 $iui = $this->IUI;
                 $investigationData = $request->investigation;
@@ -161,6 +162,7 @@ class IUIController extends AdminController
                     $this->getImagesData('hcg_old','iui',$request->iui_id,$request->hcg_old ? $request->hcg_old : [-1]);
                     $this->getImagesData('blood_report_old','iui',$request->iui_id,$request->blood_report_old ? $request->blood_report_old : [-1]);
                     $this->getImagesData('hsa_report_old','iui',$request->iui_id,$request->hsa_report_old ? $request->hsa_report_old : [-1]);
+                    $this->getImagesData('usg_old','ivf',$patientsId,$request->usg_old ? $request->usg_old : [-1]);
                     $iui = $iui->where('id',$request->iui_id)->first();
                     if(!empty($iui->investigation)){
                         $oldInvestigationData = json_decode($iui->investigation);
@@ -170,6 +172,7 @@ class IUIController extends AdminController
                             $hcgOldImages = !empty($oldInvestigationData->hcg->images) ? (array)$oldInvestigationData->hcg->images : [];
                             $bloodOldImages = !empty($oldInvestigationData->blood_report->image) ? (array)$oldInvestigationData->blood_report->image : [];
                             $hsaOldImages = !empty($oldInvestigationData->hsa_report->images) ? (array)$oldInvestigationData->hsa_report->images : [];
+                            $usgOldImages = !empty($oldInvestigationData->usg->images) ? (array)$oldInvestigationData->usg->images : [];
                         }
                     }
                 }
@@ -217,6 +220,15 @@ class IUIController extends AdminController
                     $investigationData['hsa_report']['images'] = array_merge($hsaImagesData,$hsaOldImages);
                 }else{
                     $investigationData['hsa_report']['images'] = $hsaOldImages;
+                }
+                if(!empty($request['investigation']['usg']['images'])){
+                    foreach($request['investigation']['usg']['images'] as $key=>$row){
+                        $name = $this->uploadImage($row, 'public/upload/ivf/report/');
+                        $usgImagesData[] = 'public/upload/ivf/report/' . $name;
+                    }
+                    $investigationData['usg']['images'] = array_merge($usgImagesData,$usgOldImages);
+                }else{
+                    $investigationData['usg']['images'] = $usgOldImages;
                 }
                 if(!empty($request['p_detailes']['personal_history_history_type'])){
                     $this->storeIUIHoData($request['p_detailes']['personal_history_history_type'],1);
@@ -1616,6 +1628,13 @@ class IUIController extends AdminController
                         foreach($hsaImages as $key=>$row){
                             $hsaImagesData[$key]['id'] = $key;
                             $hsaImagesData[$key]['src'] = url($row);
+                        }
+                    }
+                    $usgImages = !empty($investigation->usg->images) ? $investigation->usg->images : null;
+                    if($usgImages){
+                        foreach($usgImages as $key=>$row){
+                            $usgImagesData[$key]['id'] = $key;
+                            $usgImagesData[$key]['src'] = url($row);
                         }
                     }
                 }

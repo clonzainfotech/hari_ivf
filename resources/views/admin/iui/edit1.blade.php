@@ -2566,6 +2566,17 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-1 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        USG Report :
+                                    </label>
+                                </div>
+                                <div class="col-md-8 pr-0 usg-type">
+                                    <div class="usg-images"></div>
+                                </div>
+                                
+                            </div>
                             @php
                             $bloodReportClass = !empty($investigation->blood_report) && !empty($investigation->blood_report->type) && $investigation->blood_report->type == 'yes' ? true : false;
                             $bloodReportClassName = $bloodReportClass ? '' : 'd-none';
@@ -5804,6 +5815,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
         });
         $('.data-hsa-images').imageUploader({
             imagesInputName: 'data[hsa_report][images]',
+        });
+        $('.usg-images').imageUploader({
+            imagesInputName: 'investigation[usg][images]',
         });
         $(document).on('click', '.add-row', function() {
             addRow();
