@@ -11,4 +11,7 @@ class Gynec extends BaseModel
     public function getGynecPatients(){
         return $this->belongsTo('App\Models\OpdPatients','patients_id','id');
     }
+    public function getSeenBy(){
+        return $this->belongsTo('App\user','seen_by','id');
+    }
 }

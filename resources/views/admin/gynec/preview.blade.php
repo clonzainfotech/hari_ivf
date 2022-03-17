@@ -203,6 +203,7 @@
                     <tr>
                         <th>
                             <span class="pb-1 font-bold ivf-label">Name : {{ ucwords(strtolower($gynec->getGynecPatients['name'])) . ' / ' . $gynec->getGynecPatients['age']. ' years' }}</span>
+                            <br><span class="pb-1 font-bold ivf-label">Seen By : {{ ucwords(strtolower(isset($gynec->getSeenBy->name) ? $gynec->getSeenBy->name : '')) }}</span>
                         </th>
                         <th>
                         <th class="pb-1 float-right font-bold ivf-label">Visit Date:  {{Carbon\Carbon::parse($gynec->created_at)->format('d/m/Y')}}

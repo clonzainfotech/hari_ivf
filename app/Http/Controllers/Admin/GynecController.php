@@ -469,7 +469,8 @@ class GynecController extends AdminController
                     if($gynec){
                         $isGynec = $gynec->is_gynec;
                     }
-                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec'))->render();
+                    $surgical_print = 0;
+                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec','surgical_print'))->render();
                     return response()->json([
                         'status'=> 1,
                         'gynec_type' => $gynec_type,
@@ -486,12 +487,13 @@ class GynecController extends AdminController
                     foreach($gynecAll as $gynec)
                     {
                         $gynec = $this->Gynec->find($gynec->id);
+                        $surgical_print = 0;
                         $isGynec = 0;
                         if($gynec){
                             $isGynec = $gynec->is_gynec;
                         }
                         $date[] = $gynec->created_at;
-                        $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec'))->render();
+                        $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec','surgical_print'))->render();
                     }
                     return response()->json([
                         'status'=>1,
@@ -510,12 +512,13 @@ class GynecController extends AdminController
                     $printPreview = 1;
                     $gynec = $this->Gynec->where('patients_id',$patient)->whereDate('created_at',$request->date)->first();
                     $isGynec = 0;
+                    $surgical_print = 0;
                     if($gynec){
                         $isGynec = $gynec->is_gynec;
                     }
                     $surgicallyData = $this->surgicallyType()['data'];
                     $investigationReport = $this->allInvestigationReport();
-                    return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec'));
+                    return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec','surgical_print'));
                 }
                 
             }
@@ -542,9 +545,10 @@ class GynecController extends AdminController
             if($gynec){
                 $isGynec = $gynec->is_gynec;
             }
+            $surgical_print = 0;
             $surgicallyData = $this->surgicallyType()['data'];
             $investigationReport = $this->allInvestigationReport();
-            return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec'));
+            return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec','surgical_print'));
         }
         catch(Exception $e)
         {
