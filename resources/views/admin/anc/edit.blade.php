@@ -1776,14 +1776,14 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-2">
                         <div class="input-group">
                             <span class="input-group-addon">Ectopic : &nbsp;</span>
-                            {{Form::number("p_obstratics[ectopic_no]",!empty($patientsObstratics->ectopic_no) ? $patientsObstratics->ectopic_no : 0,['class'=>'form-control abortion-no','min'=>'1','max'=>'12','onwheel'=>"this.blur()",'data-type'=>'1'])}}
+                            {{Form::number("p_obstratics[ectopic_no]",isset($patientsObstratics->ectopic_no) && !empty($patientsObstratics->ectopic_no) ? $patientsObstratics->ectopic_no : 0,['class'=>'form-control abortion-no','min'=>'1','max'=>'12','onwheel'=>"this.blur()",'data-type'=>'1'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('ectopic')}}
                         </span>
                     </div>
                     @php
-                        $ectopicNaturally = !empty($patientsObstratics->ectopic_no) && $patientsObstratics->ectopic_no != 0 ? '' : 'd-none';
+                        $ectopicNaturally = isset($patientsObstratics->ectopic_no) && !empty($patientsObstratics->ectopic_no) && $patientsObstratics->ectopic_no != 0 ? '' : 'd-none';
                     @endphp
                 </div>
                 {{-- for ectopic data --}}
@@ -2286,14 +2286,14 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-2">
                         <div class="input-group">
                             <span class="input-group-addon">Ectopic : &nbsp;</span>
-                            {{Form::number("p_obstratics[second_marriage][ectopic_no]",!empty($patientsObstratics->second_marriage->ectopic_no) ? $patientsObstratics->second_marriage->ectopic_no : 0,['class'=>'form-control second-ectopic-no','min'=>'1','max'=>'12','onwheel'=>"this.blur()",'data-type'=>'1'])}}
+                            {{Form::number("p_obstratics[second_marriage][ectopic_no]",isset($patientsObstratics->second_marriage->ectopic_no) && !empty($patientsObstratics->second_marriage->ectopic_no) ? $patientsObstratics->second_marriage->ectopic_no : 0,['class'=>'form-control second-ectopic-no','min'=>'1','max'=>'12','onwheel'=>"this.blur()",'data-type'=>'1'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('ectopic')}}
                         </span>
                     </div>
                     @php
-                        $abortionNaturally = !empty($patientsObstratics->second_marriage->ectopic_no) && $patientsObstratics->second_marriage->ectopic_no != 0 ? '' : 'd-none';
+                        $abortionNaturally = isset($patientsObstratics->second_marriage->ectopic_no) && !empty($patientsObstratics->second_marriage->ectopic_no) && $patientsObstratics->second_marriage->ectopic_no != 0 ? '' : 'd-none';
                     @endphp
                 </div>
                 {{-- for ectopic data --}}
