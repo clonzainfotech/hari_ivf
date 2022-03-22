@@ -943,6 +943,84 @@
                                             </div>
                                             {{-- end abortion --}}
 
+                                            {{-- ectopic data --}}
+                                            <div class="row mt-3">
+                                                <div class="col-md-2">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Ectopic : &nbsp;</span>
+                                                        {{Form::number("oh[ectopic_no]",'0',['class'=>'form-control ectopic-no','min'=>'1','max'=>'12','onwheel'=>"this.blur()"])}}
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row ectopic-data-parent d-none">
+                                                <div class="col-md-2">
+                                                    <label class="vertical-form-label pr-0">
+                                                        Ectopic :
+                                                    </label>
+                                                </div>
+                                                
+                                                <div class="row col-md-8 ectopic-visible-1">
+                                                    <div class="col-sm-3">
+                                                        <div class="radio is-conceived">
+                                                            {{Form::radio("oh[ectopic][ectopic_data][1][spontancous_ectopic_type]",'medically','',['id'=>'spontancous_ectopic_medically'])}}
+                                                            <label for="spontancous_ectopic_medically">
+                                                                Medically
+                                                            </label>
+                                                            {{Form::radio("oh[ectopic][ectopic_data][1][spontancous_ectopic_type]",'surgically','',['id'=>'spontancous_ectopic_surgically'])}}
+                                                            <label for="spontancous_ectopic_surgically">
+                                                                Surgically
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">Before &nbsp;</span>
+                                                            {{Form::text("oh[ectopic][ectopic_data][1][spontancous_ectopic_before]",'',['class'=>'form-control'])}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="checkbox">
+                                                            {{Form::checkbox('oh[ectopic][ectopic_data][1][tube][]','right','',['id'=>'right_tube_1'])}}
+                                                            <label for="right_tube_1">
+                                                                Right Tube
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="checkbox">
+                                                            {{Form::checkbox('oh[ectopic][ectopic_data][1][tube][]','left','',['id'=>'left_tube_1'])}}
+                                                            <label for="left_tube_1">
+                                                                Left Tube
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row ectopic-data-parent d-none">
+                                                {{-- <div class="col-md-1"></div> --}}
+                                                <div class="col-md-4 ectopic-naturally d-none">
+                                                    <div class="form-group">
+                                                        {{Form::select("oh[ectopic][ectopic_data][1][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],'',['class'=>'form-control select-padding-0 ectopic-ho-type p-ho-type','data-id'=>'ectopic-when-where-1','placeholder'=>'Select Conceived By'])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 d-none ectopic-when-where-1 when-where-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">When / Where : &nbsp;</span>
+                                                        {{Form::text("oh[ectopic][ectopic_data][1][when_where]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <div class='input-group'>
+                                                        <span class='input-group-addon'>Ectopic Detail : &nbsp;</span>
+                                                        {{Form::text("oh[ectopic][ectopic_data][1][detail]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ectopic-data">
+                                            </div>
+                                            {{-- end ectopic data --}}
+
                                             {{-- contraception start --}}
                                             <div class="row">
                                                 <div class="col-md-2">
@@ -1374,6 +1452,83 @@
                                             </div>
                                             {{-- end contraception second marriage --}}
 
+                                            {{-- ectopic data --}}
+                                            <div class="row second-marriage-life mt-3 d-none">
+                                                <div class="col-md-2">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Ectopic : &nbsp;</span>
+                                                        {{Form::number("oh[second_marriage][ectopic_no]",'0',['class'=>'form-control second-ectopic-no','min'=>'1','max'=>'12','onwheel'=>"this.blur()"])}}
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row second-marriage-life-data second-ectopic-data-parent d-none">
+                                                <div class="col-md-2">
+                                                    <label class="vertical-form-label pr-0">
+                                                        Ectopic :
+                                                    </label>
+                                                </div>
+                                                
+                                                <div class="row col-md-8 second-ectopic-visible-1">
+                                                    <div class="col-sm-3">
+                                                        <div class="radio is-conceived">
+                                                            {{Form::radio("oh[second_marriage][ectopic][ectopic_data][1][spontancous_ectopic_type]",'medically','',['id'=>'second_spontancous_ectopic_medically'])}}
+                                                            <label for="second_spontancous_ectopic_medically">
+                                                                Medically
+                                                            </label>
+                                                            {{Form::radio("oh[second_marriage][ectopic][ectopic_data][1][spontancous_ectopic_type]",'surgically','',['id'=>'second_spontancous_ectopic_surgically'])}}
+                                                            <label for="second_spontancous_ectopic_surgically">
+                                                                Surgically
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">Before &nbsp;</span>
+                                                            {{Form::text("oh[second_marriage][ectopic][ectopic_data][1][spontancous_ectopic_before]",'',['class'=>'form-control'])}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="checkbox">
+                                                            {{Form::checkbox('oh[second_marriage][ectopic][ectopic_data][1][tube][]','right','',['id'=>'second_right_tube_1'])}}
+                                                            <label for="second_right_tube_1">
+                                                                Right Tube
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="checkbox">
+                                                            {{Form::checkbox('oh[second_marriage][ectopic][ectopic_data][1][tube][]','left','',['id'=>'second_left_tube_1'])}}
+                                                            <label for="second_left_tube_1">
+                                                                Left Tube
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row second-marriage-life-data second-ectopic-data-parent d-none">
+                                                {{-- <div class="col-md-1"></div> --}}
+                                                <div class="col-md-4 second-ectopic-naturally d-none">
+                                                    <div class="form-group">
+                                                        {{Form::select("oh[second_marriage][ectopic][ectopic_data][1][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],'',['class'=>'form-control select-padding-0 second-ectopic-ho-type p-ho-type','data-id'=>'second-ectopic-when-where-1','placeholder'=>'Select Conceived By'])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 d-none ectopic-when-where-1 when-where-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">When / Where : &nbsp;</span>
+                                                        {{Form::text("oh[second_marriage][ectopic][ectopic_data][1][when_where]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-4'>
+                                                    <div class='input-group'>
+                                                        <span class='input-group-addon'>Ectopic Detail : &nbsp;</span>
+                                                        {{Form::text("oh[second_marriage][ectopic][ectopic_data][1][detail]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="second-marriage-life second-ectopic-data d-none">
+                                            </div>
+                                            {{-- end ectopic data --}}
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">

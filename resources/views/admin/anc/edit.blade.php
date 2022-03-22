@@ -2281,8 +2281,8 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         @endforeach
                     @endif
                 </div>
-                 <!-- for Ectopic -->
-                 <div class="{{'second-marriage-life row mt-3 ' . $secondMerrageStatus}}">
+                <!-- for Ectopic -->
+                <div class="{{'second-marriage-life row mt-3 ' . $secondMerrageStatus}}">
                     <div class="col-md-2">
                         <div class="input-group">
                             <span class="input-group-addon">Ectopic : &nbsp;</span>

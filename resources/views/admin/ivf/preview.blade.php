@@ -468,6 +468,67 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     $noValueData[] = ' Abortion';
                                 @endphp
                             @endif
+
+                            @if(empty($oh->ectopic_no) && isset($oh->ectopic_no))
+                                @php
+                                    $noValueData[] = ' Ectopic';
+                                @endphp
+                            @endif
+                            @if(!empty($oh) && isset($oh->ectopic_no) && ($oh->ectopic_no != null && $oh->ectopic_no != 0 ))
+                                @foreach($oh->ectopic->ectopic_data as $key=>$value)
+                                    @php
+                                        $numberKey = addOrdinalNumberSuffix($key);
+                                        $firstEctopicData = 'H/O '.$numberKey;
+                                    @endphp
+                                    <tr>
+                                        @php
+                                            $isBracket = 0;
+                                            $firstEctopicData .= ' Ectopic';
+                                            if(isset($value->tube) && !empty($value->tube))
+                                            {
+                                                
+                                                if(in_array('right',$value->tube) && in_array('left',$value->tube))
+                                                {
+                                                    $firstEctopicData .= ' Both';
+                                                }
+                                                else
+                                                {
+                                                    $firstEctopicData .= in_array('right',$value->tube) ? ' Right' : ' Left';
+                                                }
+                                                $firstEctopicData .= ' Tube';
+                                            }
+                                            if(!empty($value->spontancous_ectopic_before)){
+                                                $firstEctopicData .= ' before ' . $value->spontancous_ectopic_before;
+                                            }
+                                            if(!empty($value->spontancous_ectopic_type)){
+                                                $firstEctopicData .= ' ('. $value->spontancous_ectopic_type.' Management';
+                                                $isBracket = 1;
+                                            }
+                                            $ectopic_type_array = ['1'=>'Conceived Naturally','2'=>'Conceived With Medicine','3'=>'Conceived With IUI','4'=>'Conceived With IVF'];
+                                            if(!empty($value->ho_type) && !empty($oh->ectopic_no) && $oh->ectopic_no != 0 ){
+                                                if (array_key_exists($value->ho_type, $ectopic_type_array)){
+                                                    $firstEctopicData .= ' AND '.$ectopic_type_array[$value->ho_type];
+                                                }
+                                                $hoTypeValue = [2,3,4];
+                                                $dNone = '';
+                                                if(!empty($value->ho_type) && !in_array($value->ho_type,$hoTypeValue)){
+                                                    $dNone = 'd-none';
+                                                }
+                                                if($oh->ectopic_no != null && $oh->ectopic_no != 0 && $dNone == '' && !empty($value->when_where)){
+                                                    $firstEctopicData .= ' - '.$value->when_where;
+                                                }
+                                            }
+                                            if($isBracket == 1){
+                                                $firstEctopicData .= ')';
+                                            }
+                                        @endphp
+                                        <td>
+                                            {{$firstEctopicData}}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
                             @if(isset($oh) && !empty($oh->contraception) && !empty($oh->contraception->contraception_status) && $oh->contraception->contraception_status == 'yes' &&  !empty($oh->contraception->contraception_data))
                                 <tr>
                                     <th>
@@ -489,7 +550,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             @if (isset($oh->second_marriage_life) && !empty($oh->second_marriage_life) && $oh->second_marriage_life == 'yes')
                                 <tr>
                                     <th class=" w-300">
-                                        <span class="ivf-label">Second Merriage Life :</span>
+                                        <span class="ivf-label">Second Marriage Life :</span>
                                         @if (isset($oh->second_marriage_life) && !empty($oh->second_marriage_life))
                                             {{ $oh->second_marriage_life == 'yes' ? 'Yes' : 'No' }}
                                         @else
@@ -720,6 +781,74 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 @php
                                     $secondNoValueData[] = ' Abortion';
                                 @endphp
+                            @endif
+                            @if(isset($oh->second_marriage_life) && $oh->second_marriage_life == 'yes' && !empty($oh) && isset($oh->second_marriage->ectopic_no) && !empty($oh->second_marriage->ectopic_no))
+                                <tr>
+                                    <th>
+                                        <span class="anc-label ">Ectopic :</span>
+                                    </th>
+                                    @php
+                                        $ectopic_type_array = ['1'=>'Conceived Naturally','2'=>'Conceived With Medicine','3'=>'Conceived With IUI','4'=>'Conceived With IVF'];
+                                    @endphp
+                                </tr>
+                            @else
+                                @php
+                                    $secondNoValueData[] = ' Ectopic';
+                                @endphp
+                            @endif
+                            @if(isset($oh->second_marriage_life) && $oh->second_marriage_life == 'yes' && isset($oh->second_marriage->ectopic_no) && ($oh->second_marriage->ectopic_no != null && $oh->second_marriage->ectopic_no != 0 ))
+                                @foreach($oh->second_marriage->ectopic->ectopic_data as $key=>$value)
+                                    @php
+                                        $numberKey = addOrdinalNumberSuffix($key);
+                                        $secondEctopicData = 'H/O '.$numberKey;
+                                    @endphp
+                                    <tr>
+                                        @php
+                                            $isBracket = 0;
+                                            $secondEctopicData .= ' Ectopic';
+                                            if(isset($value->tube) && !empty($value->tube))
+                                            {
+                                                
+                                                if(in_array('right',$value->tube) && in_array('left',$value->tube))
+                                                {
+                                                    $secondEctopicData .= ' Both';
+                                                }
+                                                else
+                                                {
+                                                    $secondEctopicData .= in_array('right',$value->tube) ? ' Right' : ' Left';
+                                                }
+                                                $secondEctopicData .= ' Tube';
+                                            }
+                                            if(!empty($value->spontancous_ectopic_before)){
+                                                $secondEctopicData .= ' before ' . $value->spontancous_ectopic_before;
+                                            }
+                                            if(!empty($value->spontancous_ectopic_type)){
+                                                $secondEctopicData .= ' ('. $value->spontancous_ectopic_type.' Management';
+                                                $isBracket = 1;
+                                            }
+                                            $ectopic_type_array = ['1'=>'Conceived Naturally','2'=>'Conceived With Medicine','3'=>'Conceived With IUI','4'=>'Conceived With IVF'];
+                                            if(!empty($value->ho_type) && !empty($oh->second_marriage->ectopic_no) && $oh->second_marriage->ectopic_no != 0 ){
+                                                if (array_key_exists($value->ho_type, $ectopic_type_array)){
+                                                    $secondEctopicData .= ' AND '.$ectopic_type_array[$value->ho_type];
+                                                }
+                                                $hoTypeValue = [2,3,4];
+                                                $dNone = '';
+                                                if(!empty($value->ho_type) && !in_array($value->ho_type,$hoTypeValue)){
+                                                    $dNone = 'd-none';
+                                                }
+                                                if($oh->second_marriage->ectopic_no != null && $oh->second_marriage->ectopic_no != 0 && $dNone == '' && !empty($value->when_where)){
+                                                    $secondEctopicData .= ' - '.$value->when_where;
+                                                }
+                                            }
+                                            if($isBracket == 1){
+                                                $secondEctopicData .= ')';
+                                            }
+                                        @endphp
+                                        <td>
+                                            {{$secondEctopicData}}
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @endif
                             @if(isset($oh->second_marriage_life) && !empty($oh->second_marriage_life) && $oh->second_marriage_life == 'yes' && !empty($oh) && !empty($oh->second_marriage->contraception) && !empty($oh->second_marriage->contraception->contraception_status) && $oh->second_marriage->contraception->contraception_status == 'yes' && !empty($oh->second_marriage->contraception->contraception_data))
                                 <tr>

@@ -1062,12 +1062,12 @@
                                     </tr>
                                 @endforeach
                             @endif
-                            @if(empty($patientsObstratics->ectopic_no))
+                            @if(!isset($patientsObstratics->ectopic_no) && empty($patientsObstratics->ectopic_no))
                                 @php
                                     $noValueData[] = ' Ectopic';
                                 @endphp
                             @endif
-                            @if(!empty($patientsObstratics) && ($patientsObstratics->ectopic_no != null && $patientsObstratics->ectopic_no != 0 ))
+                            @if(!empty($patientsObstratics) && isset($patientsObstratics->ectopic_no) && ($patientsObstratics->ectopic_no != null && $patientsObstratics->ectopic_no != 0 ))
                                 @foreach($patientsObstratics->ectopic->ectopic_data as $key=>$value)
                                     @php
                                         $numberKey = addOrdinalNumberSuffix($key);
@@ -1342,7 +1342,7 @@
                                     @endif
                                 @endforeach
                             @endif
-                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics) && !empty($patientsObstratics->second_marriage->ectopic_no))
+                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics) && isset($patientsObstratics->second_marriage->ectopic_no) && !empty($patientsObstratics->second_marriage->ectopic_no))
                                 <tr>
                                     <th>
                                         <span class="anc-label ">Ectopic :</span>
@@ -1356,7 +1356,7 @@
                                     $secondNoValueData[] = ' Ectopic';
                                 @endphp
                             @endif
-                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && ($patientsObstratics->second_marriage->ectopic_no != null && $patientsObstratics->second_marriage->ectopic_no != 0 ))
+                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && isset($patientsObstratics->second_marriage->ectopic_no) && ($patientsObstratics->second_marriage->ectopic_no != null && $patientsObstratics->second_marriage->ectopic_no != 0 ))
                                 @foreach($patientsObstratics->second_marriage->ectopic->ectopic_data as $key=>$value)
                                     @php
                                         $numberKey = addOrdinalNumberSuffix($key);

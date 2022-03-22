@@ -631,6 +631,16 @@ $(document).ready(function(){
         }
         secondMtpData(secondMtpNo);
     });
+    $(document).on('keyup','.ectopic-no',function(e){
+        var ectopicNo = $(this).val();
+        if(ectopicNo > 12){
+            e.preventDefault();
+            $(this).val(12);
+            ectopicData(12);
+            return false;
+        }
+        ectopicData(ectopicNo);
+    });
 
     $(document).on('keyup','.second-abortion-no',function(e){
         var secondAbortionNo = $(this).val();
@@ -641,6 +651,16 @@ $(document).ready(function(){
             return false;
         }
         secondAbortionData(secondAbortionNo);
+    });
+    $(document).on('keyup','.second-ectopic-no',function(e){
+        var secondEctopicnNo = $(this).val();
+        if(secondEctopicnNo > 12){
+            e.preventDefault();
+            $(this).val(12);
+            secondEctopicData(12);
+            return false;
+        }
+        secondEctopicData(secondEctopicnNo);
     });
 
     $(document).on('change','select.second-p-ho-type',function(){
@@ -2739,6 +2759,169 @@ $(document).ready(function(){
         $('.second-p-ho-type').selectpicker('refresh');
 
     }
+    //ectopic Data
+function ectopicData(ectopicNo){
+    var ectopicData = '';
+
+    if(ectopicNo == 0){
+        $('.ectopic-data-parent').addClass('d-none');
+        $('.ectopic-naturally').addClass('d-none');
+        $('.when-where-3').addClass('d-none');
+        // return true;
+    }
+    if(ectopicNo > 0){
+        $('.ectopic-data-parent').removeClass('d-none');
+        $('.ectopic-naturally').removeClass('d-none');
+    }
+    $('.ectopic-data').empty();
+    var type = $('.ectopic-no').data('type');
+    var j = 2;
+    if(typeof type != 'undefined'){
+        j = 1;
+    }
+    for (i = j; i <= ectopicNo; i++) {
+        ectopicData +=
+            "<div class='row'>"+
+            "<div class='col-md-2'><label class='vertical-form-label pr-0'>Ectopic :</label></div>"+
+            
+            "<div class='row col-md-8 ectopic-visible-"+i+"'>"+
+            "<div class='col-md-3'>"+
+            "<div class='radio is-conceived'>"+
+            '<input type=radio name="oh[ectopic][ectopic_data]['+i+'][spontancous_ectopic_type]" value="medically" id="spontancous_ectopic_medically_'+i+'"><label for="spontancous_ectopic_medically_'+i+'">Medically</label>'+
+            '<input type=radio name="oh[ectopic][ectopic_data]['+i+'][spontancous_ectopic_type]" value="surgically" id="spontancous_ectopic_surgically_'+i+'"><label for="spontancous_ectopic_surgically_'+i+'">Surgically</label>'+
+            "</div>"+
+            "</div>"+
+            "<div class='col-md-4'>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>Before &nbsp;</span>"+
+            '<input type="text" name="oh[ectopic][ectopic_data]['+i+'][spontancous_ectopic_before]" class="form-control">'+
+            "</div>"+
+            "</div>"+
+            '<div class="col-sm-2">'+
+                '<div class="checkbox">'+
+                    '<input type="checkbox" name="oh[ectopic][ectopic_data][1][tube][]" id="right_tube_'+i+'" value="right"><label for="right_tube_'+i+'">Right Tube</label>'+
+                '</div>'+             
+            '</div>'+  
+            '<div class="col-sm-2">'+
+                '<div class="checkbox">'+
+                    '<input type="checkbox" name="oh[ectopic][ectopic_data][1][tube][]" id="left_tube_'+i+'" value="left"><label for="left_tube_'+i+'">Left Tube</label>'+
+                '</div>'+             
+            '</div>'+    
+            "</div>"+
+            "</div>"+
+            "<div class='row ectopic-visible-"+i+"'>"+
+            // "<div class='col-md-1'></div>"+
+            "<div class='col-md-4 ectopic-naturally'>"+
+            "<div class='form-group'>"+
+            '<select name="oh[ectopic][ectopic_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type p-ho-type" data-id="ectopic-when-where-'+i+'">'+
+            '<option value="">Select Conceived By</option>'+
+            '<option value="1">Naturally</option>'+
+            '<option value="2">Medicine</option>'+
+            '<option value="3">IUI</option>'+
+            '<option value="4">IVF</option>'+
+            '</select>'+
+            "</div>"+
+            "</div>"+
+            "<div class='col-md-4 d-none when-where-1 ectopic-when-where-"+i+"'>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>When / Where : &nbsp;</span>"+
+            '<input type="text" name="oh[ectopic][ectopic_data]['+i+'][when_where]" class="form-control">'+
+            "</div>"+
+            "</div>"+
+            "<div class='col-md-4'>"+
+                "<div class='input-group'>"+
+                    "<span class='input-group-addon'>Ectopic Detail: &nbsp;</span>"+
+                    '<input type="text" name="oh[ectopic][ectopic_data]['+i+'][detail]" class="form-control">'+
+                "</div>"+
+            "</div>"+
+            "</div>";
+    }
+    // $('.abortion-data-parent').removeClass('d-none');
+    $('.ectopic-data').append(ectopicData);
+    $('.p-ho-type').selectpicker('refresh');
+}
+//ectopic second child
+function secondEctopicData(secondEctopicnNo)
+{
+    var secondEctopicData = '';
+
+    if(secondEctopicnNo == 0){
+        $('.second-ectopic-data-parent').addClass('d-none');
+        $('.second-ectopic-naturally').addClass('d-none');
+        $('.second-when-where-3').addClass('d-none');
+        // return true;
+    }
+    if(secondEctopicnNo > 0){
+        $('.second-ectopic-data-parent').removeClass('d-none');
+        $('.second-ectopic-naturally').removeClass('d-none');
+    }
+    $('.second-ectopic-data').empty();
+    var type = $('.second-ectopic-no').data('type');
+    var j = 2;
+    if(typeof type != 'undefined'){
+        j = 1;
+    }
+    for (i = j; i <= secondEctopicnNo; i++) {
+        secondEctopicData +=
+            "<div class='row second-marriage-life-data'>"+
+            "<div class='col-md-2'><label class='vertical-form-label pr-0'>Ectopic :</label></div>"+
+
+            "<div class='row col-md-8 second-ectopic-visible-"+i+"'>"+
+            "<div class='col-md-3'>"+
+            "<div class='radio is-conceived'>"+
+            '<input type=radio name="oh[second_marriage][ectopic][ectopic_data]['+i+'][spontancous_ectopic_type]" value="medically" id="second_spontancous_ectopic_medically_'+i+'"><label for="second_spontancous_ectopic_medically_'+i+'">Medically</label>'+
+            '<input type=radio name="oh[second_marriage][ectopic][ectopic_data]['+i+'][spontancous_ectopic_type]" value="surgically" id="second_spontancous_ectopic_surgically_'+i+'"><label for="second_spontancous_ectopic_surgically_'+i+'">Surgically</label>'+
+            "</div>"+
+            "</div>"+
+            "<div class='col-md-4'>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>Before &nbsp;</span>"+
+            '<input type="text" name="oh[second_marriage][ectopic][ectopic_data]['+i+'][spontancous_ectopic_before]" class="form-control">'+
+            "</div>"+
+            "</div>"+
+            '<div class="col-sm-2">'+
+                '<div class="checkbox">'+
+                    '<input type="checkbox" name="oh[second_marriage][ectopic][ectopic_data][1][tube][]" id="second_right_tube_'+i+'" value="right"><label for="second_right_tube_'+i+'">Right Tube</label>'+
+                '</div>'+             
+            '</div>'+  
+            '<div class="col-sm-2">'+
+                '<div class="checkbox">'+
+                    '<input type="checkbox" name="oh[second_marriage][ectopic][ectopic_data][1][tube][]" id="second_left_tube_'+i+'" value="left"><label for="second_left_tube_'+i+'">Left Tube</label>'+
+                '</div>'+             
+            '</div>'+                                            
+            "</div>"+
+            "</div>"+
+            "<div class='row second-marriage-life-data second-ectopic-data-parent'>"+
+            "<div class='col-md-1'></div>"+
+            "<div class='col-md-3 second-ectopic-naturally second-marriage-life-data'>"+
+            "<div class='form-group'>"+
+            '<select name="oh[second_marriage][ectopic][ectopic_data]['+i+'][ho_type]" class="form-control select-padding-0 child-ho-type second-p-ho-type" data-id="second-ectopic-when-where-'+i+'">'+
+            '<option value="">Select Conceived By</option>'+
+            '<option value="1">Naturally</option>'+
+            '<option value="2">Medicine</option>'+
+            '<option value="3">IUI</option>'+
+            '<option value="4">IVF</option>'+
+            '</select>'+
+            "</div>"+
+            "</div>"+
+            "<div class='col-md-4 d-none second-marriage-life-data second-ectopic-when-where-"+i+"'>"+
+            "<div class='input-group'>"+
+            "<span class='input-group-addon'>When / Where : &nbsp;</span>"+
+            '<input type="text" name="oh[second_marriage][ectopic][ectopic_data]['+i+'][when_where]" class="form-control">'+
+            "</div>"+
+            "</div>"+
+            "<div class='col-md-4 second-marriage-life-data'>"+
+                "<div class='input-group'>"+
+                    "<span class='input-group-addon'>Ectopic Reason : &nbsp;</span>"+
+                    '<input type="text" name="oh[second_marriage][ectopic][ectopic_data]['+i+'][reason]" class="form-control">'+
+                "</div>"+
+            "</div>"+
+            "</div>";
+    }
+    // $('.abortion-data-parent').removeClass('d-none');
+    $('.second-ectopic-data').append(secondEctopicData);
+    $('.second-p-ho-type').selectpicker('refresh');
+}
 
     function secondMerrageOstraticsHoType(value,dId){
         var valueArray = ["2", "3", "4"];
