@@ -215,7 +215,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <h2><strong>IUI Appointment</strong>
+                    <h2><strong>Infertility Appointment</strong>
                     </h2>
                     <ul class="header-dropdown col-md-12 text-right">
                         <li class="w-25">
