@@ -2550,3 +2550,25 @@ $(document).ready(function(){
         return Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
         
     }
+    $(document).on('change','select.surgically_type',function(e){
+        // terminationTypeTerm($(this).val());
+        $('.admission-print').addClass('d-none');
+        if($(this).val() != '')
+        {
+            $('.admission-print').removeClass('d-none');
+        }
+    })
+    // function terminationTypeTerm(value)
+    // {
+    //     $('.admission-print').addClass('d-none');
+    //     $('.termination_type_term').addClass('d-none');
+    //     if(value != '')
+    //     {
+    //         $('.admission-print').removeClass('d-none');
+    //     }
+    //     if(value == 'Delivery')
+    //     {
+    //         $('.termination_type_term').removeClass('d-none');
+    //     }
+    
+    // }

@@ -77,7 +77,7 @@
                                     {{Form::submit('submit',['class'=>'btn btn-primary submit'])}}
                                     {{-- <a class="btn btn-primary next-appointment text-white">Save & Next Appointment</a> --}}
                                     <button type="submit" class="btn btn-primary submit" value="1">Save & Preivew</button>
-                                    <button type="submit" class="btn btn-primary submit" value="2">Admission Print</button>
+                                    <button type="submit" class="btn btn-primary submit admission-print d-none" value="2">Admission Print</button>
                                     <a href="{{URL::to('anc-iui-ivf')}}" class="btn btn-default">Cancel</a>
                                 </div>
                             {{Form::close()}}

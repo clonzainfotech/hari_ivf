@@ -1990,7 +1990,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         </div>
                     </div>
                     <div class="{{'col-md-8 complain-multi surgically-details '.$surgicallyDataStatus}}">
-                        {{Form::select('plan_of_management[surgically_details][]',$surgicallyData,!empty($planOfManagement->surgically_details) ? $planOfManagement->surgically_details : null,['class'=>'form-control co-value co_value_data','placeholder'=>'Surgically Type','multiple'=>true])}}
+                        {{Form::select('plan_of_management[surgically_details][]',$surgicallyData,!empty($planOfManagement->surgically_details) ? $planOfManagement->surgically_details : null,['class'=>'form-control co-value co_value_data surgically_type','placeholder'=>'Surgically Type','multiple'=>true])}}
                     </div>
                 </div>
                 <div class="row mt-3">
