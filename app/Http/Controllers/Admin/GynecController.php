@@ -52,7 +52,9 @@ class GynecController extends AdminController
             $hospitalDoctor = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
             $isIvfHistory = !empty($this->IvfHistory->where('patients_id',$pId)->first()) ? true : false;
             $isAncHistory = !empty($this->AncHistory->where('patients_id',$pId)->first()) ? true : false;
-            return view('admin.gynec.create',compact('personalData','pastData','familyData','hoData','complaints','patient','medicines','patientsId','durationOfData','leftOvaryData','rightOvaryData','surgicallyData','isGynec','oe','hospitalDoctor','isIvfHistory','isAncHistory'));
+            $referenceDoctor = $this->ReferenceDoctor->pluck('name','id');
+            $appointmentData = null;
+            return view('admin.gynec.create',compact('referenceDoctor','appointmentData','personalData','pastData','familyData','hoData','complaints','patient','medicines','patientsId','durationOfData','leftOvaryData','rightOvaryData','surgicallyData','isGynec','oe','hospitalDoctor','isIvfHistory','isAncHistory'));
         }catch(Exception $e){
             log::debug($e->getMessage());
             abort(500);
@@ -145,6 +147,17 @@ class GynecController extends AdminController
             $gynec->is_gynec = $request->is_gynec;
             $gynec->save();
             $now = Carbon::now()->format('Y-m-d');
+            // save patients data table
+            $patients = $this->OpdPatients->find($pId);
+            $patients->name = $request->name;
+            $patients->weight = $request->p_info['weight'];
+            $patients->age = $request->p_info['age'];
+            $patients->reference_doctor_id = $request->rd_reference;
+            $patients->mobile_number = $request->mobile_number;
+            $patients->residence = $request->residence;
+            $patients->main_area = $request->main_area;
+            $patients->city = $request->city;
+            $patients->save();
             $appointmentFlag = $this->Appointment->wherePatientsId($pId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$request->seen_by]);
             $updateConsulting = $this->Appointment->wherePatientsId($pId)->where('date',$now)->update(['in_consulting_room'=>0]);
 
@@ -315,6 +328,8 @@ class GynecController extends AdminController
                 $leftOvaryData = $this->OvaryDetail->where('type',1)->pluck('name','name');
                 $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
                 $surgicallyData = $this->surgicallyType()['data'];
+                $referenceDoctor = $this->ReferenceDoctor->pluck('name','id');
+
                 // 
                 // $isGynec = 0;
                 $data['personalData'] = $personalData;
@@ -330,6 +345,7 @@ class GynecController extends AdminController
                 $data['surgicallyData'] = $surgicallyData;
                 $data['gynecData'] = $gynec;
                 $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
+                $data['referenceDoctor'] = $referenceDoctor;
                 $data['editGynec'] = View::make('admin.gynec.edit',$data)->render();
                
                 return $data;

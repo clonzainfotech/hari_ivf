@@ -20,6 +20,127 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
 
 <div class="panel panel-primary">
     <div class="panel-heading" role="tab" id="headingThree_1">
+        <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#patients" aria-expanded="true"
+                aria-controls="patients">Patients Basic Information</a> </h4>
+    </div>
+    <div id="patients" class="panel-collapse collapse p-info" role="tabpanel" aria-labelledby="headingThree_1">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">Name : &nbsp;</span>
+                        {{Form::text('name',$gynecData->getGynecPatients->name,['class'=>'form-control name'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('name')}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Code : &nbsp;</span>
+                        {{Form::text('code',$gynecData->getGynecPatients['code'],['class'=>'form-control code','disabled'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('code')}}
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">Age : &nbsp;</span>
+                        {{Form::number("p_info[age]",!empty($patientsInfo->age) ? $patientsInfo->age : null,['class'=>'form-control age'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('age')}}
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">weight : &nbsp;</span>
+                        {{Form::text("p_info[weight]",$gynecData->getGynecPatients->weight,['class'=>'form-control weight','id'=>'weight'])}}
+                    </div>
+                    <span class="form-error-msg weight"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Mobile : &nbsp;</span>
+                        {{Form::number('mobile_number',$gynecData->getGynecPatients['mobile_number'],['class'=>'form-control mobile_number'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('mobile_number')}}
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            Visit Date : &nbsp;
+                        </span>
+                        {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? \Carbon\Carbon::parse($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('date')}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{Form::select('rd_reference',$referenceDoctor,!empty($gynecData->getGynecPatients['reference_doctor_id']) ? $gynecData->getGynecPatients['reference_doctor_id'] : null,['class'=>'form-control select-padding-0 refence-doctor','placeholder'=>'Rd Reference'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('rd_reference')}}
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Rd Mobile : &nbsp;</span>
+                        {{Form::number('rd_mobile_number',!empty($gynecData->getGynecPatients->getReferenceDoctor['mobile_number']) ? $gynecData->getGynecPatients->getReferenceDoctor['mobile_number'] : null,['class'=>'form-control ref-mobile-number'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('rd_mobile_number')}}
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">Residence : &nbsp;</span>
+                        {{Form::text('residence',!empty($gynecData->getGynecPatients['residence']) ? $gynecData->getGynecPatients['residence'] : null,['class'=>'form-control'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('residence')}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">Area : &nbsp;</span>
+                        {{Form::text('main_area',!empty($gynecData->getGynecPatients['main_area']) ? $gynecData->getGynecPatients['main_area'] : null,['class'=>'form-control'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('main_area')}}
+                    </span>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">City : &nbsp;</span>
+                        {{Form::text('city',!empty($gynecData->getGynecPatients['city']) ? $gynecData->getGynecPatients['city'] : null,['class'=>'form-control'])}}
+                    </div>
+                    <span class="form-error-msg">
+                        {{$errors->first('city')}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading" role="tab" id="headingThree_1">
     <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse"
                                data-parent="#ho_data" href="#ho_data" aria-expanded="false"
                 aria-controls="ho_data">1. H/O</a></h4>
@@ -341,7 +462,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="col-md-1"></div>
                                     <div class="{{'col-md-4 child-naturally '.$childNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[child][child_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 child-ho-type p-ho-type','data-id'=>'child-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[child][child_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 child-ho-type p-ho-type','data-id'=>'child-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                     </div>
                                     @php
@@ -436,7 +557,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="col-md-1"></div>
                                     <div class="{{'col-md-4 mtp-naturally '.$mtpNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[mtp][mtp_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 mtp-ho-type p-ho-type','data-id'=>'mtp-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[mtp][mtp_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 mtp-ho-type p-ho-type','data-id'=>'mtp-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                         <span class="form-error-msg">
                                             {{$errors->first('ho_details_2')}}
@@ -537,7 +658,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="col-md-1"></div>
                                     <div class="{{'col-md-3 abortion-naturally '.$abortionNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[abortion][abortion_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 abortion-ho-type p-ho-type','data-id'=>'abortion-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[abortion][abortion_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 abortion-ho-type p-ho-type','data-id'=>'abortion-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                     </div>
                                     @php
@@ -679,7 +800,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <div class="row">
                                     <div class="{{'col-md-4 ectopic-naturally '.$ectopicNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[ectopic][ectopic_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 ectopic-ho-type p-ho-type','data-id'=>'ectopic-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[ectopic][ectopic_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 ectopic-ho-type p-ho-type','data-id'=>'ectopic-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                     </div>
                                     @php
@@ -886,7 +1007,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="col-md-1"></div>
                                     <div class="{{'col-md-4 second-marriage-life-data second-child-naturally '.$childNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[second_marriage][child][child_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 child-ho-type second-p-ho-type','data-id'=>'second-child-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[second_marriage][child][child_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 child-ho-type second-p-ho-type','data-id'=>'second-child-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                         <span class="form-error-msg">
                                             {{$errors->first('ho_details_1')}}
@@ -989,7 +1110,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="col-md-1"></div>
                                     <div class="{{'col-md-4 second-marriage-life-data second-mtp-naturally '.$mtpNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[second_marriage][mtp][mtp_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 mtp-ho-type second-p-ho-type','data-id'=>'second-mtp-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[second_marriage][mtp][mtp_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($row->ho_type) ? $row->ho_type : null,['class'=>'form-control select-padding-0 mtp-ho-type second-p-ho-type','data-id'=>'second-mtp-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                     </div>
                                     @php
@@ -1088,7 +1209,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="col-md-1"></div>
                                     <div class="{{'col-md-4 second-marriage-life-data second-abortion-naturally '.$abortionNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[second_marriage][abortion][abortion_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 abortion-ho-type second-p-ho-type','data-id'=>'second-abortion-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[second_marriage][abortion][abortion_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 abortion-ho-type second-p-ho-type','data-id'=>'second-abortion-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                     </div>
                                     @php
@@ -1228,7 +1349,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <div class="row second-marriage-life-data">
                                     <div class="{{'col-md-4 second-marriage-life-data second-ectopic-naturally '.$ectopicNaturally}}">
                                         <div class="form-group">
-                                            {{Form::select("oh[second_marriage][ectopic][ectopic_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'IUI','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 ectopic-ho-type second-p-ho-type','data-id'=>'second-ectopic-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
+                                            {{Form::select("oh[second_marriage][ectopic][ectopic_data][".$key."][ho_type]",['1'=>'Naturally','2'=>'Medicine','3'=>'gynecData','4'=>'IVF'],!empty($value->ho_type) ? $value->ho_type : null,['class'=>'form-control select-padding-0 ectopic-ho-type second-p-ho-type','data-id'=>'second-ectopic-when-where-'.$key,'placeholder'=>'Select Conceived By'])}}
                                         </div>
                                     </div>
                                     @php

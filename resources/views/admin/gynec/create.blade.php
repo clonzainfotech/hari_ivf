@@ -65,6 +65,150 @@
                                         <span class="seen-by-error text-danger mb-2"></span>
                                     </div>
                                 </div>
+                                <!-- patients basic information -->
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading" role="tab" id="headingThree_1">
+                                        <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#patients" href="#patients" aria-expanded="false"
+                                                                    aria-controls="patients">Patients Basic Information</a> </h4>
+                                    </div>
+                                    <div id="patients" class="panel-collapse collapse p-info" role="tabpanel" aria-labelledby="headingThree_1">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Name : &nbsp;</span>
+                                                        {{Form::text('name',$patient->name,['class'=>'form-control name'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                        {{$errors->first('name')}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Code : &nbsp;</span>
+                                                        {{Form::text('code',$patient->code,['class'=>'form-control code','disabled'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                        {{$errors->first('code')}}
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Age : &nbsp;</span>
+                                                        {{Form::number("p_info[age]",$patient->age,['class'=>'form-control age'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                        {{$errors->first('age')}}
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Weight : &nbsp;</span>
+                                                        {{Form::number("p_info[weight]",'',['class'=>'form-control weight','id'=>'weight'])}}
+                                                    </div>
+                                                    <span class="form-error-msg weight">
+                                                        {{$errors->first('weight')}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @php
+                                                    $classData = !empty($appointmentData) ? '3' : '6';
+                                                @endphp
+                                                <div class="{{'col-md-'.$classData}}">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Mobile : &nbsp;</span>
+                                                        {{Form::number('mobile_number',$patient->mobile_number,['class'=>'form-control mobile_number'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                        {{$errors->first('mobile_number')}}
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            Visit Date : &nbsp;
+                                                        </span>
+                                                        {{Form::text("p_info[visit_date]",\Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date','required'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                        {{$errors->first('date')}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        {{Form::select('rd_reference',$referenceDoctor,$patient->reference_doctor_id,['class'=>'form-control select-padding-0 refence-doctor','placeholder'=>' Reference Name'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                        {{$errors->first('rd_reference')}}
+                                                    </span>
+                                                </div>
+                                                @if($patient->reference_doctor_id == 1) <!-- for self reference -->
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">Reference Patient Name : &nbsp;</span>
+                                                            {{Form::text('ref_pt_name',$patient->reference_pt_name,['class'=>'form-control'])}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">Reference Mobile : &nbsp;</span>
+                                                            {{Form::number('rd_mobile_number',$patient->getReferenceDoctor['mobile_number'],['class'=>'form-control ref-mobile-number'])}}
+                                                        </div>
+                                                        <span class="form-error-msg">
+                                                            {{$errors->first('rd_mobile_number')}}
+                                                        </span>
+                                                    </div>
+                                                @else
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">Reference Mobile : &nbsp;</span>
+                                                            {{Form::number('rd_mobile_number',$patient->getReferenceDoctor['mobile_number'],['class'=>'form-control ref-mobile-number'])}}
+                                                        </div>
+                                                        <span class="form-error-msg">
+                                                            {{$errors->first('rd_mobile_number')}}
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Residence : &nbsp;</span>
+                                                        {{Form::text('residence',$patient->residence,['class'=>'form-control'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                            {{$errors->first('residence')}}
+                                                        </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Area : &nbsp;</span>
+                                                        {{Form::text('main_area',$patient->main_area,['class'=>'form-control'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                            {{$errors->first('main_area')}}
+                                                        </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">City : &nbsp;</span>
+                                                        {{Form::text('city',$patient->city,['class'=>'form-control'])}}
+                                                    </div>
+                                                    <span class="form-error-msg">
+                                                            {{$errors->first('city')}}
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- H/O -->
                                 <div class="panel panel-primary">
                                     <div class="panel-heading" role="tab" id="headingThree_1">
