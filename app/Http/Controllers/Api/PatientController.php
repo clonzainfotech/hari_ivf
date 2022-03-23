@@ -791,4 +791,54 @@ class PatientController extends ApiController
             return $this->sendError(__('auth.failed'), 401);
         }
     }
+    /**
+    * Add patients report
+    * @param  \Illuminate\Http\Request 
+    * @return \Illuminate\Http\Response
+    */
+    public function addPatientsReport(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $get_token = $this->PatientToken->where('token', $token)->first();
+        $rule = [
+            'report.*' => 'required|mimes:jpeg,png,jpg,pdf|max:2048'
+        ];
+        $message = [
+            'report' => [
+                'required' => 'This filed required',
+                // 'image' => 'The achievement must be an image',
+                'max'   => 'The achievement files should be less than 1 MB'
+            ]
+        ];
+        $validator = Validator::make($request->all(),$rule,$message);
+        if($validator->fails()){
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+        if ($get_token) 
+        {
+            $user = OpdPatients::where('id', $get_token->patients_id)->first();
+            if ($user && !empty($user->code)) 
+            {   
+                if ($request->hasFile('report')) {
+                    foreach($request->report as $file)
+                    {
+                        $report = $this->uploadImage($file, 'public/upload/patient/report');
+                        $patient_report= url('public/upload/patient/report/'.$report);
+                        $data[] = ['patients_id'=>$user->id,'report'=>$patient_report,'created_at'=>Carbon::now()->format('Y-m-d H:i:s'),'updated_at'=>Carbon::now()->format('Y-m-d H:i:s')];
+                    }
+                    $report = $this->PatientReport;
+                    $report->insert($data);
+                }
+                $patient_report = $this->PatientReport->where('patients_id',$user->id)->get();
+                
+                return $this->sendResponse('Add Report Successfully',$patient_report);
+            } 
+            else 
+            {
+                return $this->sendError('User is not found');
+            }
+        }else{
+            return $this->sendError(__('auth.failed'), 401);
+        }
+    }
 }

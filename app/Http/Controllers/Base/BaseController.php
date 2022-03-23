@@ -90,6 +90,7 @@ use App\Models\FaqAnswer;
 use App\Models\FaqQuestion;
 use App\Models\UserRole;
 use App\Models\UserToken;
+use App\Models\PatientReport;
 
 
 
@@ -183,6 +184,7 @@ class BaseController extends Controller
         $this->FaqAnswer = new FaqAnswer;
         $this->UserRole = new UserRole;
         $this->UserToken = new UserToken;
+        $this->PatientReport = new PatientReport;
 
 
     }
