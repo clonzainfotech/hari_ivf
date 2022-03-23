@@ -2657,6 +2657,9 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             {{Form::text("p_detailes[personal_history_date]",(isset($patientsDetails->personal_history_date) && !empty($patientsDetails->personal_history_date)) ? \Carbon\Carbon::parse($patientsDetails->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
+                    <div class="col-md-3 ho-past-personal-data">
+                        {{Form::text('p_detailes[personal_history_detail]',(isset($patientsDetails->personal_history_detail) && !empty($patientsDetails->personal_history_detail)) ? $patientsDetails->personal_history_detail : null,['class'=>'form-control ','placeholder'=>'Personal History Detail'])}}
+                    </div>
                 </div>
 
                 <div class="row {{$display_family_history}}">
@@ -2667,6 +2670,9 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     </div>
                     <div class="col-md-4 complain-multi">
                         {{Form::select('p_detailes[family_history][]',$familyData,(isset($patientsDetails->family_history) && !empty($patientsDetails->family_history)) ? $patientsDetails->family_history : null,['class'=>'form-control co-value co_value_data mb-3','placeholder'=>'Select Family History','multiple'=>true])}}
+                    </div>
+                    <div class="col-md-4 ho-past-personal-data">
+                        {{Form::text('p_detailes[family_history_detail]',(isset($patientsDetails->family_history_detail) && !empty($patientsDetails->family_history_detail)) ? $patientsDetails->family_history_detail : null,['class'=>'form-control ','placeholder'=>'Family History Detail'])}}
                     </div>
                 </div>
 

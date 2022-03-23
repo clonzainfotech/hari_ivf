@@ -556,12 +556,12 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                 $('.co_value_data').selectize({
                     delimiter: ',',
                     persist: false,
-                    create: function(input) {
-                        return {
-                            value: input,
-                            text: input
-                        }
-                    }
+                    // create: function(input) {
+                    //     return {
+                    //         value: input,
+                    //         text: input
+                    //     }
+                    // }
                 });
             });
 

@@ -1614,7 +1614,7 @@
                     }
                 @endphp
                 <!-- Patients Detailes --}}  -->
-                @if($patientsDetails && !$ancHistory && ($pastHistoryStatus == true  || $pfHistoryStatus == true || $pHistoryStatus == true))
+                @if($patientsDetails && ($pastHistoryStatus == true  || $pfHistoryStatus == true || $pHistoryStatus == true))
                     <table cellspacing="0" cellpadding="0" class="{{'table m-b-0  module-report-table'}}">
                         <tbody>
                             @php
@@ -1628,10 +1628,18 @@
                                     </th>
                                 </tr>
                             @endif
+                            @if(isset($patientsDetails->personal_history_detail) && !empty($patientsDetails->personal_history_detail))
+                                <tr>
+                                    <th>
+                                        <span class="anc-label">Personal History Detail:</span>
+                                        {{$patientsDetails->personal_history_detail}}
+                                    </th>
+                                </tr>
+                            @endif
                             @if(!empty($patientsDetails->personal_history_date))
                                 <tr>
                                     <th>
-                                        <span class="anc-label ">Date :</span>
+                                        <span class="anc-label">Date :</span>
                                         {{\Carbon\Carbon::parse($patientsDetails->personal_history_date)->format('D d M Y')}}
                                     </th>
                                 </tr>
@@ -1639,19 +1647,24 @@
                             @if($pfHistoryStatus == true)
                                 <tr>
                                     <th>
-                                        <span class="anc-label ">Family History :</span>
+                                        <span class="anc-label">Family History :</span>
                                         {{implode(',',is_array($patientsDetails->family_history) ? $patientsDetails->family_history : (array)$patientsDetails->family_history)}}
                                     </th>
                                 </tr>
                             @endif
-                            @php
-                                // $personal_past_history_type = ['nad'=>'NAD','tuberculosis_bacillus'=>"Tuberculosis Bacillus",'hypertension'=>"Hypertension",'thyroid'=>"Thyroid",'dm'=>"DM",'appendectomy'=>'Appendectomy','laparoscopy'=>'Laparoscopy'];
-                            @endphp
-
+                            @if(isset($patientsDetails->family_history_detail) && !empty($patientsDetails->family_history_detail))
+                                <tr>
+                                    <th>
+                                        <span class="anc-label">Family History Detail:</span>
+                                        {{$patientsDetails->personal_history_detail}}
+                                    </th>
+                                </tr>
+                            @endif   
+                             
                             @if($pastHistoryStatus == true)
                                 <tr>
                                     <th>
-                                        <span class="anc-label ">Past History :</span>
+                                        <span class="anc-label">Past History :</span>
                                         {{implode(',',is_array($patientsDetails->past_history_type) ? $patientsDetails->past_history_type : (array)$patientsDetails->past_history_type)}}
                                     </th>
                                 </tr>
