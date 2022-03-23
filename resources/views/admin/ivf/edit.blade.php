@@ -3249,8 +3249,11 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHoHo->personal_history_date) ? \Carbon\Carbon::parse($patientsDetailsHoHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHo->personal_history_date) ? \Carbon\Carbon::parse($patientsDetailsHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
+                                            </div>
+                                            <div class="col-md-3 ho-past-personal-data">
+                                                {{Form::text('p_detailes[personal_history_detail]',(isset($patientsDetailsHo->personal_history_detail) && !empty($patientsDetailsHo->personal_history_detail)) ? $patientsDetailsHo->personal_history_detail : null,['class'=>'form-control ','placeholder'=>'Personal History Detail'])}}
                                             </div>
                                         </div>
                                         <div class="row">
@@ -3262,6 +3265,10 @@
                                             <div class="col-md-4 complain-multi">
                                                 {{Form::select('p_detailes[family_history][]',$familyData,!empty($patientsDetailsHo->family_history) ? $patientsDetailsHo->family_history : null,['class'=>'form-control co-value co_value_data mb-3','placeholder'=>'Select Family History','multiple'=>true])}}
                                             </div>
+                                            <div class="col-md-4 ho-past-personal-data">
+                                                {{Form::text('p_detailes[family_history_detail]',(isset($patientsDetailsHo->family_history_detail) && !empty($patientsDetailsHo->family_history_detail)) ? $patientsDetailsHo->family_history_detail : null,['class'=>'form-control ','placeholder'=>'Family History Detail'])}}
+                                            </div>
+
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 pr-0">
@@ -3915,12 +3922,12 @@
         $('.co_value_data').selectize({
             delimiter: ',',
             persist: false,
-            create: function(input) {
-                return {
-                    value: input,
-                    text: input
-                }
-            }
+            // create: function(input) {
+            //     return {
+            //         value: input,
+            //         text: input
+            //     }
+            // }
         });
         $('#treatment-medicine').select2();
         $('.ho-data-value').selectize({

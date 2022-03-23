@@ -5735,12 +5735,12 @@
         $('.co_value_data').selectize({
             delimiter: ',',
             persist: false,
-            create: function(input) {
-                return {
-                    value: input,
-                    text: input
-                }
-            }
+            // create: function(input) {
+            //     return {
+            //         value: input,
+            //         text: input
+            //     }
+            // }
         });
         $('#treatment-medicine').select2();
         $('.timepicker').bootstrapMaterialDatePicker({
@@ -6728,12 +6728,12 @@
                 $('.co_value_data').selectize({
                     delimiter: ',',
                     persist: false,
-                    create: function(input) {
-                        return {
-                            value: input,
-                            text: input
-                        }
-                    }
+                    // create: function(input) {
+                    //     return {
+                    //         value: input,
+                    //         text: input
+                    //     }
+                    // }
                 });
                 $('#treatment-medicine').select2();
                 $('.complain-multi .show-tick').addClass('d-none');

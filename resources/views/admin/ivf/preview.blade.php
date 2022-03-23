@@ -1432,6 +1432,14 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             </th>
                                         </tr>
                                     @endif
+                                    @if(isset($patientDetailedHO->personal_history_detail) && !empty($patientDetailedHO->personal_history_detail))
+                                        <tr>
+                                            <th>
+                                                <span class="ivf-label">Personal History Detail:</span>
+                                                {{$patientDetailedHO->personal_history_detail}}
+                                            </th>
+                                        </tr>
+                                    @endif
                                     @if(!empty($patientDetailedHO->family_history))
                                         @php
                                             $patientDetailedHO->family_history = is_array($patientDetailedHO->family_history) ? $patientDetailedHO->family_history : (array)$patientDetailedHO->family_history;
@@ -1443,6 +1451,14 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             </th>
                                         </tr>
                                     @endif
+                                    @if(isset($patientDetailedHO->family_history_detail) && !empty($patientDetailedHO->family_history_detail))
+                                        <tr>
+                                            <th>
+                                                <span class="ivf-label">Family History Detail:</span>
+                                                {{$patientDetailedHO->personal_history_detail}}
+                                            </th>
+                                        </tr>
+                                    @endif   
                                     @php
                                         // $personal_past_history_type = ['nad'=>'NAD','tuberculosis_bacillus'=>"Tuberculosis Bacillus",'hypertension'=>"Hypertension",'thyroid'=>"Thyroid",'dm'=>"DM",'appendectomy'=>'Appendectomy','laparoscopy'=>'Laparoscopy'];
                                     @endphp
