@@ -1346,18 +1346,18 @@
                     $('.co_value_data').selectize({
                         delimiter: ',',
                         persist: false,
-                        create: function(input) {
-                            return {
-                                value: input,
-                                text: input
-                            }
-                        },
-                        createFilter: function(input) {
-                            if (input.length > 250) {
-                                alert('length must be less than 250 characters');
-                            }
-                            return input;
-                        }
+                        // create: function(input) {
+                        //     return {
+                        //         value: input,
+                        //         text: input
+                        //     }
+                        // },
+                        // createFilter: function(input) {
+                        //     if (input.length > 250) {
+                        //         alert('length must be less than 250 characters');
+                        //     }
+                        //     return input;
+                        // }
                     });
                     // $('.date-data').datepicker({
                     //     multidate: true,
@@ -1533,18 +1533,18 @@
                     $('.co_value_data').selectize({
                         delimiter: ',',
                         persist: false,
-                        create: function(input) {
-                            return {
-                                value: input,
-                                text: input
-                            }
-                        },
-                        createFilter: function(input) {
-                            if (input.length > 250) {
-                                alert('length must be less than 250 characters');
-                            }
-                            return input;
-                        }
+                        // create: function(input) {
+                        //     return {
+                        //         value: input,
+                        //         text: input
+                        //     }
+                        // },
+                        // createFilter: function(input) {
+                        //     if (input.length > 250) {
+                        //         alert('length must be less than 250 characters');
+                        //     }
+                        //     return input;
+                        // }
                     });
                     // $('.date-data').datepicker({
                     //     multidate: true,

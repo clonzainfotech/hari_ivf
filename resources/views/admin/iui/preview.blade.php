@@ -1581,6 +1581,14 @@
                                             </th>
                                         </tr>
                                     @endif
+                                    @if(isset($patientDetailedHO->personal_history_detail) && !empty($patientDetailedHO->personal_history_detail))
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Personal History Detail:</span>
+                                                {{$patientDetailedHO->personal_history_detail}}
+                                            </th>
+                                        </tr>
+                                    @endif
                                     @if(!empty($patientDetailedHO->family_history) && count((array)$patientDetailedHO->family_history) > 1)
                                         <tr>
                                             <th>
@@ -1589,6 +1597,14 @@
                                             </th>
                                         </tr>
                                     @endif
+                                    @if(isset($patientDetailedHO->family_history_detail) && !empty($patientDetailedHO->family_history_detail))
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Family History Detail:</span>
+                                                {{$patientDetailedHO->personal_history_detail}}
+                                            </th>
+                                        </tr>
+                                    @endif   
                                     @php
                                         // $personal_past_history_type = ['nad'=>'NAD','tuberculosis_bacillus'=>"Tuberculosis Bacillus",'hypertension'=>"Hypertension",'thyroid'=>"Thyroid",'dm'=>"DM",'appendectomy'=>'Appendectomy','laparoscopy'=>'Laparoscopy'];
                                     @endphp
