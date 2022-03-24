@@ -388,12 +388,12 @@
         $('.co_value_data').selectize({
             delimiter: ',',
             persist: false,
-            create: function(input) {
-                return {
-                    value: input,
-                    text: input
-                }
-            }
+            // create: function(input) {
+            //     return {
+            //         value: input,
+            //         text: input
+            //     }
+            // }
         });
         $(document).ready(function(){
             $(window).keydown(function(event){
