@@ -1508,6 +1508,9 @@
                                                             {{Form::text("p_detailes[personal_history_date]",'',['class'=>'form-control datetimepicker date'])}}
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-3 ho-past-personal-data">
+                                                        {{Form::text('p_detailes[personal_history_detail]','',['class'=>'form-control ','placeholder'=>'Personal History Detail'])}}
+                                                    </div>
                                                 </div>
 
                                                 <div class="row">
@@ -1518,6 +1521,9 @@
                                                     </div>
                                                     <div class="col-md-4 complain-multi">
                                                         {{Form::select('p_detailes[family_history][]',$familyData,'',['class'=>'form-control co-value co_value_data mb-3','placeholder'=>'Select Family History','multiple'=>true])}}
+                                                    </div>
+                                                    <div class="col-md-4 ho-past-personal-data">
+                                                        {{Form::text('p_detailes[family_history_detail]','',['class'=>'form-control ','placeholder'=>'Family History Detail'])}}
                                                     </div>
                                                 </div>
 
@@ -3163,12 +3169,12 @@
         $('.co_value_data').selectize({
             delimiter: ',',
             persist: false,
-            create: function(input) {
-                return {
-                    value: input,
-                    text: input
-                }
-            }
+            // create: function(input) {
+            //     return {
+            //         value: input,
+            //         text: input
+            //     }
+            // }
         });
         $('.report-images').imageUploader({
             imagesInputName: 'investigation[report][images]',

@@ -238,6 +238,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         $('.seen-by-error').text('');
         $('.surgically-date-error').text('');
         $('.surgically-time-error').text('');
+        $('.surgically-type-error').text('');
         if($('select.seen-by').val() == ''){
             $('.seen-by-error').text('Please select doctor');
             $('html, body').animate({
@@ -246,6 +247,11 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
             return false;
         }
         if($('#surgically-type').prop('checked') == true){
+            if($('select.surgically_type').val() == '')
+            {
+                $('.surgically-type-error').text('This field Required');
+                return false;
+            }
            if($('.surgically_date').val() == '' )
            {
                $('.surgically-date-error').text('This field Required');
@@ -337,13 +343,13 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
 
                 $('.co_value_data').selectize({
                     delimiter: ',',
-                    persist: false,
-                    create: function(input) {
-                        return {
-                            value: input,
-                            text: input
-                        }
-                    }
+                    persist: false
+                    // create: function(input) {
+                    //     return {
+                    //         value: input,
+                    //         text: input
+                    //     }
+                    // }
                 });
                 if(typeof data.reportImagesData != 'undefined'){
                     $('.report-images').imageUploader({

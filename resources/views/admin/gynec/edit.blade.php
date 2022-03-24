@@ -1651,6 +1651,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHo->personal_history_date) ? \Carbon\Carbon::parse($patientsDetailsHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
+                    <div class="col-md-3 ho-past-personal-data">
+                        {{Form::text('p_detailes[personal_history_detail]',(isset($patientsDetails->personal_history_detail) && !empty($patientsDetails->personal_history_detail)) ? $patientsDetails->personal_history_detail : null,['class'=>'form-control ','placeholder'=>'Personal History Detail'])}}
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 pr-0">
@@ -1660,6 +1663,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-4 complain-multi">
                         {{Form::select('p_detailes[family_history][]',$familyData,!empty($patientsDetails->family_history) ? $patientsDetails->family_history : null,['class'=>'form-control co-value co_value_data mb-3','placeholder'=>'Select Family History','multiple'=>true])}}
+                    </div>
+                    <div class="col-md-4 ho-past-personal-data">
+                        {{Form::text('p_detailes[family_history_detail]',(isset($patientsDetails->family_history_detail) && !empty($patientsDetails->family_history_detail)) ? $patientsDetails->family_history_detail : null,['class'=>'form-control ','placeholder'=>'Family History Detail'])}}
                     </div>
                 </div>
                 <div class="row">
@@ -2112,7 +2118,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="{{'col-md-8 complain-multi surgically-details '.$surgicallyDataStatus}}">
                         {{Form::select('plan_of_management[surgically_details][]',$surgicallyData,!empty($planOfManagement->surgically_details) ? $planOfManagement->surgically_details : null,['class'=>'form-control co-value co_value_data surgically_type','placeholder'=>'Surgically Type','multiple'=>true])}}
+                        
                     </div>
+                    <span class="surgically-type-error form-error-msg"></span>
                 </div>
                 <div class="row mt-3">
                     <div class="{{'col-md-4 surgically-details '.$surgicallyDataStatus}}">

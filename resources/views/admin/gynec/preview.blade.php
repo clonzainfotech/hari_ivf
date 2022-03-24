@@ -10,6 +10,7 @@
     $planManagement = !empty($gynec->plan_of_management	) ? json_decode($gynec->plan_of_management	) : null;
     $investigation = !empty($gynec->investigation) ? json_decode($gynec->investigation) : null;
     $treatment = !empty($gynec->treatment) ? json_decode($gynec->treatment) : null;
+    $patientDetailedHO = !empty($gynec->patients_details_ho) ? json_decode($gynec->patients_details_ho) : null;
     $contraceptionData = ['barrier_method'=>'Barrier Method','cu_t'=>'Cu - T','tl_done'=>'TL Done ','occipill'=>'Occipill','other_contraception'=>'Other'];
     $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
     $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
@@ -1228,7 +1229,67 @@
                     </tbody>
                 </table>
             @endif
-            
+            @if($patientDetailedHO && (!empty($patientDetailedHO->personal_history_history_type) || !empty($patientDetailedHO->personal_history_date) || !empty($patientDetailedHO->family_history) || !empty($patientDetailedHO->past_history_type)))
+                <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
+                    <tbody>
+                        @php
+                            // $personal_history_type = ['1'=>'NAD','2'=>"Diabetes Mellitus",'3'=>"Thyroid",'4'=>"Heart Disease",'5'=>"Hypertension"];
+                        @endphp
+                        @if(!empty($patientDetailedHO->personal_history_history_type) && count((array)$patientDetailedHO->personal_history_history_type) > 1)
+                            <tr>
+                                <th>
+                                    <span class="iui-label">Personal History :</span>
+                                    {{implode(',',$patientDetailedHO->personal_history_history_type)}}
+                                </th>
+                            </tr>
+                        @endif
+                        @if(!empty($patientDetailedHO->personal_history_date))
+                            <tr>
+                                <th>
+                                    <span class="iui-label">Date :</span>
+                                    {{\Carbon\Carbon::parse($patientDetailedHO->personal_history_date)->format('D d M Y')}}
+                                </th>
+                            </tr>
+                        @endif
+                        @if(isset($patientDetailedHO->personal_history_detail) && !empty($patientDetailedHO->personal_history_detail))
+                            <tr>
+                                <th>
+                                    <span class="iui-label">Personal History Detail:</span>
+                                    {{$patientDetailedHO->personal_history_detail}}
+                                </th>
+                            </tr>
+                        @endif
+                        @if(!empty($patientDetailedHO->family_history) && count((array)$patientDetailedHO->family_history) > 1)
+                            <tr>
+                                <th>
+                                    <span class="iui-label">Family History :</span>
+                                    {{implode(',',$patientDetailedHO->family_history)}}
+                                </th>
+                            </tr>
+                        @endif
+                        @if(isset($patientDetailedHO->family_history_detail) && !empty($patientDetailedHO->family_history_detail))
+                            <tr>
+                                <th>
+                                    <span class="iui-label">Family History Detail:</span>
+                                    {{$patientDetailedHO->personal_history_detail}}
+                                </th>
+                            </tr>
+                        @endif   
+                        @php
+                            // $personal_past_history_type = ['nad'=>'NAD','tuberculosis_bacillus'=>"Tuberculosis Bacillus",'hypertension'=>"Hypertension",'thyroid'=>"Thyroid",'dm'=>"DM",'appendectomy'=>'Appendectomy','laparoscopy'=>'Laparoscopy'];
+                        @endphp
+
+                        @if(!empty($patientDetailedHO->past_history_type) && count((array)$patientDetailedHO->past_history_type) > 1)
+                            <tr>
+                                <th>
+                                    <span class="iui-label">Past History :</span>
+                                    {{implode(',',$patientDetailedHO->past_history_type)}}
+                                </th>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            @endif
             @if($gynec->is_gynec == 0)
                 @if(!empty($planManagement) && !empty($planManagement->plan_of_management_data))
                     <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 table-hover module-report-table'}}">
