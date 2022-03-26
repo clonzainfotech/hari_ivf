@@ -28,7 +28,14 @@
                         'method'=>'post',
                         'class'=>'form',
                         'files'=>'true',
-                        'onsubmit'=>'return createvalidation();'
+                        'onsubmit'=>'return createvalidation();',
+                        'autocomplete' => 'new-form'
+                    ])}}
+                    {{Form::hidden('hidden','',[
+                        'class'=>'form-control',
+                        'placeholder'=>'Name',
+                        'id'=>'name',
+                        'autocomplete' => 'new-hidden',
                     ])}}
                         <div class="row">
                             <div class="col-md-6">
@@ -38,7 +45,7 @@
                                         'class'=>'form-control',
                                         'placeholder'=>'Name',
                                         'id'=>'name',
-                                        ''
+                                        'autocomplete' => 'off',
                                     ])}}
                                 </div>
                                 <span class="form-error-msg user_error name" id="error_name">
@@ -53,7 +60,7 @@
                                         'class'=>'form-control mobile_number',
                                         'placeholder'=>'Mobile Number',
                                         'id'=>'mobile',
-                                        'autocomplete' => 'off'
+                                        'autocomplete' => 'new-number'
                                     ])}}
                                 </div>
                                 <span class="form-error-msg user_error mobile" id="error_mobile">
@@ -65,11 +72,12 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Email : &nbsp;</span>
-                                    {{Form::email('email','',[
+                                    {{Form::text('email','',[
                                         'class'=>'form-control',
                                         'placeholder'=>'Email Address',
                                         'id'=>'email',
-                                        'autocomplete' => 'off'
+                                        'autocomplete' => 'new-email',
+                                        'onclick'=>"this.type='email'"
                                     ])}}
                                 </div>
                                 <span class="form-error-msg user_error email" id="error_email">
@@ -80,11 +88,12 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon unik-lbl-spn">Password : &nbsp;</span>
-                                    {{Form::password('password',[
+                                    {{Form::text('password','',[
                                         'class'=>'form-control',
                                         'placeholder'=>'Password',
                                         'id'=>'password',
-                                        'autocomplete' => 'off'
+                                        'autocomplete' => 'new-password',
+                                        'onclick'=>"this.type='password'"
                                     ])}}
                                 </div>
                                 <span class="form-error-msg user_error password" id="error_password">
