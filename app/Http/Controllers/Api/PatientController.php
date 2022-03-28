@@ -386,7 +386,7 @@ class PatientController extends ApiController
                     foreach($patient_report as $patientReport)
                     {
                         $reportDate = Carbon::parse($patientReport->created_at)->format('Y-m-d H:i:s');
-                        $data[] = array('date' => $reportDate,"category"=> 'OTHER',"report_type" => 'OTHER','url' => [$patientReport['report']]);
+                        $data[] = array('id'=>$patientReport->id,'date' => $reportDate,"category"=> 'other',"report_type" => 'OTHER','url' => [$patientReport['report']]);
                     }
                 }
 
