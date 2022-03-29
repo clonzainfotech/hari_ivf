@@ -27,7 +27,7 @@ class IuiHistory extends BaseModel
             'patients_id' => $this->patients_id,
             'visit' => 2
         ])->first();
-        return !empty($iui) ? json_decode($iui->description,true) : null;
+        return !empty($iui) ? $iui : null;
     }
     public function getSeenBy(){
         return $this->belongsTo('App\user','seen_by','id');

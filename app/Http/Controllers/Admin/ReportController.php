@@ -2207,36 +2207,61 @@ class ReportController extends AdminController
                     $data_newIvf = $data_newIvf->whereBetween(\DB::raw('DATE(date)'), [$fromdate, $todate]);
                     $data_oldinf = $data_oldinf->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $data_drop = $data_drop->whereBetween(\DB::raw('DATE(date)'), [$fromdate, $todate]);
-                    $data_consive = $data_consive->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
-                    $data_fail = $data_fail->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
-                    $data_skip = $data_skip->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    // $data_consive = $data_consive->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    // $data_fail = $data_fail->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    // $data_skip = $data_skip->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $data_continue = $data_continue->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     
                 }
                 if(!empty($plan_type))
                 {
-                    $data_fail_Id = collect($data_fail->get())->map(function($value) use($plan_type){
-                            return !empty($value->getIuiSecondVisitCycleWise()) && $value->getIuiSecondVisitCycleWise()['plan']['agenet'][0] == $plan_type  ? $value : [];
+                    // plan is given in january  then consider result(conceive/fail/skip) in january
+                    $data_fail_Id = collect($data_fail->get())->map(function($value) use($plan_type,$fromdate,$todate){
+                        $description = !empty($value->getIuiSecondVisitCycleWise()) && !empty($value->getIuiSecondVisitCycleWise()->description) ? json_decode($value->getIuiSecondVisitCycleWise()->description,true) : null;
+                        $plan_given_date = !empty($value->getIuiSecondVisitCycleWise()->created_at) && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') >= $fromdate && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') <= $todate ? 1 : 0;
+                        return !empty($description) && isset($description['plan']['agenet'][0]) && $description['plan']['agenet'][0] == $plan_type &&  $plan_given_date == 1 ? $value : [];
                     })->pluck('patients_id','patients_id');
                     $data_fail = $data_fail->whereIn('patients_id',$data_fail_Id);
 
-                    $data_consive_Id = collect($data_consive->get())->map(function($value) use($plan_type){
-                        return !empty($value->getIuiSecondVisitCycleWise()) && $value->getIuiSecondVisitCycleWise()['plan']['agenet'][0] == $plan_type ? $value : [];
+                    $data_consive_Id = collect($data_consive->get())->map(function($value) use($plan_type,$fromdate,$todate){
+                        $description = !empty($value->getIuiSecondVisitCycleWise()) && !empty($value->getIuiSecondVisitCycleWise()->description) ? json_decode($value->getIuiSecondVisitCycleWise()->description,true) : null;
+                        // $plan_given_date = !empty($value->getIuiSecondVisitCycleWise()->created_at) && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') >= $fromdate && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') <= $todate ? 1 : 0;
+                        return !empty($description) && isset($description['plan']['agenet'][0]) && $description['plan']['agenet'][0] == $plan_type ? $value : [];
                     })->pluck('patients_id','patients_id');
                     $data_consive = $data_consive->whereIn('patients_id',$data_consive_Id);
-
-                //     $data_drop_Id = collect($data_fail->get())->map(function($value) use($plan_type){
-                //         return !empty($value->getIuiSecondVisit()) && $value->getIuiSecondVisit()['plan']['agenet'][0] == $plan_type ? $value : [];
-                // })->pluck('patients_id','patients_id');
-                    $data_continue_Id = collect($data_continue->get())->map(function($value) use($plan_type){
-                        return !empty($value->getIuiSecondVisitCycleWise()) && $value->getIuiSecondVisitCycleWise()['plan']['agenet'][0] == $plan_type ? $value : [];
+                    
+                    $data_continue_Id = collect($data_continue->get())->map(function($value) use($plan_type,$fromdate,$todate){
+                        $description = !empty($value->getIuiSecondVisitCycleWise()) && !empty($value->getIuiSecondVisitCycleWise()->description) ? json_decode($value->getIuiSecondVisitCycleWise()->description,true) : null;
+                        $plan_given_date = !empty($value->getIuiSecondVisitCycleWise()->created_at) && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') >= $fromdate && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') <= $todate ? 1 : 0;
+                        if($value->patients_id == 6173)
+                        {
+                            dd($value);
+                        }
+                        return !empty($description)&& isset($description['plan']['agenet'][0]) && $description['plan']['agenet'][0] == $plan_type &&  $plan_given_date == 1 ? $value : [];
                     })->pluck('patients_id','patients_id');
                     $data_continue = $data_continue->whereIn('patients_id',$data_continue_Id);
 
-                    $data_skip_Id = collect($data_skip->get())->map(function($value) use($plan_type){
-                        return !empty($value->getIuiSecondVisitCycleWise()) && $value->getIuiSecondVisitCycleWise()['plan']['agenet'][0] == $plan_type ? $value : [];
+                    $data_skip_Id = collect($data_skip->get())->map(function($value) use($plan_type,$fromdate,$todate){
+                        $description = !empty($value->getIuiSecondVisitCycleWise()) && !empty($value->getIuiSecondVisitCycleWise()->description) ? json_decode($value->getIuiSecondVisitCycleWise()->description,true) : null;
+                        $plan_given_date = !empty($value->getIuiSecondVisitCycleWise()->created_at) && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') >= $fromdate && carbon::parse($value->getIuiSecondVisitCycleWise()->created_at)->format('Y-m-d') <= $todate ? 1 : 0;
+                        return !empty($description)&& isset($description['plan']['agenet'][0]) && $description['plan']['agenet'][0] == $plan_type &&  $plan_given_date == 1 ? $value : [];
                     })->pluck('patients_id','patients_id');
                     $data_skip = $data_skip->whereIn('patients_id',$data_skip_Id);
+
+                    // $data_drop_Id = collect($data_drop->get())->map(function($value) use($plan_type){
+                    //     $description = !empty($value->getIuiSecondVisitCycleWise()) && !empty($value->getIuiSecondVisitCycleWise()->description) ? json_decode($value->getIuiSecondVisitCycleWise()->description,true) : null;
+                    //     return !empty($description)&& isset($description['plan']['agenet'][0]) && $description['plan']['agenet'][0] == $plan_type ? $value : [];
+                    // })->pluck('patients_id','patients_id');
+                    // $data_drop = $data_drop->whereIn('patients_id',$data_drop_Id);
+                }
+                else
+                {
+                    $data_consive = $data_consive->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $data_fail = $data_fail->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $data_skip = $data_skip->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    // $data_drop = $data_drop->whereBetween(\DB::raw('DATE(date)'), [$fromdate, $todate]);
+                    // $data_continue = $data_continue->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+
                 }
                 $data_newIvf = $data_newIvf->pluck('patients_id','patients_id')->toArray();
                 $data_oldinf = $data_oldinf->pluck('patients_id','patients_id')->toArray();

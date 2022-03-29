@@ -1317,7 +1317,7 @@ class IUIController extends AdminController
         try{
             $id = decrypt($patientsId);
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
-            $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->whereIn('category_id',[1,2])->whereDate('date','!=',Carbon::now()->format('Y-m-d'))->orderBy('id', 'DESC')->first();
+            $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->whereNotIn('category_id',[3,4])->whereDate('date','!=',Carbon::now()->format('Y-m-d'))->orderBy('id', 'DESC')->first();
             //if patient is currently in anc or ivf now convert in inf then fillup first visit auto
             $firstIuiVisit = $this->IUI->where('patients_id',$id)->orderBy('created_at','desc')->first();
             if($lastAppointment)
@@ -1769,7 +1769,7 @@ class IUIController extends AdminController
             $view = view('admin.iui.history',compact('medicines','patientsId','hospitalTime','date','iuiCycleNo','iuiCurrentCycleNo','iui','iuiFirstVisitData','cycleData','referenceDoctor','iuiReport','iuiReportStatus'));
             
             //display old iui visit when patients is tranfer from iui to ANC or IVf
-            if(($iuifourthVisit && ($lastAppointment->category_id == 1 || $lastAppointment->category_id == 2))){
+            if(($iuifourthVisit && (!empty($lastAppointment) && ($lastAppointment->category_id == 1 || $lastAppointmentData->category_id == 2)))){
                 $ivfTransfer = $this->IVF->wherePatientsId($id)->where('created_at','>=',$iuifourthVisit->created_at)->first();
                 $ancTransfer = $this->ANC->wherePatientsId($id)->where('created_at','>=',$iuifourthVisit->created_at)->first();
                 if((empty($ivfTransfer) && empty($ancTransfer)))
