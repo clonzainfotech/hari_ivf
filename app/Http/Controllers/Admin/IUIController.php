@@ -1786,7 +1786,8 @@ class IUIController extends AdminController
 
     public function getPlanData($type){
         $planData = $this->Injection->where('type',$type)->whereNotNull('name')->pluck('name','name');
-        return ['planData'=>$planData];
+        $planDataWithIds = $this->Injection->where('type',$type)->whereNotNull('name')->pluck('name','id');
+        return ['planData'=>$planData,'planDataWithIds'=>$planDataWithIds];
     }
 
     // get all injection for IUI

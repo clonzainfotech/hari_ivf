@@ -810,13 +810,12 @@ class PatientController extends ApiController
         $token = $request->header('Authorization');
         $get_token = $this->PatientToken->where('token', $token)->first();
         $rule = [
-            'report.*' => 'required|mimes:jpeg,png,jpg,pdf|max:2048'
+            'report.*' => 'required|mimes:jpeg,png,jpg,pdf'
         ];
         $message = [
             'report' => [
                 'required' => 'This filed required',
                 // 'image' => 'The achievement must be an image',
-                'max'   => 'The achievement files should be less than 2 MB'
             ]
         ];
         $validator = Validator::make($request->all(),$rule,$message);
