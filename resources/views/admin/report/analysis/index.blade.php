@@ -117,7 +117,7 @@
         $(document).on("keyup",'#myInput', function() {
             
             search = $(this).val();
-            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search;
+            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key;
             getAnalysisData(qstring)
         });
         $(document).on('click','.card.iui-box',function(){
