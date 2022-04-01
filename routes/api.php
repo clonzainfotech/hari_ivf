@@ -117,10 +117,10 @@ Route::group(['middleware'=>'checkDB'],function(){
             Route::post('delete-question','FaqController@deleteQuestion');
 
             //Doctor Notification
-            Route::post('doctor-explore','DoctorApi\LoginController@explore');
-            Route::post('doctor-appointment','DoctorApi\LoginController@appointment');
+            Route::post('doctor-explore','DoctorApi\ExploreController@explore');
+            Route::post('doctor-appointment','DoctorApi\AppointmentController@appointment');
             Route::post('doctor-notification','DoctorApi\LoginController@notification');
-            Route::post('doctor-profile','DoctorApi\LoginController@doctorprofile');
+            Route::post('doctor-profile','DoctorApi\ProfileController@doctorprofile');
 
             //Patient's report
             Route::post('add-patient-report','PatientController@addPatientsReport');
