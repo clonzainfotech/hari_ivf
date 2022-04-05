@@ -119,7 +119,7 @@ Route::group(['middleware'=>'checkDB'],function(){
             //Doctor Notification
             Route::post('doctor-explore','DoctorApi\ExploreController@explore');
             Route::post('doctor-appointment','DoctorApi\AppointmentController@appointment');
-            Route::post('doctor-notification','DoctorApi\LoginController@notification');
+            Route::post('doctor-notification','DoctorApi\NotificationController@notification');
             Route::post('doctor-profile','DoctorApi\ProfileController@doctorprofile');
 
             //Patient's report
