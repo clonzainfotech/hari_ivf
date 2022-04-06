@@ -536,8 +536,7 @@
                                                     'class'=>'dob border-color border-1',
                                                     'autocomplete'=>'off'
                                                 ])}}
-{{-- <input name="dob" id="birthdate" class="form-control" placeholder='BirthDate'> --}}
-
+                                                {{-- <input name="dob" id="birthdate" class="form-control" placeholder='BirthDate'> --}}
                                                
                                             </div>
                                             <span class="form-error-msg">
@@ -863,6 +862,8 @@
                 $('.pregnant').selectpicker('refresh');
                 $('.main_area').val(data['patients']['main_area']);
                 $('.occupation').val(data['patients']['occupation']);
+                $('.dob').val(moment(data['patients']['dob']).format('DD-MM-YYYY'));
+
             } else {
                 $( "#patient-name" ).val('').trigger('change');
                 $("select").val('default').selectpicker("refresh");

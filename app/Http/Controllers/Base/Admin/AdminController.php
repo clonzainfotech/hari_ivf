@@ -105,6 +105,13 @@ class AdminController extends BaseController
             $appointmentData->updated_by = Auth::user()->id;
             $appointmentData->medical_note = !empty($lastAppointment) ? $lastAppointment->medical_note : '';
             $appointmentData->save();
+            // update Age
+            $patient_check = $this->OpdPatients->find($appointmentData->patients_id);
+            if(!empty($patient_check))
+            {
+                $patient_check->age = !empty($patient_check->dob) ? \Carbon\Carbon::parse($patient_check->dob)->age : $patient_check->age;
+                $patient_check->save();
+            }
         }else{
             
 
@@ -147,9 +154,14 @@ class AdminController extends BaseController
                 $appointment->usg_status = !empty($data['usg_status']) ? $data['usg_status'] : 0;
                 $appointment->patients_id = $appointmentData->patients_id;
                 $appointment->medical_note = !empty($lastAppointment) ? $lastAppointment->medical_note : '';
-                // dd($appointment->medical_note);
-
                 $appointment->save();
+                // update Age
+                $patient_check = $this->OpdPatients->find($appointmentData->patients_id);
+                if(!empty($patient_check))
+                {
+                    $patient_check->age = !empty($patient_check->dob) ? Carbon::parse($patient_check->dob)->age : $patient_check->age;
+                    $patient_check->save();
+                }
                 $date = Carbon::parse($appointment->date)->format('d/m/Y');
             }
 

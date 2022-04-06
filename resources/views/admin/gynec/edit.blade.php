@@ -49,7 +49,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                 <div class="col-md-3">
                     <div class="input-group">
                         <span class="input-group-addon">Age : &nbsp;</span>
-                        {{Form::number("p_info[age]",!empty($patientsInfo->age) ? $patientsInfo->age : (!empty($patientsInfo->dob) ? \Carbon\Carbon::parse($patientsInfo->dob)->age : null),['class'=>'form-control age'])}}
+                        {{Form::number("p_info[age]",!empty($gynecData->getGynecPatients->age) ? $gynecData->getGynecPatients->age  : null,['class'=>'form-control age'])}}
                     </div>
                     <span class="form-error-msg">
                         {{$errors->first('age')}}

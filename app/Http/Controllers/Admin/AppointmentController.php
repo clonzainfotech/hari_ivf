@@ -480,7 +480,7 @@ class AppointmentController extends AdminController
         if($patient_check == null){
             $updatePatient->name = $request->name;
             $updatePatient->gender = $request->gender;
-            $updatePatient->age = $request->age;
+            $updatePatient->age = !empty($request->dob) ? \Carbon\Carbon::parse($request->dob)->age : $request->age;
             $updatePatient->months = $request->months;
             $updatePatient->days = $request->days;
             $updatePatient->mobile_number = $request->mobile_number;
@@ -552,6 +552,8 @@ class AppointmentController extends AdminController
             $updatePatient->reference_doctor_pro_id =  $patients->reference_doctor_pro_id;
             $updatePatient->reference_pt_name = $request->ref_pt_name;
             $updatePatient->reference_pt_mobile = $request->ref_pt_mobile;
+            $updatePatient->age = !empty($request->dob) ? \Carbon\Carbon::parse($request->dob)->age : $request->age;
+
             $updatePatient->save();
             // $checkAppointment = $this->checkAppointment($patient_check->id,$request->date,$request->time,$request->arrival_time);
             $arrivalTime = null;
@@ -759,7 +761,7 @@ class AppointmentController extends AdminController
             }
             $patients->name = $request->name;
             $patients->gender = $request->gender;
-            $patients->age = $request->age;
+            $patients->age = !empty($request->dob) ? \Carbon\Carbon::parse($request->dob)->age : $request->age;
             $patients->months = $request->months;
             $patients->days = $request->days;
             $patients->mobile_number = $request->mobile_number;
@@ -767,7 +769,6 @@ class AppointmentController extends AdminController
             $patients->dob = $request->dob ? Carbon::parse($request->dob)->format('Y-m-d') : null;
             $patients->weight = $request->weight;
             $patients->height = $request->height;
-            $patients->age = $request->age;
             $patients->other_mobile_number = $request->other_mobile_number;
             $patients->reference_doctor_id = ($request->input('reference_doctor') == 'other') ? $referenceDoctor->id : $request->reference_doctor;
             $patients->reference_doctor_pro_id = ($request->input('pro_reference_doctor') == 'other') ? $proReferenceDoctor->id : $request->pro_reference_doctor;
