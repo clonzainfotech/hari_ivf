@@ -132,7 +132,7 @@
                 <td class="patient_dropdown ">
                     @php
                         $isBirthDay = 0;
-                        $isBirthDay =   \Carbon\Carbon::parse($row->getPatientsDetails['dob'])->format('d-m') == \Carbon\Carbon::now()->format('d-m') ? 1 : 0;
+                        $isBirthDay =   !empty($row->getPatientsDetails['dob']) && \Carbon\Carbon::parse($row->getPatientsDetails['dob'])->format('d-m') == \Carbon\Carbon::now()->format('d-m') ? 1 : 0;
                     @endphp
                     @if($isBirthDay == 1)
                         <i class="zmdi zmdi-card-giftcard candor-color" title="Birthday"></i>
