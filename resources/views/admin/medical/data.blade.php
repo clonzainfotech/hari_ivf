@@ -4,7 +4,6 @@
         <th>Sr No</th>
         <th>UHID </th>
         <th>Name</th>
-        <th>Note</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -18,16 +17,6 @@
             <td>{{$row->code}}</td>
             <td>{{$row->name}}</td>
             <td>
-                {{-- {{$row->lastDoneAppointmentData['id']}} --}}
-                {{-- <div class="{{'edit-follow-data edit-follow-'.$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">
-                    {{$prevAppointmentDate}}
-                        <span class="edit-follow">
-                            <i class="material-icons edit-remark-icon pencil-icon ml-0" data-value="{{$prevAppointmentDate}}" data-id="{{$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">edit</i>
-                        </span>
-                </div></th> --}}
-            </td>   
-            <td>
-                
                 <a href="{{URL::to('get-medicine/'.encrypt($row->id))}}" class="btn btn-primary btn-sm m-0">View</a>
                 @if($row->getCurrentDoneAppointment()['status'] == 1 && $row->getCurrentDoneAppointment()['medicine_status'] == 0 && in_array(Auth::user()->role,[1,5]))
                     <a href="javascript:void(0);" data-pid={{($row->id)}} class="medicine-given btn btn-primary btn-sm m-0">Done</a>

@@ -644,8 +644,8 @@ class ANCController extends AdminController
             $usgStatus = 0;
             if(!$request->anc_id &&  !$request->anc_history_id)
             {
-                $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$request->seen_by,'in_consulting_room'=>0]);
-                // $updateConsulting = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['in_consulting_room'=>0]);
+                $is_medicine_given_from_opd = isset($request->treatment['medicinedata'][0]) && !empty($request->treatment['medicinedata'][0]) ? 0 : 2;
+                $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$request->seen_by,'in_consulting_room'=>0,'is_medicine_given'=>$is_medicine_given_from_opd]);
             }
             if(!empty($request->oe['follow_up']) && ((!empty($request->usg['nt_scan']) && strtotime($request->usg['nt_scan']) == strtotime($request->oe['follow_up'])) || (!empty($request->usg['early_scan']) && strtotime($request->usg['early_scan']) == strtotime($request->oe['follow_up'])) || (!empty($request->usg['anomalies_miles']) && strtotime($request->usg['anomalies_miles']) == strtotime($request->oe['follow_up'])) || (!empty($request->usg['growth_scan']) && strtotime($request->usg['growth_scan']) == strtotime($request->oe['follow_up'])))){
                 $usgStatus = 1;

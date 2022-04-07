@@ -46,8 +46,7 @@ class MedicalController extends AdminController
                         $patients = $patients->where(function($query) use($startDate,$endDate){
                             $query
                             ->whereHas('getAppointments', function($query) use($startDate,$endDate){
-                                $query->whereBetween('date', [$startDate, $endDate]);
-                                $query->where('is_done',1);
+                                $query->whereBetween('date', [$startDate, $endDate])->where('is_done',1)->where('is_medicine_given','!=',2); // 2 = medicine is not given from opd
                             });
                         });
                     }
@@ -55,7 +54,7 @@ class MedicalController extends AdminController
                         $patients = $patients->where(function($query) use($startDate,$endDate){
                             $query
                             ->whereHas('getAppointments', function($query) use($startDate,$endDate){
-                                $query->whereBetween('date', [$startDate, $endDate]);
+                                $query->whereBetween('date', [$startDate, $endDate])->where('is_done',1)->where('is_medicine_given','!=',2);// 2 = medicine is not given from opd
                             });
                         });
                     }

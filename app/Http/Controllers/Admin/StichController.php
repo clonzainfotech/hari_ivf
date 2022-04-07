@@ -60,8 +60,9 @@ class StichController extends AdminController
             $stich->save();
             // update appointment flag
             $now = Carbon::now()->format('Y-m-d');
-            $appointmentFlag = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$stich->seen_by]);
-            $updateConsulting = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update(['in_consulting_room'=>0]);
+            $is_medicine_given_from_opd = isset($request->treatment['medicinedata'][0]) && !empty($request->treatment['medicinedata'][0]) ? 0 : 2; // 0= given from opd but not done from medical, 2= not given from opd
+            $appointmentFlag = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$stich->seen_by,'in_consulting_room'=>0,'is_medicine_given'=>$is_medicine_given_from_opd]);
+            $updateConsulting = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update([]);
 
             if(!empty($request->oe['follow_up'])){
                 $followupDate = $request->oe['follow_up'];

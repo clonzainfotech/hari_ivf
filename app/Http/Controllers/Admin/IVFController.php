@@ -1075,8 +1075,8 @@ class IVFController extends AdminController
             // dd($request->ivf_visit_id);
             if(!$request->ivf_visit_id)
             {
-                $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$ivf->seen_by]);
-                $updateConsulting = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['in_consulting_room'=>0]);
+                $is_medicine_given_from_opd = isset($request->treatment['medicinedata'][0]) && !empty($request->treatment['medicinedata'][0]) ? 0 : 2; // 0= given from opd but not done from medical, 2= not given from opd
+                $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$ivf->seen_by,'in_consulting_room'=>0,'is_medicine_given'=>$is_medicine_given_from_opd]);
 
             }
             $isIvfHistory =  '1';
@@ -3462,8 +3462,8 @@ class IVFController extends AdminController
             $now = Carbon::now()->format('Y-m-d');
             if(!$request->ivf_extra_visit_id)
             {
-                $appointmentFlag = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$request->seen_by]);
-                $updateConsulting = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update(['in_consulting_room'=>0]);
+                $is_medicine_given_from_opd = isset($request->treatment['medicinedata'][0]) && !empty($request->treatment['medicinedata'][0]) ? 0 : 2; // 0= given from opd but not done from medical, 2= not given from opd
+                $appointmentFlag = $this->Appointment->wherePatientsId($patientId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$request->seen_by,'in_consulting_room'=>0,'is_medicine_given'=>$is_medicine_given_from_opd]);
             }
 
             $followupDate = !empty($request->oe['follow_up']) ? $request->oe['follow_up'] : null;
