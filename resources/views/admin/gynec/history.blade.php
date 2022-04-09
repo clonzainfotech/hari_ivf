@@ -17,7 +17,7 @@
                             $careof = (!empty($patient->reference_doctor_id) && isset($referenceDoctor[$patient->reference_doctor_id])) ? $referenceDoctor[$patient->reference_doctor_id] : '';
                             if(!empty($patient->reference_doctor_id) && $patient->reference_doctor_id == '1' )
                             {
-                                $careof = !empty($patient->reference_pt_name) && !empty($patient->reference_pt_mobile) ? $patient->reference_pt_name.'('.$patient->reference_pt_mobile.')' :'SELF--';
+                                $careof = !empty($patient->reference_pt_name) ? $patient->reference_pt_name. (!empty($patient->reference_pt_mobile) ? '('.$patient->reference_pt_mobile.')' : '') :'SELF--';
                             }
                         @endphp
                         {{' care of '.$careof}}</h2>
