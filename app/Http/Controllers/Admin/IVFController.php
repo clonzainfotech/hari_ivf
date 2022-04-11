@@ -324,6 +324,7 @@ class IVFController extends AdminController
             $ancStatus = 0;
             $iuiStatus = 0;
             $gynecStatus = 0;
+            $is_medicine_given_from_opd = 0;
             if(!$request->visit){
                 $ivf = $this->IVF;
                 $hystroscopyOldImages = [];
@@ -518,6 +519,7 @@ class IVFController extends AdminController
                 }
 
                 $treatmentData = !empty($request->treatment['medicinedata']) ? array_filter($request->treatment['medicinedata']) : [];
+                $is_medicine_given_from_opd = !empty($treatmentData) ? 0 : 2;
                 $this->complaintStore($request->co);
                 if(!empty($treatmentData)){
                     $this->medicineData($treatmentData);
@@ -1070,12 +1072,11 @@ class IVFController extends AdminController
                         }
                     }
                 }
+                $is_medicine_given_from_opd = !empty(array_filter($data['medicinedata'])) ? 0 : 2;
             }
             $now = Carbon::now()->format('Y-m-d');
-            // dd($request->ivf_visit_id);
             if(!$request->ivf_visit_id)
             {
-                $is_medicine_given_from_opd = isset($request->treatment['medicinedata'][0]) && !empty($request->treatment['medicinedata'][0]) ? 0 : 2; // 0= given from opd but not done from medical, 2= not given from opd
                 $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$ivf->seen_by,'in_consulting_room'=>0,'is_medicine_given'=>$is_medicine_given_from_opd]);
 
             }
