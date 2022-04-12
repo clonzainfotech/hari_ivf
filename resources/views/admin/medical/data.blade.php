@@ -18,7 +18,7 @@
             <td>{{$row->name}}</td>
             <td>
                 <a href="{{URL::to('get-medicine/'.encrypt($row->id))}}" class="btn btn-primary btn-sm m-0">View</a>
-                @if($row->getCurrentDoneAppointment()['status'] == 1 && $row->getCurrentDoneAppointment()['medicine_status'] == 0 && in_array(Auth::user()->role,[1,5]))
+                @if($row->getCurrentDoneAppointment()['status'] == 1 && $row->getCurrentDoneAppointment()['medicine_status'] != 1 && in_array(Auth::user()->role,[1,5]))
                     <a href="javascript:void(0);" data-pid={{($row->id)}} class="medicine-given btn btn-primary btn-sm m-0">Done</a>
                 @endif
             </td>
