@@ -29,9 +29,8 @@ class TodayPatientsController extends ApiController
                 unset($q->getPatientsDetails,$q->getSeenBy,$q->categoryDetails);
                 return $q;
             });
-            $data = $this->Appointment->Select('created_at')->whereDate('created_at', Carbon::today())->get();
-
-            dd($data);
+            // $data = $this->Appointment->Select('created_at')->whereDate('created_at', Carbon::today())->get();
+            // dd($data);
 
             return $this->sendResponse('Your Today appointment successfully get',$appointmentList);
         }

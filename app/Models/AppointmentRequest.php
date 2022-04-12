@@ -16,4 +16,7 @@ class AppointmentRequest extends BaseModel
    public function getSeenBy(){
     return $this->belongsTo('App\user','seen_by','id');
    }
+   public function lastDoneAppointmentData(){
+    return $this->hasOne('App\Models\Appointment','patients_id','id')->where('is_done','1')->orderBy('id','DESC');
+}
 }
