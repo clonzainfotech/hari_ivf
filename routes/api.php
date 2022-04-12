@@ -121,6 +121,11 @@ Route::group(['middleware'=>'checkDB'],function(){
             Route::post('doctor-appointment','DoctorApi\AppointmentController@appointment');
             Route::post('doctor-notification','DoctorApi\NotificationController@notification');
             Route::post('doctor-profile','DoctorApi\ProfileController@doctorprofile');
+            Route::post('doctor-patient','DoctorApi\MypatientController@doctorpatient');
+            Route::post('doctor-updateprofile','DoctorApi\UpdateProfileController@doctorupdateprofile');
+            Route::post('doctor-updatepassword','DoctorApi\UpdatePasswordController@doctorupdatepassword');
+            Route::post('doctor-TodayPatients','DoctorApi\TodayPatientsController@doctortodaypatients');
+            Route::post('doctor-PatientAppointmentRequest','DoctorApi\PatientAppointmentRequestController@PatientAppointmentRequest');
 
             //Patient's report
             Route::post('add-patient-report','PatientController@addPatientsReport');

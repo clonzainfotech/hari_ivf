@@ -21,6 +21,13 @@ class LoginController extends ApiController
         parent::__construct();
         $this->apiToken = uniqid(base64_encode(str_random(100)));
     }
+
+    /**
+    * user can login
+    * Return API token
+    * @param  \Illuminate\Http\Request
+    * @return \Illuminate\Http\Response
+    */
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -31,7 +38,16 @@ class LoginController extends ApiController
             return $this->sendError($validator->errors()->first(), 422);
         }
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::Select('id','name','email','password','dob_date','designation','degree','specialist','achievement','description','profile_picture','mobile_number','status','is_rmo_doctor','role',\DB::raw('(CASE
+        WHEN role = "1" THEN "main-admin"
+        WHEN role = "2" THEN "reception"
+        WHEN role = "3" THEN "doctor"
+        WHEN role = "4" THEN "accountant"
+        WHEN role = "5" THEN "medical"
+        WHEN role = "6" THEN "IVF"
+        WHEN role = "7" THEN "IUI"
+        WHEN role = "8" THEN "ANC"
+        END) AS role'))->where('email', $request->email)->first();
 
         if ($user) {
             if (Hash::check($request->password, $user->password)) {

@@ -12,6 +12,11 @@ use App\Models\Appointment;
 
 class AppointmentController extends ApiController
 {
+    /**
+    * Get appointment
+    * @param  \Illuminate\Http\Request
+    * @return \Illuminate\Http\Response
+    */
     public function appointment(Request $request)
     {
         $token = $request->header('Authorization');

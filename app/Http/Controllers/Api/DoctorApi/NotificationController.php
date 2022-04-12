@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 
 class NotificationController extends ApiController
 {
+    /**
+    *Get Notification list
+    * @param  \Illuminate\Http\Request
+    * @return \Illuminate\Http\Response
+    */
     public function notification(Request $request)
     {
         $token = $request->header('Authorization');
