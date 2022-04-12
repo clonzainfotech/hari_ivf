@@ -19,7 +19,11 @@ class ExploreController extends ApiController
         parent::__construct();
         $this->apiToken = uniqid(base64_encode(str_random(100)));
     }
-
+    /**
+    * Get shedule wise appointment
+    * @param  \Illuminate\Http\Request
+    * @return \Illuminate\Http\Response
+    */
     public function explore(Request $request)
     {
         $token = $request->header('Authorization');
