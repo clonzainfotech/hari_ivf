@@ -49,16 +49,17 @@ class AppointmentRequestController extends AdminController
                     
                     // $this->storeAppointmentNotification($appointmentRequests->patients_id,1);
 
-                    $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($request);
-                    $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
-                    $totalAppoointment = count($hospitalTime);
-                    $aTime = !empty($nextAppontment['time']) || (isset($nextAppontment['time']) && $nextAppontment['time'] == 0) ? $hospitalTime[$nextAppontment['time']] : null;
-                    $lastAppointment = $this->Appointment->where('patients_id',$appointmentRequests->patients_id)->orderBy('id','DESC')->first();
-                    $checkAppointment = $this->Appointment->whereDate('date',$appointmentRequests->appointment_date)->count();
-                    if($totalAppoointment != $checkAppointment){
+                    // $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($request);
+                    // $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
+                    // $totalAppoointment = count($hospitalTime);
+                    // $aTime = !empty($nextAppontment['time']) || (isset($nextAppontment['time']) && $nextAppontment['time'] == 0) ? $hospitalTime[$nextAppontment['time']] : null;
+                    // $lastAppointment = $this->Appointment->where('patients_id',$appointmentRequests->patients_id)->orderBy('id','DESC')->first();
+                    // $checkAppointment = $this->Appointment->whereDate('date',$appointmentRequests->appointment_date)->count();
+                    // if($totalAppoointment != $checkAppointment){
                         $appointment = $this->Appointment;
                         $appointment->date = $appointmentRequests->appointment_date;
-                        $appointment->time = $aTime;
+                        // $appointment->time = $aTime;
+                        $appointment->time = $appointmentRequests->appointment_time;
                         $appointment->created_by = Auth::User()->id;
                         $appointment->seen_by = $appointmentRequests->seen_by;
                         $appointment->category_id = !empty($lastAppointment) ? $lastAppointment->category_id : null;
@@ -66,9 +67,9 @@ class AppointmentRequestController extends AdminController
                         $appointment->appontment_request_id = $apRequestId;
                         $appointment->save();
                         $this->AppointmentRequest->whereId($apRequestId)->update(['is_book' => 1]);
-                    }else{
-                        $this->AppointmentRequest->whereId($apRequestId)->update(['is_book' => 2]);
-                    }
+                    // }else{
+                    //     $this->AppointmentRequest->whereId($apRequestId)->update(['is_book' => 2]);
+                    // }
                     $patient = $this->OpdPatients->find($appointmentRequests->patients_id);
                     if(!empty($patient->device_token))
                     {
@@ -76,42 +77,6 @@ class AppointmentRequestController extends AdminController
                         $this->sendNotification($appointmentRequests->patients_id,$patient->device_token,$body,null);
                     }
                     return 'true';
-                    // return $appointmentData['status'];
-
-                    // if(!empty($appointmentData)) {
-                    //     $nextAppointment = $appointmentData->nextAppointmentDate();
-                    //     if(empty($nextAppointment)){
-                    //         $this->AppointmentRequest
-                    //             ->whereId($apRequestId)
-                    //             ->update(['is_book' => 1]);
-
-                    //         $appointmentData=$this->Appointment;
-                    //         $appointmentData->date = $appointmentRequests->appointment_date;
-                    //         $appointmentData->created_by = Auth::User()->id;
-                    //         $appointmentData->patients_id = $appointmentRequests->patients_id;
-                    //         $appointmentData->appontment_request_id = $apRequestId;
-                    //         $appointmentData->save();
-                    //         return ['status' => true];
-                    //     }
-                    //     Session::flash('msg',"You can't approve appointment for this patients because he has already appointment !");
-                    //     return ['status' => false];
-                    // }
-                    // else {
-                    //     $this->AppointmentRequest
-                    //         ->whereId($apRequestId)
-                    //         ->update([
-                    //             'is_book' => 1
-                    //         ]);
-
-                    //     $appointmentData=$this->Appointment;
-                    //     $appointmentData->date = $appointmentRequests->appointment_date;
-                    //     $appointmentData->created_by = Auth::User()->id;
-                    //     $appointmentData->patients_id = $appointmentRequests->patients_id;
-                    //     $appointmentData->appontment_request_id = $apRequestId;
-                    //     $appointmentData->save();
-
-                    //     return ['status' => true];
-                    // }
                 }
             }
         }catch(Exception $e){
