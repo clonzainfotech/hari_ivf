@@ -642,10 +642,10 @@ class ANCController extends AdminController
             // update appointment flag
             $now = Carbon::now()->format('Y-m-d');
             $usgStatus = 0;
-            $medicine = json_decode($ancHistory->treatment,true);
+            $medicine = json_decode($ancData->treatment,true);
             unset($medicine['medicinedata']);
             $is_medicine_given_from_opd = !empty($medicine) ? 0 : 2;
-            $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',Carbon::parse($ancHistory->created_at)->format('Y-m-d'))->update(['is_medicine_given'=>$is_medicine_given_from_opd]);
+            $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',Carbon::parse($ancData->created_at)->format('Y-m-d'))->update(['is_medicine_given'=>$is_medicine_given_from_opd]);
             if(!$request->anc_id &&  !$request->anc_history_id)
             {
                 $appointmentFlag = $this->Appointment->wherePatientsId($patientsId)->where('date',$now)->update(['is_done'=>1,'seen_by'=>$request->seen_by,'in_consulting_room'=>0]);
