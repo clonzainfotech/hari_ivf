@@ -1729,7 +1729,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                     <tr>
                                                         <td>{{ $value.' - '.(isset($iui_when_where[$key]) ? $iui_when_where[$key] : '').' - '.(isset($iui_type[$key]) ? $iui_type[$key] : '')}}</td>
                                                     </tr>
-                                                @endforeach    
+                                                @endforeach 
+                                            @endif   
                                             {{-- <tr>
                                                 <td style="width: 10%">
                                                     <table cellspacing="0" cellpadding="0" class="table m-b-0  module-report-table">
@@ -1787,9 +1788,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     </tr>
                                 @endif
                                 @if($hoRx->ivf->status == 'yes' && isset($hoRx->ivf->status))
-                                    <tr>
                                         @if(isset($hoRx->ivf->status) && ($hoRx->ivf->status == 'yes') && isset($hoRx->ivf->how_much_no) && $hoRx->ivf->how_much_no > 0)
-                                                @php
+                                            @php
                                                 $ivf_how_much = [];
                                                 $ivf_when_where = [];
                                                 $ivf_type = [];
@@ -1904,7 +1904,6 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 </td>
                                             </tr> --}}
                                         @endif
-                                    </tr>
                                 @endif
                             </tbody>
                         </table>
