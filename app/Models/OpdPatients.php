@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class OpdPatients extends BaseModel
 {
     protected $table = 'patients';
-    
+
     public function getReferenceDoctor(){
         return $this->belongsTo('App\Models\ReferenceDoctor','reference_doctor_id','id');
     }
@@ -66,7 +66,11 @@ class OpdPatients extends BaseModel
     public function getReviewData() {
         return $this->hasMany('App\Models\UserReview','patient_id', 'id');
     }
-    
+
+    public function categoryDetails(){
+        return $this->belongsTo('App\Models\Category','category_id');
+    }
+
     public function lastAppointmentData(){
         return $this->hasOne('App\Models\Appointment','patients_id','id')->orderBy('id','DESC');
     }
@@ -95,7 +99,7 @@ class OpdPatients extends BaseModel
             $status = 1;
             return['status'=>$status,'medicine_status' => $appointment->is_medicine_given];
         }
-        
+
         // return $this->hasOne('App\Models\Appointment','patients_id','id')->where('is_done','1')->whereDate('date',carbon::now()->format('Y-m-d'));
     }
     public function lastDoneAppointmentData(){
