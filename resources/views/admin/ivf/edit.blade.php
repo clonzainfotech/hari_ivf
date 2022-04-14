@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                             {{Form::hidden('ivf_id', null, ['id' => 'ivf_id'])}}
-                            {{Form::hidden('donor[is_donors]', !empty($donar) && !empty($donar->is_donors) ? $donar->is_donors : 0 )}}
+                            {{Form::hidden('donor[is_donors]', !empty($donor) && isset($donor->is_donors) ? $donor->is_donors : 0 )}}
 
                             <!--1 patients basic information -->
                             <div class="panel panel-primary">
@@ -226,7 +226,7 @@
                             <div class="{{'panel panel-primary '.$dTab}}">
                                 <div class="panel-heading" role="tab" id="headingThree_1">
                                     <h4 class="panel-title"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#donor" aria-expanded="true"
-                                        aria-controls="donor">2. Donar Information</a> </h4>
+                                        aria-controls="donor">2. Donor Information</a> </h4>
                                 </div>
                                 <div id="donor" class="panel-collapse collapse p-info" role="tabpanel" aria-labelledby="headingThree_1">
                                     <div class="panel-body">
@@ -236,9 +236,9 @@
                                                     <span class="input-group-addon unik-lbl-spn">
                                                         Face Color : &nbsp;
                                                     </span>
-                                                    {{Form::text("donor[face_color]",'',[
+                                                    {{Form::text("donor[face_color]",isset($donor->face_color) ?$donor->face_color : '',[
                                                         'class'=>'form-control',
-                                                        'placeholder' => 'Face Color'
+                                                        'readonly'
                                                     ])}}
                                                 </div>
                                             </div>
@@ -247,9 +247,9 @@
                                                     <span class="input-group-addon  unik-lbl-spn">
                                                         Hair Color : &nbsp;
                                                     </span>
-                                                    {{Form::text("donor[hair_color]",'',[
+                                                    {{Form::text("donor[hair_color]",isset($donor->hair_color) ?$donor->hair_color : '',[
                                                         'class'=>'form-control',
-                                                        'placeholder' => 'Hair Color'
+                                                        'readonly'
                                                     ])}}
                                                 </div>
                                             </div>
@@ -258,9 +258,9 @@
                                                     <span class="input-group-addon  unik-lbl-spn">
                                                         Eye Color : &nbsp;
                                                     </span>
-                                                    {{Form::text("donor[eye_color]",'',[
+                                                    {{Form::text("donor[eye_color]",isset($donor->eye_color) ?$donor->eye_color : '',[
                                                         'class'=>'form-control',
-                                                        'placeholder' => 'Eye Color'
+                                                        'readonly'
                                                     ])}}
                                                 </div>
                                             </div>
@@ -271,9 +271,9 @@
                                                     <span class="input-group-addon  unik-lbl-spn">
                                                         CBC MP : &nbsp;
                                                     </span>
-                                                    {{Form::text("donor[cbc_mp]",'',[
+                                                    {{Form::text("donor[cbc_mp]",isset($donor->cbc_mp) ?$donor->cbc_mp : '',[
                                                         'class'=>'form-control',
-                                                        'placeholder' => 'CBC MP'
+                                                        'readonly'
                                                     ])}}
                                                 </div>
                                             </div>
@@ -282,9 +282,9 @@
                                                     <span class="input-group-addon  unik-lbl-spn">
                                                         Urine : &nbsp;
                                                     </span>
-                                                    {{Form::text("donor[urine]",'',[
+                                                    {{Form::text("donor[urine]",isset($donor->urine) ?$donor->urine : '',[
                                                         'class'=>'form-control',
-                                                        'placeholder' => 'Urine'
+                                                        'readonly'
                                                     ])}}
                                                 </div>
                                             </div>
@@ -302,11 +302,11 @@
                                                     'O-' => 'O-',
                                                     'AB+' => 'AB+',
                                                     'AB-' => 'AB-',
-                                                ],[
-                                                    'class'=>'form-control select-padding-0 blood-group',
+                                                ],isset($donor->blood_group) ? $donor->blood_group : '',[
+                                                    'class'=>'form-control select-padding-0 blood-group','disabled'
                                                 ])}}
+                                                {{Form::hidden("donor[blood_group]",isset($donor->blood_group) ? $donor->blood_group : '')}}
                                             </div>
-
                                         </div>
                                         <br />
                                         <div class="row">
@@ -315,9 +315,9 @@
                                                     <span class="input-group-addon  unik-lbl-spn">
                                                         RBS : &nbsp;
                                                     </span>
-                                                    {{Form::text("donor[rbs]",'',[
+                                                    {{Form::text("donor[rbs]",isset($donor->rbs) ? $donor->rbs : '',[
                                                         'class'=>'form-control',
-                                                        'placeholder' => 'RBS'
+                                                        'placeholder' => 'RBS','readonly'
                                                     ])}}
                                                 </div>
                                             </div>
@@ -328,23 +328,24 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("donor[hiv]",1,'',[
+                                                    {{Form::radio("donor[hiv]",1,isset($donor->hiv) && $donor->hiv == 1 ? true : false,[
                                                         'id'=>'hiv_positive',
-                                                        'class'=>'hiv'
+                                                        'class'=>'hiv','disabled'
                                                     ])}}
                                                     <label for="hiv_positive">
                                                         Positive
                                                     </label>
 
-                                                    {{Form::radio("donor[hiv]",0,true,[
+                                                    {{Form::radio("donor[hiv]",0,isset($donor->hiv) && $donor->hiv == 0 ? true : false,[
                                                         'id'=>'hiv_nagative',
-                                                        'class'=>'hiv'
+                                                        'class'=>'hiv','disabled'
                                                     ])}}
                                                     <label for="hiv_nagative">
                                                         Negative
                                                     </label>
                                                 </div>
                                             </div>
+                                            {{Form::hidden("donor[hiv]",isset($donor->hiv) ? $donor->hiv : '')}}
                                             <div class="col-md-1 pr-0">
                                                 <label class="vertical-form-label pr-0 unik-lbl-spn">
                                                     HBSAG :
@@ -352,23 +353,25 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("donor[hbsag]",1,'',[
+                                                    {{Form::radio("donor[hbsag]",1,isset($donor->hbsag) && $donor->hbsag == 1 ? true : false,[
                                                         'id'=>'hbsag_positive',
-                                                        'class'=>'hbsag'
+                                                        'class'=>'hbsag','disabled'
                                                     ])}}
                                                     <label for="hbsag_positive">
                                                         Positive
                                                     </label>
 
-                                                    {{Form::radio("donor[hbsag]",0,true,[
+                                                    {{Form::radio("donor[hbsag]",0,isset($donor->hbsag) && $donor->hbsag == 0 ? true : false,[
                                                         'id'=>'hbsag_nagative',
-                                                        'class'=>'hbsag'
+                                                        'class'=>'hbsag','disabled'
                                                     ])}}
                                                     <label for="hbsag_nagative">
                                                         Negative
                                                     </label>
                                                 </div>
                                             </div>
+                                            {{Form::hidden("donor[hbsag]",isset($donor->hbsag) ? $donor->hbsag : '')}}
+
                                             <div class="col-md-1 pr-0">
                                                 <label class="vertical-form-label pr-0 unik-lbl-spn">
                                                     VDRL :
@@ -376,23 +379,24 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("donor[vdrl]",1,'',[
+                                                    {{Form::radio("donor[vdrl]",1,isset($donor->vdrl) && $donor->vdrl == 1 ? true : false,[
                                                         'id'=>'vdrl_positive',
-                                                        'class'=>'vdrl'
+                                                        'class'=>'vdrl','disabled'
                                                     ])}}
                                                     <label for="vdrl_positive">
                                                         Positive
                                                     </label>
 
-                                                    {{Form::radio("donor[vdrl]",0,true,[
+                                                    {{Form::radio("donor[vdrl]",0,isset($donor->vdrl) && $donor->vdrl == 0 ? true : false,[
                                                         'id'=>'vdrl_nagative',
-                                                        'class'=>'vdrl'
+                                                        'class'=>'vdrl','disabled'
                                                     ])}}
                                                     <label for="vdrl_nagative">
                                                         Negative
                                                     </label>
                                                 </div>
                                             </div>
+                                            {{Form::hidden("donor[vdrl]",isset($donor->vdrl) ? $donor->vdrl : '')}}
                                         </div>
                                         <br />
                                         <div class="row">
@@ -403,22 +407,23 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="radio is-conceived">
-                                                    {{Form::radio("donor[is_aadhar]",1,true,[
+                                                    {{Form::radio("donor[is_aadhar]",1,isset($donor->is_aadhar) && $donor->is_aadhar == 1 ? true : false,[
                                                         'id'=>'is_aadhar_yes',
-                                                        'class'=>'aadhar-card'
+                                                        'class'=>'aadhar-card','disabled'
                                                     ])}}
                                                     <label for="is_aadhar_yes">
                                                         Yes
                                                     </label>
 
-                                                    {{Form::radio("donor[is_aadhar]",0,'',[
+                                                    {{Form::radio("donor[is_aadhar]",0,isset($donor->is_aadhar) && $donor->is_aadhar == 0 ? true : false,[
                                                         'id'=>'is_aadhar_no',
-                                                        'class'=>'aadhar-card'
+                                                        'class'=>'aadhar-card','disabled'
                                                     ])}}
                                                     <label for="is_aadhar_no">
                                                         No
                                                     </label>
                                                 </div>
+                                                {{Form::hidden("donor[is_aadhar]",isset($donor->is_aadhar) ? $donor->is_aadhar : '')}}
                                             </div>
                                             <div class="col-md-3 pr-0">
                                                 <div class="input-group">
