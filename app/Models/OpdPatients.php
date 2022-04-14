@@ -67,10 +67,6 @@ class OpdPatients extends BaseModel
         return $this->hasMany('App\Models\UserReview','patient_id', 'id');
     }
 
-    public function categoryDetails(){
-        return $this->belongsTo('App\Models\Category','category_id');
-    }
-
     public function lastAppointmentData(){
         return $this->hasOne('App\Models\Appointment','patients_id','id')->orderBy('id','DESC');
     }
