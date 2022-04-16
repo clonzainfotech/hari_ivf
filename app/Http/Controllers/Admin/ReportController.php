@@ -2016,16 +2016,16 @@ class ReportController extends AdminController
             $total_consive = $this->IuiHistory::where('visit', 4 )->whereHas('getPatientsDetails')->where('description->result','like', '%consive%')->groupBy('patients_id')->orderBy('id','DESC')->get();
             $total_fail = $this->IuiHistory::where('visit', 4 )->whereHas('getPatientsDetails')->where('description->result','like', '%fail%')->groupBy('patients_id')->orderBy('id','DESC')->get();
             // \DB::enableQueryLog();
-            $data_pending_result = $this->IuiHistory->whereIn('iui_history.id', function($query){
+            $data_pending_result = $this->IuiHistory->where(function($query){
+                $query->whereHas('lastAppointmentData', function($query) {
+                            return $query->whereIn('category_id',[3,4]);
+                        });
+                })->whereIn('iui_history.id', function($query){
                 $query->selectRaw('max(`id`)')
                     ->from('iui_history')
                     ->groupBy('iui_history.patients_id');
                 })
-            ->select('iui_history.*')->where(function($query){
-                $query->whereHas('lastAppointmentData', function($query) {
-                            return $query->whereIn('category_id',[3,4]);
-                        });
-            });
+            ->select('iui_history.*');
             // dd(\DB::getQueryLog());
             $pending_result = collect($data_pending_result->orderBy('iui_history.created_at', 'desc')->get())
                 ->map(function ($query) {
@@ -2061,7 +2061,7 @@ class ReportController extends AdminController
                 $pending_result = collect($data_pending_result->orderBy('iui_history.created_at', 'desc')->get())
                     ->map(function ($query) {
                     $description = json_decode($query->description,true);
-                    if(($query->visit == 3 || $query->visit == 4) && (isset($description['ovalution']) && $description['ovalution'] == 'yes' ) || (isset($description['upt_type']) && $description['upt_type'] == 'weak_positive'))
+                    if(($query->visit == 3 || $query->visit == 4) && ((isset($description['ovalution']) && $description['ovalution'] == 'yes' ) || (isset($description['upt_type']) && $description['upt_type'] == 'weak_positive')))
                     {
                         return $query;
                     }
@@ -2106,17 +2106,9 @@ class ReportController extends AdminController
                     $pending_result = collect($data_pending_result->orderBy('iui_history.created_at', 'desc')->get())
                     ->map(function ($query) use($fromdate, $todate) {
                         $description = json_decode($query->description,true);
-                        
-                        // if(carbon::parse($description['new_follow_up'])->format('Y-m-d') >= $fromdate && carbon::parse($description['new_follow_up'])->format('Y-m-d') <= $todate && ($query->visit == 3 || $query->visit == 4) && (isset($description['ovalution']) && $description['ovalution'] == 'yes' ) || (isset($description['upt_type']) && $description['upt_type'] == 'weak_positive'))
-                        if($query->cycle_status == 1 && isset($description['new_follow_up']) && carbon::parse($description['new_follow_up'])->format('Y-m-d') >= $fromdate && carbon::parse($description['new_follow_up'])->format('Y-m-d') <= $todate && ($query->visit == 3 || $query->visit == 4) && (isset($description['ovalution']) && $description['ovalution'] == 'yes' ) || (isset($description['upt_type']) && $description['upt_type'] == 'weak_positive'))
-                        {
-                            // if(!isset($description['new_follow_up']))
-                            // {
-                            //     dd($description);
-                            // }
-                            return $query;
-                        }
-                    })->pluck('patients_id','patients_id');
+                        return $query->cycle_status == 1 && isset($description['new_follow_up']) && (carbon::parse($description['new_follow_up'])->format('Y-m-d') >= $fromdate && carbon::parse($description['new_follow_up'])->format('Y-m-d') <= $todate) && ($query->visit == 3 || $query->visit == 4) && ((isset($description['ovalution']) && $description['ovalution'] == 'yes' ) || (isset($description['upt_type']) && $description['upt_type'] == 'weak_positive')) ? $query : [];
+                    })->pluck('patients_id','patients_id')->toArray();
+                    // dd(array_filter($pending_result));
                 }
                 
                 if(!empty($request->injection_type) || !empty($request->plan_type))
@@ -2199,6 +2191,26 @@ class ReportController extends AdminController
                         }
                     })->pluck('patients_id','patients_id');
                     $data_skip = $data_skip->whereIn('patients_id',$data_skip_Id); 
+
+                    $pending_result = collect($data_pending_result->orderBy('iui_history.created_at', 'desc')->get())
+                        ->map(function ($value) use($fromdate, $todate,$injection_type,$plan_type) {
+                            $description = json_decode($value->description,true);
+                            $second_visit_data = !empty($value->getIuiSecondVisitCycleWise()) && !empty($value->getIuiSecondVisitCycleWise()->description) ? json_decode($value->getIuiSecondVisitCycleWise()->description,true) : null;
+                            $is_result = $value->cycle_status == 1 && isset($description['new_follow_up']) && (carbon::parse($description['new_follow_up'])->format('Y-m-d') >= $fromdate && carbon::parse($description['new_follow_up'])->format('Y-m-d') <= $todate) && ($value->visit == 3 || $value->visit == 4) && ((isset($description['ovalution']) && $description['ovalution'] == 'yes' ) || (isset($description['upt_type']) && $description['upt_type'] == 'weak_positive')) ? 1 : 0;
+                            
+                            if(!empty($injection_type) && empty($plan_type))
+                            {
+                                return !empty($second_visit_data) && isset($second_visit_data['plan']['agenet'][0]) && $second_visit_data['plan']['agenet'][0] == $injection_type &&  $is_result == 1 ? $value : [];
+                            }
+                            if(!empty($plan_type) && empty($injection_type))
+                            {
+                                return !empty($second_visit_data) && isset($second_visit_data['plan']['plan_type']) && $second_visit_data['plan']['plan_type'] == $plan_type &&  $is_result == 1 ? $value : [];
+                            }
+                            if(!empty($injection_type) && !empty($plan_type))
+                            {
+                                return !empty($second_visit_data) && isset($second_visit_data['plan']['agenet'][0]) && $second_visit_data['plan']['agenet'][0] == $injection_type && isset($second_visit_data['plan']['plan_type']) && $second_visit_data['plan']['plan_type'] == $plan_type && $is_result == 1  ? $value : [];
+                            }
+                        })->pluck('patients_id','patients_id')->toArray();
                 }
                 $data_newIUI = $data_newIUI->pluck('patients_id','patients_id')->toArray();
                 $data_oldinf = $data_oldinf->pluck('patients_id','patients_id')->toArray();
@@ -2251,7 +2263,7 @@ class ReportController extends AdminController
                 }
                 if($key == 'pending-result')
                 {
-                    $patients = $patients->whereIn('id',$pending_result);
+                    $patients = $patients->whereIn('id',array_filter($pending_result));
                 }
                 if(!empty($request->search))
                 {
@@ -2269,13 +2281,13 @@ class ReportController extends AdminController
                 }
                 $data['newinf'] = count($data_newIUI);
                 $data['oldinf'] =  count(array_diff($data_oldinf,$data_newIUI));
-                $data ['fail'] = count($data_fail);
-                $data ['plan_type'] = count($data_plan_type);
-                $data ['drop'] = count($data_drop);
-                $data ['consive'] = count($data_consive);
-                $data ['continue'] = count($data_continue);
-                $data ['skip'] = count($data_skip);
-                $data['pending_result'] = count($pending_result);
+                $data['fail'] = count($data_fail);
+                $data['plan_type'] = count($data_plan_type);
+                $data['drop'] = count($data_drop);
+                $data['consive'] = count($data_consive);
+                $data['continue'] = count($data_continue);
+                $data['skip'] = count($data_skip);
+                $data['pending_result'] = count(array_filter($pending_result));
                 $data['patients'] = $patients->get();
                 $data['status'] = 1;
                 $data['report_data'] = View::make('admin.report.analysis.data',compact('data'))->render();
