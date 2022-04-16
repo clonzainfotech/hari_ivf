@@ -1,17 +1,5 @@
 
 <div class="row m-0 clearfix dashboard">
-    {{-- <div class="col-sm-2">
-        <div class="card iui-box" data-key='total'>
-            <div class="body">
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text-muted">TOTAL</p>
-                        <h4 class="number mt-0 mb-0">{{ $data ['total'] }}</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <div class="col-sm-2">
         <div class="card iui-box" data-key='new-inf'>
             <div class="body">

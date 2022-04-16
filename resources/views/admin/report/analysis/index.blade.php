@@ -121,6 +121,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <span class="text-danger">**Below All Analysis data is according to Above Filters**</span>
+                    </div>
                     <div class="tab-content m-t-10">
                         <div class="analysis-report-data table-responsive active">
                             <!-- table data here include -->
