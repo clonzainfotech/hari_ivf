@@ -2212,6 +2212,13 @@ class ReportController extends AdminController
                             }
                         })->pluck('patients_id','patients_id')->toArray();
                 }
+                else
+                {
+                    $data_drop = $data_drop->whereBetween(\DB::raw('DATE(date)'), [$fromdate, $todate]);
+                    $data_consive = $data_consive->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $data_fail = $data_fail->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                    $data_skip = $data_skip->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                }
                 $data_newIUI = $data_newIUI->pluck('patients_id','patients_id')->toArray();
                 $data_oldinf = $data_oldinf->pluck('patients_id','patients_id')->toArray();
                 $data_fail = $data_fail->pluck('patients_id','patients_id')->toArray();
