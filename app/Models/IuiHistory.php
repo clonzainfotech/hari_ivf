@@ -20,6 +20,9 @@ class IuiHistory extends BaseModel
     public function lastAppointmentData(){
         return $this->hasOne('App\Models\Appointment','patients_id','patients_id')->orderBy('id','DESC');
     }
+    /**
+     * Get IUI second visit for based on cycle_no
+     */
     public function getIuiSecondVisitCycleWise(){
         // return $this->belongsTo('App\Models\IuiHistory','patients_id','patients_id')->where('cycle_no',$this->cycle_no)->where('visit',2);
         $iui = IuiHistory::where([
@@ -29,6 +32,9 @@ class IuiHistory extends BaseModel
         ])->first();
         return !empty($iui) ? $iui : null;
     }
+    /**
+     * Get IUI forth visit for based on cycle_no
+     */
     public function getIuiForthVisitCycleWise(){
         // return $this->belongsTo('App\Models\IuiHistory','patients_id','patients_id')->where('cycle_no',$this->cycle_no)->where('visit',2);
         $iui = IuiHistory::where([
@@ -36,6 +42,18 @@ class IuiHistory extends BaseModel
             'patients_id' => $this->patients_id,
             'visit' => 4
         ])->first();
+        return !empty($iui) ? $iui : null;
+    }
+    /**
+     * Get follicale's  visit for based on cycle_no
+     */
+    public function getOvalutionVisitCycleWise(){
+        // return $this->belongsTo('App\Models\IuiHistory','patients_id','patients_id')->where('cycle_no',$this->cycle_no)->where('visit',2);
+        $iui = IuiHistory::where([
+            'cycle_no' => $this->cycle_no,
+            'patients_id' => $this->patients_id,
+            'visit' => 3
+        ])->whereJsonContains('description',['ovalution' => 'yes'])->first();
         return !empty($iui) ? $iui : null;
     }
     /**

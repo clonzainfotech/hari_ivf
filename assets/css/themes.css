@@ -2945,3 +2945,12 @@ a.ui-state-default:hover, a.ui-datepicker-prev.ui-corner-all:hover ,a.ui-datepic
   .navbar ul li:nth-child(10) a:hover {
     background-color: transparent !important;
 }
+.navbar .navbar-header {
+    margin-right: 20px;
+}
+
+@media(max-width: 1260px){
+    .block-header {
+        margin-bottom: 40px;
+    }
+}

@@ -119,6 +119,13 @@
                                     </form>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <form method="post" autocomplete="off" action="">
+                                        {{Form::select("follicle",['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'More than 5'], null,['class'=>'form-control select-padding-0 follicle','title'=>'Select Follicle Number','data-live-search'=>"true"])}}
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -150,6 +157,7 @@
         var plan_type = '';
         var injection_type = '';
         var age = '';
+        var follicle ='';
         var qstring = '?fromdate=' + moment(fromdate).format('YYYY-MM-DD') + '&todate=' + moment(todate).format('YYYY-MM-DD') + '&search='+search+ '&key='+key+'&plan_type='+plan_type+'&injection_type='+injection_type+'&age='+age;
 
         $(document).ready(function () {
@@ -169,7 +177,7 @@
 
                 fromdate = picker.startDate.format('YYYY-MM-DD');
                 todate = picker.endDate.format('YYYY-MM-DD');
-                qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+ '&key='+key+'&plan_type='+plan_type+'&injection_type='+injection_type+'&age='+age;
+                qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+ '&key='+key+'&plan_type='+plan_type+'&injection_type='+injection_type+'&age='+age+'&follicle='+follicle;
                 getAnalysisData(qstring);
 
             });
@@ -181,7 +189,7 @@
                 // Destroy and rebuild daterangepicker to clear data
                 fromdate = '';
                 todate = '';
-                qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+ '&key='+key+'&plan_type='+plan_type+'&injection_type='+injection_type+'&age='+age;
+                qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+ '&key='+key+'&plan_type='+plan_type+'&injection_type='+injection_type+'&age='+age+'&follicle='+follicle;
                 getAnalysisData(qstring);
             });
             getAnalysisData(qstring);
@@ -190,34 +198,33 @@
         $(document).on("keyup",'#myInput', function() {
             
             search = $(this).val();
-            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age;
+            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age+'&follicle='+follicle;
             getAnalysisData(qstring)
         });
         $(document).on('click','.card.iui-box',function(){
             $('.card.iui-box').removeClass('box-border');
             currentData = $(this).data("key");
             key = $(this).data('key');
-            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age;
+            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age+'&follicle='+follicle;
             getAnalysisData(qstring)
             
         });
         $(document).on('change','select.plan-type',function(){
-            
             plan_type = $(this).val();
-            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age;
+            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age+'&follicle='+follicle;
             getPlanData($("select.plan-type option:selected").html());
             getAnalysisData(qstring);
         });
         $(document).on('change','select.injection-type',function(){
             
             injection_type = $(this).val();
-            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age;
+            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age+'&follicle='+follicle;
             getAnalysisData(qstring);
         });
-        $(document).on('change','select.age',function(){
-            // alert($(this).val());
-            age = $(this).val();
-            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age;
+        
+        $(document).on('change','select.follicle',function(){
+            follicle = $(this).val();
+            qstring = '?fromdate=' + fromdate + '&todate=' + todate+ '&search='+search+'&plan_type='+plan_type+'&key='+key+'&injection_type='+injection_type+'&age='+age+'&follicle='+follicle;
             getAnalysisData(qstring);
         });
         // get all collection report data

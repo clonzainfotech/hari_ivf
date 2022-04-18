@@ -1698,7 +1698,7 @@ function medicineData(value,dId) {
                     madicineData += "<div class='col-md-2'><div class='input-group'><span class='input-group-addon'>Days:</span>"+
                     "<input type ='number' name='"+ name +"["+differenceMedicine+"][no]' class='form-control' value='" + ((data.data != null && data.data.number != null) ? data.data.number : '') + "'></div></div>";
                 }
-                madicineData += "<div class='col-md-4 medicine-note'><div class='form-group'><input type='text' name='treatment["+differenceMedicine+"][note]' class='form-control' placeholder='Note'></div></div>"
+                madicineData += "<div class='col-md-4 medicine-note'><div class='form-group'><input type='text' name='"+ name +"["+differenceMedicine+"][note]' class='form-control' placeholder='Note'></div></div>"
 
                 madicineData += "<div class='col-md-1 medicine-data-remove'><span class=''><i class='material-icons'>close</i></span></div>";
                 // madicineData += "</div><div class='row "+notinject+"' data-id=" + differenceMedicine + ">";
