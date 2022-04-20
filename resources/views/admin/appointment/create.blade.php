@@ -948,7 +948,7 @@
         var dateTime = date+' '+time;
         var appointmentId = "{{Session::get('appointmentId')}}";
         var msg = 'Appointment already booked!';
-        var text = "Appointment has been already booked date on "+dateTime+" Are you saure you want to update this appointment??";
+        var text = "Appointment has been already booked date on "+dateTime+" Are you sure you want to update this appointment??";
         if(already == 2){
             if(patientId == ''){
                 $('.patient-code').attr('disabled',true);

@@ -125,8 +125,7 @@
                             <div class="amount">
                                 {{$row->amount}}
                                 @php
-                                $total += $row->amount;   
-                                $totalOpd += $total; 
+                                $totalOpd += $row->amount; 
                                 @endphp
                             </div>
                         </td>
@@ -135,7 +134,7 @@
                 <tr>
                     <td class="bt-none" colspan="6"></td>
                     <th class="bt-none" colspan="1">Total :</th>
-                    <th class="top-border-first upper-border">{{  $total }}</th>
+                    <th class="top-border-first upper-border">{{  $totalOpd }}</th>
                 </tr>
             @empty
                 <td colspan="8" class="text-center">No records available</td>
