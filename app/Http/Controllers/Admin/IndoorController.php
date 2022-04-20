@@ -838,6 +838,34 @@ class IndoorController extends AdminController
             if(($checkDate != $deschargeDate) && $discarddata->dod_date){
                 // $this->SmsManager::sendDischargeCardToRefDoctor($discharge->booking_id);
             }
+            $iBook = $this->IndoorBook->find($discharge->booking_id);
+            if(!empty($request->followdate)){
+                $followupDate = $request->followdate;
+                $followDate = date('Y-m-d',strtotime($followupDate));
+                $appointmentTime = null;
+                $fDate = !empty($followDate) && $followDate >= Carbon::now()->format('Y-m-d')  ? Carbon::parse($followDate)->format('Y-m-d') : null;
+                if($fDate){
+                    $requestData = new \Illuminate\Http\Request();
+                    $requestData->replace(['date' => $fDate,'status'=>true]);
+                    $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
+                    if(!empty($nextAppontment['time']) || $nextAppontment['time'] == 0){
+                        $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
+                        $appointmentTime = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
+                        $followDate = !empty($nextAppontment['date']) ? $nextAppontment['date'] : $followDate;
+                    }
+                }
+                
+                $appointment = $this->Appointment->where('patients_id',$iBook->patient_id)->orderBy('id','DESC')->first();
+                if($appointment){
+                    $procedures = $this->IndoorProcedure->pluck('name', 'id');
+                    $appointmentData['appointmentId'] = encrypt($appointment->id);
+                    $appointmentData['date'] = $followDate;
+                    $appointmentData['time'] = $appointmentTime;
+                    $appointmentData['is_procedure'] = 0;
+                    $appointmentData['remark'] = isset($procedures[$iBook->procedure_id]) ? $procedures[$iBook->procedure_id].' follow up' : null;
+                    $nextAppointment = $this->nextAppointmentData($appointmentData);
+                }
+            }
             $admitTime = $request->admissiontime ? Carbon::parse($request->admissiontime)->format('H:i:s') : null;
             $dischargeTime = $request->dischargetime ? Carbon::parse($request->dischargetime)->format('H:i:s') : null;
             $this->IndoorBook->where('id',$discharge->booking_id)->update(['dod_date' => $dodDate,'admit_time'=>$admitTime,'discharge_time'=>$dischargeTime]);
