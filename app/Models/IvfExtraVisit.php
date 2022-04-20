@@ -10,7 +10,7 @@ class IvfExtraVisit extends BaseModel
         return $this->belongsTo('App\user','seen_by','id');
     }
     public function getPatientsDetails(){
-        return $this->belongsTo('App\Models\OpdPatients','patients_id');
+        return $this->belongsTo('App\Models\OpdPatients','patient_id');
     }
     public function getAppointment() {
         $anc = Appointment::where('patients_id',$this->patient_id)
