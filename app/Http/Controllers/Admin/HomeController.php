@@ -18,6 +18,7 @@ class HomeController extends AdminController
     * @return \Illuminate\Http\Response
     */
     public function dashboard() {
+        $this->updateIUI();
         $todayDate = \Carbon\Carbon::now()->format('Y-m-d');
         $hormonTotal = $appointmentChargesTotal = $incomeTotal = $expenseTotal = $balance = $profit = 0;
         $hormonTotal = $this->Hormon->where(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d")'), $todayDate)->sum('charge');
@@ -724,5 +725,24 @@ class HomeController extends AdminController
             'data' => $data
         ]);                   
     }
+
+    public function updateIUI()
+    {
+        $patientId = $this->IUI->select('patients_id',DB::raw('count(id) as totalIUI'))->groupBy('patients_id')->having('totalIUI','>',1)->pluck('patients_id','patients_id');
+        foreach($patientId as $pId)
+        {
+            if($pId == 1103)
+            {
+                $firstIui = $this->IUI->where('patients_id',$pId)->orderBy('created_at','asc')->first();
+                $LastIui = $this->IUI->where('patients_id',$pId)->orderBy('created_at','desc')->first();
+                $firstIui->cycle_no = $LastIui->cycle_no;
+                $firstIui->cycle_status = $LastIui->cycle_status;
+                $firstIui->save();
+                $removeIUI = $this->IUI->where('patients_id',$pId)->where('id','!=',$firstIui->id)->delete();
+            }
+            
+        }
+    }
+    
 
 }

@@ -476,29 +476,30 @@ class IUIController extends AdminController
                     $msg = !empty($request->data['result']) ? 'Result '.ucfirst($request->data['result']) : null;
                     $followupDate = !empty($request->data['date']) ? $request->data['date'] : null;
                 }
-                if((!empty($request->data['result']) && $request->data['result'] == 'fail' && empty($request->iui_history_id) && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'negative')) || (isset($request->data['skip_cycle']) && $request->data['skip_cycle'] == 'yes' && empty($request->iui_history_id))){
-                    
-                    $iuiFirstVisitData = $this->IUI;
-                    $iuiFirstVisitData->patients_id = $iuiPatientsData->patients_id;
-                    $iuiFirstVisitData->seen_by = ($seenBy) ? $seenBy : Auth::user()->id;
-                    $iuiFirstVisitData->created_by = $iuiPatientsData->created_by;
-                    $iuiFirstVisitData->patients_info = $iuiPatientsData->patients_info;
-                    $iuiFirstVisitData->h_o = $iuiPatientsData->h_o;
-                    $iuiFirstVisitData->c_o = $iuiPatientsData->c_o;
-                    $iuiFirstVisitData->o_h = $iuiPatientsData->o_h;
-                    $iuiFirstVisitData->m_h = $iuiPatientsData->m_h;
-                    $iuiFirstVisitData->ho_rx = $iuiPatientsData->ho_rx;
-                    $iuiFirstVisitData->investigation = $iuiPatientsData->investigation;
-                    $iuiFirstVisitData->husband_factor = $iuiPatientsData->husband_factor;
-                    $iuiFirstVisitData->patients_details_ho = $iuiPatientsData->patients_details_ho;
-                    $iuiFirstVisitData->o_e = $iuiPatientsData->o_e;
-                    $iuiFirstVisitData->plan_management = $iuiPatientsData->plan_management;
-                    $iuiFirstVisitData->possible_case_of_infertility = $iuiPatientsData->possible_case_of_infertility;
-                    $iuiFirstVisitData->treatment = $iuiPatientsData->treatment;
+                if((!empty($request->data['result']) && $request->data['result'] == 'fail' && empty($request->iui_history_id) && (isset($request->data['upt_type']) && $request->data['upt_type'] == 'negative')) || (isset($request->data['skip_cycle']) && $request->data['skip_cycle'] == 'yes' && empty($request->iui_history_id)))
+                {
+                    $iuiFirstVisitData = $this->IUI->where('patients_id',$patientsId)->first();
+                    // $iuiFirstVisitData->patients_id = $iuiPatientsData->patients_id;
+                    // $iuiFirstVisitData->seen_by = ($seenBy) ? $seenBy : Auth::user()->id;
+                    // $iuiFirstVisitData->created_by = $iuiPatientsData->created_by;
+                    // $iuiFirstVisitData->patients_info = $iuiPatientsData->patients_info;
+                    // $iuiFirstVisitData->h_o = $iuiPatientsData->h_o;
+                    // $iuiFirstVisitData->c_o = $iuiPatientsData->c_o;
+                    // $iuiFirstVisitData->o_h = $iuiPatientsData->o_h;
+                    // $iuiFirstVisitData->m_h = $iuiPatientsData->m_h;
+                    // $iuiFirstVisitData->ho_rx = $iuiPatientsData->ho_rx;
+                    // $iuiFirstVisitData->investigation = $iuiPatientsData->investigation;
+                    // $iuiFirstVisitData->husband_factor = $iuiPatientsData->husband_factor;
+                    // $iuiFirstVisitData->patients_details_ho = $iuiPatientsData->patients_details_ho;
+                    // $iuiFirstVisitData->o_e = $iuiPatientsData->o_e;
+                    // $iuiFirstVisitData->plan_management = $iuiPatientsData->plan_management;
+                    // $iuiFirstVisitData->possible_case_of_infertility = $iuiPatientsData->possible_case_of_infertility;
+                    // $iuiFirstVisitData->treatment = $iuiPatientsData->treatment;
                     $iuiFirstVisitData->cycle_no = $iuiPatientsData->cycle_no + 1;
                     $iuiFirstVisitData->cycle_status = 1;
-                    $iuiFirstVisitData->created_at = Carbon::now()->addSeconds(120)->format('Y-m-d H:i:s');
+                    // $iuiFirstVisitData->created_at = Carbon::now()->addSeconds(120)->format('Y-m-d H:i:s');
                     $iuiFirstVisitData->save();
+                    // dd('sdf');
                 }
                 if((!empty($request->data['result']) && $request->data['result'] == 'consive') || (isset($request->data['naturally_conceive']) && $request->data['naturally_conceive'] == 'yes')){
                     $ancData = $this->ANC;
@@ -699,8 +700,13 @@ class IUIController extends AdminController
                 if((isset($request->data['skip_cycle']) && $request->data['skip_cycle'] == 'yes') || (isset($request->data['naturally_conceive']) && $request->data['naturally_conceive'] == 'yes')){
                     $iui->cycle_status = 2;
                 }
-                $medicine = $request->data['treatment'];
-                unset($medicine['medicinedata']);
+                $medicine = null;
+                if(!empty($request->data['treatment']))
+                {
+                    $medicine = $request->data['treatment'];
+                    unset($medicine['medicinedata']);
+                }
+                
                 $is_medicine_given_from_opd = !empty($medicine) ? 0 : 2;
             }
             
@@ -711,7 +717,7 @@ class IUIController extends AdminController
                 }
                 else
                 {
-                    $this->IUI->wherePatientsId($patientsId)->orderBy('id','DESC')->update(['cycle_status'=>'2']);
+                    // $this->IUI->wherePatientsId($patientsId)->orderBy('id','DESC')->update(['cycle_status'=>'2']);
                     $iui->cycle_status = 2;
                 }
             }
@@ -1277,10 +1283,10 @@ class IUIController extends AdminController
         try{
             $id = decrypt($patientsId);
             //if pt in iui and currently take tretment in ivf then transfer again in iui or cuurently take tretment and now start iui then auto fill first visit 
-            $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->whereNotIn('category_id',[3,4])->whereDate('date','!=',Carbon::now()->format('Y-m-d'))->orderBy('id', 'DESC')->first();
+            $lastAppointment = $this->Appointment->where('patients_id',$id)->where('is_done',1)->whereDate('date','!=',Carbon::now()->format('Y-m-d'))->orderBy('id', 'DESC')->first();
             //if patient is currently in anc or ivf now convert in inf then fillup first visit auto
             $firstIuiVisit = $this->IUI->where('patients_id',$id)->orderBy('created_at','desc')->first();
-            if($lastAppointment)
+            if(!empty($lastAppointment) && !in_array($lastAppointment->category_id,[3,4]))
             {
                 // if(empty($firstIuiVisit))
                 // {
@@ -1299,7 +1305,6 @@ class IUIController extends AdminController
                         $cycleNo = 1;
                         $is_IUI_firstVisit = 1;
                     }
-                    
                     if($firstVisit && $is_IUI_firstVisit == 1)
                     {
                         $iui = $this->IUI;
@@ -1329,10 +1334,13 @@ class IUIController extends AdminController
                 // }
             }
             $iui = $this->IUI->wherePatientsId($id)->orderBy('id','DESC')->first();
-            if($request->iui_cycle_no)
-            {
-                $iui = $this->IUI->wherePatientsId($id)->whereCycleNo($request->iui_cycle_no)->first();
-            }
+            // $iui_current_cycleNo = $this->IuiHistory->where('patients_id',$id)->orderBy('id','DESC')->first();
+            // $iui->cycle_no = !empty($iui_current_cycleNo) ? $iui_current_cycleNo->cycle_no : 1;
+            // if($request->iui_cycle_no)
+            // {
+            //     $iui = $this->IUI->wherePatientsId($id)->whereCycleNo($request->iui_cycle_no)->first();
+            // }
+
             $firstVisitLmpDate = $iui->lmp_date;
             $lastAppointmentData = $this->Appointment->where('patients_id',$id)->orderBy('id','DESC')->first();
             $iuiSecondVisit = $this->IuiHistory->where('patients_id',$id)->whereVisit(2)->whereCycleNo($iui->cycle_no)->first();
@@ -1424,10 +1432,9 @@ class IUIController extends AdminController
             $inducingInjectionData = $this->inducingInjection()['inj'];
             $medicines = $this->Medicine->pluck('name','name');
             //check if patients is transfer on another plan
-            $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_no',$iui->cycle_no)->where('cycle_status',2)->orderBy('created_at','desc')->first();
+            $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_status',2)->orderBy('created_at','desc')->first();
             if($iuiHistoryData)
             {
-                
                 $ivfTransfer = $this->IVF->wherePatientsId($id)->where('created_at','>=',$iuiHistoryData->created_at)->first();
                 $ancTransfer = $this->ANC->wherePatientsId($id)->where('created_at','>=',$iuiHistoryData->created_at)->first();
                 if(!empty($ivfTransfer) || !empty($ancTransfer))
@@ -1443,13 +1450,13 @@ class IUIController extends AdminController
                 {
                     if($request->iuihistorydate)
                     {
-                        $iuiFirstVisit = $this->IUI->where('created_at',$request->iuihistorydate)->first();
+                        $iuiFirstVisit = $this->IUI->where('patients_id',$id)->orderBy('created_at','desc')->first();
                         $iuiHistory = $this->IuiHistory->where('created_at',$request->iuihistorydate)->first();
                     }
                     if($request->iui_visit_id)
                     {
                         $iuiVisitId = decrypt($request->iui_visit_id);
-                        $iuiFirstVisit = $this->IUI->where('id',$iuiVisitId)->first();
+                        $iuiFirstVisit = $this->IUI->where('patients_id',$id)->orderBy('created_at','desc')->first();
                         $iuiHistory = $this->IuiHistory->where('id',$iuiVisitId)->first();
 
                     }
@@ -1473,7 +1480,6 @@ class IUIController extends AdminController
                         $iuiSecondVisit = $this->IuiHistory->where('patients_id',$id)->whereVisit(2)->whereCycleNo($iuiHistory->cycle_no)->first();
                         $cycleNo = $iuiHistory->cycle_no;
                         $iui = $iuiHistory;
-
                         $historyData = json_decode($iui->description);
                         $planType = !empty($historyData->plan->plan_type) ? $historyData->plan->plan_type : null;
 
@@ -1704,6 +1710,7 @@ class IUIController extends AdminController
                 $data['investigationReport'] = $this->allInvestigationReport();
                 $data['currentdate'] = Carbon::now()->format("d-m-y");
                 $data['iuiFirstVisit'] = $this->IUI->wherePatientsId($id)->orderBy('id','DESC')->first();
+                // dd($data['iuiFirstVisit']);
                 $data['iuiThirdVisit'] = $iuiThirdVisit;
                 $data['iuiHistoryData'] = collect($this->IuiHistory->wherePatientsId(decrypt($patientsId))->whereCycleNo($cycleNo)->get());
                 $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
@@ -1725,7 +1732,7 @@ class IUIController extends AdminController
             $iuiFirstVisitData = $this->IUI->wherePatientsId($id)->orderBy('id','DESC')->first();
             $iuiReport = $this->IUIReport->wherePatientsId($id)->whereCycleNo($cycleNo)->orderBy('id','DESC')->first();
             $iuiReportStatus = $this->IuiHistory->wherePatientsId($id)->whereCycleNo($cycleNo)->where('description->hcg->iui->status','yes')->first();
-            $cycleData = $this->IUI->wherePatientsId($id)->orderBy('cycle_no','asc')->pluck('cycle_no','cycle_no')->toArray();
+            $cycleData = $this->IuiHistory->wherePatientsId($id)->orderBy('cycle_no','asc')->pluck('cycle_no','cycle_no')->toArray();
             $view = view('admin.iui.history',compact('medicines','patientsId','hospitalTime','date','iuiCycleNo','iuiCurrentCycleNo','iui','iuiFirstVisitData','cycleData','referenceDoctor','iuiReport','iuiReportStatus'));
             
             //display old iui visit when patients is tranfer from iui to ANC or IVf
@@ -2404,7 +2411,7 @@ class IUIController extends AdminController
                         $isAppointmentView = true;
                     }
                         $iuiHistoryDate = $this->IuiHistory->where('patients_id',$patientId)->orderBy('created_at','DESC')->where('cycle_no',$cycle)->pluck('cycle_no','created_at')->toArray();
-                        $iuiDateData = $this->IUI->where('patients_id',$patientId)->orderBy('created_at','DESC')->where('cycle_no',$cycle)->first();
+                        $iuiDateData = $this->IUI->where('patients_id',$patientId)->orderBy('created_at','DESC')->first();
                         $iuiDate = [Carbon::parse($iuiDateData->created_at)->format('Y-m-d H:i:s')=>$cycle];
                         
                         $iuiVisitDate = array_merge($iuiHistoryDate,$iuiDate);
@@ -2422,7 +2429,7 @@ class IUIController extends AdminController
                 else
                 {
                     $iuiVisitDate = [];
-                    $iuiDateData = $this->IUI->where('patients_id',$patientId)->first();
+                    $iuiDateData = $this->IUI->where('patients_id',$patientId)->orderBy('created_at','DESC')->first();
                     $iuiDate = [Carbon::parse($iuiDateData->created_at)->format('Y-m-d H:i:s')=>Carbon::parse($iuiDateData->created_at)->format('Y-m-d H:i:s')];
                     $iuiVisitDate = array_merge($iuiDate,$iuiVisitDate);
                      $iuiFirstVisit = $iuiDateData;
@@ -2508,7 +2515,7 @@ class IUIController extends AdminController
                         }
                         $iui = $iuiData;
                         //find extra visit after 1st visit
-                        $firstVisit = $this->IUI->where('patients_id',$patientId)->where('cycle_no',$value)->where('created_at','=',$key)->first();
+                        $firstVisit = $this->IUI->where('patients_id',$patientId)->where('created_at','=',$key)->first();
                         if($firstVisit)
                         {
                             $iuiExtra = $this->IuiExtraVisit->where('patient_id',$patientId)->where('cycle_no',$value)->where('created_at','>',$firstVisit->created_at)->get();
@@ -2590,7 +2597,7 @@ class IUIController extends AdminController
                 {
 
                     $iuiData = $this->IUI->where('patients_id',$patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
-                    $iuiFirstVisit = $this->IUI->wherePatientsId($patientId)->first();
+                    $iuiFirstVisit = $this->IUI->wherePatientsId($patientId)->orderBy('created_at','desc')->first();
                     $getcycleNo = $this->IuiHistory->wherePatientsId($patientId)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$historyDate)->first();
                     $patient_view = 1;
                     if($iuiData)

@@ -1273,7 +1273,7 @@
                     setTimeout(function () {
                         w.window.print();
                     }, 300);
-                    // window.location.href = url;
+                    window.location.href = url;
                 } else if (data.status == 5 || data.status == 8) {
                     w = window.open(window.location.href, "_blank");
                     w.document.open();
@@ -1305,7 +1305,6 @@
                 if(data.iui_completed == true && data.historyData == null)
                 {
                     var lastCycle = $('select.iui-cycle-no option:last').val();
-                    
                     getIuiVisitData(lastCycle);
                 }
                 
