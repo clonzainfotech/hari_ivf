@@ -1435,8 +1435,8 @@ class IUIController extends AdminController
             $iuiHistoryData = $this->IuiHistory->wherePatientsId($id)->where('visit',4)->where('cycle_status',2)->orderBy('created_at','desc')->first();
             if($iuiHistoryData)
             {
-                $ivfTransfer = $this->IVF->wherePatientsId($id)->where('created_at','>=',$iuiHistoryData->created_at)->first();
-                $ancTransfer = $this->ANC->wherePatientsId($id)->where('created_at','>=',$iuiHistoryData->created_at)->first();
+                $ivfTransfer = $this->IvfHistory->wherePatientsId($id)->where('created_at','>=',$iuiHistoryData->created_at)->first();
+                $ancTransfer = $this->AncHistory->wherePatientsId($id)->where('updated_at','>=',$iuiHistoryData->created_at)->first();
                 if(!empty($ivfTransfer) || !empty($ancTransfer))
                 {
                     $iui_completed = true;
