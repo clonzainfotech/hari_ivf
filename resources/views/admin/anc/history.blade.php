@@ -522,11 +522,15 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                 $('.m-h').removeClass('d-none');
                 $('.obstratics-history').removeClass('d-none');
             }
-
-            if(data.todayAncVisit != null && data.ancHistoryId == null)
+            if((data.todayAncVisit != null && data.ancHistoryId == null) )
             {
                 $('.submit').prop('disabled',true);
                 $('.today-visit-fillup').html("Today's visit already fill up");
+            }
+            if((data.todayAncVisit != null && data.anc != null))
+            {
+                $('.submit').prop('disabled',false);
+                $('.today-visit-fillup').html('');
             }
             $('.anc-history').html(data.editAnc);
             $('.ho-value .selectized').addClass('d-none');
