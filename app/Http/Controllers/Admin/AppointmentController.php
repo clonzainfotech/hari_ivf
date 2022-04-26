@@ -339,6 +339,7 @@ class AppointmentController extends AdminController
                     $usgStatusValue = 1;
                 }
                 $nextAppointmentData = $nextAppointmentData->where('usg_status',$usgStatusValue)->first();
+                
                 // $nextAppointmentData = $this->getPatientsLastAppoinment($patientsId);
                 if(!empty($nextAppointmentData)){
                     $already = 1;
@@ -353,9 +354,14 @@ class AppointmentController extends AdminController
                     $already = 3;
                     $isNext = 1;
                 }
+                $ivfData = null;
+                if(!empty($nextAppointmentData) && $nextAppointmentData->category_id == 2)
+                {
+                    $ivfData = $this->IvfHistory->where('patients_id',$patientsId)->whereJsonContains('description',['collection' => 'transfer'])->whereDate('created_at',Carbon::parse($nextAppointmentData->created_at)->format('Y-m-d'))->first();
+                }
                 $rule['mobile_number'] = 'nullable|numeric|digits:10|unique:patients,mobile_number,' . $patientsId;
             }
-            if($isNext == 1){
+            if($isNext == 1 && empty($ivfData)){
                 // Session::flash('msg',"You can't add next appointment for this patients because he has already appointment !");
                 if(!empty($nextAppointmentData)){
                     Session::flash('date',Carbon::parse($nextAppointmentData['date'])->format('d-m-Y'));
