@@ -2588,11 +2588,13 @@
                         <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                             <tbody>
                                 <tr>
-                                    @if(!empty($plan->plan_type))
-                                        <th>
-                                            <span class="iui-label">Plan: </span>
-                                            {{$plan->plan_type}}
-                                        </th>
+                                    @if(!isset($patient_view) || ($patient_view != 1))
+                                        @if(!empty($plan->plan_type))
+                                            <th>
+                                                <span class="iui-label">Plan: </span>
+                                                {{$plan->plan_type}}
+                                            </th>
+                                        @endif
                                     @endif
                                     @if(!empty($plan->other) )
                                         <th>
@@ -2612,7 +2614,7 @@
                                                 // $menses_Day = [];
                                                 $dateAndInjectionData[] = (array)$inducing;
                                                 foreach ($plan->agenet as $value){
-                                                    echo $value . '<br />';
+                                                    
                                                     if(!empty($value) && strpos($value,'+') !== false)
                                                     {
                                                         $is_inj = 1;
@@ -2635,17 +2637,29 @@
                                                     else {
                                                         $is_inj = 0;
                                                     }
+                                                    $replacement = '('.' '.')';
+                                                    $start = preg_quote('(','/');
+                                                    $end = preg_quote(')','/');
+                                                    $regex = "/({$start})(.*?)({$end})/";
+                                                    $value = preg_replace($regex,$replacement,$value);
+                                                    echo str_replace('( )','',$value) . '<br />';
                                                 }
-                                                
                                                 foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
                                                 {
+
                                                     if(isset($menses_Day[$keyValue]))
                                                     {
-                                                        $inducingDisplayDate = \Carbon\Carbon::parse($lmp->date)->addDays($menses_Day[$keyValue])->format('d/m/Y');
-                                                       
-                                                        if(!empty($value) && $is_inj == 1 && ($valueData->date == $inducingDisplayDate))
+
+                                                        $inducingDisplayDate = \Carbon\Carbon::parse($lmp->date)->addDays(($menses_Day[$keyValue] - 1))->format('d/m/Y');
+                                                        if(!empty($value) && $is_inj == 1 && (\Carbon\Carbon::parse($valueData->date)->format('d/m/Y') == $inducingDisplayDate))
                                                         {
-                                                            echo '<span class="iui-label"> INJ '.$inj_name.' - '.date('d/m/Y - l',strtotime($valueData->date)).' - '.$menses_Day[$keyValue].'rd day' . '</span><br />';
+                                                            $replacement = '('.' '.')';
+                                                            $start = preg_quote('(','/');
+                                                            $end = preg_quote(')','/');
+                                                            $regex = "/({$start})(.*?)({$end})/";
+                                                            $inj_name = preg_replace($regex,$replacement,$inj_name);
+
+                                                            echo '<span class="iui-label"> INJ '.str_replace('( )','',$inj_name).' - '.date('d/m/Y - l',strtotime($valueData->date)).' - '.$menses_Day[$keyValue].'rd day' . '</span><br />';
                                                         }
                                                     }
                                                     
@@ -3213,13 +3227,26 @@
                             <span class="visit-lable">L.M.P :- </span> 
                             <span class="visit-lable-value">{{!empty($iuiSecondVisit->lmp->date) ? $iuiSecondVisit->lmp->date : null}}</span>
                     </div>
+                    <?php
+                        $plan = !empty($iuiSecondVisit->plan->plan_type) ? $iuiSecondVisit->plan->plan_type : null;
+                        $induction = isset($agentData[0]) ? $agentData[0] : null;
+                        if(isset($patient_view) && $patient_view == 1)
+                        {
+                            $replacement = '('.' '.')';
+                            $start = preg_quote('(','/');
+                            $end = preg_quote(')','/');
+                            $regex = "/({$start})(.*?)({$end})/";
+                            $plan = str_replace('( )','',preg_replace($regex,$replacement,$plan));
+                            $induction = str_replace('( )','',preg_replace($regex,$replacement,$induction));
+                        }
+                    ?>
                     <div class="">
                             <span class="visit-lable">Plan :- </span> 
-                            <span class="visit-lable-value">{{isset($iuiSecondVisit->iui) && ($iuiSecondVisit->iui == 'yes') ? 'COH+IUI ' : ''}} {{!empty($iuiSecondVisit->plan->plan_type) ? $iuiSecondVisit->plan->plan_type : null}}</span>
+                            <span class="visit-lable-value">{{isset($iuiSecondVisit->iui) && ($iuiSecondVisit->iui == 'yes') ? 'COH+IUI ' : ''}} {{$plan}}</span>
                     </div>
                     <div class="">
                             <span class="visit-lable">Induction With :- </span> 
-                            <span class="visit-lable-value">{{(isset($agentData[0])) ? $agentData[0] : null}}</span>
+                            <span class="visit-lable-value">{{$induction}}</span>
                     </div>
                     <div class="">
                         <span class="visit-lable">Last Seen :- </span> 
@@ -3361,6 +3388,14 @@
                                             }
                                             $inducing_agent = implode(',',$inducingAgentDataValue);
                                         }
+                                        if(isset($patient_view) && $patient_view == 1)
+                                        {
+                                            $replacement = '('.' '.')';
+                                            $start = preg_quote('(','/');
+                                            $end = preg_quote(')','/');
+                                            $regex = "/({$start})(.*?)({$end})/";
+                                            $inducing_agent = str_replace('( )','',preg_replace($regex,$replacement,$inducing_agent));
+                                        }
                                     @endphp
                                         @if(!empty($inducing_agent) && ($inducing_diff < $diff) && (!empty($valueData->date)) && ($valueData->date != $appointmentDate))
                                             <tr >
@@ -3448,6 +3483,14 @@
                                                         $inducingAgentDataValue[] = $injection;
                                                     }
                                                 }
+                                                if(isset($patient_view) && $patient_view == 1)
+                                                {
+                                                    $replacement = '('.' '.')';
+                                                    $start = preg_quote('(','/');
+                                                    $end = preg_quote(')','/');
+                                                    $regex = "/({$start})(.*?)({$end})/";
+                                                    $inducingAgentDataValue = str_replace('( )','',preg_replace($regex,$replacement,$inducingAgentDataValue));
+                                                }
                                             @endphp
                                             {{!empty($inducingAgentDataValue) ? implode(',',$inducingAgentDataValue) : ''}}
                                         @endif
@@ -3460,6 +3503,14 @@
                                             {
                                                 $InjectionData = !empty($InjectionData) ? $InjectionData.','.$inducingInjectionData[$agentData] : $inducingInjectionData[$agentData];
                                             }
+                                        }
+                                        if(isset($patient_view) && $patient_view == 1)
+                                        {
+                                            $replacement = '('.' '.')';
+                                            $start = preg_quote('(','/');
+                                            $end = preg_quote(')','/');
+                                            $regex = "/({$start})(.*?)({$end})/";
+                                            $InjectionData = str_replace('( )','',preg_replace($regex,$replacement,$InjectionData));
                                         }
                                         @endphp
                                         {{$InjectionData}}
@@ -3506,6 +3557,14 @@
                                             }
                                             $inducing_agent = implode(',',$inducingAgentDataValue);
                                             
+                                        }
+                                        if(isset($patient_view) && $patient_view == 1)
+                                        {
+                                            $replacement = '('.' '.')';
+                                            $start = preg_quote('(','/');
+                                            $end = preg_quote(')','/');
+                                            $regex = "/({$start})(.*?)({$end})/";
+                                            $inducing_agent = str_replace('( )','',preg_replace($regex,$replacement,$inducing_agent));
                                         }
                                     @endphp
                                         @if(!empty($inducing_agent) && ($inducing_diff > $diff) && (!empty($valueData->date)) && ($valueData->date != $appointmentDate))

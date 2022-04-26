@@ -1097,7 +1097,7 @@ class IUIController extends AdminController
                         $cDate = \Carbon\Carbon::parse(!empty($editIvfData->hcg_date) ? $editIvfData->hcg_date : null)->format('Y-m-d') .' '.$editIvfData->hcg->time;
                         $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i');
                         $iuiDtae = Carbon::parse($iuiDtaeAndTime)->format('Y-m-d');
-                        if(Carbon::parse($notify->date)->format('Y-m-d H:i') == $iuiDtaeAndTime)
+                        if(!empty($notify) && Carbon::parse($notify->date)->format('Y-m-d H:i') == $iuiDtaeAndTime)
                         {
                             $cDate = \Carbon\Carbon::parse(!empty($request->data['hcg_date']) ? $request->data['hcg_date'] : null)->format('Y-m-d') .' '.$request->data['hcg']['time'];
                             $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i');
@@ -2454,6 +2454,7 @@ class IUIController extends AdminController
                 if($historyDate)
                 {
                     $iuiType = 2;
+                    $patient_view = 1;
                     $iuiData = $this->IUI->where('patients_id',$patientId)->where('created_at','=',$historyDate)->first();
                     if(!$iuiData){
                         $iuiData = $this->IuiHistory->where('patients_id',$patientId)->where('created_at','=',$historyDate)->first();
@@ -2467,11 +2468,11 @@ class IUIController extends AdminController
                     {
                         $isExtraVisit = 1;
                         $iuiExtraVisit = $this->IuiExtraVisit->where('patient_id',$patientId)->where('created_at','=',$historyDate)->first();
-                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('iuiPatients','iuiExtraVisit','isExtraVisit'))->render();
+                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('patient_view','iuiPatients','iuiExtraVisit','isExtraVisit'))->render();
                     }
                     else
                     {
-                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport'))->render();
+                        $viewAllVisit[] =  View::make('admin.iui.preview', compact('patient_view','iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport'))->render();
                     }
                     
                 }
@@ -2656,7 +2657,8 @@ class IUIController extends AdminController
                     }
                     $iui = $iuiData;
                     $printPreview = 1;
-                    return view('admin.iui.preview', compact('patient_view','iui', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview','patients_remark','isExtraVisit','iuiExtraVisit','iuiPatients','isAppointmentView'));
+                    $patient_view = 1;
+                    return view('admin.iui.preview', compact('patient_view','iui','patient_view', 'inducingInjectionData','currentdate','lastAppointmentData','iuiFirstVisit','iuiSecondVisit','iuiThirdVisit','iuiHistoryData','investigationReport','printPreview','patients_remark','isExtraVisit','iuiExtraVisit','iuiPatients','isAppointmentView'));
                 }    
             }
         }catch(Exception $e){
