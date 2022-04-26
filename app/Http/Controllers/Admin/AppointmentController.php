@@ -354,14 +354,18 @@ class AppointmentController extends AdminController
                     $already = 3;
                     $isNext = 1;
                 }
-                $ivfData = null;
+                $resultAppointment = null;
                 if(!empty($nextAppointmentData) && $nextAppointmentData->category_id == 2)
                 {
-                    $ivfData = $this->IvfHistory->where('patients_id',$patientsId)->whereJsonContains('description',['collection' => 'transfer'])->whereDate('created_at',Carbon::parse($nextAppointmentData->created_at)->format('Y-m-d'))->first();
+                    $resultAppointment = $this->IvfHistory->where('patients_id',$patientsId)->whereJsonContains('description',['collection' => 'transfer'])->whereDate('created_at',Carbon::parse($nextAppointmentData->created_at)->format('Y-m-d'))->first();
+                }
+                if(!empty($nextAppointmentData) && $nextAppointmentData->category_id == 4)
+                {
+                    $resultAppointment = $this->IuIHistory->where('patients_id',$patientsId)->whereJsonContains('description',['ovalution' => 'yes'])->whereDate('created_at',Carbon::parse($nextAppointmentData->created_at)->format('Y-m-d'))->first();
                 }
                 $rule['mobile_number'] = 'nullable|numeric|digits:10|unique:patients,mobile_number,' . $patientsId;
             }
-            if($isNext == 1 && empty($ivfData)){
+            if($isNext == 1 && empty($resultAppointment)){
                 // Session::flash('msg',"You can't add next appointment for this patients because he has already appointment !");
                 if(!empty($nextAppointmentData)){
                     Session::flash('date',Carbon::parse($nextAppointmentData['date'])->format('d-m-Y'));
