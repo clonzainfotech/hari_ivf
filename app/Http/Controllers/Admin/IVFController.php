@@ -2142,6 +2142,7 @@ class IVFController extends AdminController
         foreach($ivfPaymentList as $key => $value)
         {
             $ivfPaymentList[$key] = $no.'. '.$value;
+            $no++;
         }
         return $ivfPaymentList;
     }
