@@ -452,7 +452,7 @@ class AppointmentController extends AdminController
             $nextAppontment = app('App\Http\Controllers\Admin\AppointmentController')->nextAppointment($requestData);
             if(empty($request->time) && (!empty($nextAppontment['time']) || (!empty($nextAppontment['time']) || $nextAppontment['time'] == 0))){
                 $hospitalTime = $this->appointmentTime('09:00', '23:55', '5 mins');
-                $request->time = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
+                // $request->time = $nextAppontment['time'] || $nextAppontment['time'] == 0 ? $hospitalTime[$nextAppontment['time']] : null;
                 $request->date = !empty($nextAppontment['date']) ? $nextAppontment['date'] : $fDate;
             }
             // if($request->next_time || $request->next_time == 0){
@@ -521,7 +521,7 @@ class AppointmentController extends AdminController
             }
             // $checkAppointment = $this->checkAppointment($updatePatient->id,$request->date,$request->time,$request->arrival_time);
             $arrivalTime = null;
-            // $time = null;
+            $time = null;
             // if($checkAppointment['status']){
             //     $appointment = $checkAppointment['data'];
             //     $arrivalTime = $appointment->arrival_time;
@@ -531,7 +531,7 @@ class AppointmentController extends AdminController
             // if(Carbon::parse($request->date)->format('Y-m-d') == date('Y-m-d')){
             //     $appointment->time = null;
             // }else{
-            $appointment->time =  !empty($request->time) ? Carbon::parse($request->time)->format('H:i') : $time;
+            $appointment->time =  !empty($request->time) ? Carbon::parse($request->time)->format('H:i') : null;
             // }
             $appointment->arrival_time = !empty($request->arrival_time) ? Carbon::parse($request->arrival_time)->format('H:i') : $arrivalTime;
             $appointment->category_id = $request->category;
@@ -556,7 +556,6 @@ class AppointmentController extends AdminController
 
             return;
         }else{
-            
             $updatePatient->other_patient_reference=$request->other_patient_reference;
             $updatePatient->reference_doctor_id =  $patients->reference_doctor_id;
             $updatePatient->reference_doctor_pro_id =  $patients->reference_doctor_pro_id;
@@ -576,7 +575,7 @@ class AppointmentController extends AdminController
             $appointment->date = Carbon::parse($request->date)->format('Y-m-d');
             $aDate = Carbon::parse($request->date)->format('Y-m-d');
             // if($aDate != date('Y-m-d')){
-            $appointment->time =  !empty($request->time) ? Carbon::parse($request->time)->format('H:i') : $time;
+            $appointment->time =  !empty($request->time) ? Carbon::parse($request->time)->format('H:i') : null;
             // }
             $appointment->arrival_time = !empty($request->arrival_time) ? Carbon::parse($request->arrival_time)->format('H:i') : $arrivalTime;
             $appointment->category_id = $request->category;
@@ -586,7 +585,7 @@ class AppointmentController extends AdminController
             $appointment->remark = $request->remark;
             $appointment->seen_by = !empty($request->seen_by) ? $request->seen_by : $request->hospital_doctor;
             $appointment->is_new_anc = !empty($request->is_new_anc) ? $request->is_new_anc :0;
-            
+            // dd($appointment);
             $appointment->save();
             // store on patients category table
             if($request->category){

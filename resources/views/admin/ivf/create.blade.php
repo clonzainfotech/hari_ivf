@@ -21,7 +21,7 @@
                         $careof = isset($referenceDoctor[$ancPatients->reference_doctor_id]) ? $referenceDoctor[$ancPatients->reference_doctor_id]: '';
                         if(!empty($ancPatients->reference_doctor_id) && $ancPatients->reference_doctor_id == 1)
                         {
-                            $careof = !empty($ancPatients->reference_pt_name) && !empty($ancPatients->reference_pt_mobile) ? $ancPatients->reference_pt_name.'('.$ancPatients->reference_pt_mobile.')' :'SELF';
+                            $careof = !empty($ancPatients->reference_pt_name)  ? $ancPatients->reference_pt_name.'('.$ancPatients->reference_pt_mobile.')' :'SELF';
                         }
                     @endphp
                     <h2><strong class="text-secondary">{{ucwords($ancPatients->name)}}</strong>{{' care of '.$careof}}</h2>
