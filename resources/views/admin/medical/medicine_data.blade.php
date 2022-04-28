@@ -294,7 +294,7 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
             <div class="col-md-12 category-data category-data-1 d-none">
                 <div class="row">
                     <div class="col-md-3 text-left d-flex">
-                        <h5>IVF</h5>&nbsp;<h6 class="mt-2">(Medicine Included in Package :- <span class="font-weight-bold">{{count($ivfData) != 0 && isset($ivfData[0]->getPatientsDetails->getIVFPayment) && !empty($ivfData[0]->getPatientsDetails->getIVFPayment['medical_medicines']) ? 'Yes' : 'No'}}</span>)</h6>
+                        <h5>IVF</h5>&nbsp;<h6 class="mt-2">(Medicine Included in Package :- <span class="font-weight-bold">{{count($ivfData) != 0 && isset($ivfData[0]->getPatientsDetails->getIVFPayment) && !empty($ivfData[0]->getPatientsDetails->getIVFPayment['medical_medicines']) && !empty($ivfData[0]->getPatientsDetails->getIVFPayment['medical_medicines_approx']) ? 'Yes' : 'No'}}</span>)</h6>
                     </div>
                     <div class="col-md-6  d-flex"></div>
                     <div class="col-md-3 text-right">
