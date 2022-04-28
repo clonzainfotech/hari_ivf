@@ -1328,7 +1328,7 @@
                             </table>
                             
                         @endif
-                        @if($investigation  && (!empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes' || (!empty($investigation->laproscopy) && $investigation->laproscopy->type == 'yes') || (!empty($investigation->hcg) && $investigation->hcg->type == 'yes') || (isset($investigation->investigation_extra) && !empty($investigation->investigation_extra))))
+                        @if($investigation  && (!empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes' || (!empty($investigation->laproscopy) && $investigation->laproscopy->type == 'yes') || (!empty($investigation->hcg) && isset($investigation->hcg->type) && $investigation->hcg->type == 'yes') || (isset($investigation->investigation_extra) && !empty($investigation->investigation_extra))))
                             <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                                 <tbody>
                                     <tr>
@@ -1445,7 +1445,7 @@
                                             </th>
                                         </tr>
                                     @endif
-                                    @if(!empty($investigation->hcg) && $investigation->hcg->type == 'yes')
+                                    @if(!empty($investigation->hcg) && isset($investigation->hcg->type) && $investigation->hcg->type == 'yes')
                                         <tr>
                                             <th  colspan="9">
                                                 <span class="iui-label">  HSG: </span>
@@ -1468,7 +1468,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($investigation->hcg->laproscopy_type == 2)
+                                    @if (isset($investigation->hcg->laproscopy_type) && $investigation->hcg->laproscopy_type == 2)
                                         <tr>
                                             <th>
                                                 <span class="iui-label">RT Tube: </span>
@@ -1481,7 +1481,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($investigation->hcg->laproscopy_type == 2 && $investigation->hcg->uterus_type)
+                                    @if (isset($investigation->hcg->laproscopy_type) && $investigation->hcg->laproscopy_type == 2 && $investigation->hcg->uterus_type)
                                         <tr>
                                             <th>
                                                 <span class="iui-label"> Uterus: </span>
@@ -1494,7 +1494,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($investigation->hcg->laproscopy_type == 2)
+                                    @if (isset($investigation->hcg->laproscopy_type) && $investigation->hcg->laproscopy_type == 2)
                                         <tr>
                                             <th>
                                                 <span class="iui-label"> LT Tube:  </span>

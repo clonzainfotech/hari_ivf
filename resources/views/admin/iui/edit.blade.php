@@ -3683,13 +3683,13 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         {{-- <h6>Husband Factor :</h6>  --}}
                         <div class="col-md-3"><span class="font-bold font-16">Husband Factor : </span>{{isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</div>
                         <div class="col-md-3">
-                            <span class="font-bold">Age : </span>{{$husbandFactor->age}}
+                            <span class="font-bold">Age : </span>{{isset($husbandFactor->age) ? $husbandFactor->age : ''}}
                         </div>
                         <div class="col-md-3">
-                            <span class="font-bold">Sperm Count : </span>{{$husbandFactor->sperm_count}}
+                            <span class="font-bold">Sperm Count : </span>{{isset($husbandFactor->sperm_count) ? $husbandFactor->sperm_count : ''}}
                         </div>
                         <div class="col-md-3">
-                            <span class="font-bold">Motility : </span>{{$husbandFactor->motility}}
+                            <span class="font-bold">Motility : </span>{{isset($husbandFactor->motility) ? $husbandFactor->motility : ''}}
                         </div>
                     {{-- </div>  --}}
                     
