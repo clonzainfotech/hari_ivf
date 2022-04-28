@@ -1578,6 +1578,7 @@ class AppointmentController extends AdminController
                     $ivfData = !empty($currentHistory) ? json_decode($currentHistory->description) : null;
                     $report .= !empty($ivfData) && isset($ivfData->investigation_extra) && !empty($ivfData->investigation_extra) ? ', '.$ivfData->investigation_extra : '';
                 }
+
                 $iuiFirst = $this->IUI->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->first();
                 if($iuiFirst)
                 {
@@ -1585,6 +1586,7 @@ class AppointmentController extends AdminController
                     $investigation = !empty($iuiFirst) ? json_decode($iuiFirst->investigation) : null;
                     $report .= !empty($investigation) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? ', '.$investigation->investigation_extra : '';
                 }
+
                 $package = $this->IvfPayment->where('patients_id',$patients_id)->orderBy('id','desc')->first();
                 $isExtraVisit = $this->IuiExtraVisit->where('patient_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)->orderBy('id','desc')->first();
                 $extraVisit = !empty($isExtraVisit) ? '1' : '';
@@ -1593,6 +1595,7 @@ class AppointmentController extends AdminController
                     $extraOeData = json_decode($isExtraVisit->oe);
                     $report .= !empty($extraOeData) && isset($extraOeData->investigation_extra) ? $extraOeData->investigation_extra : '';
                 }
+
                 if($request->category == 4)
                 {
                     $iuiSecondHistory = $this->IuiHistory->where('patients_id',$patients_id)->where('visit',2)->orderBy('id','desc')->first();
@@ -1602,17 +1605,17 @@ class AppointmentController extends AdminController
                         $lmpDate = $description->lmp->date; 
                     }
                 }
+                // dd($report);
                 $check_iui_result = $this->IuiHistory->where('patients_id',$patients_id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<=',$appoitmentDate)->orderBy('id','desc')->first();
-                if($check_iui_result)
+                if(!empty($check_iui_result))
                 {
                     $iui_result = json_decode($check_iui_result->description);
-                    
-                    $remark = $iui_result->ovalution == 'yes' ? "IUI Result (".(\Carbon\Carbon::parse($iui_result->follow_up)->format('d-m-Y')).')' : '';
+                    $remark = isset($iui_result->ovalution) && $iui_result->ovalution == 'yes' ? "IUI Result (".(\Carbon\Carbon::parse($iui_result->follow_up)->format('d-m-Y')).')' : '';
                 }
+
                 $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
                         <p><span class="font-bold candor-color">LMP Date : </span>'.(!empty($lmpDate) ? \Carbon\Carbon::parse($lmpDate)->format('d-m-Y') : '').'</p>
                         <p><span class="font-bold candor-color">Result : </span>'.$remark.'</p>';
-
                 $data .=  '<p><span class="font-bold candor-color">Payment : </span></p>';
                 $data .= $payment;   
                 $data .= '<button class="btn btn-primary preview-file" data-cycleno="'.$cycle_no.'" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="" data-patient = "'.$request->patients_id.'">Visit</button>';
