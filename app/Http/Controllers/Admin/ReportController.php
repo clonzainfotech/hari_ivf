@@ -1969,7 +1969,12 @@ class ReportController extends AdminController
                     $date_2 = Carbon::create($year, $month)->lastOfMonth()->format('Y-m-d'); //returns 2020-03-3
                     if($date_1 == $fromdate && $date_2 == $todate)
                     {
-                        $month_billing = $this->MonthlyBillExpense->whereDate('month',$todate)->get();
+                        $month_billing = collect($this->MonthlyBillExpense->whereDate('month',$todate)->get())->map(function($query){
+                            if($query->getExpenseCategoryDetail['is_pediatric'] == 1)
+                            {
+                                return $query;
+                            }
+                        });
                         $is_display_bill_expense = 1;
                     }
                 }
@@ -2429,7 +2434,10 @@ class ReportController extends AdminController
                 //ipd
                 $indoorBook = $this->IndoorBook->with('getInvoice')->where('is_medicare_patient',1)->where('is_final_invoice',1)->whereNotNull('final_invoice_date')->orderBy('id','DESC');
                 $indoorCaseDeposit = $this->IndoorDeposit->where('is_medicare',1)->whereCaseTypeAndChargeType('Credit', 4)->with('getPatients')->orderBy('id', 'DESC');
+                $incomeCategoryName = $this->ExpenseCategory->where('is_medicare',1)->whereType('1')->whereStatus('1')->pluck('name','id');
                 
+                $is_display_bill_expense = 0;
+                $month_billing = [];
                 if(!empty($paymentType) || $paymentType != 0)
                 {
                     $indoorCaseDeposit = $indoorCaseDeposit->where('payment_type',$paymentType);
@@ -2472,6 +2480,20 @@ class ReportController extends AdminController
                     $income = $income->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                     $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
                     $indoorCaseDeposit = $indoorCaseDeposit->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
+                    $year = Carbon::parse($fromdate)->format('Y');
+                    $month = Carbon::parse($fromdate)->format('m');
+                    $date_1 = Carbon::create($year, $month)->startOfMonth()->format('Y-m-d'); //returns 2020-03-01
+                    $date_2 = Carbon::create($year, $month)->lastOfMonth()->format('Y-m-d'); //returns 2020-03-3
+                    if($date_1 == $fromdate && $date_2 == $todate)
+                    {
+                        $month_billing = collect($this->MonthlyBillExpense->whereDate('month',$todate)->get())->map(function($query){
+                            if($query->getExpenseCategoryDetail['is_medicare'] == 1)
+                            {
+                                return $query;
+                            }
+                        });
+                        $is_display_bill_expense = 1;
+                    }
                 }
                 $income = collect($income->get())->map(function ($query){
                     $query->income_category = $query->getExpenseCategory['name'];
@@ -2507,11 +2529,11 @@ class ReportController extends AdminController
                 if($request->isprint == 1)
                 {
                     $data['status'] = 1;
-                    $data['report_data'] = View::make('admin.report.medicare.preview',compact('income','expense','indoorBook','indoorCaseDeposit'))->render();
+                    $data['report_data'] = View::make('admin.report.medicare.preview',compact('income','expense','indoorBook','indoorCaseDeposit','incomeCategoryName','is_display_bill_expense','month_billing'))->render();
                     return $data;
                 }
                 $data['status'] = 1;
-                $data['report_data'] = View::make('admin.report.medicare.data',compact('income','expense','indoorBook','indoorCaseDeposit'))->render();
+                $data['report_data'] = View::make('admin.report.medicare.data',compact('income','expense','indoorBook','indoorCaseDeposit','incomeCategoryName','is_display_bill_expense','month_billing'))->render();
                 return $data;
             }
             return view('admin.report.medicare.index');

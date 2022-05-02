@@ -150,7 +150,22 @@
                 getPedReportData(qstring);
 
             });
+            $(document).on('click', '.expense-bill-apply', function () {
+                var bill_data =new FormData($(".month-bill-expense")[0]);
+                bill_data.append('month_date', todate);
+                $.ajax({
+                    method:'POST',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url: "{{URL::to('monthly-expense-bill')}}",
+                    data: bill_data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                }).done(function (data) {
+                    getPedReportData(qstring);
+                });
 
+            });
             getPedReportData(qstring);
         });
 
