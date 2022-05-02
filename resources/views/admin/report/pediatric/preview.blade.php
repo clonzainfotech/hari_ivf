@@ -112,7 +112,6 @@
                 </tr>
                 @php
                     $total = 0;
-                    $total1 = 0;
                 @endphp
                 @foreach($data as $row)
                     <tr>
@@ -128,11 +127,10 @@
                                 {{$row->amount}}
                                 @php
                                 $total +=  $row->amount;
-                                $total1 +=  $row->amount;
                                 $totalOpd += $row->amount;
                                 if(isset($categoryWiseIncome[$row->income_category]))
                                 {
-                                    $categoryWiseIncome[$row->income_category] = $total +=  $row->amount;
+                                    $categoryWiseIncome[$row->income_category] = $total;
                                 } 
                                 else {
                                     $categoryWiseIncome[$row->income_category] = $total;

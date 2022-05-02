@@ -27,7 +27,6 @@
                 <td colspan="" class="sub-headline">{{ ucWords(strtolower($rowlist))}}</td>
             </tr>
             @php
-                $total1 = 0;
                 $total = 0;
             @endphp
             @foreach($data as $row)
@@ -43,11 +42,10 @@
                     @php
                         $j++;
                         $total +=  $row->amount;
-                        $total1 +=  $row->amount;
                         $totalOpd += $row->amount;
                         if(isset($categoryWiseIncome[$row->income_category]))
                         {
-                            $categoryWiseIncome[$row->income_category] = $total +=  $row->amount;
+                            $categoryWiseIncome[$row->income_category] = $total;
                         } 
                         else {
                             $categoryWiseIncome[$row->income_category] = $total;
@@ -59,7 +57,7 @@
             @endphp
             <tr>
                 <td colspan="6"></td>
-                <td class="sub-headline upper-border">{{$total1}}</td>
+                <td class="sub-headline upper-border">{{$total}}</td>
 
             </tr>
             
