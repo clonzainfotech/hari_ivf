@@ -1919,6 +1919,7 @@ class ReportController extends AdminController
                 $indoorBook = $this->IndoorBook->with('getInvoice')->where('is_pediatric_patient',1)->where('is_final_invoice',1)->whereNotNull('final_invoice_date')->orderBy('id','DESC');
                 $indoorCaseDeposit = $this->IndoorDeposit->where('is_pediatric',1)->whereCaseTypeAndChargeType('Credit', 4)->with('getPatients')->orderBy('id', 'DESC');
                 $month_billing = [];
+                $is_display_bill_expense = 0;
 
                 if(!empty($paymentType) || $paymentType != 0)
                 {
@@ -1962,7 +1963,15 @@ class ReportController extends AdminController
                     $income = $income->whereBetween('date', [$fromdate, $todate]);
                     $indoorBook = $indoorBook->whereBetween('final_invoice_date', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
                     $indoorCaseDeposit = $indoorCaseDeposit->whereBetween('created_at', [$fromdate . ' 00:00:00', $todate . ' 23:59:59']);
-                    $month_billing = $this->MonthlyBillExpense->whereDate('month',$todate)->get();
+                    $year = Carbon::parse($fromdate)->format('Y');
+                    $month = Carbon::parse($fromdate)->format('m');
+                    $date_1 = Carbon::create($year, $month)->startOfMonth()->format('Y-m-d'); //returns 2020-03-01
+                    $date_2 = Carbon::create($year, $month)->lastOfMonth()->format('Y-m-d'); //returns 2020-03-3
+                    if($date_1 == $fromdate && $date_2 == $todate)
+                    {
+                        $month_billing = $this->MonthlyBillExpense->whereDate('month',$todate)->get();
+                        $is_display_bill_expense = 1;
+                    }
                 }
                 $income = collect($income->get())->map(function ($query){
                     $query->income_category_name = $query->getExpenseCategory['name'];
@@ -2003,11 +2012,11 @@ class ReportController extends AdminController
                 if($request->isprint == 1)
                 {
                     $data['status'] = 1;
-                    $data['report_data'] = View::make('admin.report.pediatric.preview',compact('income','expense','indoorBook','indoorCaseDeposit','month_billing'))->render();
+                    $data['report_data'] = View::make('admin.report.pediatric.preview',compact('income','expense','indoorBook','indoorCaseDeposit','month_billing','is_display_bill_expense'))->render();
                     return $data;
                 }
                 $data['status'] = 1;
-                $data['report_data'] = View::make('admin.report.pediatric.data',compact('income','expense','indoorBook','indoorCaseDeposit','pediatricExpenseCategory','incomeCategoryName','month_billing'))->render();
+                $data['report_data'] = View::make('admin.report.pediatric.data',compact('income','expense','indoorBook','indoorCaseDeposit','pediatricExpenseCategory','incomeCategoryName','month_billing','is_display_bill_expense'))->render();
                 return $data;
             }
             return view('admin.report.pediatric.index');

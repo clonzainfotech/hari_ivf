@@ -224,7 +224,7 @@
         @php
             $total_category_amount = 0;
         @endphp
-        {{-- @if(count($month_billing)  == 0)
+        @if(count($month_billing)  == 0 && $is_display_bill_expense == 1)
             @forelse($categoryWiseIncome as $category => $amount)
                 <tr class="bt-none">
                     {{Form::hidden('income_category[]',$category,['class'=>'input-income_category'])}}
@@ -241,8 +241,15 @@
             @empty
                 <td colspan="8" class="text-center">No records available</td>
             @endforelse
-        @endif --}}
-        @if(isset($month_billing) && count($month_billing)  > 0 && count($categoryWiseIncome) > 0)
+            <tr class="bt-none">
+                <th class="bt-none">Net Amount</th>
+                <th class="bt-none">:</th>
+                <th class="text-right net-amount"></th>
+                <th class="text-right net-expense-category-wise"></th>
+                <th class="text-right net-amount-category-wise top-border-first total-upper-border text-right"></th>
+            </tr>
+        @endif
+        @if(isset($month_billing) && count($month_billing)  > 0 && count($categoryWiseIncome) > 0 && $is_display_bill_expense == 1)
             @forelse($month_billing as $category)
                 <tr class="bt-none">
                     {{Form::hidden('income_category[]',$category->expense_category,['class'=>'input-income_category'])}}
