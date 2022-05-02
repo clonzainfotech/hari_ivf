@@ -1975,6 +1975,7 @@ class ReportController extends AdminController
                                 return $query;
                             }
                         });
+                        $month_billing = $month_billing->filter();
                         $is_display_bill_expense = 1;
                     }
                 }
@@ -2487,11 +2488,9 @@ class ReportController extends AdminController
                     if($date_1 == $fromdate && $date_2 == $todate)
                     {
                         $month_billing = collect($this->MonthlyBillExpense->whereDate('month',$todate)->get())->map(function($query){
-                            if($query->getExpenseCategoryDetail['is_medicare'] == 1)
-                            {
-                                return $query;
-                            }
+                                return $query->getExpenseCategoryDetail['is_medicare'] == 1 ? $query :[];
                         });
+                        $month_billing = $month_billing->filter();
                         $is_display_bill_expense = 1;
                     }
                 }
