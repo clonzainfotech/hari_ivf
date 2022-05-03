@@ -3773,6 +3773,9 @@
                                                             {{-- @endforeach --}}
                                                     @endif
                                                 @endif
+                                                @if(isset($row->note) && !empty($row->note))
+                                                    | Note: {{$row->note}}
+                                                @endif
                                             </div>
                                                 
                                             @endforeach
