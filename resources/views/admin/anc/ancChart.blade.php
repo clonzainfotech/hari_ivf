@@ -75,33 +75,6 @@ $weekData =  [1=>'Normal Size',2=>'Just Bulky',3=>'6 Weeks',4=>'6 - 8 Weeks',5=>
                         </div>
                         <div class="col-md-12 d-flex anc-header mt-3">
                             <div class="col-md-3">
-                                <ul>
-                                    <li class="candor-color"><h6><strong><u>Injections : </u></strong></h6></li>
-                                    <li><strong>T1 Date : </strong>{{!empty($otherDetails['tt1']) ? $otherDetails['tt1'] : ''}}</li>
-                                    <li><strong>T2 Date : </strong>{{!empty($otherDetails['tt2']) ? $otherDetails['tt2'] : ''}}</li>
-                                    <li><strong>Betnasol 1 : </strong>{{!empty($otherDetails['betnasol_1']) ? $otherDetails['betnasol_1'] : ''}}</li>
-                                    <li><strong>Betnasol 2 : </strong>{{!empty($otherDetails['betnasol_2']) ? $otherDetails['betnasol_2'] : ''}}</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <ul>
-                                    <li class="candor-color"><h6><strong><u>USG : </u></strong></h6></li>
-                                    <li><strong>NT Scan : </strong>{{!empty($otherDetails['nt_scan']) ? $otherDetails['nt_scan'] : ''}}</li>
-                                    <li><strong>Anomalies Scan : </strong>{{!empty($otherDetails['anomalies_miles']) ? $otherDetails['anomalies_miles'] : ''}}</li>
-                                    <li><strong>Double Marker : </strong>{{!empty($otherDetails['d_m_date']) ? $otherDetails['d_m_date'] : ''}}</li>
-                                </ul>
-                            </div>
-                        {{-- </div> --}}
-                        {{-- <div class="col-md-12 d-flex anc-header"> --}}
-                            <div class="col-md-3">
-                                <ul>
-                                    <li class="candor-color"><h6><strong><u>History details: </u></strong></h6></li>
-                                    <li><strong>Personal History : </strong>{{implode(',',$otherDetails['personal_history'])}}</li>
-                                    <li><strong>Family History : </strong>{{implode(',',$otherDetails['family_history'])}}</li>
-                                    <li><strong>Past History: </strong>{{implode(',',$otherDetails['past_history'])}}</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
                                 <ul style="color: red;">
                                     <li class="candor-color"><h6><strong><u>Diagnosis: </u></strong></h6></li>
                                 @if (isset($otherDetails['oe_remark']) && !empty($otherDetails['oe_remark']))
@@ -151,6 +124,34 @@ $weekData =  [1=>'Normal Size',2=>'Just Bulky',3=>'6 Weeks',4=>'6 - 8 Weeks',5=>
                                     <span class="anc-label ">&nbsp;&nbsp;&nbsp;*Placenta:</span>
                                         {{$ancAutoRemark['placenta']}}
                                 @endif
+                                </ul>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <ul>
+                                    <li class="candor-color"><h6><strong><u>USG : </u></strong></h6></li>
+                                    <li><strong>NT Scan : </strong>{{!empty($otherDetails['nt_scan']) ? $otherDetails['nt_scan'] : ''}}</li>
+                                    <li><strong>Anomalies Scan : </strong>{{!empty($otherDetails['anomalies_miles']) ? $otherDetails['anomalies_miles'] : ''}}</li>
+                                    <li><strong>Double Marker : </strong>{{!empty($otherDetails['d_m_date']) ? $otherDetails['d_m_date'] : ''}}</li>
+                                </ul>
+                            </div>
+                        {{-- </div> --}}
+                        {{-- <div class="col-md-12 d-flex anc-header"> --}}
+                            <div class="col-md-3">
+                                <ul>
+                                    <li class="candor-color"><h6><strong><u>History details: </u></strong></h6></li>
+                                    <li><strong>Personal History : </strong>{{implode(',',$otherDetails['personal_history'])}}</li>
+                                    <li><strong>Family History : </strong>{{implode(',',$otherDetails['family_history'])}}</li>
+                                    <li><strong>Past History: </strong>{{implode(',',$otherDetails['past_history'])}}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul>
+                                    <li class="candor-color"><h6><strong><u>Injections : </u></strong></h6></li>
+                                    <li><strong>T1 Date : </strong>{{!empty($otherDetails['tt1']) ? $otherDetails['tt1'] : ''}}</li>
+                                    <li><strong>T2 Date : </strong>{{!empty($otherDetails['tt2']) ? $otherDetails['tt2'] : ''}}</li>
+                                    <li><strong>Betnasol 1 : </strong>{{!empty($otherDetails['betnasol_1']) ? $otherDetails['betnasol_1'] : ''}}</li>
+                                    <li><strong>Betnasol 2 : </strong>{{!empty($otherDetails['betnasol_2']) ? $otherDetails['betnasol_2'] : ''}}</li>
                                 </ul>
                             </div>
                                 {{-- <ul>
