@@ -2495,10 +2495,10 @@ class ReportController extends AdminController
                     }
                 }
                 $income = collect($income->get())->map(function ($query){
-                    $query->income_category = $query->getExpenseCategory['name'];
+                    $query->income_category_name = $query->getExpenseCategory['name'];
                     return $query;
                 });
-                $income = $income->groupBy('income_category');
+                $income = $income->groupBy('income_category_name');
 
                 $expense = collect($expense->get())->map(function ($query){
                     $query->expense_category = $query->getExpenseCategory['name'];

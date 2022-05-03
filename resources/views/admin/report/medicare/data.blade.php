@@ -197,6 +197,8 @@
         <table class="table m-b-0 table-hover grand-total" style="width:40%;">
             @php
                 $total_category_amount = 0;
+                print_r($incomeCategoryName);
+                print_r($categoryWiseIncome);
             @endphp
             @if(count($month_billing)  == 0)
                 @forelse($categoryWiseIncome as $category => $amount)
@@ -220,7 +222,7 @@
                     <th class="bt-none">:</th>
                     <th class="text-right net-amount"></th>
                     <th class="text-right net-expense-category-wise"></th>
-                    <th class="text-right  top-border-first total-upper-border text-right">=<span class="net-amount-category-wise"></span></th>
+                    <th class="text-right  top-border-first total-upper-border text-right">=&nbsp;&nbsp;<span class="net-amount-category-wise"></span></th>
                 </tr>
             @endif
             @if(isset($month_billing) && count($month_billing)  > 0 && count($categoryWiseIncome) > 0)
