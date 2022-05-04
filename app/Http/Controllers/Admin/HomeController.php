@@ -478,7 +478,9 @@ class HomeController extends AdminController
         $result = '';
         if($request->category && in_array($request->category,[5,6,10,13]))
         {
+            $ancId = $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
             $ancHistory = $this->AncHistory->where('patients_id','=',$patients_id)
+                ->where('anc_id',$ancId->id)
                 ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'<',$appoitmentDate)
                 ->orderBy('id','desc')
                 ->first();
@@ -505,7 +507,7 @@ class HomeController extends AdminController
             else
             {
                 $ancFirst = $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
-                if($ancFirst && $request->category != 5)
+                if($ancFirst && empty($ancHistory))
                 {
                     $mhData = !empty($ancFirst->m_h) ? json_decode($ancFirst->m_h) : null;
                     $lmp = !empty($mhData->last_menstrual_date) ? $mhData->last_menstrual_date : null;
