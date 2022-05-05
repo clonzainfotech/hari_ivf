@@ -1649,7 +1649,6 @@ class IUIController extends AdminController
                         $historyMedicineKey = array_combine($historyMedicineKey,$historyMedicineKey);
                     }
                 }
-                // dd($cycleNo);
                 $data = [];
                 $data['iui'] = $iui;
                 $data['personalData'] = $personalData;
@@ -1719,7 +1718,8 @@ class IUIController extends AdminController
                 $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
                 $data['rmoDoctor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
                 $data['iui_completed'] = $iui_completed;
-                if(($request->iuihistorydate) || ($request->iui_visit_id))
+                $data['old_edit_cycle'] = !empty($request->iui_cycle_no) ? true : false;
+                if(!empty($request->iuihistorydate) || !empty($request->iui_visit_id))
                 {
                     $data['update_iui'] = View::make('admin.iui.edit1',$data)->render();
                 }

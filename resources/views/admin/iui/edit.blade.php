@@ -3630,7 +3630,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                 {{Form::hidden('next_time','',['class'=>'next-time-value'])}}
             @endif
             {{Form::hidden("appointment_time", '',['class'=>'form-control next-time'])}}
-            @if($visitNo == 2)
+            @if($visitNo == 2 && $old_edit_cycle == false)
                 
                 <div class="row">
                     <div class="col-md-1">
@@ -4398,7 +4398,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     </div>
                 </div>
             @endif
-            @if($visitNo == 3)
+            @if($visitNo == 3 || $old_edit_cycle == true)
                 <h3>Today : {{\Carbon\Carbon::now()->format('d M Y')}}</h3>
                 @if($remark && !$iuiHistoryId)
                     <span class="remark-text m-0">Remark: {{$remark}}</span>
@@ -4427,7 +4427,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     @endphp
                     {{Form::hidden('data[lmp][lmp_date_diff]',$lmpDataDiff,['class'=>'lmd-date-diff-val'])}}
             @endif
-            @if($visitNo == 4)
+            @if($visitNo == 4 && $old_edit_cycle == false)
                 <div class="row">
                     <div class="col-md-5">
                         <h3>Today : {{\Carbon\Carbon::now()->format('d M Y')}}</h3>
@@ -4973,7 +4973,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                 $dateAndInjectionData = [];
                 
             @endphp
-            @if($visitNo == 3)
+            @if($visitNo == 3 || $old_edit_cycle == true)
             @php
                 $lastHistoryData = json_decode($iuiHistoryData[count($iuiHistoryData)-1]['description']);
                 $secondVisitHusbandFactor = json_decode($iuiSecondVisit->husband_factor);

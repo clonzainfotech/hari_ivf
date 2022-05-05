@@ -1483,6 +1483,8 @@
                 type:'GET',
             }).done(function(data) {
                 // $('.panel-group').html('')
+                console.log(data.update_iui);
+                $('.iui-history-data').empty();
                 $('.iui-history-data').html(data.update_iui);
                 // $('select.iui-cycle-no').val(cycleNo);
                 //     $('.iui-cycle-no').selectpicker('refresh');
