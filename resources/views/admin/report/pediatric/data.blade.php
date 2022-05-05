@@ -251,15 +251,15 @@
             </table>
             <button type="button" class="btn btn-primary expense-bill-apply">Apply</button>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-3">
             <table class="table m-b-0 table-hover grand-total" style="width:40%;">
                 <tr class="bt-none">
-                    <th class="bt-none">OPD 60% Income</th>
+                    <th class="bt-none">Ped. Owner Income(60%)</th>
                     <th class="bt-none">:</th>
                     <th class="bt-none opd-60"></th>
                 </tr>
                 <tr class="bt-none">
-                    <th class="bt-none">OPD 40% Income</th>
+                    <th class="bt-none">Ped. Man. Income(40%)</th>
                     <th class="bt-none">:</th>
                     <th class="bt-none opd-40"></th>
                 </tr>
@@ -270,22 +270,31 @@
                 </tr>
             </table>  
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-3">
+            @php
+            $ipd_owner = $totalIpd != 0 ? ($totalIpd * 70)/100 : 0;
+            $ipd_man = $totalIpd != 0 ? ($totalIpd * 30)/100 : 0;
+            @endphp
             <table class="table m-b-0 table-hover grand-total" style="width:40%;">
                 <tr class="bt-none">
-                    <th class="bt-none">IPD 60% Income</th>
+                    <th class="bt-none">IPD Owner Income(70%)</th>
                     <th class="bt-none">:</th>
-                    <th class="bt-none ipd-60">{{$totalIpd != 0 ? ($totalIpd * 60)/100 : ''}}</th>
+                    <th class="bt-none ipd-60 owner-ipd-income">{{$ipd_owner}}</th>
                 </tr>
                 <tr class="bt-none">
-                    <th class="bt-none">IPD 40% Income</th>
+                    <th class="bt-none">IPD Man. Income(30%)</th>
                     <th class="bt-none">:</th>
-                    <th class="bt-none ipd-40">{{$totalIpd != 0 ? ($totalIpd * 40)/100 : ''}}</th>
+                    <th class="bt-none ipd-40">{{$ipd_man}}</th>
                 </tr>
                 <tr class="bt-none">
                     <th class="bt-none">Total</th>
                     <th class="bt-none">:</th>
                     <th class="top-border-first total-upper-border text-right">{{$totalIpd}}</th>
+                </tr>
+                <tr class="bt-none">
+                    <th class="bt-none">5% income From Owner</th>
+                    <th class="bt-none">:</th>
+                    <th class="top-border-first total-upper-border text-right income-from-owner-5"></th>
                 </tr>
             </table>
         </div>  
@@ -333,6 +342,8 @@
         $('.opd-60').text(opd_60);
         $('.opd-40').text(opd_40);
         $('.total-opd-60-40').text(opd_60+opd_40);
+        var owner_ipd = $('.owner-ipd-income').text();
+        $('.income-from-owner-5').text((5*(parseInt(opd_40)+parseInt(owner_ipd))) / 100);
 
     }
     netAmountWithCategory();
