@@ -118,15 +118,15 @@ Route::group(['middleware'=>'checkDB'],function(){
             Route::post('delete-question','FaqController@deleteQuestion');
 
             //Doctor Notification
-            Route::get('doctor-explore','DoctorApi\ExploreController@explore');
-            Route::post('doctor-appointment','DoctorApi\AppointmentController@appointment');
+            Route::get('doctor-explore','DoctorApi\DoctorController@explore');
+            Route::post('doctor-appointment','DoctorApi\DoctorController@appointment');
+            Route::get('doctor-profile','DoctorApi\DoctorController@doctorprofile');
+            Route::post('doctor-updateprofile','DoctorApi\DoctorController@doctorupdateprofile');
+            Route::post('doctor-updatepassword','DoctorApi\DoctorController@doctorupdatepassword');
+            Route::post('doctor-patient','DoctorApi\PatientController@doctorpatient');
+            Route::post('doctor-TodayPatients','DoctorApi\PatientController@doctortodaypatients');
+            Route::post('doctor-PatientAppointmentRequest','DoctorApi\PatientController@PatientAppointmentRequest');
             Route::post('doctor-notification','DoctorApi\NotificationController@notification');
-            Route::get('doctor-profile','DoctorApi\ProfileController@doctorprofile');
-            Route::post('doctor-patient','DoctorApi\MyPatientController@doctorpatient');
-            Route::post('doctor-updateprofile','DoctorApi\UpdateProfileController@doctorupdateprofile');
-            Route::post('doctor-updatepassword','DoctorApi\UpdatePasswordController@doctorupdatepassword');
-            Route::post('doctor-TodayPatients','DoctorApi\TodayPatientsController@doctortodaypatients');
-            Route::post('doctor-PatientAppointmentRequest','DoctorApi\PatientAppointmentRequestController@PatientAppointmentRequest');
 
             //Patient's report
             Route::post('add-patient-report','PatientController@addPatientsReport');
