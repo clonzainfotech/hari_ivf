@@ -74,6 +74,21 @@
     tr td th {
         padding: 12px 12px;
     }
+    .d-flex{
+        display: flex;
+    }
+    .w-40
+    {
+        width: 40%;
+    }
+    .w-50
+    {
+        width: 50%;
+    }
+    .w-full
+    {
+        width: 100%;
+    }
     </style>
     <table class="table m-b-0 table-hover category-report-table-first" id="category-report-table" cellspacing="0">
        
@@ -237,7 +252,7 @@
             
         </tbody>
     </table>
-    <table class="table m-b-0 table-hover category-report-table-first grand-total"  style="width:40%;" >
+    <table class="table m-b-0 table-hover category-report-table-first grand-total w-40" >
         
         <tbody>
             <tr class="border-none">
@@ -270,7 +285,7 @@
     @if($is_display_bill_expense == 1)
         <div class="row">
             <div class="col-md-6 col-sm-6">
-                <table class="table m-b-0 table-hover grand-total" style="width:100%">
+                <table class="table m-b-0 table-hover grand-total w-full">
                     @php
                         $total_category_amount = 0;
                         $total_category_expense = 0;
@@ -303,14 +318,14 @@
                 </table>
             </div>
         </div>
-        <div class="row d-flex" style="display:flex;margin-top:20px;">
+        <div class="row d-flex" style="margin-top:20px;">
             @php
                 $ipd_owner = $totalIpd != 0 ? ($totalIpd * 70)/100 : 0;
                 $ipd_man = $totalIpd != 0 ? ($totalIpd * 30)/100 : 0;
                 $opd_owner = (($total_category_amount - $total_category_expense) * 60)/100;
                 $opd_man = (($total_category_amount - $total_category_expense) * 40)/100;
             @endphp
-                <table class="table m-b-0 table-hover grand-total" style="width:50%">
+                <table class="table m-b-0 table-hover grand-total w-50">
                     <tr class="bt-none">
                         <th class="bt-none">Ped. Owner Income(60%)</th>
                         <th class="bt-none">:</th>
