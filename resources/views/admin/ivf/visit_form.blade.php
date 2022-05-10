@@ -54,6 +54,14 @@
                 {{Form::select('rmo_doctor',$rmoDoctor,$ivf->rmo_doctor,['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
             </div>
         </div>
+        @if($ivf->visit == 2)
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-addon">Surrogate : &nbsp;</span>
+                    {{Form::text('data[surrogate]',isset($ivfData->surrogate) ? $ivfData->surrogate : '',['class'=>'form-control weight','placeholder'=>'Enter surrogate Name'])}}
+                </div>
+            </div>
+        @endif
         
     </div>
     {{Form::hidden('visit',$ivf->visit,['class'=>'visit-no'])}}

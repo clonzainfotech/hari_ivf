@@ -102,4 +102,13 @@ class OpdPatients extends BaseModel
         return $this->hasOne('App\Models\Appointment','patients_id','id')->where('is_done','1')->orderBy('id','DESC');
     }
 
+    public function getSurrogateFromLastCycle()
+    {
+        $ivfHistory = IvfHistory::where('patients_id',$this->id)
+                            ->where('visit','2')
+                            ->orderBy('created_at','desc')
+                            ->first();
+        return !empty($ivfHistory)  ? json_decode($ivfHistory->description,true) : null;                  
+    }
+
 }

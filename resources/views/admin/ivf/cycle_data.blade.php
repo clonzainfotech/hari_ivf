@@ -202,6 +202,8 @@
             $historyLmddateDate = null;
             $historyLmdDiff = null;
             $secondVisitHusbandFactor = !empty($ivfSecondHistory->husband_factor) ? json_decode($ivfSecondHistory->husband_factor) : null;
+            $SecondHistoryData = !empty($ivfSecondHistory) ? json_decode($ivfSecondHistory->description) : null;
+            // print_r($SecondHistoryData);
             $husbandFactor = !empty($ivfSecondHistory->husband_factor) && (isset($secondVisitHusbandFactor->sperm_count) || !empty($secondVisitHusbandFactor->remark) || isset($secondVisitHusbandFactor->motility)) ? json_decode($ivfSecondHistory->husband_factor) : json_decode($ivfVisit->husband_factor);
 
             if($LMPDate){
@@ -265,26 +267,28 @@
                                 <thead>
                                 <tr>
                                     <th class="font-15"> <span class="font-bold">Patient Name: </span>{{ucwords($lastAppointment->getPatientsDetails->name)}}</th>
-                                    <th class="font-15"><span class="font-bold">Plan: </span> ovarian stimulation</th>
+                                    <th class="font-15"><span class="font-bold ">Male Age : </span>{{!empty($husbandFactor) && isset($husbandFactor->age) ? $husbandFactor->age : ''}}</th>
+
                                 </tr>
                                 <tr>
+                                    <th class="font-15"><span class="font-bold ">Age/Weight: </span>{{$lastAppointment->getPatientsDetails->age.' Year'}}/{{isset($lastCycleData->weight) && !empty($lastCycleData->weight) ? $lastCycleData->weight.' kg' : ''}}</th>
+                                    <th class="font-15"><span class="font-bold ">Sperm Count : </span>{{!empty($husbandFactor) && isset($husbandFactor->sperm_count) ? $husbandFactor->sperm_count : ''}}</th>
+                                </tr>
+                                <tr>
+                                    <th class="font-15"><span class="font-bold">Plan: </span> ovarian stimulation</th>
+                                    <th class="font-15"><span class="font-bold ">Male Factor Remark : </span>{{!empty($husbandFactor) && isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</th>
+
+                                </tr>
+                                {{-- @if(!empty($husbandFactor) && (isset($husbandFactor->sperm_count) || isset($husbandFactor->motility))) --}}
+                                <tr>
                                     <th class="font-15"><span class="font-bold ">Seen By: </span>{{isset($hospitalDoctor[$cycle[0]->seen_by]) ? $hospitalDoctor[$cycle[0]->seen_by] : ''}}</th>
-                                    <th class="font-15"><span class="font-bold ">Age: </span>{{ucwords($lastAppointment->getPatientsDetails->age)}}</th>
+                                    <th class="font-15"><span class="font-bold ">Motility : </span>{{!empty($husbandFactor) && isset($husbandFactor->motility) ? $husbandFactor->motility : ''}}</th>
                                 </tr>
                                 <tr>
                                     <th class="font-15"><span class="font-bold ">LMP Date: </span>{{\Carbon\Carbon::parse($historyLmddateDate)->format('D d M Y')}}</th>
-                                    <th class="font-15"><span class="font-bold ">Weight: </span>{{isset($lastCycleData->weight) && !empty($lastCycleData->weight) ? $lastCycleData->weight.' kg' : ''}}</th>
+                                    <th class="font-15"><span class="font-bold ">Surrogate Name: </span>{{!empty($SecondHistoryData) && isset($SecondHistoryData->surrogate) ? $SecondHistoryData->surrogate : ''}}</th>
                                 </tr>
-                                @if(!empty($husbandFactor) && (isset($husbandFactor->sperm_count) || isset($husbandFactor->motility)))
-                                <tr>
-                                    <th class="font-15"><span class="font-bold ">Male Age : </span>{{$husbandFactor->age}}</th>
-                                    <th class="font-15"><span class="font-bold ">Sperm Count : </span>{{$husbandFactor->sperm_count}}</th>
-                                </tr>
-                                <tr>
-                                    <th class="font-15"><span class="font-bold ">Male Factor Remark : </span>{{isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</th>
-                                    <th class="font-15"><span class="font-bold ">Motility : </span>{{$husbandFactor->motility}}</th>
-                                </tr>
-                                @endif
+                                {{-- @endif --}}
                                 </thead>
                             </table>
                         </div>
@@ -2020,16 +2024,17 @@
                                                 <span class="visit-lable-value">{{$historySemenFreezing}}</span>
                                             </div>
                                         @endif
-                                        @if(!empty($husbandFactor) && (isset($husbandFactor->sperm_count) || !empty($husbandFactor->remark) || isset($husbandFactor->motility)))
+                                        <div class="mb-2">
+                                            <span class="visit-lable">Endometrial Thickness :- </span> 
+                                            <span class="visit-lable-value">{{isset($ivfSecondVisitData->oe) && !empty($ivfSecondVisitData->oe->endometrial_cavity->size) ? $ivfSecondVisitData->oe->endometrial_cavity->size : ''}}</span>
+                                        </div>
+                                        @if($pStatus == 3 || $pStatus == 4)
                                             <div class="mb-2">
-                                                <span class="visit-lable">Male Age : </span>
-                                                <span class="visit-lable-value">{{$husbandFactor->age}}</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="visit-lable">Male Factor Remark :</span>
-                                                <span class="visit-lable-value">{{isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</span>
+                                                <span class="visit-lable">Embroy Ready :- </span> 
+                                                <span class="visit-lable-value">{{$historyEmbroyReady}}</span>
                                             </div>
                                         @endif
+                                        
                                     </div>
                                     <div class="col-md-6 follicular_div_2">
                                         <div class="mb-2">
@@ -2053,14 +2058,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mb-2">
-                                            <span class="visit-lable">Endometrial Thickness :- </span> 
-                                            <span class="visit-lable-value">{{isset($ivfSecondVisitData->oe) && !empty($ivfSecondVisitData->oe->endometrial_cavity->size) ? $ivfSecondVisitData->oe->endometrial_cavity->size : ''}}</span>
-                                        </div>
-                                        @if($pStatus == 3 || $pStatus == 4)
+                                        
+                                        @if(!empty($husbandFactor) && (isset($husbandFactor->sperm_count) || !empty($husbandFactor->remark) || isset($husbandFactor->motility)))
                                             <div class="mb-2">
-                                                <span class="visit-lable">Embroy Ready :- </span> 
-                                                <span class="visit-lable-value">{{$historyEmbroyReady}}</span>
+                                                <span class="visit-lable">Male Age : </span>
+                                                <span class="visit-lable-value">{{$husbandFactor->age}}</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="visit-lable">Male Factor Remark :</span>
+                                                <span class="visit-lable-value">{{isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</span>
                                             </div>
                                         @endif
                                         @if(!empty($husbandFactor) && (isset($husbandFactor->sperm_count) || isset($husbandFactor->remark) || !empty($husbandFactor->remark) || isset($husbandFactor->motility)))
@@ -2073,8 +2079,12 @@
                                             <span class="visit-lable-value">{{$husbandFactor->motility}}</span>
                                         </div>
                                         @endif
+                                        <div class="mb-2">
+                                            <span class="visit-lable">Surrogate Name : </span>
+                                            <span class="visit-lable-value">{{!empty($SecondHistoryData) && isset($SecondHistoryData->surrogate) ? $SecondHistoryData->surrogate : ''}}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                </div> 
                                 
                                 <div class="row mt-2">
                                     {{-- <div class="col-md-12">
@@ -3200,13 +3210,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Surrogate : &nbsp;</span>
+                                        {{Form::text('data[surrogate]','',['class'=>'form-control weight','placeholder'=>'Enter surrogate Name'])}}
+                                    </div>
+                                </div>
+
+                                {{-- <div class="col-md-4">
                                     <input type="hidden" id="saverecordname" value="{{\Carbon\Carbon::now()->format('d-m-Y').", ".ucwords($lastAppointment->getPatientsDetails->name).""}}">
                                     <script src="{{url('public/js/record/recorder.js')}}" defer></script>
                                     <script src="{{url('public/js/record/Fr.voice.js')}}" defer></script>
                                     <script src="{{url('public/js/record/recordapp.js')}}" defer></script>
                                     <a class="btn btn-danger btn-sm text-white" id="record" data-action="start">Start Recording</a>
                                     <input type="hidden" id="saverecurl" value="{{URL::to("saverec")}}">
-                                </div>
+                                </div> --}}
                             </div>
                             {{Form::hidden('visit',$visit,['class'=>'visit-no'])}}
                             {{Form::hidden('plan_type',$pStatus,['class'=>'plan_type'])}}

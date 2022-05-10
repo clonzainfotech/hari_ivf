@@ -143,6 +143,10 @@
                         <div class="{{'appointment_dropdown_content appointment_dropdown_content_'.$uniqId}}">
                         </div>
                     @endif
+                    @if($row->categoryDetails['id'] == 2 && !empty($row->getPatientsDetails->getSurrogateFromLastCycle()) && isset($row->getPatientsDetails->getSurrogateFromLastCycle()['surrogate']) && !empty($row->getPatientsDetails->getSurrogateFromLastCycle()['surrogate']))
+                        <br>&nbsp;<b>Surrogate : </b>
+                        {{$row->getPatientsDetails->getSurrogateFromLastCycle()['surrogate']}}
+                    @endif
                 </td>
                 <td class="line-height">{{$row->getPatientsDetails['mobile_number']}}<br>{{$row->getPatientsDetails['code']}}</td>
                 <td>{{$row->getSeenBy['name']}}</td>

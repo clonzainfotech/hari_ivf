@@ -95,7 +95,7 @@
                         $className = '';
                     }
                 @endphp
-                <td class="{{"patient_dropdown ".$className}}">&nbsp;
+                <td class="{{"patient_dropdown line-height".$className}}">&nbsp;
                     @php
                         $isBirthDay = 0;
                         $isBirthDay =   !empty($row->getPatientsDetails['dob']) && \Carbon\Carbon::parse($row->getPatientsDetails['dob'])->format('d-m') == \Carbon\Carbon::now()->format('d-m') ? 1 : 0;
@@ -109,6 +109,10 @@
                             <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
                             <div class="{{'appointment_dropdown_content appointment_dropdown_content_'.$uniqId}}">
                             </div>
+                        @endif
+                        @if($row->categoryDetails['id'] == 2 && !empty($row->getPatientsDetails->getSurrogateFromLastCycle()) && isset($row->getPatientsDetails->getSurrogateFromLastCycle()['surrogate']) && !empty($row->getPatientsDetails->getSurrogateFromLastCycle()['surrogate']))
+                            <br>&nbsp;<b>Surrogate : </b>
+                            {{$row->getPatientsDetails->getSurrogateFromLastCycle()['surrogate']}}
                         @endif
                     {{-- </td> --}}
                 </td>
