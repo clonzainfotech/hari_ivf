@@ -119,10 +119,12 @@ class ReferenceDoctorController extends AdminController
                         ->withErrors($valid->errors())
                         ->withInput();
             }
+            // dd($request);
             $referenceDoctor->name = $request->name;
             $referenceDoctor->mobile_number = $request->mobile_number;
             $referenceDoctor->address = $request->address;
             $referenceDoctor->reference_type = $request->reference_type;
+            $referenceDoctor->is_lead = !empty($request->is_lead) ? $request->is_lead : 0;
             $referenceDoctor->created_by = Auth::user()->id;
             $referenceDoctor->save();
 

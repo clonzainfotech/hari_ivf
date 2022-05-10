@@ -55,7 +55,7 @@
                                                 @if(!empty($referenceDoctor->id))
                                                     {{Form::hidden('id',encrypt($referenceDoctor->id))}}
                                                 @endif
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-4">
                                                     <div class="input-group">
                                                         <span class="input-group-addon unik-lbl-spn">Mobile :</span>
                                                         {{Form::text('mobile_number',$referenceDoctor->mobile_number,[
@@ -70,9 +70,9 @@
                                                         {{$errors->first('mobile_number')}}
                                                     </span>
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-4">
                                                     <div class="form-group">
-                                                        {{Form::select('reference_type',[''=>'Select Reference Type','1'=>'Offline','2'=>'Online','3'=>'Lead'],$referenceDoctor->reference_type,[
+                                                        {{Form::select('reference_type',[''=>'Select Reference Type','1'=>'Offline','2'=>'Online'],$referenceDoctor->reference_type,[
                                                             'class'=>'form-control select-padding-0 reference_type',
                                                             'title'=>'Select Refernce Type',
                                                             'required',
@@ -81,6 +81,14 @@
                                                     <span class="form-error-msg">
                                                         {{$errors->first('reference_type')}}
                                                     </span>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        {{Form::checkbox('is_lead',$referenceDoctor->is_lead,$referenceDoctor->is_lead == 1 ? true : false,['id'=>'is_lead','class'=>'is_lead'])}}
+                                                        <label for="is_lead">
+                                                            Is Lead
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -120,5 +128,12 @@
         function checkMobileNumber(value) {
             $('.mobile_number').val(validMobileNumber(value));
         }
+        $(document).on('click','.is_lead',function(){
+            $(this).val(0);
+            if($(this).prop('checked') == true)
+            {
+                $(this).val(1);
+            }
+        });
     </script>
 @stop

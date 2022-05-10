@@ -3,6 +3,13 @@
 @section('title', 'Reference Doctor Report')
 @section('page-style')
     <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <style>
+    .box-border
+    {
+        border: 2px solid #1e5f63 !important;
+    }
+    </style>
+
 @stop
 @section('content')
     <div class="row clearfix report refdoctor reference-doctor-report">
@@ -53,7 +60,7 @@
                                     ])}}
                                 </div>
                                 <div class="col-md-2 col-sm-2">
-                                    {{Form::select('type',['1'=>'OPD','4'=>'Indoor','5'=>'New Patients','6'=>'Old Patients'],'',['class'=>'form-control select-padding-0 report-type-doctor','placeholder'=>'Select Type'])}}
+                                    {{Form::select('type',['1'=>'OPD','4'=>'Indoor','5'=>'New Patients','6'=>'Old Patients','7'=>'Summary'],'',['class'=>'form-control select-padding-0 report-type-doctor','placeholder'=>'Select Type'])}}
                                 </div>
                             </div>
                         </div>
@@ -152,7 +159,13 @@
                 w.window.print();
             });
         });
-
+        $(document).on('click','.ref-box',function (){
+            var class_name = $(this).data('key'); 
+            $('table.table-ref').addClass('d-none');
+            $('.ref-box').removeClass('box-border');
+            $(this).addClass('box-border');
+            $('table.'+class_name).removeClass('d-none');
+        })
         // get all reference doctor wise report data
         function getRefDoctorReportData(qstring) {
             $('.refdocdata-loader').removeClass('d-none');

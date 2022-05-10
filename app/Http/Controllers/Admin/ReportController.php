@@ -385,15 +385,6 @@ class ReportController extends AdminController
             $category = $this->Category->pluck('name','id');
             $charge_type = !empty($request->type) ? $request->type : null;
             if($request->ajax()){
-
-                // $refDoctorReport = $this->AppointmentCharges->where(function($query) {
-                //     $query->whereHas('getAppointment.getPatientsDetails', function($query) {
-                //         $query->whereNotIn('reference_doctor_id', [1,12,32]);
-                //     });
-                // })
-                //     ->orderBy('id', 'DESC');
-
-
                 //OPD
                 //charge type 5 and 6 is for  new patients category and old patients category
                 if(empty($charge_type) || $charge_type == 1 || $charge_type == 5 || $charge_type == 6)
@@ -405,13 +396,34 @@ class ReportController extends AdminController
                         });
                     })
                         ->orderBy('id', 'DESC');
-                    // $iuiReport = $this->IndoorDeposit
-                    // ->whereNotIn('reference_doctor_id', [1,12,32])
-                    // ->whereIn('charge_type', [1,2,3])
-                    // ->where([
-                    //     ['case_type', '=', 'Credit'],
-                    // ])
-                    // ->orderBy('id', 'DESC');
+                }
+                if($charge_type == 7)//Summary Data
+                {
+                    $reference_wise_patients = $this->OpdPatients->select('*',DB::raw('count(id) as totla_patients'))->where('reference_doctor_id','!=',null)->get();
+                    // $reference_wise_patients = collect($reference_wise_patients->get())
+                    // ->map(function ($query) {
+                    //     $query->reference_doctor_name = $query->getReferenceDoctor['name'];
+                    //     return $query;
+                    // });
+                    $analysis['lead'] = [];
+                    $analysis['online']= [];
+                    $analysis['offline']= [];
+                    $lead_ref = $this->ReferenceDoctor->where('is_lead',1)->pluck('id','id');
+                    $offline_ref = $this->ReferenceDoctor->where('reference_type',1)->where('is_lead',0)->pluck('id','id');
+                    $online_ref = $this->ReferenceDoctor->where('reference_type',2)->where('is_lead',0)->pluck('id','id');
+                    
+                    $ref_lead_patients = $this->OpdPatients->select('*',DB::raw('count(id) as total_patients'))->whereIn('reference_doctor_id',$lead_ref)->groupBy('reference_doctor_id')->orderBy('total_patients','desc')->get();
+                    $ref_offline_patients = $this->OpdPatients->select('*',DB::raw('count(id) as total_patients'))->whereIn('reference_doctor_id',$offline_ref)->groupBy('reference_doctor_id')->orderBy('total_patients','desc')->get();
+                    $ref_online_patients = $this->OpdPatients->select('*',DB::raw('count(id) as total_patients'))->whereIn('reference_doctor_id',$online_ref)->groupBy('reference_doctor_id')->orderBy('total_patients','desc')->get();
+                    $ref_pt_to_pt_patients = $this->OpdPatients->select('*',DB::raw('count(id) as total_patients'))->where('reference_pt_name','!=','')->groupBy('reference_pt_name')->get();
+
+                    $total_lead = $ref_lead_patients->sum('total_patients');
+                    $total_offline = $ref_offline_patients->sum('total_patients');
+                    $total_online = $ref_online_patients->sum('total_patients');
+                    $total_pt_to_pt = $ref_pt_to_pt_patients->sum('total_patients');
+                    $data['status'] = 1;
+                    $data['report_data'] = View::make('admin.report.refdoctor.data',compact('total_pt_to_pt','total_lead','total_offline','total_online','ref_lead_patients','ref_offline_patients','ref_online_patients','ref_pt_to_pt_patients','charge_type'))->render();
+                    return $data;
                 }
                 //INDOOR
                 if(!empty($charge_type) && $charge_type == 4)
@@ -429,20 +441,6 @@ class ReportController extends AdminController
                     })
                     ->orderBy('id', 'DESC');
                 }
-                // //IPD(invoice)
-                // if(!empty($charge_type) && $charge_type == 2)
-                // {
-
-                //     $iuiReport = $this->IndoorBook
-                //     ->whereIsFinalInvoice(1)
-                //     ->whereNotNull('final_invoice_date')
-                //     ->with([
-                //         'getInvoice',
-                //         'getPatientsDetails'
-                //     ])
-                //     ->orderBy('id', 'DESC');
-                // }
-
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
                 if($fromdate || $todate){
@@ -489,7 +487,7 @@ class ReportController extends AdminController
                                 $reference_type = '3';
                                 break;
                         }
-                        $reference_type_ids = $this->ReferenceDoctor->where('reference_type',$reference_type)->pluck('id','id');
+                        $reference_type_ids = $reference_type == 3 ? $this->ReferenceDoctor->where('is_lead',1)->pluck('id','id') : $this->ReferenceDoctor->where('reference_type',$reference_type)->pluck('id','id');
                         if($charge_type == 4) // IPD
                         {
                             $refDoctorReport = $refDoctorReport->where(function($query) use ($reference_type_ids) {
@@ -561,7 +559,7 @@ class ReportController extends AdminController
                 }
 
                 $data['status'] = 1;
-                $data['report_data'] = View::make('admin.report.refdoctor.data',compact('refDoctorReport','reportDatails','categoryReport'))->render();
+                $data['report_data'] = View::make('admin.report.refdoctor.data',compact('refDoctorReport','reportDatails','categoryReport','charge_type'))->render();
                 return $data;
 
             }
