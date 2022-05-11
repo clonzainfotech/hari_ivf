@@ -51,4 +51,28 @@ class NotificationController extends ApiController
         }
         return $this->sendError(__('auth.failed'), 401);
     }
+
+    /**
+     *Get procedures list
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function proceduresList(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $per_page = isset($request->per_page) ? $request->per_page : '';
+        $page = isset($request->page) ? $request->page : '';
+        $date = isset($request->date) ? $request->date : 'date_format:y-m-d';
+        if($token){
+            $procedureslist = collect($this->ProcedureList->select('patients_id','procedure','date','description','remark')->where('date',$date)->paginate($per_page, $page)->all())->map(function($q){
+                $q->name = $q->getPatientsDetails['name'];
+                $q->detail = $q->getPatientsDetails['description'];
+                $q->remark = $q->getPatientsDetails['remark'];
+                 unset($q->getPatientsDetails);
+                return $q;
+            });
+            return $this->sendResponse('Your proceduresList successfully get',$procedureslist);
+        }
+        return $this->sendError(__('auth.failed'), 401);
+    }
 }
