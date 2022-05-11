@@ -220,10 +220,11 @@ class GynecController extends AdminController
                 $surgicallyData = $this->surgicallyType()['data'];
                 $investigationReport = $this->allInvestigationReport();
                 $isGynec = $request->is_gynec;
+                $pt_view = 1;
                 return response()->json([
                     'status'=>1,
                     'id' => encrypt($gynec->id),
-                    'data' => View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec','surgical_print'))->render()
+                    'data' => View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec','surgical_print','pt_view'))->render()
                 ]);
             }
             return ['status'=>'true'];
@@ -486,12 +487,13 @@ class GynecController extends AdminController
                     $gynec = $this->Gynec->where('patients_id',$patient)->where('created_at',$request->history_date)->first();
                     $surgicallyData = $this->surgicallyType()['data'];
                     $investigationReport = $this->allInvestigationReport();
+                    $pt_view = 1;
                     $isGynec = 0;
                     if($gynec){
                         $isGynec = $gynec->is_gynec;
                     }
                     $surgical_print = 0;
-                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec','surgical_print'))->render();
+                    $data[] = View::make('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','isGynec','surgical_print','pt_view'))->render();
                     return response()->json([
                         'status'=> 1,
                         'gynec_type' => $gynec_type,
@@ -531,6 +533,7 @@ class GynecController extends AdminController
                 if($request->date)
                 {
                     $printPreview = 1;
+                    $pt_view = 1;
                     $gynec = $this->Gynec->where('patients_id',$patient)->whereDate('created_at',$request->date)->first();
                     $isGynec = 0;
                     $surgical_print = 0;
@@ -539,7 +542,7 @@ class GynecController extends AdminController
                     }
                     $surgicallyData = $this->surgicallyType()['data'];
                     $investigationReport = $this->allInvestigationReport();
-                    return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec','surgical_print'));
+                    return view('admin.gynec.preview', compact('investigationReport','gynec','surgicallyData','printPreview','isGynec','surgical_print','pt_view'));
                 }
                 
             }

@@ -1775,7 +1775,7 @@
                     <tr>
                         <th> Follow up :{{ isset($ho->follow_up) && !empty($ho->follow_up) ? $ho->follow_up : '-' }}<th>
                     </tr>
-                    @if((!isset($printPreview) || $printPreview == 0))
+                    @if((!isset($pt_view) || $pt_view == 0))
                     <tr>
                         <td><span class="f-date">Dr. Remark : </span>{{isset($ho->remark) && !empty($ho->remark) ? $ho->remark : ''}}</td>
                     </tr>
@@ -1783,7 +1783,7 @@
                         <td><span class="f-date">Patient's Remark : </span>{{ isset($ho->pt_remark) && !empty($ho->pt_remark) ? $ho->pt_remark : ''}}</td>
                     </tr>
                     @endif
-                    @if(isset($printPreview) && $printPreview == 1 && isset($ho->pt_remark) && !empty($ho->pt_remark))
+                    @if(isset($pt_view) && $pt_view == 1 && isset($ho->pt_remark) && !empty($ho->pt_remark))
                         <tr>
                             <td><span class="f-date">Patient's Remark :</span>{{ $ho->pt_remark}}</td>
                         </tr>
