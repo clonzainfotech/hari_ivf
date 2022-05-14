@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\DoctorApi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Base\Api\ApiController;
+use App\Models\Appointment;
 use Carbon\Carbon;
 
 class PatientController extends ApiController
@@ -102,6 +103,26 @@ class PatientController extends ApiController
                 return $value != null;
             });
             return $this->sendResponse('Your Today appointment successfully get',$appointmentlist);
+        }
+        return $this->sendError(__('auth.failed'), 401);
+    }
+     /**
+    *Get Patient Details
+    * @param  \Illuminate\Http\Request
+    * @return \Illuminate\Http\Response
+    */
+    public function patientDetails(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $UserData = $this->UserToken->where('token', $token)->first();
+        if($token && $UserData) {
+            $patientdetails = collect($this->OpdPatients->select('id','code','name','dob','mobile_number','residence','location','other_mobile_number','weight')->where('hospital_doctor_id',$UserData->user_id)->get())->map(function($q){
+                $q->date = $q->lastDoneAppointmentData['date'];
+                $q->time = $q->lastDoneAppointmentData['time'];
+                 unset($q->lastDoneAppointmentData);
+                return $q;
+            });
+            return $this->sendResponse('Your Patient Details successfully get',$patientdetails);
         }
         return $this->sendError(__('auth.failed'), 401);
     }

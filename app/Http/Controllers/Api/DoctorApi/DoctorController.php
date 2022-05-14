@@ -19,13 +19,21 @@ class DoctorController extends ApiController
     */
     public function appointment(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors()->first(), 422);
+        }
         $token = $request->header('Authorization');
         $UserData = $this->UserToken->where('token', $token)->first();
         $per_page = isset($request->per_page) ? $request->per_page : '';
         $page = isset($request->page) ? $request->page : '';
+        $date = isset($request->date) ? $request->date : '';
 
         if($token && $UserData) {
-            $appointmentList = collect($this->Appointment->select('id','patients_id','category_id','date','time','seen_by')->where('seen_by',$UserData->user_id)->paginate($per_page, $page)->all())->map(function($q) {
+            $appointmentList = collect($this->Appointment->select('id','patients_id','category_id','date','time','seen_by')->where('seen_by',$UserData->user_id)->whereDate('date',$date)->paginate($per_page, $page)->all())->map(function($q) {
                 $q->profile_picture = $q->getPatientsDetails['profile_picture'];
                 $q->patient_name = $q->getPatientsDetails['name'];
                 $q->category = $q->categoryDetails['name'];
