@@ -3008,6 +3008,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 </div>
                                 @php
                                     $psType = !empty($oe->p_s->type) && $oe->p_s->type == 'yes' ? '' : 'd-none';
+                                    $adnexaStaus = !empty($oe->adnexa->type) && $oe->adnexa->type == 'yes' ? '' : 'd-none';
                                 @endphp
                                 <div class="col-sm-2">
                                     <div class="radio is-conceived">
@@ -3025,6 +3026,31 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <div class="{{'col-md-5 ps-details '.$psType}}">
                                     <div class="form-group">
                                         {{Form::text("oe[p_s][details]",!empty($oe->p_s->details) ? $oe->p_s->details : null,['class'=>'form-control','placeholder'=>'Details'])}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Adnexa :
+                                    </label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="radio is-conceived">
+                                        {{Form::radio("oe[adnexa][type]",'yes',!empty($adnexaStaus) ? false : true,['id'=>'adnexa_type_yes','class'=>'anc-status','data-type'=>'adnexa-details'])}}
+                                        <label for="adnexa_type_yes">
+                                            Yes
+                                        </label>
+            
+                                        {{Form::radio("oe[adnexa][type]",'no',!empty($adnexaStaus) ? true : false,['id'=>'adnexa_type_no','class'=>'anc-status','data-type'=>'adnexa-details'])}}
+                                        <label for="adnexa_type_no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="{{'col-md-5 adnexa-details '.$adnexaStaus}}">
+                                    <div class="form-group">
+                                        {{Form::text("oe[adnexa][details]",!empty($oe->adnexa->details) ? $oe->adnexa->details : null,['class'=>'form-control','placeholder'=>'Details'])}}
                                     </div>
                                 </div>
                             </div>
@@ -3780,6 +3806,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="panel-body">
                             @php
                                 $vitlasClass = !empty($historyLmp->le->vitals_status) && $historyLmp->le->vitals_status == 'yes' ? '' : 'd-none';
+                                $adnexaStaus = !empty($historyOe->adnexa->type) && $historyOe->adnexa->type == 'yes' ? '' : 'd-none';
                             @endphp
                             <div class="row">
                                 <div class="col-md-1">
@@ -3810,6 +3837,31 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                                 <span class="{{'col-md-1 p-2 vitals_status_data '.$vitlasClass}}">/ Min</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Adnexa :
+                                    </label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="radio is-conceived">
+                                        {{Form::radio("data[oe][adnexa][type]",'yes',!empty($adnexaStaus) ? false : true,['id'=>'adnexa_type_yes','class'=>'anc-status','data-type'=>'adnexa-details'])}}
+                                        <label for="adnexa_type_yes">
+                                            Yes
+                                        </label>
+            
+                                        {{Form::radio("data[oe][adnexa][type]",'no',!empty($adnexaStaus) ? true : false,['id'=>'adnexa_type_no','class'=>'anc-status','data-type'=>'adnexa-details'])}}
+                                        <label for="adnexa_type_no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="{{'col-md-5 adnexa-details '.$adnexaStaus}}">
+                                    <div class="form-group">
+                                        {{Form::text("data[oe][adnexa][details]",!empty($historyOe->adnexa->details) ? $historyOe->adnexa->details : null,['class'=>'form-control','placeholder'=>'Details'])}}
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-1">
@@ -5510,6 +5562,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             @php
                                 $pStatus = !empty($historyData->p_s->type) && $historyData->p_s->type == 'yes' ? '' : 'd-none';
                                 $paStatus = !empty($historyData->p_a->type) && $historyData->p_a->type == 'yes' ? '' : 'd-none';
+                                $adnexaStaus = !empty($historyData->adnexa->type) && $historyData->adnexa->type == 'yes' ? '' : 'd-none';
+
                             @endphp
                             <div class="row mt-3">
                                 <div class="col-md-1 pr-0">
@@ -5558,6 +5612,31 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <div class="{{'col-md-5 pa-details '.$paStatus}}">
                                     <div class="form-group">
                                         {{Form::text("data[p_a][details]",!empty($historyData->p_a->details) ? $historyData->p_a->details : null,['class'=>'form-control','placeholder'=>'Details'])}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Adnexa :
+                                    </label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="radio is-conceived">
+                                        {{Form::radio("oe[adnexa][type]",'yes',!empty($adnexaStaus) ? false : true,['id'=>'adnexa_type_yes','class'=>'anc-status','data-type'=>'adnexa-details'])}}
+                                        <label for="adnexa_type_yes">
+                                            Yes
+                                        </label>
+            
+                                        {{Form::radio("oe[adnexa][type]",'no',!empty($adnexaStaus) ? true : false,['id'=>'adnexa_type_no','class'=>'anc-status','data-type'=>'adnexa-details'])}}
+                                        <label for="adnexa_type_no">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="{{'col-md-5 adnexa-details '.$adnexaStaus}}">
+                                    <div class="form-group">
+                                        {{Form::text("oe[adnexa][details]",!empty($historyData->adnexa->details) ? $historyData->adnexa->details : null,['class'=>'form-control','placeholder'=>'Details'])}}
                                     </div>
                                 </div>
                             </div>

@@ -1613,6 +1613,28 @@
                                             <div class="panel-title header-print-title">On Examination</div>
                                         </td>
                                     </tr>
+                                    @if(!empty($oe->le) && !empty($oe->le->vitals_status) && $oe->le->vitals_status == 'yes' && (!empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Vitals</span>
+                                                @if(!empty($oe->le->temp))
+                                                    <br>
+                                                    <span class="iui-label">&nbsp;Temp :</span>
+                                                    {{$oe->le->temp}}
+                                                @endif
+                                                @if(!empty($oe->le->pulse))
+                                                    <br>
+                                                    <span class="iui-label">&nbsp;Pulse :</span>
+                                                    {{$oe->le->pulse}} / Min
+                                                @endif
+                                                @if(!empty($oe->le->bp))
+                                                    <br>
+                                                    <span class="iui-label">&nbsp; B.P :</span>
+                                                    {{$oe->le->bp}} MMHG
+                                                @endif
+                                            </th>
+                                        </tr>
+                                    @endif
                                     @if($oe->p_s->type == 'yes')
                                         <tr>
                                             <th>
@@ -1621,6 +1643,14 @@
                                                 @if ($oe->p_s->type == 'yes')
                                                     {{!empty($oe->p_s->details) ? '| '.$oe->p_s->details : '-' }}
                                                 @endif
+                                            </th>
+                                        </tr>
+                                    @endif
+                                    @if(!empty($oe->adnexa->type) && $oe->adnexa->type == 'yes' && !empty($oe->adnexa->details))
+                                        <tr>
+                                            <th colspan="2">
+                                                <span class="iui-label">Adnexa: </span>
+                                                    {{!empty($oe->adnexa->details) ? $oe->adnexa->details : ''}}
                                             </th>
                                         </tr>
                                     @endif
@@ -1696,28 +1726,7 @@
                                         </th>
                                     </tr>
                                     {{-- @endif --}}
-                                    @if(!empty($oe->le) && !empty($oe->le->vitals_status) && $oe->le->vitals_status == 'yes' && (!empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Vitals</span>
-                                                @if(!empty($oe->le->temp))
-                                                    <br>
-                                                    <span class="iui-label">&nbsp;Temp :</span>
-                                                    {{$oe->le->temp}}
-                                                @endif
-                                                @if(!empty($oe->le->pulse))
-                                                    <br>
-                                                    <span class="iui-label">&nbsp;Pulse :</span>
-                                                    {{$oe->le->pulse}} / Min
-                                                @endif
-                                                @if(!empty($oe->le->bp))
-                                                    <br>
-                                                    <span class="iui-label"> B.P :</span>
-                                                    {{$oe->le->bp}} MMHG
-                                                @endif
-                                            </th>
-                                        </tr>
-                                    @endif
+                                    
                                 </tbody>
                             </table>
                         @endif
@@ -2572,13 +2581,20 @@
                                     </th>
                                 </tr>
                                 @endif
-                                @if(!empty($oe->p_s->type))
+                                @if(!empty($oe->p_s->type)&& $oe->p_s->type == 'yes' && !empty($oe->p_s->details))
                                     <tr>
-                                        <br>
-                                        <th>
-                                            <span class="iui-label">P/S</span>
+                                        <th colspan="2">
+                                            <span class="iui-label">P/S: </span>
+                                            {{$oe->p_s->details}}
                                         </th>
-                                        <td >{{$oe->p_s->details}}</td>
+                                    </tr>
+                                @endif
+                                @if(!empty($oe->adnexa->type) && $oe->adnexa->type == 'yes' && !empty($oe->adnexa->details))
+                                    <tr>
+                                        <th colspan="2">
+                                            <span class="iui-label">Adnexa: </span>
+                                                {{!empty($oe->adnexa->details) ? $oe->adnexa->details : ''}}
+                                        </th>
                                     </tr>
                                 @endif
                             </tbody>
