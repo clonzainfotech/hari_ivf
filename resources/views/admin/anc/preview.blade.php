@@ -846,7 +846,7 @@
                                 @foreach($patientsObstratics->child->child_data as $key=>$row)
                                     <tr>
                                         <th>
-                                            <span class="anc-label ">H/O :</span>
+                                            <span class="anc-label ">H/O : {{addOrdinalNumberSuffix($key)}}</span>
                                             @php
                                                 $hoValue = null;
                                                 $ho_term_details = '';
@@ -1157,9 +1157,9 @@
                                 @foreach($patientsObstratics->second_marriage->child->child_data as $key=>$row)
                                     <tr>
                                         <th>
-                                            <span class="anc-label ">H/O :</span>
+                                            <span class="anc-label ">H/O: </span>
                                             @php
-                                                $secondHoValue = null;
+                                                $secondHoValue = addOrdinalNumberSuffix($key);
                                                 $second_ho_term_details = '';
                                                 if(!empty($row->ho_term)){
                                                     $secondHoValue.= $row->ho_term  == 'full' ? 'FT' : 'Pre Term';

@@ -1735,7 +1735,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 @endif
                                                 @foreach($iui_how_much as $key => $value)
                                                     <tr>
-                                                        <td>{{ $value.' - '.(isset($iui_when_where[$key]) ? $iui_when_where[$key] : '').' - '.(isset($iui_type[$key]) ? $iui_type[$key] : '')}}</td>
+                                                        <td>{{ 'IUI - '.$value.' - '.(isset($iui_when_where[$key]) ? $iui_when_where[$key] : '').' - '.(isset($iui_type[$key]) ? $iui_type[$key] : '')}}</td>
                                                     </tr>
                                                 @endforeach 
                                             @endif   
@@ -1847,7 +1847,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             @endif
                                             @foreach($ivf_how_much as $key => $value)
                                                 <tr>
-                                                    <td>{{ $value.' - '.(isset($ivf_when_where[$key]) ? $ivf_when_where[$key] : '').' - '.(isset($ivf_type[$key]) ? $ivf_type[$key] : '')}}</td>
+                                                    <td>{{ 'IVF - '.$value.' - '.(isset($ivf_when_where[$key]) ? $ivf_when_where[$key] : '').' - '.(isset($ivf_type[$key]) ? $ivf_type[$key] : '')}}</td>
                                                 </tr>
                                             @endforeach
                                             {{-- <tr>

@@ -64,7 +64,7 @@
             <td colspan=""></td>
             <td colspan=""></td>
             <td colspan=""></td>
-            <td class="font-bold">Total LeftAmount : </td>
+            <td class="font-bold">Total Left : </td>
             <td class="font-bold">{{$totalDueAmount}}</td>
             <td colspan="6"></td>
         </tr>
