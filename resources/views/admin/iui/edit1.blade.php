@@ -2896,6 +2896,66 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            FSH : &nbsp;
+                                        </span>
+                                        {{Form::text("h_factor[fsh]",isset($husbandFactor->fsh) ? $husbandFactor->fsh : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            LH : &nbsp;
+                                        </span>
+                                        {{Form::text("h_factor[lh]",isset($husbandFactor->lh) ? $husbandFactor->lh : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Testosterone : &nbsp;
+                                        </span>
+                                        {{Form::text("h_factor[testosterone]",isset($husbandFactor->testosterone) ? $husbandFactor->testosterone : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            RBS : &nbsp;
+                                        </span>
+                                        {{Form::text("h_factor[rbs]",isset($husbandFactor->rbs) ? $husbandFactor->rbs : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            TSH : &nbsp;
+                                        </span>
+                                        {{Form::text("h_factor[tsh]",isset($husbandFactor->tsh) ? $husbandFactor->tsh : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            HIV : &nbsp;
+                                        </span>
+                                        {{Form::text("h_factor[hiv]",isset($husbandFactor->hiv) ? $husbandFactor->hiv : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            HbsAg : &nbsp;
+                                        </span>
+                                        {{Form::text("h_factor[hbsag]",isset($husbandFactor->hbsag) ? $husbandFactor->hbsag : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                            </div>
                             @php
                                     $hsaReportClass = !empty($investigation->hsa_report) && !empty($investigation->hsa_report->type) && $investigation->hsa_report->type == 'yes' ? true : false;
                                     $hsaReportClassName = $hsaReportClass ? '' : 'd-none';
@@ -4064,6 +4124,29 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     </div>
                                 </div>
                                 <span class="col-md-1 p-2">M</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Right Tube :
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{Form::text("data[oe][right_tube]",isset($historyOe->right_tube) ? $historyOe->right_tube : null,['class'=>'form-control','placeholder'=>'Right Tube Details'])}}
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Left Tube :
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{Form::text("data[oe][left_tube]",isset($historyOe->left_tube) ? $historyOe->left_tube : null,['class'=>'form-control','placeholder'=>'Left Tube Details'])}}
+                                    </div>
+                                </div>
+                               
                             </div>
                             @php
                                 $pStatus = !empty($historyOe->p_s->type) && $historyOe->p_s->type == 'yes' ? '' : 'd-none';

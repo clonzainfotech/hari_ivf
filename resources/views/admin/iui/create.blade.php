@@ -2708,6 +2708,66 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            FSH : &nbsp;
+                                                        </span>
+                                                        {{Form::text("h_factor[fsh]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            LH : &nbsp;
+                                                        </span>
+                                                        {{Form::text("h_factor[lh]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            Testosterone : &nbsp;
+                                                        </span>
+                                                        {{Form::text("h_factor[testosterone]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            RBS : &nbsp;
+                                                        </span>
+                                                        {{Form::text("h_factor[rbs]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            TSH : &nbsp;
+                                                        </span>
+                                                        {{Form::text("h_factor[tsh]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            HIV : &nbsp;
+                                                        </span>
+                                                        {{Form::text("h_factor[hiv]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            HbsAg : &nbsp;
+                                                        </span>
+                                                        {{Form::text("h_factor[hbsag]",'',['class'=>'form-control'])}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-1 pr-0">
                                                     <label class="vertical-form-label pr-0">
                                                         HSA Report :
@@ -2731,6 +2791,7 @@
                                                 </div>
                                                 
                                             </div>
+                                            
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="input-group">

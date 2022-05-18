@@ -1045,7 +1045,9 @@
                                 </tbody>
                             </table>
                         @endif
+                        {{-- <div class="display"> --}}
                         @if($husbandFactor && !empty($husbandFactor->occupation) || !empty($husbandFactor->seman_analysis) || !empty($husbandFactor->habbit) || !empty($husbandFactor->sperm_count) || !empty($husbandFactor->personal_history_date) || !empty($husbandFactor->remark))
+                         
                             <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                                 <tbody>
                                     <tr>
@@ -1146,7 +1148,55 @@
                                     @endif
                                 </tbody>
                             </table>
+                            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
+                                @if((isset($husbandFactor->fsh) && !empty($husbandFactor->fsh)) || (isset($husbandFactor->lh) && !empty($husbandFactor->lh)) || (isset($husbandFactor->testosterone) && !empty($husbandFactor->testosterone)) || (isset($husbandFactor->rbs) && !empty($husbandFactor->rbs)))
+                                    <tr>
+                                        <th>
+                                            @if(isset($husbandFactor->fsh) && !empty($husbandFactor->fsh))
+                                                <span class="iui-label">FSH:  </span>
+                                                {{ !empty($husbandFactor->fsh) ? $husbandFactor->fsh : '-' }}
+                                                <br>
+                                            @endif
+                                            @if(isset($husbandFactor->lh) && !empty($husbandFactor->lh))
+                                                <span class="iui-label">LH:  </span>
+                                                {{ !empty($husbandFactor->lh) ? $husbandFactor->lh : '-' }}
+                                            @endif
+                                            <br>
+                                            @if(isset($husbandFactor->testosterone) && !empty($husbandFactor->testosterone))
+                                                <span class="iui-label">Testosterone:  </span>
+                                                {{ !empty($husbandFactor->testosterone) ? $husbandFactor->testosterone : '-' }}
+                                            @endif
+                                            <br>
+                                            @if(isset($husbandFactor->rbs) && !empty($husbandFactor->rbs))
+                                                <span class="iui-label">RBS:  </span>
+                                                {{ !empty($husbandFactor->rbs) ? $husbandFactor->rbs : '-' }}
+                                            @endif
+                                        </th>
+                                    </tr>
+                                @endif
+                                @if((isset($husbandFactor->tsh) && !empty($husbandFactor->tsh)) || (isset($husbandFactor->hiv) && !empty($husbandFactor->hiv)) || (isset($husbandFactor->hbsag) && !empty($husbandFactor->hbsag)))
+                                    <tr>
+                                        <th>
+                                            @if(isset($husbandFactor->tsh) && !empty($husbandFactor->tsh))
+                                                <span class="iui-label">TSH:  </span>
+                                                {{ !empty($husbandFactor->tsh) ? $husbandFactor->tsh : '-' }}
+                                                <br>
+                                            @endif
+                                            @if(isset($husbandFactor->hiv) && !empty($husbandFactor->hiv))
+                                                <span class="iui-label">HIV:  </span>
+                                                {{ !empty($husbandFactor->hiv) ? $husbandFactor->hiv : '-' }}
+                                            @endif
+                                            <br>
+                                            @if(isset($husbandFactor->hbsag) && !empty($husbandFactor->hbsag))
+                                                <span class="iui-label">HBsAg:  </span>
+                                                {{ !empty($husbandFactor->hbsag) ? $husbandFactor->hbsag : '-' }}
+                                            @endif
+                                        </th>
+                                    </tr>
+                                @endif    
+                            </table>
                         @endif
+                        {{-- </div> --}}
                         @if($patientDetailedHO && (!empty($patientDetailedHO->personal_history_history_type) || !empty($patientDetailedHO->personal_history_date) || !empty($patientDetailedHO->family_history) || !empty($patientDetailedHO->past_history_type)))
                             <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
                                 <tbody>
@@ -2535,6 +2585,20 @@
                                         @endif
                                     </th>
                                 </tr>
+                                @if(isset($oe->right_tube) && !empty($oe->right_tube))
+                                    <tr>
+                                        <th>
+                                            <span class="iui-label">Right Tube: </span>{{$oe->right_tube}}
+                                        </th>
+                                    </tr>
+                                @endif
+                                @if(isset($oe->left_tube) && !empty($oe->left_tube))
+                                    <tr>
+                                        <th>
+                                            <span class="iui-label">Left Tube:</span> {{$oe->left_tube}}
+                                        </th>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <th>
                                         
@@ -3227,19 +3291,19 @@
             </div>
             <div class="row follicular-table">
                 <div class="col-md-6 col-sm-6 follicular_div_1 mr-15 text-left">
-                    <div class="">
+                    <div class="mb-1 display">
                         <span class="visit-lable">Name :- </span> 
                         <span class="visit-lable-value">{{ucwords(strtolower($iuiFirstVisit->getPatientsInfo['name']))}}</span>
                     </div>
-                    <div class="">
+                    <div class="mb-1 display">
                             <span class="visit-lable">AGE / Weight :- </span> 
                             <span class="visit-lable-value">{{$iuiFirstVisit->getPatientsInfo['age'].' year'.' / '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</span>
                     </div>
-                    <div class="">
+                    <div class="mb-1 display">
                             <span class="visit-lable">Type & Year of infertility :- </span> 
                             <span class="visit-lable-value">{{!empty($ohData->type_of_infertility) ? $typeOfData[$ohData->type_of_infertility] : 'Primary'}} / {{!empty($ohData->first_marriage_life) ? $ohData->first_marriage_life.' years' : null}} {{!empty($ohData->second_marriage_details) ? $ohData->second_marriage_details.' years' : null}}</span>
                     </div>
-                    <div class="">
+                    <div class="mb-1 display">
                             <span class="visit-lable">L.M.P :- </span> 
                             <span class="visit-lable-value">{{!empty($iuiSecondVisit->lmp->date) ? $iuiSecondVisit->lmp->date : null}}</span>
                     </div>
@@ -3256,29 +3320,40 @@
                             $induction = str_replace('( )','',preg_replace($regex,$replacement,$induction));
                         }
                     ?>
-                    <div class="">
+                    <div class="mb-1 display">
                             <span class="visit-lable">Plan :- </span> 
                             <span class="visit-lable-value">{{isset($iuiSecondVisit->iui) && ($iuiSecondVisit->iui == 'yes') ? 'COH+IUI ' : ''}} {{$plan}}</span>
                     </div>
-                    <div class="">
+                    <div class="mb-1 display">
                             <span class="visit-lable">Induction With :- </span> 
                             <span class="visit-lable-value">{{$induction}}</span>
                     </div>
-                    <div class="">
+                    <div class="mb-1 display">
                         <span class="visit-lable">Last Seen :- </span> 
                         <span class="visit-lable-value">{{(isset($iuiHistoryData[count($iuiHistoryData)-1]->getSeenBy->name)) ? $iuiHistoryData[count($iuiHistoryData)-1]->getSeenBy->name : null}}</span>
                 </div>
                 </div>
                 <div class="col-md-6 col-sm-6 follicular_div_2 text-left">
-                    <div class="">
+                    <div class="mb-1 display">
                         <span class="visit-lable">UTERUS :- </span> 
                         <span class="visit-lable-value">{{!empty($iuiSecondVisit->oe->ut->ut_type) && $iuiSecondVisit->oe->ut->ut_type == 1 ? 'Normal' : 'Abnormal'}}</span>
                     </div>
-                    <div class="">
-                        <span class="visit-lable">TUBES :- </span> 
-                        <span class="visit-lable-value"></span>
+                    <div class="mb-1 display">
+                        <div class="row">
+                            <div class="col-md-3 visit-lable">
+                                Tube : 
+                            </div>
+                            <div class="col-md-9 pl-10">
+                                @if(isset($iuiSecondVisit->oe->right_tube) && !empty($iuiSecondVisit->oe->right_tube))
+                                <div class="">Right Tube : {{$iuiSecondVisit->oe->right_tube}}</div>
+                                @endif
+                                @if(isset($iuiSecondVisit->oe->left_tube) && !empty($iuiSecondVisit->oe->left_tube))
+                                    <div class="">Left Tube : {{$iuiSecondVisit->oe->left_tube}}</div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
-                    <div class="">
+                    <div class="mb-1 display">
                         <div class="row">
                             <div class="col-md-3 visit-lable">
                             OVARIES:- {{!empty($iuiFirstVisit->ovary->right) ? $iuiFirstVisit->ovary->right : null}}
@@ -3300,7 +3375,7 @@
                         </div>
                     </div>
                     
-                    <div class="">
+                    <div class="mb-1 display">
                         <span class="visit-lable">CYCLE NO :- </span> 
                         <span class="visit-lable-value">{{$iui->cycle_no}}</span>
                     </div>

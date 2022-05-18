@@ -49,14 +49,14 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                             {{Form::select('rmo_doctor',$rmoDoctor,'',['class'=>'form-control select-padding-0','placeholder'=>'Select RMO Doctor'])}}
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    {{-- <div class="col-md-4">
                         <input type="hidden" id="saverecordname" value="{{\Carbon\Carbon::now()->format('d-m-Y').", ".ucwords($iui->getPatientsInfo->name).""}}">
                         <script src="{{url('public/js/record/recorder.js')}}" defer></script>
                         <script src="{{url('public/js/record/Fr.voice.js')}}" defer></script>
                         <script src="{{url('public/js/record/recordapp.js')}}" defer></script>
                         <a class="btn btn-danger btn-sm text-white" id="record" data-action="start">Start Recording</a>
                         <input type="hidden" id="saverecurl" value="{{URL::to("saverec")}}">
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="row">
                     <div class="col-md-5">
@@ -422,6 +422,29 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                     </div>
                                 </div>
                                 <span class="col-md-1 p-2">M</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Right Tube :
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{Form::text("data[oe][right_tube]",isset($historyOe->right_tube) ? $historyOe->right_tube : null,['class'=>'form-control','placeholder'=>'Right Tube Details'])}}
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pr-0">
+                                    <label class="vertical-form-label pr-0">
+                                        Left Tube :
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{Form::text("data[oe][left_tube]",isset($historyOe->left_tube) ? $historyOe->left_tube : null,['class'=>'form-control','placeholder'=>'Left Tube Details'])}}
+                                    </div>
+                                </div>
+                               
                             </div>
                             @php
                                 $pStatus = !empty($historyOe->p_s->type) && $historyOe->p_s->type == 'yes' ? '' : 'd-none';
@@ -1406,80 +1429,98 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                 </div>
                 <div class="row follicular-table mb-15 mb-5">{{--mb-15 is used in print--}}
                     <div class="col-md-6 follicular_div_1">
-                        <div class="mb-3">
-                            <span class="visit-lable">Name :- </span> 
-                            <span class="visit-lable-value">{{ucwords(strtolower($iuiSecondVisit->getPatientsInfoData['name']))}}</span>
+                        <div class="mb-1 d-flex">
+                            <p class="visit-lable">Name : </p> 
+                            <p class="visit-lable-value">{{ucwords(strtolower($iuiSecondVisit->getPatientsInfoData['name']))}}</p>
                         </div>
-                        <div class="mb-3">
-                                <span class="visit-lable">AGE / Weight :- </span> 
-                                <span class="visit-lable-value">{{$iuiSecondVisit->getPatientsInfoData['age'].' Year / '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</span>
+                        <div class="mb-1 d-flex">
+                                <p class="visit-lable">AGE / Weight : </p> 
+                                <p class="visit-lable-value">{{$iuiSecondVisit->getPatientsInfoData['age'].' Year / '.(isset($lastHistoryData->weight) && !empty($lastHistoryData->weight) ? $lastHistoryData->weight.' kg' : '')}}</p>
                         </div>
-                        <div class="mb-3">
-                                <span class="visit-lable">Type & Year of infertility :- </span> 
-                                <span class="visit-lable-value">{{!empty($ohData->type_of_infertility) ? $typeOfData[$ohData->type_of_infertility] : 'Primary'}} / {{!empty($ohData->first_marriage_life) ? $ohData->first_marriage_life.' years' : null}} {{!empty($ohData->second_marriage_details) ? $ohData->second_marriage_details.' years' : null}}</span>
+                        <div class="mb-1 d-flex">
+                                <p class="visit-lable">Type & Year of infertility : </p> 
+                                <p class="visit-lable-value">{{!empty($ohData->type_of_infertility) ? $typeOfData[$ohData->type_of_infertility] : 'Primary'}} / {{!empty($ohData->first_marriage_life) ? $ohData->first_marriage_life.' years' : null}} {{!empty($ohData->second_marriage_details) ? $ohData->second_marriage_details.' years' : null}}</p>
                         </div>
-                        <div class="mb-3">
-                                <span class="visit-lable">L.M.P :- </span> 
-                                <span class="visit-lable-value">{{!empty($iuiSecondVisitData->lmp->date) ? $iuiSecondVisitData->lmp->date : null}}</span>
+                        <div class="mb-1 d-flex">
+                                <p class="visit-lable">L.M.P : </p> 
+                                <p class="visit-lable-value">{{!empty($iuiSecondVisitData->lmp->date) ? $iuiSecondVisitData->lmp->date : null}}</p>
                         </div>
-                        <div class="mb-3">
-                                <span class="visit-lable">Plan :- </span> 
-                                <span class="visit-lable-value">{{isset($iuiSecondVisitData->iui) && ($iuiSecondVisitData->iui == 'yes') ? 'COH+IUI ' : ''}} {{!empty($iuiSecondVisitData->plan->plan_type) ? $iuiSecondVisitData->plan->plan_type : null}}</span>
+                        <div class="mb-1 d-flex">
+                                <p class="visit-lable">Plan : </p> 
+                                <p class="visit-lable-value">{{isset($iuiSecondVisitData->iui) && ($iuiSecondVisitData->iui == 'yes') ? 'COH+IUI ' : ''}} {{!empty($iuiSecondVisitData->plan->plan_type) ? $iuiSecondVisitData->plan->plan_type : null}}</p>
                         </div>
-                        <div class="mb-3">
-                            <span class="visit-lable">Induction With :- </span> 
-                            <span class="visit-lable-value">{{!empty($iuiSecondVisitData->plan->agenet) ? $iuiSecondVisitData->plan->agenet[0] : ''}}</span>
+                        <div class="mb-1 d-flex">
+                            <p class="visit-lable">Induction With : </p> 
+                            <p class="visit-lable-value">{{!empty($iuiSecondVisitData->plan->agenet) ? $iuiSecondVisitData->plan->agenet[0] : ''}}</p>
                         </div>
-                        <div class="mb-3">
-                            <span class="visit-lable">UTERUS :- </span> 
-                            <span class="visit-lable-value">{{!empty($iuiSecondVisitData->oe->ut->ut_type) && $iuiSecondVisitData->oe->ut->ut_type == 1 ? 'Normal' : 'Abnormal'}}</span>
+                        <div class="mb-1 d-flex">
+                            <p class="visit-lable">UTERUS : </p> 
+                            <p class="visit-lable-value">{{!empty($iuiSecondVisitData->oe->ut->ut_type) && $iuiSecondVisitData->oe->ut->ut_type == 1 ? 'Normal' : 'Abnormal'}}</p>
                         </div>
-                        <div class="mb-3">
-                            <span class="visit-lable">TUBES :- </span> 
-                            <span class="visit-lable-value"></span>
+                        <div class="mb-1 d-flex">
+                            <div class="visit-lable">
+                            Tube : 
+                            </div>
+                            <div class="">
+                                @if(isset($iuiSecondVisitData->oe->right_tube) && !empty($iuiSecondVisitData->oe->right_tube))
+                                <div class="mb-2">Right Tube : {{$iuiSecondVisitData->oe->right_tube}}</div>
+                                @endif
+                                @if(isset($iuiSecondVisitData->oe->left_tube) && !empty($iuiSecondVisitData->oe->left_tube))
+                                    <div class="mb-2">Left Tube : {{$iuiSecondVisitData->oe->left_tube}}</div>
+                                @endif
+                            </div>
                         </div>
+                        {{-- <div class="mb-1">
+                            <span class="visit-lable">TUBES : </span> 
+                            <div class="col-md-10 pl-15">
+                                @if(isset($iuiSecondVisitData->oe->right_tube) && !empty($iuiSecondVisitData->oe->right_tube))
+                                    <span class="visit-lable-value">Right Tube : {{$iuiSecondVisitData->oe->right_tube}}</span>
+                                @endif
+                                @if(isset($iuiSecondVisitData->oe->left_tube) && !empty($iuiSecondVisitData->oe->left_tube))    
+                                    <span class="visit-lable-value">Left Tube : {{$iuiSecondVisitData->oe->left_tube}}</span>
+                                @endif
+                            </div>
+                        </div> --}}
                     </div>
                     <div class="col-md-6 follicular_div_2">
                         
-                        <div class="mb-3">
-                            <div class="row">
-                                <div class="col-md-2 visit-lable">
-                                OVARIES :- {{!empty($iuiFirstVisit->ovary->right) ? $iuiFirstVisit->ovary->right : null}}
-                                </div>
-                                <div class="col-md-10 pl-15">
-                                    <div class="mb-2">R :- {{!empty($iuiSecondVisitData->oe->ovary->right->afcs) ? $iuiSecondVisitData->oe->ovary->right->afcs : null}} / RF :- {{!empty($iuiSecondVisitData->oe->ovary->right->residual_follicale) ? $iuiSecondVisitData->oe->ovary->right->residual_follicale : null}}</div>
-                                    @if(!empty($iuiSecondVisitData->oe->ovary->right->details))
-                                        <div class="mb-2">Right Detail :- {{implode(',',$iuiSecondVisitData->oe->ovary->right->details)}}</div>
-                                    @endif
-                                    <div class="mb-2">L :- {{!empty($iuiSecondVisitData->oe->ovary->left->afcs) ? $iuiSecondVisitData->oe->ovary->left->afcs : null}} / RF :- {{!empty($iuiSecondVisitData->oe->ovary->left->residual_follicale) ? $iuiSecondVisitData->oe->ovary->left->residual_follicale : null}}</div>
-                                    @if(!empty($iuiSecondVisitData->oe->ovary->left->details))
-                                        <div class="mb-2">Left Detail :- {{implode(',',$iuiSecondVisitData->oe->ovary->left->details)}}</div>
-                                    @endif
-                                </div>
+                        <div class="mb-1 d-flex">
+                            <div class="visit-lable">
+                            OVARIES : {{!empty($iuiFirstVisit->ovary->right) ? $iuiFirstVisit->ovary->right : null}}
+                            </div>
+                            <div class="pl-15">
+                                <div class="mb-2">R : {{!empty($iuiSecondVisitData->oe->ovary->right->afcs) ? $iuiSecondVisitData->oe->ovary->right->afcs : null}} / RF : {{!empty($iuiSecondVisitData->oe->ovary->right->residual_follicale) ? $iuiSecondVisitData->oe->ovary->right->residual_follicale : null}}</div>
+                                @if(!empty($iuiSecondVisitData->oe->ovary->right->details))
+                                    <div class="mb-2">Right Detail : {{implode(',',$iuiSecondVisitData->oe->ovary->right->details)}}</div>
+                                @endif
+                                <div class="mb-2">L : {{!empty($iuiSecondVisitData->oe->ovary->left->afcs) ? $iuiSecondVisitData->oe->ovary->left->afcs : null}} / RF : {{!empty($iuiSecondVisitData->oe->ovary->left->residual_follicale) ? $iuiSecondVisitData->oe->ovary->left->residual_follicale : null}}</div>
+                                @if(!empty($iuiSecondVisitData->oe->ovary->left->details))
+                                    <div class="mb-2">Left Detail : {{implode(',',$iuiSecondVisitData->oe->ovary->left->details)}}</div>
+                                @endif
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <span class="visit-lable">CYCLE NO :- </span> 
-                            <span class="visit-lable-value">{{$cycleNo}}</span>
+                        <div class="mb-2 d-flex">
+                            <p class="visit-lable">CYCLE NO : </p> 
+                            <p class="visit-lable-value">{{$cycleNo}}</p>
                         </div>
                         @if(!empty($husbandFactor) && isset($husbandFactor->sperm_count) && isset($husbandFactor->motility))
-                            <div class="mb-3">
-                                <span class="visit-lable">Male Age :- </span> 
-                                <span class="visit-lable-value">{{!empty($husbandFactor) && isset($husbandFactor->age) ? $husbandFactor->age : ''}}</span>
+                            <div class="mb-1 d-flex">
+                                <p class="visit-lable">Male Age : </p> 
+                                <p class="visit-lable-value">{{!empty($husbandFactor) && isset($husbandFactor->age) ? $husbandFactor->age : ''}}</p>
                             </div>
-                            <div class="mb-3">
-                                <span class="visit-lable">Male Factor Remark :- </span> 
-                                <span class="visit-lable-value">{{!empty($husbandFactor) && isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</span>
+                            <div class="mb-1 d-flex">
+                                <p class="visit-lable">Male Factor Remark : </p> 
+                                <p class="visit-lable-value">{{!empty($husbandFactor) && isset($husbandFactor->remark) ? $husbandFactor->remark : ''}}</p>
                             </div>
                         @endif
                         @if(!empty($husbandFactor) && isset($husbandFactor->sperm_count) && isset($husbandFactor->motility))
-                            <div class="mb-3">
-                                <span class="visit-lable">Sperm Count :- </span> 
-                                <span class="visit-lable-value">{{!empty($husbandFactor) ? $husbandFactor->sperm_count : ''}}</span>
+                            <div class="mb-1 d-flex">
+                                <p class="visit-lable">Sperm Count : </p> 
+                                <p class="visit-lable-value">{{!empty($husbandFactor) ? $husbandFactor->sperm_count : ''}}</p>
                             </div>
-                            <div class="mb-3">
-                                <span class="visit-lable">Motility :- </span> 
-                                <span class="visit-lable-value">{{!empty($husbandFactor) ? $husbandFactor->motility : ''}}</span>
+                            <div class="mb-1 d-flex">
+                                <p class="visit-lable">Motility : </p> 
+                                <p class="visit-lable-value">{{!empty($husbandFactor) ? $husbandFactor->motility : ''}}</p>
                             </div>
                         @endif
                     </div>
