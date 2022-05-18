@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\DoctorApi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Base\Api\ApiController;
+use App\Http\Controllers\Admin\AppointmentController;
 use App\Models\Appointment;
+use Validator;
 use Carbon\Carbon;
 
 class PatientController extends ApiController
@@ -123,6 +125,56 @@ class PatientController extends ApiController
                 return $q;
             });
             return $this->sendResponse('Your Patient Details successfully get',$patientdetails);
+        }
+        return $this->sendError(__('auth.failed'), 401);
+    }
+     /**
+    *Get Appointment Patient Details
+    * @param  \Illuminate\Http\Request
+    * @return \Illuminate\Http\Response
+    */
+    public function appointmentpatientDetails(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'patients_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors()->first(), 422);
+        }
+        $token = $request->header('Authorization');
+        $UserData = $this->UserToken->where('token', $token)->first();
+        $patients_id = isset($request->patients_id) ? $request->patients_id : '';
+
+        if($token && $UserData) {
+            $appointment = $this->Appointment->select('id','patients_id','category_id','date','time','remark')->where('patients_id',$patients_id)->latest()->take(1)->first();
+            $appointment->profile_picture = $appointment->getPatientsDetails['profile_picture'];
+            $appointment->patient_name = $appointment->getPatientsDetails['name'];
+            $appointment->mobile_number = $appointment->getPatientsDetails['mobile_number'];
+            $appointment->date_of_birth = $appointment->getPatientsDetails['dob'];
+            $appointment->last_visit = $appointment->lastAppointmentData['date'];
+            $appointment->age = $appointment->getPatientsDetails['age'];
+            $appointment->weight = $appointment->getPatientsDetails['weight'];
+            $appointment->category = $appointment->categoryDetails['name'];
+
+            // $patientdetails = collect($this->Appointment->select('id','patients_id','category_id','date','time','remark')->where('patients_id',$patients_id)->latest()->take(1)->get())->map(function($q) {
+            //     $q->profile_picture = $q->getPatientsDetails['profile_picture'];
+            //     $q->patient_name = $q->getPatientsDetails['name'];
+            //     $q->mobile_number = $q->getPatientsDetails['mobile_number'];
+            //     $q->date_of_birth = $q->getPatientsDetails['dob'];
+            //     $q->last_visit = $q->lastAppointmentData['date'];
+            //     $q->age = $q->getPatientsDetails['age'];
+            //     $q->weight = $q->getPatientsDetails['weight'];
+            //     $q->category = $q->categoryDetails['name'];
+                unset($appointment->categoryDetails,$appointment->getPatientsDetails,$appointment->lastAppointmentData);
+            //     return $q;
+            // });
+            // dd($appointment);
+            $appointment_PopupDetail = new AppointmentController;
+
+            $appointment->note = $appointment_PopupDetail->appointmentPopupDetail($patients_id, $appointment->date, $appointment->categoryid);
+            // dd($appointment->note);
+            return $this->sendResponse('Your Appointment Patient Details successfully get',$appointment);
         }
         return $this->sendError(__('auth.failed'), 401);
     }

@@ -33,7 +33,7 @@ class DoctorController extends ApiController
         $date = isset($request->date) ? $request->date : '';
 
         if($token && $UserData) {
-            $appointmentList = collect($this->Appointment->select('id','patients_id','category_id','date','time','seen_by')->where('seen_by',$UserData->user_id)->whereDate('date',$date)->paginate($per_page, $page)->all())->map(function($q) {
+            $appointmentList = collect($this->Appointment->select('id','patients_id','category_id','date','time','seen_by','is_done')->where('seen_by',$UserData->user_id)->whereDate('date',$date)->paginate($per_page, $page)->all())->map(function($q) {
                 $q->profile_picture = $q->getPatientsDetails['profile_picture'];
                 $q->patient_name = $q->getPatientsDetails['name'];
                 $q->category = $q->categoryDetails['name'];
