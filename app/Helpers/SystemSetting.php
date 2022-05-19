@@ -3,6 +3,8 @@
     use App\Models\DurationData;
     use App\Models\Appointment;
     use App\Models\AppointmentRequest;
+    use App\Models\IndoorDeposit;
+    use App\Models\IndoorBook;
     use App\User;
     
     function systemSetting() {
@@ -144,4 +146,15 @@
         $city = DB::table('state')->orderBy('name', 'ASC')->pluck('name','id')->toArray();
         return $city;
     } 
+    /**
+     * return total IPD and OPD income
+     */
+    function getPatientsTotalIncome($patientId)
+    {
+        $patientReportOpd = Appointment::whereHas('getAppointmentCharges')->wherePatientsId($patientId)->get()->sum('getAppointmentCharges.total');
+        $indoorDeposit = IndoorDeposit::where('case_type','Credit')->wherePatientId($patientId)->get()->sum('amount');
+        $indoorBook = IndoorBook ::whereHas('getInvoice')->whereIsFinalInvoice(1)->whereNotNull('final_invoice_date')->wherePatientId($patientId)->get()->sum('getInvoice.amount');
+        
+        return $patientReportOpd + $indoorDeposit + $indoorBook;
+    }
 ?>

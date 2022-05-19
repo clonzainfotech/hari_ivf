@@ -213,7 +213,7 @@
                                             $data = [];
                                             foreach($patientList as $key => $object)
                                             {
-                                                $object->totalIncome = $object->getTotalIncome();
+                                                // $object->totalIncome = $object->getTotalIncome();
                                                 $data[] = (object)$object;
                                             }
                                             if(!empty($fromdate) && !empty($todate))
@@ -226,7 +226,7 @@
                                         @foreach($data as $key => $patient)
                                                 <tr>
                                                     <td>{{ $no.'. '.ucwords(strtolower($patient['name']))}}</td>
-                                                    <td>{{ $patient['totalIncome']}}</td>
+                                                    <td>{{ getPatientsTotalIncome($patient['id'])}}</td>
                                                 </tr>
                                             @php
                                                 $no++;

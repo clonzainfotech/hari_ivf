@@ -117,21 +117,6 @@ class OpdPatients extends BaseModel
                             ->get();
         return $patients;
     }
-    /**
-     * return total IPD and OPD income
-     */
-    public function getTotalIncome()
-    {
-        $patientReportOpd = Appointment::whereHas('getAppointmentCharges')->wherePatientsId($this->id)->get()->sum('getAppointmentCharges.total');
-        $indoorDeposit = IndoorDeposit::where('case_type','Credit')->wherePatientId($this->id)->get()->sum('amount');
-        $indoorBook = IndoorBook ::whereIsFinalInvoice(1)->whereNotNull('final_invoice_date')->wherePatientId($this->id);
-        $indoorBook = collect($indoorBook->get())
-            ->map(function ($query) {
-                
-                $query->amount = $query->getInvoice['grand_total_amt'];
-                return $query;
-            })->sum('amount');
-        return $patientReportOpd + $indoorDeposit + $indoorBook;
-    }
+    
 
 }
