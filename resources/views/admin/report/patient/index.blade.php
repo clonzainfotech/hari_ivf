@@ -67,6 +67,15 @@
                                     'data-id'=>'1'
                                 ])}}
                             </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                {{ Form::select('reference_doctor', $referenceDoctor,'',[
+                                    'class'=>'form-control select-padding-0 ref-doctor patient-3',
+                                    'placeholder'=>'Select Reference Doctor',
+                                    'data-live-search'=>'true',
+                                    'data-id'=>'1'
+                                ])}}
+                            </div>
+                            
                             <div class="col-lg-2 col-md-6 col-sm-6">
                                 {{ Form::select('category', $category,'',[
                                     'class'=>'form-control select-padding-0 category',
@@ -134,6 +143,7 @@
         var todate = moment(new Date()).format('YYYY-MM-DD');
         var allIncome_fromDate = '';
         var allIncome_toDate = '';
+        var ref_doctor = '';
 
         var qstring = 'fromdate=' + fromdate + '&todate=' + todate ;
 
@@ -152,7 +162,7 @@
 
                 fromdate = picker.startDate.format('YYYY-MM-DD');
                 todate = picker.endDate.format('YYYY-MM-DD');
-                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category;
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&ref_doctor='+ref_doctor;
                 getPatientData(qstring);
             });
 
@@ -160,7 +170,7 @@
                 $("#daterange").val('');
                 fromdate = '';
                 todate = '';
-                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category;
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&ref_doctor='+ref_doctor;
                 getPatientData(qstring);
             });
 
@@ -174,13 +184,13 @@
             })
             $(document).on('change','.allIncome_fromDate', function() {
                 allIncome_fromDate = $(this).val();
-                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&allIncome_fromDate='+allIncome_fromDate+'&allIncome_toDate='+allIncome_toDate;
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&allIncome_fromDate='+allIncome_fromDate+'&allIncome_toDate='+allIncome_toDate+'&ref_doctor='+ref_doctor;
                 getPatientData(qstring);
 
             });
             $(document).on('change','.allIncome_toDate', function() {
                 allIncome_toDate = $(this).val();
-                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&allIncome_fromDate='+allIncome_fromDate+'&allIncome_toDate='+allIncome_toDate;
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&allIncome_fromDate='+allIncome_fromDate+'&allIncome_toDate='+allIncome_toDate+'&ref_doctor='+ref_doctor;
                 getPatientData(qstring);
 
             });
@@ -190,12 +200,17 @@
                 $('.patient-'+dId).val('');
                 $('.patient-'+dId).selectpicker('refresh');
                 pId = $(this).val();
-                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category;
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&ref_doctor='+ref_doctor;
                 getPatientData(qstring);
             });
             $(document).on('change','select.category',function(){
                 category = $(this).val();
-                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category;
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&ref_doctor='+ref_doctor;
+                getPatientData(qstring);
+            })
+            $(document).on('change','select.ref-doctor',function(){
+                ref_doctor = $(this).val();
+                qstring = 'fromdate=' + fromdate + '&todate=' + todate+"&patient_id="+pId+'&category='+category+'&ref_doctor='+ref_doctor;
                 getPatientData(qstring);
             })
             function getPatientData(qstring){

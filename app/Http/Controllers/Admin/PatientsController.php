@@ -267,6 +267,7 @@ class PatientsController extends AdminController
             if($request->ajax()){
                 DB::enableQueryLog();
                 $patientId = $request->patient_id;
+                $ref_doctor_id = $request->ref_doctor;
                 $category = $request->category;
                 $procedures = $this->IndoorProcedure->select('id', 'name')->get()->toArray();
                 $fromdate = $request->fromdate;
@@ -281,6 +282,21 @@ class PatientsController extends AdminController
                     $patientReportOpd = $patientReportOpd->wherePatientsId($patientId);
                     $indoorDeposit = $indoorDeposit->wherePatientId($patientId);
                     $indoorBook = $indoorBook->wherePatientId($patientId);
+                }
+                if(!empty($ref_doctor_id))
+                {
+                    $patientReportOpd = $patientReportOpd->where(function($query) use($ref_doctor_id){
+                        $query->whereHas('getPatientsDetails', function($query) use($ref_doctor_id){
+                            $query->where('reference_doctor_id', $ref_doctor_id);
+                        });
+                    });
+                    $indoorDeposit = $indoorDeposit->where('reference_doctor_id',$ref_doctor_id);
+                    $indoorBook = $indoorBook->where(function($query) use($ref_doctor_id){
+                        $query->whereHas('getPatientsDetails', function($query) use($ref_doctor_id){
+                            $query->where('reference_doctor_id', $ref_doctor_id);
+                        });
+                    });
+
                 }
                 if(empty($request->allIncome_fromDate) ||  empty($request->allIncome_toDate))
                 {
@@ -359,7 +375,8 @@ class PatientsController extends AdminController
                     View::make('admin.report.patient.data', compact('patientReportOpd','procedures','patientReportHormon', 'patient'))->render()
                 ]);
             }
-            return view('admin.report.patient.index',compact('patientReportOpd', 'patientReportHormon', 'patient','pMobileNumber','category'));
+            $referenceDoctor = $this->ReferenceDoctor->orderBy('name','ASC')->pluck('name','id');
+            return view('admin.report.patient.index',compact('patientReportOpd', 'patientReportHormon', 'patient','pMobileNumber','category','referenceDoctor'));
         }catch(Exception $e){
             log::debug($e);
             abort(500);
