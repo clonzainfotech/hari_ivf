@@ -7,7 +7,7 @@ use app\models\Base\BaseModel;
 use Carbon\Carbon;
 
 class IvfResultReview extends BaseModel
-{
+{ 
     protected $table = 'ivf_result_reviews';
 
     public function getPatients(){
@@ -21,7 +21,9 @@ class IvfResultReview extends BaseModel
             'patients_id' => $this->patients_id,
             'plan' => $this->plan
         ])->whereJsonContains('description',['collection' => 'progesterone'])->first();
-        return !empty($ivf) ? carbon::parse(json_decode($ivf->description)->follow_up)->format('d-M-Y') : null;
+        $data['transfer_date'] = !empty($ivf) ? carbon::parse(json_decode($ivf->description)->follow_up)->format('d-M-Y') : null;
+        $data['transfer_by'] = !empty($ivf) ? $ivf->getSeenBy->name : null;
+        return $data;
     }
     public function getResult()
     {

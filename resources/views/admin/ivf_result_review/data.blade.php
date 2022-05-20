@@ -11,6 +11,7 @@ $i = 1;
         <th>Cycle No</th>
         <th>Plan</th>
         <th>Mobile Number</th>
+        <th>Transfer By</th>
         <th>Transfer Date</th>
         <th>Result Date</th>
         <th>Result</th>
@@ -27,6 +28,7 @@ $i = 1;
             <td>{{ $row->cycle_no}}</td>
             <td>{{ isset($planData[$row->plan]) ? $planData[$row->plan] : '-'}}</td>
             <td>{{ $row->getPatients->mobile_number.', '.$row->getPatients->other_mobile_number}}</td>
+            <td>{{ $row->transfer_by}}</td>
             <td>{{ $row->transfer_date}}</td>
             <td>{{ $row->result_date}}</td>
             <td>{{ ucWords($row->result) }}</td>
