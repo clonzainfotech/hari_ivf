@@ -227,7 +227,7 @@
                                                     <td>{{ $no.'. '}}</td>
                                                     <td>{{ ucwords(strtolower($patient->name))}}</td>
                                                     <td>{{ $patient->code}}</td>
-                                                    <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? .' ,'.$patient->other_mobile_number : '')}}</td>
+                                                    <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? ' ,'.$patient->other_mobile_number : '')}}</td>
                                                 </tr>
                                             @php
                                                 $no++;
@@ -274,7 +274,7 @@
                                                 <td>{{ $no.'. '}}</td>
                                                 <td>{{ ucwords(strtolower($patient->name))}}</td>
                                                 <td>{{ $patient->code}}</td>
-                                                <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? .' ,'.$patient->other_mobile_number : '')}}</td>
+                                                <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? ' ,'.$patient->other_mobile_number : '')}}</td>
                                             </tr>
                                         @php
                                             $no++;
@@ -321,7 +321,7 @@
                                                 <td>{{ $no.'. '}}</td>
                                                 <td>{{ ucwords(strtolower($patient->name))}}</td>
                                                 <td>{{ $patient->code}}</td>
-                                                <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? .' ,'.$patient->other_mobile_number : '')}}</td>
+                                                <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? ' ,'.$patient->other_mobile_number : '')}}</td>
                                             </tr>
                                             @php
                                                 $no++;
@@ -368,7 +368,7 @@
                                                 <td>{{ $no.'. '}}</td>
                                                 <td>{{ ucwords(strtolower($patient->name))}}</td>
                                                 <td>{{ $patient->code}}</td>
-                                                <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? .' ,'.$patient->other_mobile_number : '')}}</td>
+                                                <td>{{ $patient->mobile_number.' '.(!empty($patient->other_mobile_number) ? ' ,'.$patient->other_mobile_number : '')}}</td>
                                             </tr>
                                             @php
                                                 $no++;
