@@ -3931,6 +3931,11 @@
                                 </div>
                             </div>
                         @endif
+                        @if(isset($description->follow_up) && !empty($description->follow_up))
+                            <div class="col-md-12">
+                                <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($description->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                            </div>
+                        @endif
                 </div>
             @else
                 @if(isset($description->follow_up) && !empty($description->follow_up))
