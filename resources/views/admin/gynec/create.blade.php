@@ -1702,7 +1702,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row unmarried-data">
+                                                <div class="row">
                                                     <div class="col-md-1 pr-0">
                                                         <label class="vertical-form-label pr-0">
                                                             P/S :
