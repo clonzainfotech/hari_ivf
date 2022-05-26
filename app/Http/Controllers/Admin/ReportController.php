@@ -408,7 +408,11 @@ class ReportController extends AdminController
                         });
                     })
                     ->orderBy('id', 'DESC');
-                
+                $iuiHormonReport = $this->IndoorDeposit
+                    ->where([
+                        ['case_type', '=', 'Credit'],
+                    ])
+                    ->orderBy('id', 'DESC');
                 $fromdate = $request->fromdate;
                 $todate = $request->todate;
                 if($charge_type == 7)//Summary Data
@@ -450,8 +454,9 @@ class ReportController extends AdminController
                     $todate = $todate;
                         $IPDrefDoctorReport = $IPDrefDoctorReport->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                         $OPDrefDoctorReport = $OPDrefDoctorReport->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
+                        $iuiHormonReport = $iuiHormonReport->whereBetween(\DB::raw('DATE(created_at)'), [$fromdate, $todate]);
                 }
-                
+                // dd($iuiHormonReport->get());
                 $categoryId = !empty($request->categoryId) ? [$request->categoryId] : [];
                 if(!empty($charge_type) && $charge_type == 5)//new category patient
                 {
@@ -497,6 +502,11 @@ class ReportController extends AdminController
                                     $query->whereIn('reference_doctor_id', $reference_type_ids);
                                 });
                             });
+                            $iuiHormonReport = $iuiHormonReport->where(function($query) use ($reference_type_ids) {
+                                $query->whereHas('getPatientsDetails', function($query)  use ($reference_type_ids) {
+                                    $query->whereIn('reference_doctor_id', $reference_type_ids);
+                                });
+                            });
                     }
                     else
                     {
@@ -508,6 +518,12 @@ class ReportController extends AdminController
                             });
                             $OPDrefDoctorReport = $OPDrefDoctorReport->where(function($query) use ($referenceDoctorId) {
                                 $query->whereHas('getAppointment.getPatientsDetails', function($query)  use ($referenceDoctorId) {
+                                    
+                                    $query->where('reference_doctor_id', $referenceDoctorId);
+                                });
+                            });
+                            $iuiHormonReport = $iuiHormonReport->where(function($query) use ($referenceDoctorId) {
+                                $query->whereHas('getPatientsDetails', function($query)  use ($referenceDoctorId) {
                                     
                                     $query->where('reference_doctor_id', $referenceDoctorId);
                                 });
@@ -531,9 +547,19 @@ class ReportController extends AdminController
                         $query->reference_doctor_name = $query->getAppointment->getPatientsDetails->getReferenceDoctor['name'];
                         return $query;
                     });
+                $iuiHormonReport = collect($iuiHormonReport->get())
+                    ->map(function ($query) {
+                        $query->reference_doctor_id = $query->getPatientsDetails['reference_doctor_id'];
+                        $query->reference_doctor_name = $query->getPatientsDetails->getReferenceDoctor['name'];
+                        return $query;
+                    });
                 if($charge_type == 4) // IPD
                 {
                    $refDoctorReport = $IPDrefDoctorReport;
+                }
+                if($charge_type == 8) // Hormon/IUI/IVF injection
+                {
+                   $refDoctorReport = $iuiHormonReport;
                 }
                 if($charge_type == 1 || $charge_type == 5 || $charge_type == 6)//opd
                 {
@@ -542,6 +568,7 @@ class ReportController extends AdminController
                 if(empty($charge_type))
                 {
                     $refDoctorReport = $OPDrefDoctorReport->merge($IPDrefDoctorReport);
+                    $refDoctorReport = $refDoctorReport->merge($iuiHormonReport);
                 }
                 $refDoctorReport = $refDoctorReport->groupBy('reference_doctor_name');
                 if($request->isprint==1){

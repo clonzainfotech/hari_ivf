@@ -60,7 +60,7 @@
                                     ])}}
                                 </div>
                                 <div class="col-md-2 col-sm-2">
-                                    {{Form::select('type',['1'=>'OPD','4'=>'Indoor','5'=>'New Patients','6'=>'Old Patients','7'=>'Summary'],'',['class'=>'form-control select-padding-0 report-type-doctor','placeholder'=>'Select Type'])}}
+                                    {{Form::select('type',['1'=>'OPD','4'=>'IPD','8'=>'Hormon INJ','5'=>'New Patients','6'=>'Old Patients','7'=>'Summary'],'',['class'=>'form-control select-padding-0 report-type-doctor','placeholder'=>'Select Type'])}}
                                 </div>
                             </div>
                         </div>

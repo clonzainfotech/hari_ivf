@@ -1941,7 +1941,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                    
                 </div>
                 @php
-                    $tvsType = !empty($oe->tvs->type) && $oe->tvs->type == 'yes' && $oh->married_type == 'married' ? '' : 'd-none';
+                    $tvsType = !empty($oe->tvs->type) && $oe->tvs->type == 'yes' && isset($oh->married_type) && $oh->married_type == 'married' ? '' : 'd-none';
                     $breastType = !empty($oe->breast->type) && $oe->breast->type == 'yes' ? '' : 'd-none';
                 @endphp
                 <div class="row married-data">
