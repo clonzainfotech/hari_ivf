@@ -348,7 +348,7 @@
                                                     @foreach($appointmentRemark as $key => $value)
                                                         <div class="col-md-6">
                                                             <div class="remark-details mb-2">
-                                                                <div class="font-bold">{{\Carbon\Carbon::Parse($key)->format('d-m-Y')}} :</div>
+                                                                <div class="font-bold">{{$key}} :</div>
                                                                 <div>{{$value}}</div>
                                                             </div>
                                                         </div>
