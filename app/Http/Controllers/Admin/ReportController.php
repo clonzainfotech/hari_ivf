@@ -458,11 +458,11 @@ class ReportController extends AdminController
                 }
                 // dd($iuiHormonReport->get());
                 $categoryId = !empty($request->categoryId) ? [$request->categoryId] : [];
-                if(!empty($charge_type) && $charge_type == 5)//new category patient
+                if(!empty($charge_type) && $charge_type == 5 && count($categoryId) == 0)//new category patient
                 {
                     $categoryId = [1,3,5,8,10];
                 }
-                if(!empty($charge_type) && $charge_type == 6)//oldcategory patient
+                if(!empty($charge_type) && $charge_type == 6 && count($categoryId) == 0)//oldcategory patient
                 {
 
                     $categoryId = [2,4,6,9,13];

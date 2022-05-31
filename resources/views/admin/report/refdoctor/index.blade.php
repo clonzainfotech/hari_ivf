@@ -105,14 +105,14 @@
 
                 fromdate = picker.startDate.format('YYYY-MM-DD');
                 todate = picker.endDate.format('YYYY-MM-DD');
-                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
+                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&categoryId=' + categoryId + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
                 getRefDoctorReportData(qstring);
             });
             $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
                 $("#daterange").val('');
                 fromdate = '';
                 todate = '';
-                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
+                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&categoryId=' + categoryId + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
                 getRefDoctorReportData(qstring);
             });
             getRefDoctorReportData(qstring);
@@ -123,7 +123,7 @@
             $(document).on('click', '.pagination a', function (event) {
                 event.preventDefault();
                 page = $(this).attr('href').split('page=')[1];
-                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
+                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&categoryId=' + categoryId + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
                 getRefDoctorReportData(qstring);
             });
 
@@ -135,7 +135,7 @@
 
             $(document).on('change', 'select.reference-doctor', function () {
                 referenceDoctorId = $(this).val();
-                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
+                qstring = 'page=' + page + '&fromdate=' + fromdate + '&todate=' + todate + '&categoryId=' + categoryId + '&reference_doctor_id=' + referenceDoctorId + '&type=' + typeId;
                 getRefDoctorReportData(qstring);
             });
             $(document).on('change', 'select.report-type-doctor', function () {
