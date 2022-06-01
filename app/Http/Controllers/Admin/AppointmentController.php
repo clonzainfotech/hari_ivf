@@ -71,7 +71,7 @@ class AppointmentController extends AdminController
                 // search text
 
                 $patientId = $request->patient_id;
-               
+
                 if($patientId) {
                     $appointment = $appointment->where(function($query) use($patientId) {
                         $query
@@ -183,7 +183,7 @@ class AppointmentController extends AdminController
                 $appointment = $appointment->paginate(100);
                 foreach($appointment as $row){
                     $row->next_appointment = true;
-                   
+
                     $patients = $this->getPatientsLastAppoinment($row->patients_id);
                     if(!empty($patients['lastAppointment'])){
                         $row->next_appointment = false;
@@ -246,7 +246,7 @@ class AppointmentController extends AdminController
         }
     }
     /**
-     * Add appointments 
+     * Add appointments
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -314,8 +314,8 @@ class AppointmentController extends AdminController
                     Session::flash('apt_date',Carbon::parse($request->date)->format('d M Y'));
                 }
             }
-            
-            
+
+
             $appointmentDay = Carbon::parse($appointmentDate)->format('D');
             if($appointmentDay == 'Sun'){
                 $already = 2;
@@ -339,7 +339,7 @@ class AppointmentController extends AdminController
                     $usgStatusValue = 1;
                 }
                 $nextAppointmentData = $nextAppointmentData->where('usg_status',$usgStatusValue)->first();
-                
+
                 // $nextAppointmentData = $this->getPatientsLastAppoinment($patientsId);
                 if(!empty($nextAppointmentData)){
                     $already = 1;
@@ -376,7 +376,7 @@ class AppointmentController extends AdminController
                     Session::flash('patientId',$patientsId);
                 }
                 Session::flash('p_name',$request->name);
-                
+
                 return back()->with('already',$already)->withInput();
             }
 
@@ -759,7 +759,7 @@ class AppointmentController extends AdminController
                 $referenceDoctor->created_by = Auth::user()->id;
                 $referenceDoctor->save();
             }
-            
+
             if($request->input('pro_reference_doctor') == 'other') {
                 $proReferenceDoctor = $this->ReferenceDoctorPro;
                 $proReferenceDoctor->name = $request->pro_reference_doctor_name;
@@ -815,7 +815,7 @@ class AppointmentController extends AdminController
             $oldDate = $appointment->date;
             $oldTime = $appointment->time;
             $appointment->date = Carbon::parse($request->date)->format('Y-m-d');
-            
+
             $dateFilter = Carbon::createFromFormat('D d M Y', $request->date)->format('d/m/Y');
             Session(['date' => $dateFilter . ' - ' . $dateFilter]);
             $appointment->time =  $request->time ? Carbon::parse($request->time)->format('H:i') : null;
@@ -832,14 +832,14 @@ class AppointmentController extends AdminController
             //update followup date when change appintment date
             if($oldDate != $appointment->date)
             {
-                if(in_array($appointment->category_id, [5, 6])) 
+                if(in_array($appointment->category_id, [5, 6]))
                 {
                     $anc = $this->ANC->where('patients_id',$patients->id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$lastAppointment->date)->first();
                     if(!empty($anc)) {
                         $anc_oe_data = json_decode($anc->o_e);
                         $anc_oe_data->follow_up = Carbon::parse($newFollowUpDate)->format('D d M Y');
                         $anc_oe_data->new_follow_up = Carbon::parse($newFollowUpDate)->format('Y-m-d');
-                        
+
                         $anc->o_e = json_encode($anc_oe_data);
                         $anc->save();
                     }
@@ -852,13 +852,13 @@ class AppointmentController extends AdminController
                             $anc_oe_data->follow_up = Carbon::parse($newFollowUpDate)->format('D d M Y');
                             $anc_oe_data->new_follow_up = Carbon::parse($newFollowUpDate)->format('Y-m-d');
 
-                            
+
                             $ancHistory->o_e = json_encode($anc_oe_data);
                             $ancHistory->save();
                         }
                     }
                 }
-                if(in_array($appointment->category_id, [3, 4])) 
+                if(in_array($appointment->category_id, [3, 4]))
                 {
                     $iui = $this->IUI->where('patients_id',$patients->id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$lastAppointment->date)->first();
                     if(!empty($iui)) {
@@ -892,22 +892,22 @@ class AppointmentController extends AdminController
                         }
                     }
                 }
-                if(in_array($appointment->category_id, [1, 2])) 
+                if(in_array($appointment->category_id, [1, 2]))
                 {
                     $ivfHistory = $this->IvfHistory->where('patients_id',$patients->id)->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),$lastAppointment->date)->first();
                     if(!empty($ivfHistory)){
                         $ivfData = json_decode($ivfHistory->description);
-                        
+
                             $ivfData->follow_up = Carbon::parse($newFollowUpDate)->format('D d M Y');
                             $ivfData->transfer->follow_up = Carbon::parse($newFollowUpDate)->format('D d M Y');
-                            
+
                             $ivfHistory->description = json_encode($ivfData);
 
                             $ivfHistory->save();
                     }
                 }
             }
-            
+
             $generateCode = $this->generateCode($patientsId,$patients->name);
             $updateCode = $this->OpdPatients->whereId($patientsId)->first();
             $updateCode->code = $generateCode['code'];
@@ -1008,7 +1008,7 @@ class AppointmentController extends AdminController
             ]);
         }
 
-        
+
     }
 
      /**
@@ -1066,7 +1066,7 @@ class AppointmentController extends AdminController
                     $status = 'not-available';
                 }
             }
-            
+
             return ['date'=>$date,'diff'=>$diff,'time'=>$time,'status'=>$status];
 
         }catch(Exception $e){
@@ -1469,7 +1469,7 @@ class AppointmentController extends AdminController
                     ->where(\DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"),'=',$appoitmentDate)
                     ->orderBy('id','desc')
                     ->first();
-                    $ancId = !empty($ancHistory) ? $ancHistory->anc_id : null;    
+                    $ancId = !empty($ancHistory) ? $ancHistory->anc_id : null;
                     if(!$ancHistory)
                     {
                         $ancHistory= $this->ANC->where('patients_id',$patients_id)->orderBy('created_at','desc')->first();
@@ -1491,7 +1491,7 @@ class AppointmentController extends AdminController
                             }
                         }
                     }
-                    
+
                     $report = !empty($investigationData) ? implode(', ',$investigationData) : '';
                     $report .= !empty($investigation) && isset($investigation->investigation_extra) && !empty($investigation->investigation_extra) ? ', '.$investigation->investigation_extra : '';
                     $data = '<p><span class="font-bold candor-color">Advise Reports : </span>'.$report.'</p>
@@ -1546,7 +1546,7 @@ class AppointmentController extends AdminController
                 if($check_ivf_result)
                 {
                     $ivf_result = json_decode($check_ivf_result->description);
-                    
+
                     $result = $ivf_result->is_transfer == 'yes' ? "IVF Result (".(\Carbon\Carbon::parse($ivf_result->follow_up)->format('d-m-Y')).')' : '';
                 }
 
@@ -1557,19 +1557,19 @@ class AppointmentController extends AdminController
                 $data .= '<p><span class="font-bold candor-color">Attempt Cycle : </span><span class="attempt-cycle">'.$totalAttemptCycle.'</span></p>';
                 $data .= '<p><span class="font-bold candor-color">Current Plan: </span>'.(!empty($plan) ? $planData[$plan] : '').'</p>';
                 $data .= '<p><span class="font-bold candor-color">Result: </span>'.$result.'</p>';
-                
+
                 foreach($packages as $key => $package)
                 {
                     $totalAmount = $this->IndoorDeposit->where('patient_id',$patients_id)->where('ivf_payment_id',$package->id)->sum('amount');
-                    $data .= $key == 0 ? '<hr>' : ''; 
+                    $data .= $key == 0 ? '<hr>' : '';
                     $data .= '<p><span class="font-bold candor-color">Package: </span>'.(!empty($package) ? $package->package.' - cycle : '.$package->cycle_no : '-').'</p>
                         <p><span class="font-bold candor-color">Due Amount: </span>'.(!empty($package->package) ? ($package->package - $totalAmount) : '-').'</p>
                         <p><span class="font-bold candor-color">Package Condition: </span>'.(!empty($package) ? $package->condition : '-').'</p>
                         <p><span class="font-bold candor-color">Package Remark: </span>'.(!empty($package) ? $package->remark : '-').'</p>
                         <p><span class="font-bold candor-color">Payment : </span>'.$totalAmount.'</p><hr>';
-                        
+
                 }
-                // $data .= $payment;   
+                // $data .= $payment;
                 $data .= '<button class="btn btn-primary preview-file" data-plan="'.$plan.'" data-cycleno="'.$cycle_no.'" data-extravisit="'.$extraVisit.'" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="" data-patient = "'.$request->patients_id.'">Visit</button>';
             }
             if($request->category && in_array($request->category,[3,4]))
@@ -1609,7 +1609,7 @@ class AppointmentController extends AdminController
                     if($iuiSecondHistory)
                     {
                         $description = json_decode($iuiSecondHistory->description);
-                        $lmpDate = $description->lmp->date; 
+                        $lmpDate = $description->lmp->date;
                     }
                 }
                 // dd($report);
@@ -1624,14 +1624,14 @@ class AppointmentController extends AdminController
                         <p><span class="font-bold candor-color">LMP Date : </span>'.(!empty($lmpDate) ? \Carbon\Carbon::parse($lmpDate)->format('d-m-Y') : '').'</p>
                         <p><span class="font-bold candor-color">Result : </span>'.$remark.'</p>';
                 $data .=  '<p><span class="font-bold candor-color">Payment : </span></p>';
-                $data .= $payment;   
+                $data .= $payment;
                 $data .= '<button class="btn btn-primary preview-file" data-cycleno="'.$cycle_no.'" data-category="'.$request->category.'" data-date="'.$appoitmentDate.'" data-id="" data-patient = "'.$request->patients_id.'">Visit</button>';
 
             }
             return response()->json([
                 'status'=>1,
                 'data' => $data
-            ]);  
+            ]);
         }
         catch(Exception $e)
         {
