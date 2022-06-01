@@ -2195,7 +2195,7 @@
         <br>
     @endif
     {{Form::hidden('ivf_history_id', '' , ['id' => 'ivf_history_id'])}}
-    {{Form::button('submit',['class'=>'btn btn-primary submit'])}}
+    {{-- {{Form::button('submit',['class'=>'btn btn-primary submit'])}} --}}
     {{Form::hidden('ivf_transfer_report_id', '' , ['id' => 'ivf_transfer_report_id'])}}
     <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
     <button type="submit" class="btn btn-primary submit transfer-report d-none" value="5">Transfer Report Preview</button>

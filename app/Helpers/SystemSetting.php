@@ -5,6 +5,7 @@
     use App\Models\AppointmentRequest;
     use App\Models\IndoorDeposit;
     use App\Models\IndoorBook;
+    use App\Models\IvfHistory;
     use App\User;
     
     function systemSetting() {
@@ -156,5 +157,15 @@
         $indoorBook = IndoorBook ::whereHas('getInvoice')->whereIsFinalInvoice(1)->whereNotNull('final_invoice_date')->wherePatientId($patientId)->get()->sum('getInvoice.amount');
         
         return $patientReportOpd + $indoorDeposit + $indoorBook;
+    }
+    /**
+     * return total IPD and OPD income
+     */
+    function getIvfHystrocopyDate($cycle_no,$plan,$pId)
+    {
+        $pId = decrypt($pId);
+        $ivfHistory = IvfHistory::where('cycle_no',$cycle_no)->where('plan',$plan)->wherePatientsId($pId)->whereJsonContains('investigation->hystroscopy->type','yes')->first();
+        
+        return $ivfHistory;
     }
 ?>

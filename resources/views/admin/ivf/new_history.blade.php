@@ -127,7 +127,8 @@
                             $isFail = true;
                             $class = 'fail-cycle';
                         }
-                        
+                        $hystroscopy = getIvfHystrocopyDate($row,2,$patientsId);
+                        $hystroscopyData = json_decode($hystroscopy['investigation']);
                     @endphp
                     <div class="{{'card p-3 patient_name '.$class}}">
                         <span>{{isset($dataForSkipReason['2_'.$row]) ? 'Skip Reason : '.$dataForSkipReason['2_'.$row] : ''}}</span>
@@ -135,6 +136,7 @@
                         <span class="text-danger"><b>{{isset($dataFailcycle['2_'.$row]) ? 'Cycle Failed ' : ''}}</b></span>
                         <span class="candor-color"><b>{{isset($dataConceiveCycle['2_'.$row]) ? 'Cycle Conceived ' : ''}}</b></span>
                         <span class="candor-color"><b>{{isset($dataNaturallyConceive['2_'.$row]) ? 'Naturally Conceived ' : ''}}</b></span>
+                        <span class=""><br><b>{{isset($hystroscopyData->hystroscopy->type) && $hystroscopyData->hystroscopy->type == 'yes' ? 'Hystroscopy Done : '.(\Carbon\Carbon::parse($hystroscopy['created_at'])->format('d-m-Y')) : ''}}</b></span>
 
                         <div class="row">
                             <div class="col-md-12">
