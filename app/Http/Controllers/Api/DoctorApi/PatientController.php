@@ -115,10 +115,18 @@ class PatientController extends ApiController
     */
     public function patientDetails(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'patients_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors()->first(), 422);
+        }
         $token = $request->header('Authorization');
         $UserData = $this->UserToken->where('token', $token)->first();
+        $patients_id = isset($request->patients_id) ? $request->patients_id : '';
         if($token && $UserData) {
-            $patientdetails = collect($this->OpdPatients->select('id','code','name','dob','mobile_number','residence','location','other_mobile_number','weight')->where('hospital_doctor_id',$UserData->user_id)->get())->map(function($q){
+            $patientdetails = collect($this->OpdPatients->select('id','code','name','dob','mobile_number','residence','location','other_mobile_number','weight')->where('hospital_doctor_id',$UserData->user_id)->where('id',$patients_id)->get())->map(function($q){
                 $q->date = $q->lastDoneAppointmentData['date'];
                 $q->time = $q->lastDoneAppointmentData['time'];
                  unset($q->lastDoneAppointmentData);
@@ -170,9 +178,9 @@ class PatientController extends ApiController
             //     return $q;
             // });
             // dd($appointment);
-            $appointment_PopupDetail = new AppointmentController;
+            // $appointment_PopupDetail = new AppointmentController;
 
-            $appointment->note = $appointment_PopupDetail->appointmentPopupDetail($patients_id, $appointment->date, $appointment->categoryid);
+            // $appointment->note = $appointment_PopupDetail->appointmentPopupDetail($patients_id, $appointment->date, $appointment->categoryid);
             // dd($appointment->note);
             return $this->sendResponse('Your Appointment Patient Details successfully get',$appointment);
         }
