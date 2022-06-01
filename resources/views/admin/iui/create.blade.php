@@ -1388,7 +1388,7 @@
                                                         {{$errors->first('age_of_menarchy')}}
                                                     </span>
                                                 </div>
-                                                <div class="col-md-3">
+                                                {{-- <div class="col-md-3">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">Since Year : &nbsp;</span>
                                                         {{Form::text("mh[since_year]",'',['class'=>'form-control'])}}
@@ -1396,21 +1396,22 @@
                                                     <span class="form-error-msg">
                                                         {{$errors->first('since_year')}}
                                                     </span>
+                                                </div> --}}
+                                                <div class="col-md-5">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Manopause Since Year : &nbsp;</span>
+                                                        {{Form::text("mh[manopause_since_year]",'',['class'=>'form-control'])}}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-sm-5">
+                                                {{-- <div class="col-sm-5">
                                                     <div class="form-group">
                                                         {{Form::text("mh[age_of_manopause]",'',['class'=>'form-control','placeholder'=>'Age Of Manopause'])}}
                                                     </div>
                                                     
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">Since Year : &nbsp;</span>
-                                                        {{Form::text("mh[manopause_since_year]",'',['class'=>'form-control'])}}
-                                                    </div>
-                                                </div>
+                                                </div> --}}
+                                                
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-1">
@@ -1558,7 +1559,7 @@
                                                 </div>
                                                 <span class="col-md-1 p-2 lmd-date-diff d-none"></span>
                                                 {{Form::hidden('mh[lmd_date_diff]','',['class'=>'lmd-date-diff-val'])}}
-                                                <div class="col-md-2">
+                                                {{-- <div class="col-md-2">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">Since Month : &nbsp;</span>
                                                         {{Form::text("mh[since_month]",'',['class'=>'form-control'])}}
@@ -1576,7 +1577,7 @@
                                                     <span class="form-error-msg">
                                                         {{$errors->first('since_cycle')}}
                                                     </span>
-                                                </div>
+                                                </div> --}}
 
                                             </div>
 

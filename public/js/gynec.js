@@ -2531,6 +2531,14 @@ $(document).ready(function(){
         if(type == 'unmarried'){
             $('.married-data').addClass('d-none');
             $('.unmarried-data').removeClass('d-none');
+            var pa_value = $('.pa-type:checked').val();
+            var type = $('.pa-type:checked').data('type');
+            $('.'+type).addClass('d-none');
+            console.log(pa_value);
+            if(pa_value == 'yes')
+            {
+                $('.'+type).removeClass('d-none');
+            }
         }
     }
 
@@ -2568,12 +2576,14 @@ $(document).ready(function(){
         var value = $(this).val();
         var type = $(this).data('type');
         $('.'+type).addClass('d-none');
+        $('.unmarried-data').addClass('d-none')
         if(value == 'yes')
         {
             $('.'+type).removeClass('d-none');
+            $('.unmarried-data').removeClass('d-none')
         }
-        $('.unmarried-data').removeClass('d-none')
-        if(married_status == 'married' || input_married_type == 'married')
+        console.log(input_married_type);
+        if(married_status == 'married' || (input_married_type == 'married') && $('gynec_id').val() == null)
         {
             $('.unmarried-data').addClass('d-none');
         }

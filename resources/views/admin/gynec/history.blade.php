@@ -243,7 +243,6 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         // if (isError == false) {
         //     return false;
         // }
-        $('.submit').prop('disabled', true);
         $('.seen-by-error').text('');
         $('.surgically-date-error').text('');
         $('.surgically-time-error').text('');
@@ -280,6 +279,8 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         //        return false;
         //    }
         // }
+        $('.submit').prop('disabled', true);
+
         var url = "{{URL::to('anc-iui-ivf')}}";
         $.ajax({
             headers: {

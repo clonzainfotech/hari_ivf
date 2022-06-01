@@ -1503,7 +1503,13 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         {{$errors->first('age_of_menarchy')}}
                                     </span>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Manopause Since Year : &nbsp;</span>
+                                        {{Form::text("mh[manopause_since_year]",isset($mh->manopause_since_year) && !empty($mh->manopause_since_year) ? $mh->manopause_since_year : null,['class'=>'form-control'])}}
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">Since Year : &nbsp;</span>
                                         {{Form::text("mh[since_year]",!empty($mh->since_year) ? $mh->since_year : null,['class'=>'form-control'])}}
@@ -1511,7 +1517,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <span class="form-error-msg">
                                         {{$errors->first('since_year')}}
                                     </span>
-                                </div>
+                                </div> --}}
                             </div>
 
                             <div class="row">
@@ -1689,7 +1695,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 <span class="col-md-1 p-2 lmd-date-diff">{{!empty($lmdDiff) ? $lmdDiff." Day" : null}}</span>
                                 {{Form::hidden('mh[lmd_date_diff]','',['class'=>'lmd-date-diff-val'])}}
 
-                                <div class="col-md-2">
+                                {{-- <div class="col-md-2">
                                     <div class="input-group">
                                         <span class="input-group-addon">Since Month : &nbsp;</span>
                                         {{Form::text("mh[since_month]",!empty($mh->since_month) ? $mh->since_month : null,['class'=>'form-control'])}}
@@ -1707,7 +1713,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <span class="form-error-msg">
                                         {{$errors->first('since_cycle')}}
                                     </span>
-                                </div>
+                                </div> --}}
 
                             </div>
 

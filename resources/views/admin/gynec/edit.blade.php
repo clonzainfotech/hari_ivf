@@ -12,7 +12,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
     </div>
     <div class="col-md-3">
         <div class="form-group">
-            {{Form::select('seen_by',$hospitalDoctor,!empty($gynecData->seen_by) ? $gynecData->seen_by : null,['class'=>'form-control select-padding-0 seen-by','placeholder'=>'Select Doctor'])}}
+            {{Form::hidden('gunec_id',isset($gynecId) ? $gynecId : null,['class'=>'form-control gynec_id'])}}
+
+            {{Form::select('seen_by',$hospitalDoctor,isset($gynecId) && !empty($gynecData->seen_by) ? $gynecData->seen_by : null,['class'=>'form-control select-padding-0 seen-by','placeholder'=>'Select Doctor'])}}
         </div>
         <span class="seen-by-error text-danger mb-2"></span>
     </div>
@@ -240,6 +242,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::radio("oh[married_type]",'married',!empty($marriedType) ? false : true,[
                                 'id'=>'married',
                                 'class'=>'married-type',
+                                isset($gynecId) ? 'disabled' : ''
                             ])}}
                             <label for="married">
                                 Married
@@ -248,12 +251,15 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{Form::radio("oh[married_type]",'unmarried',!empty($marriedType) ? true : false,[
                                 'id'=>'unmarried',
                                 'class'=>'married-type',
+                                isset($gynecId) ? 'disabled' : ''
                             ])}}
                             <label for="unmarried">
                                 Unmarried
                             </label>
                         </div>
                     </div>
+                    {{Form::hidden('oh[married_type]',!empty($marriedType) ? $marriedType : null,['class'=>'form-control gynec_id'])}}
+
                 </div>
                 <div class="{{'married-data '.$marriedType}}">
                     <div class="row">
@@ -1431,7 +1437,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{$errors->first('age_of_menarchy')}}
                         </span>
                     </div>
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Since Year : &nbsp;</span>
                             {{Form::text("mh[since_year]",!empty($mh->since_year) ? $mh->since_year : null,['class'=>'form-control'])}}
@@ -1439,7 +1445,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <span class="form-error-msg">
                             {{$errors->first('since_year')}}
                         </span>
-                    </div>
+                    </div> --}}
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Manopause Since Year : &nbsp;</span>
@@ -1729,12 +1735,12 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-sm-2">
                         <div class="radio is-conceived">
-                            {{Form::radio("oe[p_a][type]",'yes',!empty($paType) ? false : true,['id'=>'pa_type_yes','class'=>'pa-type','data-type'=>'pa-details'])}}
+                            {{Form::radio("oe[p_a][type]",'yes',isset($gynecId) && !empty($paType) ? false : false,['id'=>'pa_type_yes','class'=>'pa-type','data-type'=>'pa-details'])}}
                             <label for="pa_type_yes">
                                 Yes
                             </label>
 
-                            {{Form::radio("oe[p_a][type]",'no',!empty($paType) ? true : false,['id'=>'pa_type_no','class'=>'pa-type','data-type'=>'pa-details'])}}
+                            {{Form::radio("oe[p_a][type]",'no',isset($gynecId) && !empty($paType) ? true : false,['id'=>'pa_type_no','class'=>'pa-type','data-type'=>'pa-details'])}}
                             <label for="pa_type_no">
                                 No
                             </label>
@@ -1742,7 +1748,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="{{'col-md-3 pa-details '.$paType}}">
                         <div class="form-group">
-                            {{Form::text("oe[p_a][details]",!empty($oe->p_a->details) ? $oe->p_a->details : null,['class'=>'form-control','placeholder'=>'UT Details'])}}
+                            {{Form::text("oe[p_a][details]",isset($gynecId) && !empty($oe->p_a->details) ? $oe->p_a->details : null,['class'=>'form-control','placeholder'=>'UT Details'])}}
                         </div>
                     </div>
                     
@@ -1762,7 +1768,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-1">
                         <div class="checkbox">
-                            {{Form::checkbox('oe[ovary][type][]','right',in_array('right',!empty($oe->ovary->type) ? $oe->ovary->type : []),['id'=>'right','class'=>'plan-management'])}}
+                            {{Form::checkbox('oe[ovary][type][]','right',in_array('right',isset($gynecId) && !empty($oe->ovary->type) ? $oe->ovary->type : []),['id'=>'right','class'=>'plan-management'])}}
                             <label for="right">
                                 Right
                             </label>
@@ -1770,13 +1776,13 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="{{'col-md-3 right-details'}}">
                         <div class="form-group">
-                            {{Form::select("oe[ovary][right][type]",['1'=>'Normal','2'=>"Abnormal"],!empty($oe->ovary->right->type) ? $oe->ovary->right->type : null,['class'=>'form-control select-padding-0 abnormal','data-type'=>'ovary-right-abnormal-type'])}}
+                            {{Form::select("oe[ovary][right][type]",['1'=>'Normal','2'=>"Abnormal"],isset($gynecId) && !empty($oe->ovary->right->type) ? $oe->ovary->right->type : null,['class'=>'form-control select-padding-0 abnormal','data-type'=>'ovary-right-abnormal-type'])}}
                         </div>
                     </div>
                     <div class="{{'col-md-6 right-details'}}">
                         <div class="row">
                             <div class="{{'col-md-5 complain-multi ovary-right-abnormal-type mt-1 '.$ovaryRightType}}">
-                                {{Form::select("oe[ovary][right][details][]",$rightOvaryData,!empty($oe->ovary->right->details) ? $oe->ovary->right->details : null,[
+                                {{Form::select("oe[ovary][right][details][]",$rightOvaryData,isset($gynecId) && !empty($oe->ovary->right->details) ? $oe->ovary->right->details : null,[
                                     'class'=>'form-control co-value co_value_data oe_ovary_right_details',
                                     'placeholder'=>'Abnormal Details',
                                     'id' => 'oe_ovary_right_details',
@@ -1806,7 +1812,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="col-md-2"></div>
                     <div class="col-md-1">
                         <div class="checkbox">
-                            {{Form::checkbox('oe[ovary][type][]','left',in_array('left',!empty($oe->ovary->type) ? $oe->ovary->type : []),['id'=>'left','class'=>'plan-management'])}}
+                            {{Form::checkbox('oe[ovary][type][]','left',in_array('left',isset($gynecId) &&!empty($oe->ovary->type) ? $oe->ovary->type : []),['id'=>'left','class'=>'plan-management'])}}
                             <label for="left">
                                 Left
                             </label>
@@ -1814,7 +1820,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="{{'col-md-3 left-details'}}">
                         <div class="form-group">
-                            {{Form::select("oe[ovary][left][type]",['1'=>'Normal','2'=>"Abnormal"],!empty($oe->ovary->left->type) ? $oe->ovary->left->type : null,[
+                            {{Form::select("oe[ovary][left][type]",['1'=>'Normal','2'=>"Abnormal"],isset($gynecId) && !empty($oe->ovary->left->type) ? $oe->ovary->left->type : null,[
                                 'class'=>'form-control select-padding-0 abnormal',
                                 'data-type'=>'ovary-left-abnormal-type'
                             ])}}
@@ -1889,12 +1895,12 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     @endphp
                     <div class="col-sm-2">
                         <div class="radio is-conceived">
-                            {{Form::radio("oe[p_s][type]",'yes',!empty($psType) ? false : true,['id'=>'ps_type_yes','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
+                            {{Form::radio("oe[p_s][type]",'yes',isset($gynecId) && !empty($psType) ? false : true,['id'=>'ps_type_yes','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
                             <label for="ps_type_yes">
                                 Yes
                             </label>
 
-                            {{Form::radio("oe[p_s][type]",'no',!empty($psType) ? true : false,['id'=>'ps_type_no','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
+                            {{Form::radio("oe[p_s][type]",'no',isset($gynecId) && !empty($psType) ? true : false,['id'=>'ps_type_no','class'=>'gynec-yes-no-status','data-type'=>'ps-details'])}}
                             <label for="ps_type_no">
                                 No
                             </label>
@@ -1902,7 +1908,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="{{'col-md-3 ps-details '.$psType}}">
                         <div class="form-group">
-                            {{Form::text("oe[p_s][details]",!empty($oe->p_s->details) ? $oe->p_s->details : null,['class'=>'form-control','placeholder'=>'Details'])}}
+                            {{Form::text("oe[p_s][details]",isset($gynecId) && !empty($oe->p_s->details) ? $oe->p_s->details : null,['class'=>'form-control','placeholder'=>'Details'])}}
                         </div>
                     </div>
                     <div class="{{'col-md-1 ps-details '.$psType}}">
@@ -1912,7 +1918,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="{{'col-md-3 ps-details '.$psType}}">
                         <div class="form-group">
-                            {{Form::text("oe[cervix][details]",!empty($oe->cervix->details) ? $oe->cervix->details : null,['class'=>'form-control','placeholder'=>'Cervix Details'])}}
+                            {{Form::text("oe[cervix][details]",isset($gynecId) && !empty($oe->cervix->details) ? $oe->cervix->details : null,['class'=>'form-control','placeholder'=>'Cervix Details'])}}
                         </div>
                     </div>
                 </div>
@@ -1926,7 +1932,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::text("oe[right_tube]",isset($oe->right_tube) ? $oe->right_tube : null,['class'=>'form-control','placeholder'=>'Right Tube Details'])}}
+                            {{Form::text("oe[right_tube]",isset($gynecId) && isset($oe->right_tube) ? $oe->right_tube : null,['class'=>'form-control','placeholder'=>'Right Tube Details'])}}
                         </div>
                     </div>
                     <div class="col-md-2 pr-0">
@@ -1936,7 +1942,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{Form::text("oe[left_tube]",isset($oe->left_tube) ? $oe->left_tube : null,['class'=>'form-control','placeholder'=>'Left Tube Details'])}}
+                            {{Form::text("oe[left_tube]",isset($gynecId) && isset($oe->left_tube) ? $oe->left_tube : null,['class'=>'form-control','placeholder'=>'Left Tube Details'])}}
                         </div>
                     </div>
                    
@@ -1945,6 +1951,35 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     $tvsType = !empty($oe->tvs->type) && $oe->tvs->type == 'yes' && isset($oh->married_type) && $oh->married_type == 'married' ? '' : 'd-none';
                     $breastType = !empty($oe->breast->type) && $oe->breast->type == 'yes' ? '' : 'd-none';
                 @endphp
+                <div class="row">
+                    <div class="col-md-1 pr-0">
+                        <label class="vertical-form-label pr-0">
+                            Breast :
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="radio is-conceived">
+                            {{Form::radio("oe[breast][type]",'yes',isset($breastType) && empty($breastType) ? true:false,['id'=>'breast_type_yes','class'=>'gynec-yes-no-status','data-type'=>'breast-details'])}}
+                            <label for="breast_type_yes">
+                                Yes
+                            </label>
+                            {{Form::radio("oe[breast][type]",'no',isset($breastType) && !empty($breastType) ? true:false,['id'=>'breast_type_no','class'=>'gynec-yes-no-status','data-type'=>'breast-details'])}}
+                            <label for="breast_type_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="{{'col-sm-3 breast-details '.$breastType}}">
+                        <div class="form-group">
+                            {{Form::text("oe[breast][right]", isset($oe->breast->right) ? $oe->breast->right:null,['class'=>'form-control','placeholder'=>'Right'])}}
+                        </div>
+                    </div>
+                    <div class="col-sm-3 breast-details d-none">
+                        <div class="form-group">
+                            {{Form::text("oe[breast][left]",&& isset($oe->breast->left) ? $oe->breast->left:null,['class'=>'form-control','placeholder'=>'Left'])}}
+                        </div>
+                    </div>
+                </div>
                 <div class="row married-data">
                     <div class="col-md-1 pr-0">
                         <label class="vertical-form-label pr-0">
@@ -2094,7 +2129,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="col-md-2"></div>
                     <div class="col-md-1">
                         <div class="checkbox">
-                            {{Form::checkbox('oe[ovary][type][]','left',in_array('left',!empty($oe->ovary->type) ? $oe->ovary->type : []),['id'=>'left','class'=>'plan-management'])}}
+                            {{Form::checkbox('oe[ovary][type][]','left',in_array('left',isset($gynecId) && !empty($oe->ovary->type) ? $oe->ovary->type : []),['id'=>'left','class'=>'plan-management'])}}
                             <label for="left">
                                 Left
                             </label>
@@ -2102,7 +2137,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                     <div class="{{'col-md-3 left-details'}}">
                         <div class="form-group">
-                            {{Form::select("oe[ovary][left][type]",['1'=>'Normal','2'=>"Abnormal"],!empty($oe->ovary->left->type) ? $oe->ovary->left->type : null,[
+                            {{Form::select("oe[ovary][left][type]",['1'=>'Normal','2'=>"Abnormal"],isset($gynecId) && !empty($oe->ovary->left->type) ? $oe->ovary->left->type : null,[
                                 'class'=>'form-control select-padding-0 abnormal',
                                 'data-type'=>'ovary-left-abnormal-type'
                             ])}}
@@ -2111,7 +2146,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="{{'col-md-6 left-details'}}">
                         <div class="row">
                             <div class="{{'col-md-5 complain-multi ovary-left-abnormal-type '.$ovaryLeftType}} ">
-                                {{Form::select("oe[ovary][left][details][]",$leftOvaryData,!empty($oe->ovary->left->details) ? $oe->ovary->left->details : null,[
+                                {{Form::select("oe[ovary][left][details][]",$leftOvaryData,isset($gynecId) && !empty($oe->ovary->left->details) ? $oe->ovary->left->details : null,[
                                     'class'=>'form-control co-value co_value_data oe_ovary_left_details',
                                     'placeholder'=>'Abnormal Details',
                                     'id' => 'oe_ovary_left_details',

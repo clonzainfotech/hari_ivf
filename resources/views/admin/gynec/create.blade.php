@@ -1308,12 +1308,12 @@
                                                             {{Form::select("mh[age_of_menarchy]",[11=>11,12=>12,13=>13,14=>14,15=>15],'',['class'=>'form-control select-padding-0','placeholder'=>'Age Of Menarchy'])}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    {{-- <div class="col-md-3">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Since Year : &nbsp;</span>
                                                             {{Form::text("mh[since_year]",'',['class'=>'form-control'])}}
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="col-md-3">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Manopause Since Year : &nbsp;</span>
@@ -1588,12 +1588,12 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <div class="radio is-conceived">
-                                                            {{Form::radio("oe[p_a][type]",'yes','',['id'=>'pa_type_yes','class'=>'pa-type gynec-yes-no-status','data-type'=>'pa-details'])}}
+                                                            {{Form::radio("oe[p_a][type]",'yes','',['id'=>'pa_type_yes','class'=>'pa-type','data-type'=>'pa-details'])}}
                                                             <label for="pa_type_yes">
                                                                 Yes
                                                             </label>
 
-                                                            {{Form::radio("oe[p_a][type]",'no',true,['id'=>'pa_type_no','class'=>'pa-type gynec-yes-no-status','data-type'=>'pa-details'])}}
+                                                            {{Form::radio("oe[p_a][type]",'no',true,['id'=>'pa_type_no','class'=>'pa-type','data-type'=>'pa-details'])}}
                                                             <label for="pa_type_no">
                                                                 No
                                                             </label>
