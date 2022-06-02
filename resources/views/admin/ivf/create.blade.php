@@ -1482,32 +1482,32 @@
                                                             Other
                                                         </label> --}}
                                                         {{Form::radio("oh[second_marriage][contraception][contraception_data]",'barrier_method',false,['class'=>'mr-2 second_contraception_radio','data-type'=>'second-barrier-method-detail','id'=>'second_barrier_method'])}}
-                                                    <label for="second_barrier_method" class="second_barrier_method">
-                                                        Barrier Method
-                                                    </label>
-                                                    
+                                                        <label for="second_barrier_method" class="second_barrier_method">
+                                                            Barrier Method
+                                                        </label>
+                                                        
 
-                                                    {{Form::radio("oh[second_marriage][contraception][contraception_data]",'cu_t',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_cu_t','data-type'=>'second-cu-t-detail'])}}
-                                                    <label for="second_cu_t" class="second_cu_t">
-                                                        Cu - T
-                                                    </label>
+                                                        {{Form::radio("oh[second_marriage][contraception][contraception_data]",'cu_t',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_cu_t','data-type'=>'second-cu-t-detail'])}}
+                                                        <label for="second_cu_t" class="second_cu_t">
+                                                            Cu - T
+                                                        </label>
 
-                                                    {{Form::radio("oh[second_marriage][contraception][contraception_data]",'tl_done',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_tl_done','data-type'=>'second-tl-done-detail'])}}
-                                                    <label for="second_tl_done" class="second_tl_done">
-                                                    TL Done
-                                                    </label>
-                                                    
+                                                        {{Form::radio("oh[second_marriage][contraception][contraception_data]",'tl_done',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_tl_done','data-type'=>'second-tl-done-detail'])}}
+                                                        <label for="second_tl_done" class="second_tl_done">
+                                                        TL Done
+                                                        </label>
+                                                        
 
-                                                    {{Form::radio("oh[second_marriage][contraception][contraception_data]",'occipill',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_occipill','data-type'=>'second-occipill-detail'])}}
-                                                    <label for="second_occipill" class="second_occipill">
-                                                        Occipill
-                                                    </label>
-                                                    
+                                                        {{Form::radio("oh[second_marriage][contraception][contraception_data]",'occipill',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_occipill','data-type'=>'second-occipill-detail'])}}
+                                                        <label for="second_occipill" class="second_occipill">
+                                                            Occipill
+                                                        </label>
+                                                        
 
-                                                    {{Form::radio("oh[second_marriage][contraception][contraception_data]",'other_contraception',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_other_contraception','data-type'=>'second-other-detail'])}}
-                                                    <label for="second_other_contraception" class="second_other_contraception">
-                                                        Other
-                                                    </label> 
+                                                        {{Form::radio("oh[second_marriage][contraception][contraception_data]",'other_contraception',false,['class'=>'mr-2 second_contraception_radio','id'=>'second_other_contraception','data-type'=>'second-other-detail'])}}
+                                                        <label for="second_other_contraception" class="second_other_contraception">
+                                                            Other
+                                                        </label> 
                                                     
                                                     </div>
                                                 </div>

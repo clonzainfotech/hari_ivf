@@ -723,8 +723,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             </div>
                         </div>
                         <div class="{{'col-sm-5 contraception-data ' . $contraceptionStatusClass}}">
-                            <div class="radio is-conceived">
-                                {{Form::radio("oh[contraception][contraception_data]",'barrier_method',$contraceptionValue == 'barrier_method' ? true : false,['class'=>'mr-2','id'=>'barrier_method'])}}
+                            <div class="radio is-conceived d-flex">
+                                {{-- {{Form::radio("oh[contraception][contraception_data]",'barrier_method',$contraceptionValue == 'barrier_method' ? true : false,['class'=>'mr-2','id'=>'barrier_method'])}}
                                 <label for="barrier_method">
                                     Barrier Method
                                 </label>
@@ -743,7 +743,46 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 {{Form::radio("oh[contraception][contraception_data]",'other_contraception',$contraceptionValue == 'other_contraception' ? true : false,['class'=>'mr-2','id'=>'other_contraception'])}}
                                 <label for="other_contraception">
                                     Other
+                                </label> --}}
+                                {{Form::radio("oh[contraception][contraception_data]",'barrier_method',$contraceptionValue == 'barrier_method' ? true : false,['class'=>'mr-2 contraception_radio','data-type'=>'barrier-method-detail','id'=>'barrier_method'])}}
+                                <label for="barrier_method" class="barrier_method">
+                                    Barrier Method
                                 </label>
+                                @if($contraceptionValue == 'barrier_method')
+                                    {{Form::text("oh[contraception][detail]",isset($oh->contraception->detail) ? $oh->contraception->detail : '',['class'=>'form-control col-md-3 contraception-radio-radio barrier-method-detail '])}}
+                                @endif
+
+                                {{Form::radio("oh[contraception][contraception_data]",'cu_t',$contraceptionValue == 'cu_t' ? true : false,['class'=>'mr-2 contraception_radio','id'=>'cu_t','data-type'=>'cu-t-detail'])}}
+                                <label for="cu_t" class="cu_t">
+                                    Cu - T
+                                </label>
+                                @if($contraceptionValue == 'cu_t')
+                                    {{Form::text("oh[contraception][detail]",isset($oh->contraception->detail) ? $oh->contraception->detail : '',['class'=>'form-control col-md-3 contraception-radio-radio cu-t-detail '])}}
+                                @endif
+
+                                {{Form::radio("oh[contraception][contraception_data]",'tl_done',$contraceptionValue == 'tl_done' ? true : false,['class'=>'mr-2 contraception_radio','id'=>'tl_done','data-type'=>'tl-done-detail'])}}
+                                <label for="tl_done" class="tl_done">
+                                TL Done
+                                </label>
+                                @if($contraceptionValue == 'tl_done')
+                                    {{Form::text("oh[contraception][detail]",isset($oh->contraception->detail) ? $oh->contraception->detail : '',['class'=>'form-control col-md-3 contraception-radio-radio tl-done-detail '])}}
+                                @endif
+
+                                {{Form::radio("oh[contraception][contraception_data]",'occipill',$contraceptionValue == 'occipill' ? true : false,['class'=>'mr-2 contraception_radio','id'=>'occipill','data-type'=>'occipill-detail'])}}
+                                <label for="occipill" class="occipill">
+                                    Occipill
+                                </label>
+                                @if($contraceptionValue == 'occipill')
+                                    {{Form::text("oh[contraception][detail]",isset($oh->contraception->detail) ? $oh->contraception->detail : '',['class'=>'form-control col-md-3 contraception-radio-radio occipill-detail '])}}
+                                @endif 
+
+                                {{Form::radio("oh[contraception][contraception_data]",'other_contraception',$contraceptionValue == 'other_contraception' ? true : false,['class'=>'mr-2 contraception_radio','id'=>'other_contraception','data-type'=>'other-detail'])}}
+                                <label for="other_contraception" class="other_contraception">
+                                    Other
+                                </label> 
+                                @if($contraceptionValue == 'other_contraception')
+                                    {{Form::text("oh[contraception][detail]",isset($oh->contraception->detail) ? $oh->contraception->detail : '',['class'=>'form-control col-md-3 contraception-radio-radio other-detail '])}}
+                                @endif
                             </div>
                         </div>
                         <div class="{{'col-sm-3 contraception-data ' . $contraceptionStatusClass}}">
@@ -1279,27 +1318,46 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             </div>
                         </div>
                         <div class="{{'col-sm-5 second-contraception-data ' . $secondContraceptionStatusClass}}">
-                            <div class="radio is-conceived">
-                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'barrier_method',$secondContraceptionValue == 'barrier_method' ? true : false,['class'=>'mr-2','id'=>'second_barrier_method'])}}
-                                <label for="second_barrier_method">
+                            <div class="radio is-conceived d-flex">
+                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'barrier_method',$secondContraceptionValue == 'barrier_method' ? true : false,['class'=>'mr-2 second_contraception_radio','data-type'=>'second-barrier-method-detail','id'=>'second_barrier_method'])}}
+                                <label for="second_barrier_method" class="second_barrier_method">
                                     Barrier Method
                                 </label>
-                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'cu_t',$secondContraceptionValue == 'cu_t' ? true : false,['class'=>'mr-2','id'=>'second_cu_t'])}}
-                                <label for="second_cu_t">
+                                @if($secondContraceptionValue == 'barrier_method')
+                                    {{Form::text("oh[second_marriage][contraception][detail]",isset($oh->second_marriage->contraception->detail) ? $oh->second_marriage->contraception->detail : '',['class'=>'form-control col-md-3 second-contraception-radio-radio second-barrier-method-detail '])}}
+                                @endif
+
+                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'cu_t',$secondContraceptionValue == 'cu_t' ? true : false,['class'=>'mr-2 second_contraception_radio','id'=>'second_cu_t','data-type'=>'second-cu-t-detail'])}}
+                                <label for="second_cu_t" class="second_cu_t">
                                     Cu - T
                                 </label>
-                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'tl_done',$secondContraceptionValue == 'tl_done' ? true : false,['class'=>'mr-2','id'=>'second_tl_done'])}}
-                                <label for="second_tl_done">
+                                @if($secondContraceptionValue == 'cu_t')
+                                    {{Form::text("oh[second_marriage][contraception][detail]",isset($oh->second_marriage->contraception->detail) ? $oh->second_marriage->contraception->detail : '',['class'=>'form-control col-md-3 second-contraception-radio-radio second-cu-t-detail '])}}
+                                @endif
+
+                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'tl_done',$secondContraceptionValue == 'tl_done' ? true : false,['class'=>'mr-2 second_contraception_radio','id'=>'second_tl_done','data-type'=>'second-tl-done-detail'])}}
+                                <label for="second_tl_done" class="second_tl_done">
                                 TL Done
                                 </label>
-                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'occipill',$secondContraceptionValue == 'occipill' ? true : false,['class'=>'mr-2','id'=>'second_occipill'])}}
-                                <label for="second_occipill">
+                                @if($secondContraceptionValue == 'tl_done')
+                                    {{Form::text("oh[second_marriage][contraception][detail]",isset($oh->second_marriage->contraception->detail) ? $oh->second_marriage->contraception->detail : '',['class'=>'form-control col-md-3 second-contraception-radio-radio second-tl-done-detail '])}}
+                                @endif
+
+                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'occipill',$secondContraceptionValue == 'occipill' ? true : false,['class'=>'mr-2 second_contraception_radio','id'=>'second_occipill','data-type'=>'second-occipill-detail'])}}
+                                <label for="second_occipill" class="second_occipill">
                                     Occipill
                                 </label>
-                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'other_contraception',$secondContraceptionValue == 'other_contraception' ? true : false,['class'=>'mr-2','id'=>'second_other_contraception'])}}
-                                <label for="second_other_contraception">
+                                @if($secondContraceptionValue == 'occipill')
+                                    {{Form::text("oh[second_marriage][contraception][detail]",isset($oh->second_marriage->contraception->detail) ? $oh->second_marriage->contraception->detail : '',['class'=>'form-control col-md-3 second-contraception-radio-radio second-occipill-detail '])}}
+                                @endif 
+
+                                {{Form::radio("oh[second_marriage][contraception][contraception_data]",'other_contraception',$secondContraceptionValue == 'other_contraception' ? true : false,['class'=>'mr-2 second_contraception_radio','id'=>'second_other_contraception','data-type'=>'second-other-detail'])}}
+                                <label for="second_other_contraception" class="second_other_contraception">
                                     Other
-                                </label>
+                                </label> 
+                                @if($secondContraceptionValue == 'other_contraception')
+                                    {{Form::text("oh[second_marriage][contraception][detail]",isset($oh->second_marriage->contraception->detail) ? $oh->second_marriage->contraception->detail : '',['class'=>'form-control col-md-3 second-contraception-radio-radio second-other-detail '])}}
+                                @endif
                             </div>
                         </div>
                         <div class="{{'col-sm-3 second-contraception-data ' . $secondContraceptionStatusClass}}">
