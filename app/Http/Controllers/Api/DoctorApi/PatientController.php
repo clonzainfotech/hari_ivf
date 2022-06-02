@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AppointmentController;
 use App\Models\Appointment;
 use Validator;
 use Carbon\Carbon;
+use DB;
 
 class PatientController extends ApiController
 {
@@ -116,7 +117,7 @@ class PatientController extends ApiController
     public function patientDetails(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'patients_id' => 'required',
+            'patientId' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -124,18 +125,97 @@ class PatientController extends ApiController
         }
         $token = $request->header('Authorization');
         $UserData = $this->UserToken->where('token', $token)->first();
-        $patients_id = isset($request->patients_id) ? $request->patients_id : '';
+        $patientId = isset($request->patientId) ? $request->patientId : '';        
+        
+        $appointmentData = $this->Appointment::select('id','date','time','created_by','is_done','category_id','appontment_request_id','arrival_time','is_procedure',DB::raw("DATE_FORMAT(date,'%Y') as yearKey"))
+                                        ->where('patients_id', $patientId)
+                                        ->orderBy('date','desc')
+                                        ->get();
+                $appointmentRequestData = $this->AppointmentRequest::select('id','appointment_date as date','appointment_time as time','is_book',DB::raw("DATE_FORMAT(appointment_date,'%Y') as yearKey"))
+                                            ->where('patients_id', $patientId)
+                                            ->where('is_book','!=',1)
+                                            ->orderBy('date','desc')
+                                            ->get();
+                $data  = collect($appointmentData->merge($appointmentRequestData))->groupBy('date');
+               
+                $aData = [];
+                $appointmentData = [];
+                         
+                                
+                foreach ($data as $key=>$value) {
+                                   
+                        $value = $value[0];
+                        $utersWeek = null;
+                        $oldDate = null;
+                        $lastAppointment = $this->Appointment->where('patients_id', $patientId)->where('date',$value->date)->orderBy('id','DESC')->first();
+                        if($lastAppointment)
+                        {
+                            $value->id = $lastAppointment->id;
+                            
+                            $categoryData = $lastAppointment->category_id;
+                            
+                            if($lastAppointment->category_id == 5 || $lastAppointment->category_id == 6)
+                            {
+                                $anc = $this->ANC->where('patients_id',$patientId)->orderBy('created_at','desc')->first();
+                                if($anc) 
+                                {
+                                    $mhData = json_decode($anc->m_h);
+                                    $lmdDate = $mhData->last_menstrual_date;
+                                    $oldDate = \Carbon\Carbon::parse($lmdDate)->format('Y-m-d');
+                                }
+                            }
+                        }   
+                        $utersWeek =  \Carbon\Carbon::parse(!empty($oldDate) ? $oldDate : date('Y-m-d'))->diffInWeeks(\Carbon\Carbon::parse($value->date)->format('Y-m-d')); 
+                            $value->category = !empty($lastAppointment) && $categoryData ? $lastAppointment['categoryDetails']['name'] : null; 
+                            $value->category_id = !empty($lastAppointment) ? $categoryData : null;
+                            $currentDate = \Carbon\Carbon::now()->format('d-m-Y');
+                            $currentTime = \Carbon\Carbon::now()->format('H:i:s');
+                            $book = $value->is_book;
+                            $status = $book == 0 ? 'Pending' : 'Rejected';
+                            $value->reason = $value->remark;
+                            $value->oldDate = $oldDate;
+                            $value->time = \Carbon\Carbon::parse($value->time)->format('g:i').' '.(strtotime(\Carbon\Carbon::parse($value->time)->format('g:i')) > strtotime('9:00') &&   strtotime(\Carbon\Carbon::parse($value->time)->format('g:i')) < strtotime('12:00') ? 'AM' : 'PM');
+                            if($value->created_by){                                
+                                if ($value->is_done == 0) {
+                                    $status = "Not Visited";
+                                    if (((strtotime($value->date.' '.$value->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($value->is_done == 0)) || (!$value->arrival_time && strtotime($value->date) >= strtotime($currentDate))) {
+                                        $status = "Approved";
+                                    }                                    
+                                } else {
+                                    $status = "Visited";
+                                }                                
+                                if($value->is_procedure == 1)
+                                {
+                                    $pickUp = $this->IvfPlanReport->where('patients_id',$patientId)->whereDate('created_at',\Carbon\Carbon::parse($value->date)->format('Y-m-d'))->first();
+                                    if(!empty($pickUp))
+                                    {
+                                        $status = "Visited";
+                                    }
+                                    // $transfer = $this->IvfTransferReport->where('patients_id',$patientId)->whereDate('craeted_at',$value->date)->first();
+                                }
+                            }
+                            $value->status = $status;
+                            unset($value->is_done,$value->is_procedure,$value->yearKey,$value->categoryDetails,$value->getPatientsDetails,$value->appontment_request_id,$value->is_book,$value->arrival_time,$value->created_by);
+                        
+                        $value->reason = $value->remark;
+                        $value->week = $utersWeek;
+                       array_push($appointmentData,$value);
+                    }
+        
         if($token && $UserData) {
-            $patientdetails = collect($this->OpdPatients->select('id','code','name','dob','mobile_number','residence','location','other_mobile_number','weight')->where('hospital_doctor_id',$UserData->user_id)->where('id',$patients_id)->get())->map(function($q){
-                $q->date = $q->lastDoneAppointmentData['date'];
-                $q->time = $q->lastDoneAppointmentData['time'];
-                 unset($q->lastDoneAppointmentData);
-                return $q;
-            });
+            $patientdetails = $this->OpdPatients->select('id','code','name','profile_picture','dob','mobile_number','residence','location','other_mobile_number','weight')->where('hospital_doctor_id',$UserData->user_id)->where('id',$patientId)->first();  
+            $patientdetails->visit = $appointmentData;      
+            foreach($appointmentData as $key){
+                // $appid = $key->id;
+                // $appointment = $this->Appointment->with('getPatientsDetails')->where('id', $appid)->first();
+                $key->url =  '';
+            }     
             return $this->sendResponse('Your Patient Details successfully get',$patientdetails);
         }
         return $this->sendError(__('auth.failed'), 401);
     }
+
+    
      /**
     *Get Appointment Patient Details
     * @param  \Illuminate\Http\Request
@@ -164,24 +244,8 @@ class PatientController extends ApiController
             $appointment->age = $appointment->getPatientsDetails['age'];
             $appointment->weight = $appointment->getPatientsDetails['weight'];
             $appointment->category = $appointment->categoryDetails['name'];
-
-            // $patientdetails = collect($this->Appointment->select('id','patients_id','category_id','date','time','remark')->where('patients_id',$patients_id)->latest()->take(1)->get())->map(function($q) {
-            //     $q->profile_picture = $q->getPatientsDetails['profile_picture'];
-            //     $q->patient_name = $q->getPatientsDetails['name'];
-            //     $q->mobile_number = $q->getPatientsDetails['mobile_number'];
-            //     $q->date_of_birth = $q->getPatientsDetails['dob'];
-            //     $q->last_visit = $q->lastAppointmentData['date'];
-            //     $q->age = $q->getPatientsDetails['age'];
-            //     $q->weight = $q->getPatientsDetails['weight'];
-            //     $q->category = $q->categoryDetails['name'];
                 unset($appointment->categoryDetails,$appointment->getPatientsDetails,$appointment->lastAppointmentData);
-            //     return $q;
-            // });
-            // dd($appointment);
-            // $appointment_PopupDetail = new AppointmentController;
-
-            // $appointment->note = $appointment_PopupDetail->appointmentPopupDetail($patients_id, $appointment->date, $appointment->categoryid);
-            // dd($appointment->note);
+           
             return $this->sendResponse('Your Appointment Patient Details successfully get',$appointment);
         }
         return $this->sendError(__('auth.failed'), 401);
