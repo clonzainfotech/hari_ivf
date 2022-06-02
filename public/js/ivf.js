@@ -2999,3 +2999,21 @@ $(document).ready(function(){
         return Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
         
     }
+    $(document).on('change','.contraception_radio',function(){
+        var type = $(this).data('type');
+        $('.contraception-radio-radio').addClass('d-none');
+        // console.log(type);
+        var contraception_id = $(this).attr('id');
+        console.log(contraception_id);
+        $('<input class="form-control col-md-3 contraception-radio-radio" name="oh[contraception][detail]" type="text" value="">').insertAfter('label.'+contraception_id);
+        // $('.'+type).removeClass('d-none');
+    })
+    $(document).on('change','.second_contraception_radio',function(){
+        var type = $(this).data('type');
+        $('.second-contraception-radio-radio').addClass('d-none');
+        console.log(type);
+        var contraception_id = $(this).attr('id');
+        // console,log(contraception_id);
+        $('<input class="form-control col-md-3 second-contraception-radio-radio" name="oh[second_marriage][contraception][detail]" type="text" value="">').insertAfter('label.'+contraception_id);
+        // $('.'+type).removeClass('d-none');
+    })

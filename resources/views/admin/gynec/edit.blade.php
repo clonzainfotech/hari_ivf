@@ -1950,8 +1950,9 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                    
                 </div>
                 @php
-                    $tvsType = !empty($oe->tvs->type) && $oe->tvs->type == 'yes' && isset($oh->married_type) && $oh->married_type == 'married' ? '' : 'd-none';
+                    $tvsType = !empty($oe->tvs->type) && $oe->tvs->type == 'yes' ? '' : 'd-none';
                     $breastType = !empty($oe->breast->type) && $oe->breast->type == 'yes' ? '' : 'd-none';
+                    $tvsDisplay = isset($oh->married_type) && $oh->married_type == 'married' ? '' : 'd-none';
                 @endphp
                 <div class="row">
                     <div class="col-md-1 pr-0">
@@ -1983,7 +1984,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     </div>
                 </div>
 
-                <div class="{{'row married-data '.$tvsType}}">
+                <div class="{{'row married-data '.$tvsDisplay}}">
                     <div class="col-md-1 pr-0">
                         <label class="vertical-form-label pr-0">
                             TVS :
