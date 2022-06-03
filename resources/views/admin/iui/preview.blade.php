@@ -2187,18 +2187,24 @@
                                         @if (in_array('management_by_rx', $planManagement->plan_of_management_data))
                                             <tr>
                                                 <th>
-                                                    Management by Rx. {{ !empty($planManagement->management_by_rx_details) ? $planManagement->management_by_rx_details : '-' }}
+                                                    Management by Rx. 
+                                                </th>
+                                                <td>
+                                                    {{ !empty($planManagement->management_by_rx_details) ? $planManagement->management_by_rx_details : '-' }}
+                                                </td>
                                                     @if (!empty($planManagement->management_by_rx_data))
+                                                    <td>
                                                         @foreach($planManagement->management_by_rx_data as $key => $value)
                                                             @switch($value)
                                                                 @case('1')
-                                                                Clomiphene Citrate <br />
+                                                                Clomiphene Citrate <br/>
                                                                 @break
                                                                 @case('2')
                                                                 Letroze <br />
                                                                 @break
                                                             @endswitch
                                                         @endforeach
+                                                    </td>  
                                                     @endif
                                                 </th>
                                             </tr>
