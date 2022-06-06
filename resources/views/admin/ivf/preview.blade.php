@@ -2181,11 +2181,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     @endif
                                     @if (in_array('ivf', $planManagement->plan_of_management_data))
                                         <tr>
-                                            <th>
-                                            IVF
-                                            </th>
                                             <td >
-                                                {{ !empty($planManagement->ivf_details) ? $planManagement->ivf_details : '-' }}
+                                                {{ !empty($planManagement->ivf_details) ? 'IVF - '.$planManagement->ivf_details : '-' }}
                                             </td>
                                             @if (!empty($planManagement->ivf_data))
                                                 <td >

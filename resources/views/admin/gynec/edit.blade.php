@@ -256,7 +256,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             </label>
                         </div>
                     </div>
-                    {{Form::hidden('oh[married_type]',!empty($marriedType) ? $marriedType : null,['class'=>'form-control gynec_id'])}}
+                    {{-- {{Form::hidden('oh[married_type]',!empty($marriedType) ? $marriedType : null,['class'=>'form-control gynec_id'])}} --}}
 
                 </div>
                 <div class="{{'married-data '.$marriedType}}">
