@@ -2689,6 +2689,9 @@ input[type=number]::-webkit-outer-spin-button {
 line-height: 6px !important;
 }
 
+
+
+/* all media query*/
 @media (min-width: 576px){
     .view-file-modal-dialog,.view-iui-file-modal-dialog {
         max-width: 90% !important;

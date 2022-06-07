@@ -144,21 +144,22 @@
     {
         color: red;
     }
-    .pl-2
-    {
+    .pl-2    {
         padding-left: 2.5rem;
     }
-    .panel-primary
-    {
+    .panel-primary    {
         border:none !important;
     }
-    .font-bold
-    {
+    .font-bold    {
         font-weight : 700;
     }
-    .display
-    {
+    .display    {
         display: flex;
+        align-items: flex-start;
+        width: 100%;
+    }
+    .visit1-print .module-report-table {
+        min-width: 50%;
     }
     
     @page { margin-top : 200px; margin-left : 100px;}
@@ -197,7 +198,7 @@
 @if(empty($iui->study_report) && (!isset($isExtraVisit) || $isExtraVisit == 0))
     <div class="main-print-iui-div">
         @if(!$iui->iui_print)
-            <div class="{{'panel print-panel-primary '.(isset($printPreview) && $printPreview == 1 ? 'watermark' : '')}}">
+            <div class="{{'panel print-panel-primary visit1-print '.(isset($printPreview) && $printPreview == 1 ? 'watermark' : '')}}">
                 @if($visit == null)
                     <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                         <tbody>
@@ -1160,9 +1161,9 @@
                                             </th>
                                         </tr>
                                     @endif
-                                </tbody>
+                                {{-- </tbody>
                             </table>
-                            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
+                            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table"> --}}
                                 @if((isset($husbandFactor->fsh) && !empty($husbandFactor->fsh)) || (isset($husbandFactor->lh) && !empty($husbandFactor->lh)) || (isset($husbandFactor->testosterone) && !empty($husbandFactor->testosterone)) || (isset($husbandFactor->rbs) && !empty($husbandFactor->rbs)))
                                     <tr>
                                         <th>
@@ -1207,71 +1208,12 @@
                                             @endif
                                         </th>
                                     </tr>
-                                @endif    
+                                @endif   
+                                </tbody> 
                             </table>
                         @endif
                         {{-- </div> --}}
-                        @if($patientDetailedHO && (!empty($patientDetailedHO->personal_history_history_type) || !empty($patientDetailedHO->personal_history_date) || !empty($patientDetailedHO->family_history) || !empty($patientDetailedHO->past_history_type)))
-                            <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
-                                <tbody>
-                                    @php
-                                        // $personal_history_type = ['1'=>'NAD','2'=>"Diabetes Mellitus",'3'=>"Thyroid",'4'=>"Heart Disease",'5'=>"Hypertension"];
-                                    @endphp
-                                    @if(!empty($patientDetailedHO->personal_history_history_type) && count((array)$patientDetailedHO->personal_history_history_type) > 1)
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Personal History :</span>
-                                                {{implode(',',$patientDetailedHO->personal_history_history_type)}}
-                                            </th>
-                                        </tr>
-                                    @endif
-                                    @if(!empty($patientDetailedHO->personal_history_date))
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Date :</span>
-                                                {{\Carbon\Carbon::parse($patientDetailedHO->personal_history_date)->format('D d M Y')}}
-                                            </th>
-                                        </tr>
-                                    @endif
-                                    @if(isset($patientDetailedHO->personal_history_detail) && !empty($patientDetailedHO->personal_history_detail))
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Personal History Detail:</span>
-                                                {{$patientDetailedHO->personal_history_detail}}
-                                            </th>
-                                        </tr>
-                                    @endif
-                                    @if(!empty($patientDetailedHO->family_history) && count((array)$patientDetailedHO->family_history) > 1)
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Family History :</span>
-                                                {{implode(',',$patientDetailedHO->family_history)}}
-                                            </th>
-                                        </tr>
-                                    @endif
-                                    @if(isset($patientDetailedHO->family_history_detail) && !empty($patientDetailedHO->family_history_detail))
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Family History Detail:</span>
-                                                {{$patientDetailedHO->personal_history_detail}}
-                                            </th>
-                                        </tr>
-                                    @endif   
-                                    @php
-                                        // $personal_past_history_type = ['nad'=>'NAD','tuberculosis_bacillus'=>"Tuberculosis Bacillus",'hypertension'=>"Hypertension",'thyroid'=>"Thyroid",'dm'=>"DM",'appendectomy'=>'Appendectomy','laparoscopy'=>'Laparoscopy'];
-                                    @endphp
-
-                                    @if(!empty($patientDetailedHO->past_history_type) && count((array)$patientDetailedHO->past_history_type) > 1)
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Past History :</span>
-                                                {{implode(',',$patientDetailedHO->past_history_type)}}
-                                            </th>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        @endif
+                        
                     </div>
                     <div class="display">
                         @if($mh)
@@ -1579,12 +1521,16 @@
                                                     {{ !empty($investigation->fsh) ? $investigation->fsh : '-' }}
                                                 </th>
                                             @endif
+                                        </tr>
+                                        <tr>
                                             @if(!empty($investigation->prolectin))
                                                 <th>
                                                     <span class="iui-label"> Prolectin: </span>
                                                     {{ !empty($investigation->prolectin) ? $investigation->prolectin : '-' }}
                                                 </th>
                                             @endif
+                                        </tr>
+                                        <tr>
                                             @if(!empty($investigation->lh))
                                                 <th>
                                                     <span class="iui-label">  LH: </span>
@@ -1601,18 +1547,24 @@
                                                     {{ !empty($investigation->amh) ? $investigation->amh : '-' }}
                                                 </th>
                                             @endif
+                                        </tr>
+                                        <tr>
                                             @if(!empty($investigation->e2))
                                                 <th>
                                                     <span class="iui-label"> E2:  </span>
                                                     {{ !empty($investigation->e2) ? $investigation->e2 : '-' }}
                                                 </th>
                                             @endif
+                                        </tr>
+                                        <tr>
                                             @if(!empty($investigation->p2))
                                                 <th>
                                                     <span class="iui-label">  P2:  </span>
                                                     {{ !empty($investigation->p2) ? $investigation->p2 : '-' }}
                                                 </th>
                                             @endif
+                                        </tr>
+                                        <tr>
                                             @if(!empty($investigation->date_2))
                                                 <th>
                                                     <span class="iui-label">  Date 2:  </span>
@@ -1656,7 +1608,7 @@
                                         @endif
                                     @endif
                                     @if(isset($investigation->investigation_extra) && !empty($investigation->investigation_extra))
-                                        <tr >
+                                        <tr>
                                             <th>
                                                 <span class="iui-label">Other Report :</span>
                                                 {{$investigation->investigation_extra}}
@@ -1732,6 +1684,8 @@
                                                 <span class="iui-label">Uterus:  </span>
                                                 {{ !empty($oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
                                             </th>
+                                        </tr>
+                                        <tr>
                                             @if ($oe->uterus->type == '2')
                                                 <th>
                                                     <span class="iui-label">Abnormal Details:  </span>
@@ -1822,6 +1776,301 @@
                                 </tbody>
                             </table>
                         @endif
+
+                        @if($patientDetailedHO && (!empty($patientDetailedHO->personal_history_history_type) || !empty($patientDetailedHO->personal_history_date) || !empty($patientDetailedHO->family_history) || !empty($patientDetailedHO->past_history_type)))
+                            <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="9">
+                                            <div class="panel-title header-print-title">History</div>
+                                        </td>
+                                    </tr>
+                                    @php
+                                        // $personal_history_type = ['1'=>'NAD','2'=>"Diabetes Mellitus",'3'=>"Thyroid",'4'=>"Heart Disease",'5'=>"Hypertension"];
+                                    @endphp
+                                    @if(!empty($patientDetailedHO->personal_history_history_type) && count((array)$patientDetailedHO->personal_history_history_type) > 1)
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Personal History :</span>
+                                                {{implode(',',$patientDetailedHO->personal_history_history_type)}}
+                                            </th>
+                                        </tr>
+                                    @endif
+                                    @if(!empty($patientDetailedHO->personal_history_date))
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Date :</span>
+                                                {{\Carbon\Carbon::parse($patientDetailedHO->personal_history_date)->format('D d M Y')}}
+                                            </th>
+                                        </tr>
+                                    @endif
+                                    @if(isset($patientDetailedHO->personal_history_detail) && !empty($patientDetailedHO->personal_history_detail))
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Personal History Detail:</span>
+                                                {{$patientDetailedHO->personal_history_detail}}
+                                            </th>
+                                        </tr>
+                                    @endif
+                                    @if(!empty($patientDetailedHO->family_history) && count((array)$patientDetailedHO->family_history) > 1)
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Family History :</span>
+                                                {{implode(',',$patientDetailedHO->family_history)}}
+                                            </th>
+                                        </tr>
+                                    @endif
+                                    @if(isset($patientDetailedHO->family_history_detail) && !empty($patientDetailedHO->family_history_detail))
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Family History Detail:</span>
+                                                {{$patientDetailedHO->personal_history_detail}}
+                                            </th>
+                                        </tr>
+                                    @endif   
+                                    @php
+                                        // $personal_past_history_type = ['nad'=>'NAD','tuberculosis_bacillus'=>"Tuberculosis Bacillus",'hypertension'=>"Hypertension",'thyroid'=>"Thyroid",'dm'=>"DM",'appendectomy'=>'Appendectomy','laparoscopy'=>'Laparoscopy'];
+                                    @endphp
+
+                                    @if(!empty($patientDetailedHO->past_history_type) && count((array)$patientDetailedHO->past_history_type) > 1)
+                                        <tr>
+                                            <th>
+                                                <span class="iui-label">Past History :</span>
+                                                {{implode(',',$patientDetailedHO->past_history_type)}}
+                                            </th>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+                    <div class="display">
+                        @if($planManagement && isset($planManagement->plan_of_management_data))
+                            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="9">
+                                            <div class="panel-title header-print-title">Plan Management</div>
+                                        </td>
+                                    </tr>
+                                    @if (isset($planManagement->plan_of_management_data))
+                                        {{-- for converting IUI to IVF --}}
+                                        @if (in_array('ivf', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    <span class="ivf-label"> IVF</span>
+                                                    {{!empty($planManagement->ivf_details) && !empty($planManagement->is_print) ? $planManagement->ivf_details : '-' }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (in_array('counceling', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Counceling
+                                                </th>
+                                                <td  colspan="6">
+                                                    {{ !empty($planManagement->counceling_details) ? $planManagement->counceling_details : '-' }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (in_array('wait_watch', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Wait Watch
+                                                </th>
+                                                <td  colspan="6">
+                                                    {{ !empty($planManagement->wait_watch_details) ? $planManagement->wait_watch_details : '-' }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (in_array('management_by_rx', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Management by Rx. 
+                                                </th>
+                                                <td>
+                                                    {{ !empty($planManagement->management_by_rx_details) ? $planManagement->management_by_rx_details : '-' }}
+                                                </td>
+                                                    @if (!empty($planManagement->management_by_rx_data))
+                                                    <td>
+                                                        @foreach($planManagement->management_by_rx_data as $key => $value)
+                                                            @switch($value)
+                                                                @case('1')
+                                                                Clomiphene Citrate <br/>
+                                                                @break
+                                                                @case('2')
+                                                                Letroze <br />
+                                                                @break
+                                                            @endswitch
+                                                        @endforeach
+                                                    </td>  
+                                                    @endif
+                                                </th>
+                                            </tr>
+                                        @endif
+                                        @if (in_array('hyperstimulation_iui', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Controlled Overian Hyperstimulation With I.U.I
+                                                </th>
+                                                <td >
+                                                    {{ !empty($planManagement->hyperstimulation_iui_details) ? $planManagement->hyperstimulation_iui_details : '-' }}
+                                                </td>
+                                                @if (!empty($planManagement->hyperstimulation_iui_data))
+                                                    <td >
+                                                        @foreach($planManagement->hyperstimulation_iui_data as $key => $value)
+                                                            @switch($value)
+                                                                @case('1')
+                                                                    Only Medicine <br />
+                                                                    @break
+                                                                @case('2')
+                                                                    Medicine + Gonadotropins <br />
+                                                                    @break
+                                                                @case('3')
+                                                                    Only Gonadotropins <br />
+                                                                @break
+                                                            @endswitch
+                                                        @endforeach
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        @endif
+                                        @if (in_array('laproscopy', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Laproscopy
+                                                </th>
+                                                <td >
+                                                    {{ !empty($planManagement->laproscopy_details) ? $planManagement->laproscopy_details : '-' }}
+                                                </td>
+                                                @if (!empty($planManagement->laproscopy_data))
+                                                    <td >
+                                                        @foreach($planManagement->laproscopy_data as $key => $value)
+                                                            @switch($value)
+                                                                @case('1')
+                                                                    HSG <br />
+                                                                    @break
+                                                                @case('2')
+                                                                    Hystroscopy <br />
+                                                                    @break
+                                                                @case('3')
+                                                                    DHL <br />
+                                                                @break
+                                                                @case('4')
+                                                                    Other <br />
+                                                                @break
+                                                            @endswitch
+                                                        @endforeach
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        @endif
+                                        @if (in_array('ivf', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                IVF
+                                                </th>
+                                                <td >
+                                                    {{ !empty($planManagement->ivf_details) ? $planManagement->ivf_details : '-' }}
+                                                </td>
+                                                @if (!empty($planManagement->ivf_data))
+                                                @php
+                                                    $ivfData = [];
+                                                @endphp
+                                                    <td >
+                                                        @foreach($planManagement->ivf_data as $key => $value)
+                                                            @switch($value)
+                                                                @case('1')
+                                                                    @php
+                                                                        $ivfData[] = 'SELF';
+                                                                    @endphp
+                                                                    @break
+                                                                @case('2')
+                                                                    @php
+                                                                        $ivfData[] = 'OD';
+                                                                    @endphp
+                                                                    @break
+                                                                @case('3')
+                                                                    @php
+                                                                        $ivfData[] = 'ED';
+                                                                    @endphp
+                                                                @break
+                                                            @endswitch
+                                                        @endforeach
+                                                        {{implode(',',$ivfData)}}
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        @endif
+                                        @if (in_array('male_factor', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Rx. Of Male Factor
+                                                </th>
+                                                <td  colspan="6">
+                                                    {{ !empty($planManagement->male_factor_details) ? $planManagement->male_factor_details : '-' }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (in_array('reports', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Reports
+                                                </th>
+                                                <td  colspan="6">
+                                                    {{ !empty($planManagement->reports_details) ? $planManagement->reports_details : '-' }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (in_array('induction_gonadotropins_cycle', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Induction Gonadotropins Cycle
+                                                </th>
+                                                <td  colspan="6">
+                                                    {{ !empty($planManagement->induction_gonadotropins_cycle_details) ? $planManagement->induction_gonadotropins_cycle_details : '-' }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if (in_array('other', $planManagement->plan_of_management_data))
+                                            <tr>
+                                                <th>
+                                                    Other
+                                                </th>
+                                                <td  colspan="6">
+                                                    {{ !empty($planManagement->other_details) ? $planManagement->other_details : '-' }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endif
+                                    {{-- for converting IUI to IVF --}}
+                                    @if(isset($planManagement->plan) && !empty($planManagement->plan))
+                                        <tr>
+                                            <th>
+                                                <span class="ivf-label"> Plan</span>
+                                                @if (isset($planManagement->plan) && !empty($planManagement->plan))
+                                                    @switch($planManagement->plan)
+                                                        @case('1')
+                                                            IVF Self
+                                                            @break
+                                                        @case('2')
+                                                            FET Self
+                                                            @break
+                                                        @case('3')
+                                                            FET-OD
+                                                            @break
+                                                        @case('4')
+                                                            FET-ED
+                                                            @break
+                                                    @endswitch
+                                                @endif
+                                            </th>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        @endif
+
                         @if($hoRx && (!empty($hoRx->taken) && !empty($hoRx->taken->status) && $hoRx->taken->status == 'yes') || (!empty($hoRx->iui) && !empty($hoRx->iui->status) && $hoRx->iui->status == 'yes') || (!empty($hoRx->ivf) && !empty($hoRx->ivf->status) && $hoRx->ivf->status == 'yes'))
                             <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                                 <tbody>
@@ -2145,269 +2394,45 @@
                             </table>
                         @endif
                     </div>
-                    <div class="display">
-                        @if($planManagement && isset($planManagement->plan_of_management_data))
-                            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
-                                <tbody>
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="panel-title header-print-title">Plan Management</div>
-                                        </td>
-                                    </tr>
-                                    @if (isset($planManagement->plan_of_management_data))
-                                        {{-- for converting IUI to IVF --}}
-                                        @if (in_array('ivf', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    <span class="ivf-label"> IVF</span>
-                                                    {{!empty($planManagement->ivf_details) && !empty($planManagement->is_print) ? $planManagement->ivf_details : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        @if (in_array('counceling', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Counceling
-                                                </th>
-                                                <td  colspan="6">
-                                                    {{ !empty($planManagement->counceling_details) ? $planManagement->counceling_details : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        @if (in_array('wait_watch', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Wait Watch
-                                                </th>
-                                                <td  colspan="6">
-                                                    {{ !empty($planManagement->wait_watch_details) ? $planManagement->wait_watch_details : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        @if (in_array('management_by_rx', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Management by Rx. 
-                                                </th>
-                                                <td>
-                                                    {{ !empty($planManagement->management_by_rx_details) ? $planManagement->management_by_rx_details : '-' }}
-                                                </td>
-                                                    @if (!empty($planManagement->management_by_rx_data))
-                                                    <td>
-                                                        @foreach($planManagement->management_by_rx_data as $key => $value)
-                                                            @switch($value)
-                                                                @case('1')
-                                                                Clomiphene Citrate <br/>
-                                                                @break
-                                                                @case('2')
-                                                                Letroze <br />
-                                                                @break
-                                                            @endswitch
-                                                        @endforeach
-                                                    </td>  
-                                                    @endif
-                                                </th>
-                                            </tr>
-                                        @endif
-                                        @if (in_array('hyperstimulation_iui', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Controlled Overian Hyperstimulation With I.U.I
-                                                </th>
-                                                <td >
-                                                    {{ !empty($planManagement->hyperstimulation_iui_details) ? $planManagement->hyperstimulation_iui_details : '-' }}
-                                                </td>
-                                                @if (!empty($planManagement->hyperstimulation_iui_data))
-                                                    <td >
-                                                        @foreach($planManagement->hyperstimulation_iui_data as $key => $value)
-                                                            @switch($value)
-                                                                @case('1')
-                                                                    Only Medicine <br />
-                                                                    @break
-                                                                @case('2')
-                                                                    Medicine + Gonadotropins <br />
-                                                                    @break
-                                                                @case('3')
-                                                                    Only Gonadotropins <br />
-                                                                @break
-                                                            @endswitch
-                                                        @endforeach
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endif
-                                        @if (in_array('laproscopy', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Laproscopy
-                                                </th>
-                                                <td >
-                                                    {{ !empty($planManagement->laproscopy_details) ? $planManagement->laproscopy_details : '-' }}
-                                                </td>
-                                                @if (!empty($planManagement->laproscopy_data))
-                                                    <td >
-                                                        @foreach($planManagement->laproscopy_data as $key => $value)
-                                                            @switch($value)
-                                                                @case('1')
-                                                                    HSG <br />
-                                                                    @break
-                                                                @case('2')
-                                                                    Hystroscopy <br />
-                                                                    @break
-                                                                @case('3')
-                                                                    DHL <br />
-                                                                @break
-                                                                @case('4')
-                                                                    Other <br />
-                                                                @break
-                                                            @endswitch
-                                                        @endforeach
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endif
-                                        @if (in_array('ivf', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                IVF
-                                                </th>
-                                                <td >
-                                                    {{ !empty($planManagement->ivf_details) ? $planManagement->ivf_details : '-' }}
-                                                </td>
-                                                @if (!empty($planManagement->ivf_data))
-                                                @php
-                                                    $ivfData = [];
-                                                @endphp
-                                                    <td >
-                                                        @foreach($planManagement->ivf_data as $key => $value)
-                                                            @switch($value)
-                                                                @case('1')
-                                                                    @php
-                                                                        $ivfData[] = 'SELF';
-                                                                    @endphp
-                                                                    @break
-                                                                @case('2')
-                                                                    @php
-                                                                        $ivfData[] = 'OD';
-                                                                    @endphp
-                                                                    @break
-                                                                @case('3')
-                                                                    @php
-                                                                        $ivfData[] = 'ED';
-                                                                    @endphp
-                                                                @break
-                                                            @endswitch
-                                                        @endforeach
-                                                        {{implode(',',$ivfData)}}
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endif
-                                        @if (in_array('male_factor', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Rx. Of Male Factor
-                                                </th>
-                                                <td  colspan="6">
-                                                    {{ !empty($planManagement->male_factor_details) ? $planManagement->male_factor_details : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        @if (in_array('reports', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Reports
-                                                </th>
-                                                <td  colspan="6">
-                                                    {{ !empty($planManagement->reports_details) ? $planManagement->reports_details : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        @if (in_array('induction_gonadotropins_cycle', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Induction Gonadotropins Cycle
-                                                </th>
-                                                <td  colspan="6">
-                                                    {{ !empty($planManagement->induction_gonadotropins_cycle_details) ? $planManagement->induction_gonadotropins_cycle_details : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        @if (in_array('other', $planManagement->plan_of_management_data))
-                                            <tr>
-                                                <th>
-                                                    Other
-                                                </th>
-                                                <td  colspan="6">
-                                                    {{ !empty($planManagement->other_details) ? $planManagement->other_details : '-' }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endif
-                                    {{-- for converting IUI to IVF --}}
-                                    @if(isset($planManagement->plan) && !empty($planManagement->plan))
-                                        <tr>
-                                            <th>
-                                                <span class="ivf-label"> Plan</span>
-                                                @if (isset($planManagement->plan) && !empty($planManagement->plan))
-                                                    @switch($planManagement->plan)
-                                                        @case('1')
-                                                            IVF Self
-                                                            @break
-                                                        @case('2')
-                                                            FET Self
-                                                            @break
-                                                        @case('3')
-                                                            FET-OD
-                                                            @break
-                                                        @case('4')
-                                                            FET-ED
-                                                            @break
-                                                    @endswitch
-                                                @endif
-                                            </th>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        @endif
-
-                        @if($possibleCaseOfInfertility && (!empty($possibleCaseOfInfertility->other) || !empty($possibleCaseOfInfertility->infertility_type)))
-                            <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
-                                <tbody>
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="panel-title header-print-title">Possible Cause of Infertility</div>
-                                        </td>
-                                    </tr>
-                                    @php
-                                        $infertilityType = null;
-                                        if(!empty($possibleCaseOfInfertility->infertility_type)) {
-                                            $infertilityType = implode(', ', $possibleCaseOfInfertility->infertility_type);
-                                        }
-                                    @endphp
-                                    @if(!empty($infertilityType))
-                                        <tr>
-                                            <th>
-                                                {{ ucwords($infertilityType) }}
-                                            </th>
-                                        </tr>
-                                    @endif
-                                    @if(!empty($possibleCaseOfInfertility->other))
-                                        <tr>
-                                            <th>
-                                                <span class="iui-label">Other </span>
-                                                {{ !empty($possibleCaseOfInfertility->other) ? $possibleCaseOfInfertility->other : '-' }}
-                                            </th>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        @endif
-                    </div>
                     <?php
                         unset($treatment->medicinedata);
                     ?>
+
+                    {{-- Possible Case Of Infertility --}}
+                    @if($possibleCaseOfInfertility && (!empty($possibleCaseOfInfertility->other) || !empty($possibleCaseOfInfertility->infertility_type)))
+                    <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
+                        <tbody>
+                            <tr>
+                                <td colspan="9">
+                                    <div class="panel-title header-print-title">Possible Cause of Infertility</div>
+                                </td>
+                            </tr>
+                            @php
+                                $infertilityType = null;
+                                if(!empty($possibleCaseOfInfertility->infertility_type)) {
+                                    $infertilityType = implode(', ', $possibleCaseOfInfertility->infertility_type);
+                                }
+                            @endphp
+                            @if(!empty($infertilityType))
+                                <tr>
+                                    <th>
+                                        {{ ucwords($infertilityType) }}
+                                    </th>
+                                </tr>
+                            @endif
+                            @if(!empty($possibleCaseOfInfertility->other))
+                                <tr>
+                                    <th>
+                                        <span class="iui-label">Other </span>
+                                        {{ !empty($possibleCaseOfInfertility->other) ? $possibleCaseOfInfertility->other : '-' }}
+                                    </th>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                    @endif
+
+                    {{-- Treatment --}}
                     @if(!empty($treatment) && count((array)$treatment) > 0)
                         <table cellspacing="0" cellpadding="0" class="{{'table m-b-0 module-report-table'}}">
                             <tbody>
