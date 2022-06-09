@@ -549,6 +549,7 @@ class AppointmentController extends ApiController
         $token = $request->header('Authorization');
         $currentDate = \Carbon\Carbon::now()->format('Y-m-d');
         $currentTime = \Carbon\Carbon::now()->format('H:i:s');
+        $date = \Carbon\Carbon::parse($request->date)->format('H:i:s');
         $msg = '';
 
         if($token) {
@@ -556,8 +557,13 @@ class AppointmentController extends ApiController
             $patientId = $this->PatientToken->where('token', $token)->pluck('patients_id')->first();
 
             $lastAppointment = $this->AppointmentRequest->where('patients_id', $patientId)->orderBy('id','DESC')->first();
-
+            
             if(!empty($patientId)) {
+                $appointment = $this->Appointment->where('date', $request->date)->orderBy('id','DESC')->first();
+                if(!empty($appointment))
+                {
+                    return $this->sendResponse('You have already appointment');
+                }
                 if ($request->date >= $currentDate || $request->time > $currentTime) {
                     if (!empty($lastAppointment)) {
                         if ($lastAppointment->is_book == 0) {
@@ -571,9 +577,9 @@ class AppointmentController extends ApiController
                         if($lastAppointment->is_book == 1) {
                             $appointment = $this->Appointment->where('date', $lastAppointment->appointment_date)->orderBy('id','DESC')->first();
                             // if ($lastAppointment->appointment_date < $currentDate) {
-                            if (((strtotime($appointment->date.' '.$appointment->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($appointment->is_done == 0) || ($appointment->date == $currentDate && !$appointment->arrival_time))) {
-                                $msg = "You have already appointment";
-                            } else {
+                            // if (((strtotime($appointment->date.' '.$appointment->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($appointment->is_done == 0) || ($appointment->date == $currentDate && !$appointment->arrival_time))) {
+                            //     $msg = "You have already appointment";
+                            // } else {
                                 if (!empty($appointment)) {
                                     // $msg = "Your appointment is already aprooved";
                                     // if($appointment->is_done == 0){
@@ -585,9 +591,9 @@ class AppointmentController extends ApiController
                                         $msg = "Your appointment is in pending";
                                     // }
                                 } else {
-                                    $msg = "Your appointment is already aprooved";
+                                    $msg = "Your appointment is already approved";
                                 }
-                            }
+                            // }
                         }
                         if ($lastAppointment->is_book == 2) { 
                             // if($lastAppointment->appointment_date <= $currentDate){
@@ -673,6 +679,11 @@ class AppointmentController extends ApiController
 
             if(!empty($patient))  
             {
+                $appointment = $this->Appointment->where('date', \Carbon\Carbon::parse($request->date)->format('Y-m-d'))->orderBy('id','DESC')->first();
+                if(!empty($appointment))
+                {
+                    return $this->sendResponse('You have already appointment');
+                }
                 $absence_doctor = $this->User->where('id',$request->doctor_id)->whereRole('3')->whereStatus('1')->whereRaw("find_in_set('".\Carbon\Carbon::parse($request->date)->format('m/d/Y')."',absence_dates)")->first();
                 if($absence_doctor)
                 {
@@ -702,9 +713,9 @@ class AppointmentController extends ApiController
                         if($lastAppointment->is_book == 1) {
                             $appointment = $this->Appointment->where('date', $lastAppointment->appointment_date)->orderBy('id','DESC')->first();
                             // if ($lastAppointment->appointment_date < $currentDate) {
-                            if (((strtotime($appointment->date.' '.$appointment->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($appointment->is_done == 0) || ($appointment->date == $currentDate && !$appointment->arrival_time))) {
-                                $msg = "You have already appointment";
-                            } else {
+                            // if (((strtotime($appointment->date.' '.$appointment->arrival_time) > strtotime($currentDate.' '.$currentTime)) && ($appointment->is_done == 0) || ($appointment->date == $currentDate && !$appointment->arrival_time))) {
+                            //     $msg = "You have already appointment";
+                            // } else {
                                 if (!empty($appointment)) {
                                     // $msg = "Your appointment is already aprooved";
                                     // if($appointment->is_done == 0){
@@ -719,7 +730,7 @@ class AppointmentController extends ApiController
                                 } else {
                                     $msg = "Your appointment is already aprooved";
                                 }
-                            }
+                            // }
                         }
                         if ($lastAppointment->is_book == 2) { 
                             // if($lastAppointment->appointment_date <= $currentDate){
