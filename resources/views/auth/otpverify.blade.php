@@ -21,6 +21,7 @@
                     <img src="{{ url('public/images/' . $logo )}}" alt="{{ !empty($alt) ? $alt : null }}"/>
                     <h5></h5>
                 </div>
+                <span class="candor-color">Your OTP is send on {{Auth::User()->mobile_number}}</span>
                 <div class="content">
                     <div class="form-group input-lg log-email">
                         {{Form::number('otp','',['class'=>'form-control','placeholder'=>'Enter OTP number','id'=>'otp'])}}
