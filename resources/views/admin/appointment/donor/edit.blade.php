@@ -155,7 +155,7 @@
                                             <div class="col-md-4 col-sm-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon unik-lbl-spn">Apt. Date : &nbsp;</span>
-                                                    {{Form::text('date',!empty($appointment->date) ? \Carbon\Carbon::parse($appointment->date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'), [
+                                                    {{Form::text('date',!empty($appointment->date) ? cdate($appointment->date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'), [
                                                         'class'=>'form-control datetimepicker date',
                                                         'placeholder'=>'Date',
                                                         'required',
@@ -169,7 +169,7 @@
                                             <div class="col-md-4 col-sm-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon unik-lbl-spn">Apt. Time : &nbsp;</span>
-                                                    {{ Form::text('time', !empty($appointment->time) ? \Carbon\Carbon::parse($appointment->time)->format('h:m a') : null, [
+                                                    {{ Form::text('time', !empty($appointment->time) ? cdate($appointment->time)->format('h:m a') : null, [
                                                         'class'=>'form-control timepicker time',
                                                         'placeholder'=>'Time',
                                                         'autocomplete' => 'off'
@@ -182,7 +182,7 @@
                                             <div class="col-md-4 col-sm-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon unik-lbl-spn">Arrival Time : &nbsp;</span>
-                                                    {{Form::text('arrival_time', !empty($appointment->arrival_time) ? \Carbon\Carbon::parse($appointment->arrival_time)->format('h:m a') : null, [
+                                                    {{Form::text('arrival_time', !empty($appointment->arrival_time) ? cdate($appointment->arrival_time)->format('h:m a') : null, [
                                                         'class'=>'form-control timepicker arrival_time',
                                                         'placeholder'=>'Arrival Time',
                                                         'autocomplete' => 'off'

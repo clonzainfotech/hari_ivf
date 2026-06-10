@@ -92,7 +92,7 @@ tr td th {
             @foreach ($usg as $key => $value)
                 @php 
                    
-                    $date = \Carbon\Carbon::parse($usg[$key]['date'])->format('d-m-Y');
+                    $date = cdate($usg[$key]['date'])->format('d-m-Y');
                     if(isset($monthUsgArray[$date]['usg']))
                     {
                         $monthUsgArray[$date]['usg'] += $usg[$key]['getAppointmentCharges']['usg'];
@@ -113,7 +113,7 @@ tr td th {
         @if ($count > 0)
             @foreach ($hormon as $key => $value)
                 @php 
-                    $date = \Carbon\Carbon::parse($hormon[$key]['created_at'])->format('d-m-Y');
+                    $date = cdate($hormon[$key]['created_at'])->format('d-m-Y');
                     if(isset($monthUsgArray[$date]['hormon']))
                     {
                         $monthUsgArray[$date]['hormon'] += $hormon[$key]['amount'];
@@ -136,7 +136,7 @@ tr td th {
             @foreach ($iui as $key => $value)
                 @php
                    
-                    $date = \Carbon\Carbon::parse($iui[$key]['created_at'])->format('d-m-Y');
+                    $date = cdate($iui[$key]['created_at'])->format('d-m-Y');
                     if(isset($monthUsgArray[$date]['iui']))
                     {
                         $monthUsgArray[$date]['iui'] += $iui[$key]['amount'];
@@ -157,7 +157,7 @@ tr td th {
         
             @foreach($ivf as $key => $value)
                 @php 
-                    $date = \Carbon\Carbon::parse($ivf[$key]['created_at'])->format('d-m-Y');
+                    $date = cdate($ivf[$key]['created_at'])->format('d-m-Y');
                     if(isset($monthUsgArray[$date]['ivf']))
                     {
                         $monthUsgArray[$date]['ivf'] += $ivf[$key]['amount'];
@@ -175,7 +175,7 @@ tr td th {
                 @php
                     if(isset($ivfCash[$key]))
                     {
-                        $date = \Carbon\Carbon::parse($ivfCash[$key]['date'])->format('d-m-Y');
+                        $date = cdate($ivfCash[$key]['date'])->format('d-m-Y');
                         if(isset($monthUsgArray[$date]['opd']))
                         {
                             $monthUsgArray[$date]['opd'] += $ivfCash[$key]['get_appointment_charges']['total'] - $ivfCash[$key]['get_appointment_charges']['usg'];
@@ -193,7 +193,7 @@ tr td th {
                 @php
                     if(isset($iuiCash[$key]))
                     {
-                    $date = \Carbon\Carbon::parse($iuiCash[$key]['date'])->format('d-m-Y');
+                    $date = cdate($iuiCash[$key]['date'])->format('d-m-Y');
 
                         if(isset($monthUsgArray[$date]['opd']))
                         {
@@ -212,7 +212,7 @@ tr td th {
                 @php
                     if(isset($ancCash[$key]))
                     {
-                    $date = \Carbon\Carbon::parse($ancCash[$key]['date'])->format('d-m-Y');
+                    $date = cdate($ancCash[$key]['date'])->format('d-m-Y');
 
                         if(isset($monthUsgArray[$date]['opd']))
                         {
@@ -231,7 +231,7 @@ tr td th {
                 @php
                     if(isset($gynecCash[$key]))
                     {
-                    $date = \Carbon\Carbon::parse($gynecCash[$key]['date'])->format('d-m-Y');
+                    $date = cdate($gynecCash[$key]['date'])->format('d-m-Y');
 
                         if(isset($monthUsgArray[$date]['opd']))
                         {
@@ -255,7 +255,7 @@ tr td th {
                     
                     if(isset($indoorCash[$key]) && !empty($indoorCash[$key]['final_invoice_date']))
                     {
-                        $date = \Carbon\Carbon::parse($indoorCash[$key]['final_invoice_date'])->format('d-m-Y');
+                        $date = cdate($indoorCash[$key]['final_invoice_date'])->format('d-m-Y');
 
                         if(isset($monthUsgArray[$date]['ipd']))
                         {
@@ -279,7 +279,7 @@ tr td th {
                     
                     if(isset($indoorCaseDeposit[$key]))
                     {
-                        $date = \Carbon\Carbon::parse($indoorCaseDeposit[$key]['created_at'])->format('d-m-Y');
+                        $date = cdate($indoorCaseDeposit[$key]['created_at'])->format('d-m-Y');
 
                         if(isset($monthUsgArray[$date]['ipd']))
                         {
@@ -305,7 +305,7 @@ tr td th {
                 @foreach ($income as $key => $value)
                     @php 
                         
-                        $date = \Carbon\Carbon::parse($income[$key]['date'])->format('d-m-Y');
+                        $date = cdate($income[$key]['date'])->format('d-m-Y');
 
                         if(isset($monthUsgArray[$date]['income']))
                         {
@@ -324,7 +324,7 @@ tr td th {
         @if ($count > 0)
                 @foreach ($expense as $key => $value)
                     @php 
-                        $date = \Carbon\Carbon::parse($expense[$key]['date'])->format('d-m-Y');
+                        $date = cdate($expense[$key]['date'])->format('d-m-Y');
                         if(isset($monthUsgArray[$date]['expense']))
                         {
                             $monthUsgArray[$date]['expense'] += $expense[$key]['amount'];
@@ -346,7 +346,7 @@ tr td th {
             <th colspan="12" class="text-center">{{strtoupper(config('app.hospitalname1'))}}</th>
         </tr>
         <tr>
-            <th colspan="12" class="text-center">New Collection Report - {{\Carbon\Carbon::parse($first_key)->format('M Y')}}</th>
+            <th colspan="12" class="text-center">New Collection Report - {{cdate($first_key)->format('M Y')}}</th>
             
         </tr>
     </thead>

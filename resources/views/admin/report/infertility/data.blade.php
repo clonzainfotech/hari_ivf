@@ -31,7 +31,7 @@
             @endphp
             <tr class="{{'ancdata '.$isDone}}">
                 <td>{{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
                 <td>{{ ucwords(strtolower($row->getPatientsDetails['name'])) }}</td>
                 <td>{{$row->getPatientsDetails['mobile_number']}}</td>
                 {{-- <td>{{ucfirst($row->categoryDetails['name'])}}</td> --}}

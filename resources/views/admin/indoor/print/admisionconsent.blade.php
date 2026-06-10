@@ -124,7 +124,7 @@
                 <tr>
                     <td>
                         <div class="p-2">Admission</div>
-                        <div class="p-2">Date:&nbsp;&nbsp;&nbsp;<span>{{ Carbon\Carbon::parse($currentdate)->format('d-m-y') }}</span></div>
+                        <div class="p-2">Date:&nbsp;&nbsp;&nbsp;<span>{{ cdate($currentdate)->format('d-m-y') }}</span></div>
                         <div class="row p-2">
                             <div class="col-md-4">Time:&nbsp;&nbsp;&nbsp;<span>{{ Carbon\Carbon::now()->format('h:i') }}</span></div>
                             <div class="col-md-4"></div>

@@ -19,7 +19,7 @@
                                     <p class="m-b-5 text-muted">{{ucfirst($row->title)}}</p>
                                         @if($row->start_date <= $today && $row->end_date >= $today && $row->status == 1)
                                             <small class="text-success">Now<span class="date text-muted">
-                                            {{date('j F, Y', strtotime($row->start_date))}} &nbsp  to &nbsp<!-- {{Carbon\Carbon::parse($row->end_date)->toFormattedDateString()}} -->
+                                            {{date('j F, Y', strtotime($row->start_date))}} &nbsp  to &nbsp<!-- {{cdate($row->end_date)->toFormattedDateString()}} -->
                                             {{date('j F, Y', strtotime($row->end_date))}}
                                             </span></small>
                                         @elseif($row->start_date <  $today && $row->status == 1)

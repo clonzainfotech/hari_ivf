@@ -82,7 +82,7 @@
                                     @if($ANCReports)
 										@foreach($ANCReports as $key => $reports)
 											@php
-											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
+											$date = cdate($key)->format('D d M Y');
 											@endphp
 											@foreach($reports as $report => $value)
 												@php
@@ -174,7 +174,7 @@
                                     @if($IVFReports)
 										@foreach($IVFReports as $key => $reports)
 											@php
-											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
+											$date = cdate($key)->format('D d M Y');
 											@endphp
 											@foreach($reports as $report => $value)
 												@php
@@ -266,7 +266,7 @@
                                     @if($IUIReports)
 										@foreach($IUIReports as $key => $reports)
 											@php
-											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
+											$date = cdate($key)->format('D d M Y');
 											@endphp
 											@foreach($reports as $report => $value)
 												@php
@@ -357,7 +357,7 @@
                                     @if($GynecReports)
 										@foreach($GynecReports as $key => $reports)
 											@php
-											$date = \Carbon\Carbon::parse($key)->format('D d M Y');
+											$date = cdate($key)->format('D d M Y');
 											@endphp
 											@foreach($reports as $report => $value)
 												@php
@@ -435,7 +435,7 @@
                                     @if($OtherReports)
 										@foreach($OtherReports as $key => $reports)
 											@php
-											$date = \Carbon\Carbon::parse(explode(',',$key)[0])->format('D d M Y');
+											$date = cdate(explode(',',$key)[0])->format('D d M Y');
 											@endphp
 											@foreach($reports as $report => $value)
 												@php

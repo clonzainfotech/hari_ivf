@@ -21,7 +21,7 @@
         @forelse($appointment as $row)
             <tr>
                 <td>{{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td>{{\Carbon\Carbon::parse($row['date'])->format('d-m-Y')}}</td>
+                <td>{{cdate($row['date'])->format('d-m-Y')}}</td>
                 <td>{{ ucwords(strtolower($row->getPatientsDetails['name'])).' '.($row->getChildNumber() ? '('.$row->getChildNumber().')' : '')}}</td>
                 <td>{{$row->remark}}</td>
             </tr>

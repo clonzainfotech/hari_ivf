@@ -64,7 +64,7 @@ if(!empty($ivfReport)) {
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-addon">Date : &nbsp;</span>
-                            {{Form::text("report_date",\Carbon\Carbon::parse(!empty($ivfReport->date) ? $ivfReport->date : null)->format('D d M Y'),['class'=>'form-control datetimepicker report_date','required'])}}
+                            {{Form::text("report_date",cdate(!empty($ivfReport->date) ? $ivfReport->date : null)->format('D d M Y'),['class'=>'form-control datetimepicker report_date','required'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('report_date')}}

@@ -145,7 +145,7 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon unik-lbl-spn">Apt. Date : &nbsp;</span>
-                                                        {{Form::text('date',\Carbon\Carbon::parse($appointment->date)->format('D d M Y'),['class'=>'form-control datetimepicker date','placeholder'=>'Date','required'])}}
+                                                        {{Form::text('date',cdate($appointment->date)->format('D d M Y'),['class'=>'form-control datetimepicker date','placeholder'=>'Date','required'])}}
                                                     </div>
                                                     <span class="form-error-msg">
                                                         {{$errors->first('date')}}
@@ -154,7 +154,7 @@
                                                 <div class=" col-md-4 col-sm-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon unik-lbl-spn">Apt. Time : &nbsp;</span>
-                                                        {{Form::text('time',$appointment->time ? \Carbon\Carbon::parse($appointment->time)->format('h:i a') : '',['class'=>'form-control timepicker time','placeholder'=>'Time'])}}
+                                                        {{Form::text('time',$appointment->time ? cdate($appointment->time)->format('h:i a') : '',['class'=>'form-control timepicker time','placeholder'=>'Time'])}}
                                                     </div>
                                                     <span class="form-error-msg">
                                                         {{$errors->first('time')}}
@@ -166,7 +166,7 @@
                                                         {{-- <span class="input-group-addon">
                                                             <i class="zmdi zmdi-time"></i>
                                                         </span> --}}
-                                                        {{Form::text('arrival_time',(!empty($appointment->arrival_time)) ? \Carbon\Carbon::parse($appointment->arrival_time)->format('h:i a') : null,['class'=>'form-control timepicker arrival_time','placeholder'=>'Arrival Time'])}}
+                                                        {{Form::text('arrival_time',(!empty($appointment->arrival_time)) ? cdate($appointment->arrival_time)->format('h:i a') : null,['class'=>'form-control timepicker arrival_time','placeholder'=>'Arrival Time'])}}
                                                     </div>
                                                     <span class="form-error-msg">
                                                         {{$errors->first('arrival_time')}}
@@ -507,7 +507,7 @@
                                                 <div class="col-md-4 col-sm-4">
                                                     <div class="input-group">
                                                         <span class="input-group-addon unik-lbl-spn">Birth Date : &nbsp;</span>
-                                                        {{Form::text('dob',$appointment->getPatientsDetails['dob'] ? \Carbon\Carbon::parse($appointment->getPatientsDetails['dob'])->format('d-m-Y') : null,[
+                                                        {{Form::text('dob',$appointment->getPatientsDetails['dob'] ? cdate($appointment->getPatientsDetails['dob'])->format('d-m-Y') : null,[
                                                             'id' =>'birthdate',
                                                             'class'=>'dob border-color border-1',
                                                             'placeholder'=>'BirthDate',

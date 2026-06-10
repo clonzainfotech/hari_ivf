@@ -189,10 +189,10 @@
                     <div class="panel-title header-print-title">1. O/E
                         <span class="text-danger">{{!empty($oe->late_concept) && $oe->late_concept == 1 ? 'Late Conception' : null}}</span>
                         @if(!empty($lmdDate))
-                            &nbsp&nbsp L.M.D Date:  <span class="text-danger">{{\Carbon\Carbon::parse($lmdDate)->format('d-m-Y') }}</span>
+                            &nbsp&nbsp L.M.D Date:  <span class="text-danger">{{cdate($lmdDate)->format('d-m-Y') }}</span>
                         @endif
                         @if(!empty($eddDate))
-                            &nbsp&nbsp EDD Date: <span class="text-danger">{{\Carbon\Carbon::parse($eddDate)->format('d-m-Y') }}</span>
+                            &nbsp&nbsp EDD Date: <span class="text-danger">{{cdate($eddDate)->format('d-m-Y') }}</span>
                         @endif
                     </div>
                 </span>
@@ -1278,9 +1278,9 @@
                     </div>
                 @endif
                 @php
-                    $lmddate = !empty($mh->last_menstrual_date) ? \Carbon\Carbon::parse($mh->last_menstrual_date)->format('D d M Y') : null;
-                    $date = !empty($mh->edd) ? \Carbon\Carbon::parse($mh->edd)->format('D d M Y') : null;
-                    $usgDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
+                    $lmddate = !empty($mh->last_menstrual_date) ? cdate($mh->last_menstrual_date)->format('D d M Y') : null;
+                    $date = !empty($mh->edd) ? cdate($mh->edd)->format('D d M Y') : null;
+                    $usgDate = !empty($mh->usg_edd) ? cdate($mh->usg_edd)->format('D d M Y') : null;
                 @endphp
                 @if($lmddate || $date)
                     <div class="row">
@@ -1355,7 +1355,7 @@
                     <div class="row">
                         <div class="seperator">
                             <span class="anc-label">Date :</span>
-                            {{\Carbon\Carbon::parse($patientsDetails->personal_history_date)->format('D d M Y')}}
+                            {{cdate($patientsDetails->personal_history_date)->format('D d M Y')}}
                         </div>
                     </div>
                 @endif
@@ -1388,13 +1388,13 @@
                         <div class="panel-title header-print-title">{{$oeNo}}. O/E
                             <span class="text-danger">{{!empty($oe->late_concept) && $oe->late_concept == 1 ? 'Late Conception' : null}}</span>
                             @if(!empty($lmdDate))
-                                &nbsp&nbsp L.M.D Date:  <span class="text-danger">{{\Carbon\Carbon::parse($lmdDate)->format('d-m-Y') }}</span>
+                                &nbsp&nbsp L.M.D Date:  <span class="text-danger">{{cdate($lmdDate)->format('d-m-Y') }}</span>
                             @endif
                             @if(!empty($eddDate))
-                                &nbsp&nbsp EDD Date: <span class="text-danger">{{\Carbon\Carbon::parse($eddDate)->format('d-m-Y') }}</span>
+                                &nbsp&nbsp EDD Date: <span class="text-danger">{{cdate($eddDate)->format('d-m-Y') }}</span>
                             @endif
                             @if(!empty($usgEddDate))
-                                &nbsp&nbsp USG EDD Date: <span class="text-danger">{{\Carbon\Carbon::parse($usgEddDate)->format('d-m-Y') }}</span>
+                                &nbsp&nbsp USG EDD Date: <span class="text-danger">{{cdate($usgEddDate)->format('d-m-Y') }}</span>
                             @endif
                         </div>
                     </span>
@@ -1821,7 +1821,7 @@
                                 {{ !empty($patientsInvestigation->early_scan_type) && $patientsInvestigation->early_scan_type == 'yes' ? 'Yes' : 'No' }}
                                 @if(!empty($patientsInvestigation->early_scan_type) && $patientsInvestigation->early_scan_type == 'yes')
                                     | Date : &nbsp;
-                                    {{!empty($patientsInvestigation->investigation_early_scan_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_early_scan_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
+                                    {{!empty($patientsInvestigation->investigation_early_scan_date) ? cdate($patientsInvestigation->investigation_early_scan_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
                                     @if (!empty($patientsInvestigation->investigation_early_scan_hb))
                                     | HB : {{$patientsInvestigation->investigation_early_scan_hb}}
                                     @endif
@@ -1855,7 +1855,7 @@
                             {{ isset($patientsInvestigation->anc_profile_type) && $patientsInvestigation->anc_profile_type == 'yes' ? 'Yes' : 'No' }}
                             @if (isset($patientsInvestigation->anc_profile_type) && $patientsInvestigation->anc_profile_type  == 'yes')
                                 | Date :
-                                {{!empty($patientsInvestigation->investigation_anc_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_anc_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
+                                {{!empty($patientsInvestigation->investigation_anc_date) ? cdate($patientsInvestigation->investigation_anc_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
                                 @if (!empty($patientsInvestigation->investigation_cbc_mp->status))
                                     | CBC MP Type: {{$wnlType[$patientsInvestigation->investigation_cbc_mp->status]}}
                                     @if($patientsInvestigation->investigation_cbc_mp->status == 2)
@@ -1910,7 +1910,7 @@
                                 {{ !empty($patientsInvestigation->growth_report_type) && $patientsInvestigation->growth_report_type == 'yes' ? 'Yes' : 'No' }}
                                 @if (!empty($patientsInvestigation->growth_report_type) && $patientsInvestigation->growth_report_type == 'yes')
                                     | Date :
-                                    {{!empty($patientsInvestigation->investigation_growth_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_growth_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
+                                    {{!empty($patientsInvestigation->investigation_growth_date) ? cdate($patientsInvestigation->investigation_growth_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
                                     @if (!empty($patientsInvestigation->investigation_growth_hb))
                                     | HB : {{$patientsInvestigation->investigation_growth_hb}}
                                     @endif
@@ -1968,12 +1968,12 @@
                                 {{ !empty($patientsInvestigation->other_report_type) && $patientsInvestigation->other_report_type == 'yes' ? 'Yes' : 'No' }}
                                 @if (!empty($patientsInvestigation->growth_report_type) && $patientsInvestigation->other_report_type == 'yes')
                                     | Double Marker :  @if (in_array('double_marker',$otherReport)) Yes @else No @endif
-                                    | Double Marker Date: {{ !empty($patientsInvestigation->d_m_date) ? \Carbon\Carbon::parse($patientsInvestigation->d_m_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
+                                    | Double Marker Date: {{ !empty($patientsInvestigation->d_m_date) ? cdate($patientsInvestigation->d_m_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
                                     </div>
                                     <div class="seperator">
                                     | Genetic Test : @if (in_array('genetic_test', $otherReport)) Yes @else No @endif
                                     | Amniocentesis : @if (in_array('amniocentesis', $otherReport)) Yes @else No @endif
-                                    | Amniocentesis Date: {{ !empty($patientsInvestigation->amniocentesis_date) ? \Carbon\Carbon::parse($patientsInvestigation->amniocentesis_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
+                                    | Amniocentesis Date: {{ !empty($patientsInvestigation->amniocentesis_date) ? cdate($patientsInvestigation->amniocentesis_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
                                     @if (!empty($patientsInvestigation->investigation_extra))
                                         Extra : {{ $patientsInvestigation->investigation_extra }}
                                     @endif
@@ -2050,7 +2050,7 @@
 
             @php
                 $usgData = array_filter((array)$usg);
-                $ntScanDate = \Carbon\Carbon::parse($usg->nt_scan)->format('Y-m-d');
+                $ntScanDate = cdate($usg->nt_scan)->format('Y-m-d');
                 $nowDate = \Carbon\Carbon::now()->format('Y-m-d');
             @endphp
             @if(!empty($usgData) && (!empty($usg->early_scan) || !empty($usg->early_scan) || !empty($usg->nt_scan && (strtotime($ntScanDate) > strtotime($nowDate))) || !empty($usg->anomalies_miles)))
@@ -2063,13 +2063,13 @@
                     @if (!empty($usg->early_scan))
                         <div class="seperator">
                             <span class="anc-label ">Early Scan :</span>
-                            {{\Carbon\Carbon::parse($usg->early_scan)->format('D d M Y')}}
+                            {{cdate($usg->early_scan)->format('D d M Y')}}
                         </div>
                     @endif
                     @if (!empty($usg->nt_scan) && (strtotime($ntScanDate) > strtotime($nowDate)))
                         <div class="seperator">
                             <span class="anc-label ">N.T Scan :</span>
-                            {{\Carbon\Carbon::parse($usg->nt_scan)->format('D d M Y')}}
+                            {{cdate($usg->nt_scan)->format('D d M Y')}}
                         </div>
                     @endif
                 </div>
@@ -2077,13 +2077,13 @@
                     @if (!empty($usg->anomalies_miles))
                         <div class="seperator">
                             <span class="anc-label ">Anomalies Miles :</span>
-                            {{\Carbon\Carbon::parse($usg->anomalies_miles)->format('D d M Y')}}
+                            {{cdate($usg->anomalies_miles)->format('D d M Y')}}
                         </div>
                     @endif
                     @if (!empty($usg->growth_scan))
                         <div class="seperator">
                             <span class="anc-label ">Growth Scan :</span>
-                            {{\Carbon\Carbon::parse($usg->growth_scan)->format('D d M Y')}}
+                            {{cdate($usg->growth_scan)->format('D d M Y')}}
                         </div>
                     @endif
                 </div>
@@ -2148,10 +2148,10 @@
             @endif
             {{-- @if(!empty($usg->nt_scan) && !empty($oe->follow_up) && ($oe->follow_up == $usg->nt_scan)) --}}
             @if(!empty($usgStatus) && $usgStatus == 1)
-                <h4>{{"Come to again for U.S.G on ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')}}</h4>
+                <h4>{{"Come to again for U.S.G on ".cdate($oe->follow_up)->format('d-m-Y')}}</h4>
             @endif
             @if($isNextAppointment == 1)
-                <h4>{{"Come to again on ".\Carbon\Carbon::parse($nextAppointmentDate)->format('d-m-Y')}}</h4>
+                <h4>{{"Come to again on ".cdate($nextAppointmentDate)->format('d-m-Y')}}</h4>
             @endif
 
         @endif

@@ -127,19 +127,19 @@
                     @endif
                     {{$isDone}} {{$inConsultingroom}}" data-apid="{{encrypt($row->id)}}">
                 <td> {{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td class="line-height">{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}<br>{{\Carbon\Carbon::parse($row->time)->format('h:i a')}}</td>
+                <td class="line-height">{{cdate($row->date)->format('d-m-Y')}}<br>{{cdate($row->time)->format('h:i a')}}</td>
                 <td>{{$row->arrival_time}}</td>
                 <td class="patient_dropdown ">
                     @php
                         $isBirthDay = 0;
-                        $isBirthDay =   !empty($row->getPatientsDetails['dob']) && \Carbon\Carbon::parse($row->getPatientsDetails['dob'])->format('d-m') == \Carbon\Carbon::now()->format('d-m') ? 1 : 0;
+                        $isBirthDay =   !empty($row->getPatientsDetails['dob']) && cdate($row->getPatientsDetails['dob'])->format('d-m') == \Carbon\Carbon::now()->format('d-m') ? 1 : 0;
                     @endphp
                     @if($isBirthDay == 1)
                         <i class="zmdi zmdi-card-giftcard candor-color" title="Birthday"></i>
                     @endif
                     {{ucwords(strtolower($row->getPatientsDetails['name']))}}&nbsp;
                     @if(in_array($row->categoryDetails['id'],[1,2,3,4,5,6,10,13]))
-                        <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
+                        <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{cdate($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
                         <div class="{{'appointment_dropdown_content appointment_dropdown_content_'.$uniqId}}">
                         </div>
                     @endif

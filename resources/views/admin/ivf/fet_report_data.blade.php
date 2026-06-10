@@ -136,8 +136,8 @@
                         $data = json_decode($row->description);
                         $historyLmdDiff = null;
                         if(!empty($data->lmp->date)){
-                            $historyLmddateDate = \Carbon\Carbon::parse($data->lmp->date);
-                            $now = \Carbon\Carbon::parse($row->created_at);
+                            $historyLmddateDate = cdate($data->lmp->date);
+                            $now = cdate($row->created_at);
                             $historyLmdDiff = $historyLmddateDate->diffInDays($now);
                             $historyLmdDiff = $historyLmdDiff + 1;
                         }
@@ -193,8 +193,8 @@
                     @endphp
                     <tr>
                         <td>{{$historyLmdDiff}}</td>
-                        <td>{{\Carbon\Carbon::parse($row->created_at)->format('l')}}</td>
-                        <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                        <td>{{cdate($row->created_at)->format('l')}}</td>
+                        <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
                         <td>{{!empty($data->oe->endometrial_cavity->size) ? $data->oe->endometrial_cavity->size : null}}</td>
                         <td>{!! implode('<br><br>',$medicinesData) !!}</td>
                         <td>{{$progestoneStart}}</td>

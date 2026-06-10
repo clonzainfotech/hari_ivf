@@ -14,7 +14,7 @@
             <td>{{ ((($charge->currentPage() - 1 ) * $charge->perPage() ) + $loop->iteration) . '.' }}</td>
             <td><span class="list-name">{{ ucfirst($row->title) }}</span></td>
             <td><span class="list-name">{{ $row->charge }}</span></td>
-            <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+            <td>{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
             <td>
                 <a href="#" class="a-color">
                     <button class="btn btn-icon btn-neutral candor-color btn-icon-mini delete-charge" data-id="{{$row->id}}">

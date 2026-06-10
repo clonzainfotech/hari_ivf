@@ -229,4 +229,44 @@
         }
         return '';
     }
+
+    /**
+     * Safe, never-throwing date parser for blade display.
+     *
+     * Clinical dates are stored in many formats (m/d/Y, d/m/Y, ISO, human like
+     * "Tuesday 17 March 2026"). Carbon::parse() THROWS on slash dates whose first
+     * component > 12 (it assumes m/d/Y), crashing the whole view. This tries the
+     * app's slash convention (m/d/Y) first, then d/m/Y, then Carbon's flexible
+     * parser, and falls back to $default (or now()) instead of throwing.
+     *
+     * @param  mixed                 $value
+     * @param  \Carbon\Carbon|null   $default  Returned when $value is empty/unparseable.
+     * @return \Carbon\Carbon
+     */
+    function cdate($value, $default = null)
+    {
+        if ($value instanceof \Carbon\Carbon) {
+            return $value;
+        }
+        $fallback = $default instanceof \Carbon\Carbon ? $default : \Carbon\Carbon::now();
+        if (empty($value) || !is_string($value)) {
+            return is_string($value) && trim($value) !== '' ? $fallback : $fallback;
+        }
+        $s = trim($value);
+
+        // Explicit, round-trip-validated formats (most specific first).
+        foreach (['m/d/Y', 'd/m/Y', 'Y-m-d H:i:s', 'Y-m-d', 'd-m-Y', 'd-M-Y'] as $fmt) {
+            $dt = \DateTime::createFromFormat('!' . $fmt, $s);
+            $e = \DateTime::getLastErrors();
+            if ($dt !== false && !($e['warning_count'] || $e['error_count']) && $dt->format($fmt) === $s) {
+                return \Carbon\Carbon::instance($dt);
+            }
+        }
+        // Human/other formats ("Tuesday 17 March 2026", "18 May 2026 05:41 PM", etc.).
+        try {
+            return \Carbon\Carbon::parse($s);
+        } catch (\Throwable $ex) {
+            return $fallback;
+        }
+    }
 ?>

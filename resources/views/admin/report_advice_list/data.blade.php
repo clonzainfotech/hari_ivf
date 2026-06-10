@@ -14,7 +14,7 @@
         @if(!empty($row->advice_report))
             <tr data-id="{{encrypt($row->id)}}">
                 <td>{{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td>{{ \Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
+                <td>{{ cdate($row->date)->format('d-m-Y')}}</td>
                 <td><span class="list-name">{{ucwords(strtolower($row->getPatientsDetails['name']))}}</span></td>
                 <td>{{$row->getPatientsDetails['mobile_number']}}</span></td>
                 <td>{{$row->categoryDetails['name']}}</td>

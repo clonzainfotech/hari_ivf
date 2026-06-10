@@ -34,7 +34,7 @@
         <tr data-id="{{encrypt($row->getPatientsDetails['id'])}}" class="{{'ancdata '.$checkAnc}}">
             <td>{{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}</td>
             <td>
-                {{ !empty($row->time) ? \Carbon\Carbon::parse($row->date)->format('d-m-Y') . ' ' .  \Carbon\Carbon::parse($row->time)->format('h:i') : \Carbon\Carbon::parse($row->date)->format('d-m-Y') }}
+                {{ !empty($row->time) ? cdate($row->date)->format('d-m-Y') . ' ' .  cdate($row->time)->format('h:i') : cdate($row->date)->format('d-m-Y') }}
                 @if($row->arrival_time)
                     <br>
                     <br>

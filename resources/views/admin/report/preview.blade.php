@@ -76,7 +76,7 @@
         @forelse($report as $row)
             <tr>
                 <td class="data-font seperator">{{($i++) . '.'}}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($row->getAppointment->date)->format('d-m-Y') }}</td>
+                <td class="data-font seperator">{{ cdate($row->getAppointment->date)->format('d-m-Y') }}</td>
                 <td class="data-font seperator">{{$row->getAppointment->getPatientsDetails['code'] }}</td>
                 <td class="data-font seperator">{{strtoupper($row->getAppointment->getPatientsDetails['name'])}}</td>
                 <td class="data-font seperator">{{ucfirst($row->getAppointment->categoryDetails['name'])}}</td>

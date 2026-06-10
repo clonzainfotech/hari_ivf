@@ -7,7 +7,7 @@
     @for ($i = 0; $i < $count; $i++)
         <tr>
             <td class="data-font seperator">{{ ($j = $i + 1) . '.'}}</td>
-            <td class="data-font seperator">{{ \Carbon\Carbon::parse($data[$i]['date'])->format('d-m-Y')}}</td>
+            <td class="data-font seperator">{{ cdate($data[$i]['date'])->format('d-m-Y')}}</td>
             <td class="data-font seperator">{{ strtoupper($data[$i]['get_patients_details']['name']) }}</td>
             <td class="data-font seperator">
                 @php
@@ -60,7 +60,7 @@
             @endif
             @if ($i < $count && $count > 8)
                 <td class="data-font seperator">{{ ($j = $i + 1) . '.'}}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($data[$i]['date'])->format('d-m-Y')}}</td>
+                <td class="data-font seperator">{{ cdate($data[$i]['date'])->format('d-m-Y')}}</td>
                 <td class="data-font seperator">{{ strtoupper(@$data[$i]['get_patients_details']['name']) }}</td>
                 <td class="data-font seperator">
                     @php

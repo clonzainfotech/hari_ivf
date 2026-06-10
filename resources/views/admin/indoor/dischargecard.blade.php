@@ -122,7 +122,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon unik-lbl-spn">Date of Admission : &nbsp;</span>
-                                                    {{Form::text('admitdate',\Carbon\Carbon::parse($bookedPatientData->doa_date)->format('D d M Y'),[
+                                                    {{Form::text('admitdate',cdate($bookedPatientData->doa_date)->format('D d M Y'),[
                                                         'class'=>'form-control datetimepicker admitdate',
                                                         'placeholder'=>'Date of Admission',
                                                         'disabled'
@@ -152,7 +152,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon  unik-lbl-spn">Date of Discharge  :</span>
-                                                {{ Form::text('dischargedate', \Carbon\Carbon::parse($bookedPatientData->dod_date)->format('D d M Y'), [
+                                                {{ Form::text('dischargedate', cdate($bookedPatientData->dod_date)->format('D d M Y'), [
                                                        'class'=>'form-control datetimepicker dischargedate',
                                                        'placeholder'=>'Date',
                                                    ])}}
@@ -162,7 +162,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon  unik-lbl-spn">Time of Admission :</span>
-                                                    {{ Form::text('admissiontime',$bookedPatientData->admit_time ? \Carbon\Carbon::parse($bookedPatientData->admit_time)->format('h:i a') : null, [
+                                                    {{ Form::text('admissiontime',$bookedPatientData->admit_time ? cdate($bookedPatientData->admit_time)->format('h:i a') : null, [
                                                        'class'=>'form-control timepicker',
                                                        'placeholder'=>'Time',
                                                    ])}}
@@ -171,7 +171,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon  unik-lbl-spn">Time of Discharge :</span>
-                                                    {{ Form::text('dischargetime',$bookedPatientData->discharge_time ? \Carbon\Carbon::parse($bookedPatientData->discharge_time)->format('h:i a') : null, [
+                                                    {{ Form::text('dischargetime',$bookedPatientData->discharge_time ? cdate($bookedPatientData->discharge_time)->format('h:i a') : null, [
                                                        'class'=>'form-control timepicker',
                                                        'placeholder'=>'Time',
                                                    ])}}

@@ -58,7 +58,7 @@ $primary = isset($systemSetting->primary) && !empty($systemSetting->primary) ? $
                         @endif
                     </div>
                     <div class="form-group input-md dob col-md-6">
-                        {{Form::date('dob',!empty($patient->dob) ? \Carbon\Carbon::parse($patient->dob)->format('d-m-Y') : null,[
+                        {{Form::date('dob',!empty($patient->dob) ? cdate($patient->dob)->format('d-m-Y') : null,[
                         'id'=>'birthdate',
                             'class'=>'dob border-color border-1 form-control',
                             'placeholder'=>'Date of Birth',

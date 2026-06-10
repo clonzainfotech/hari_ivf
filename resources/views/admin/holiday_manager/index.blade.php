@@ -117,7 +117,7 @@
                     {
                         title : '{{ $tasks->title }}',
                         start : '{{ $tasks->start_date }}',
-                        end : '{{ Carbon\Carbon::parse($tasks->end_date)->addDays(1)}}',
+                        end : '{{ cdate($tasks->end_date)->addDays(1)}}',
                         id : '0',
                         event: '{{ encrypt($tasks->id) }}',
                         className: 'bg-cyan'

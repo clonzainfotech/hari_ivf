@@ -12,15 +12,15 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
             {{Form::hidden('patients_id',encrypt($iui->patients_id), ['id' => 'patients_id'])}}
             {{Form::hidden('cycle_no', $cycleNo, ['id' => 'cycle_no'])}}
             @php
-                // $lmddate = !empty($iuiSecondVisitDate->date) ? \Carbon\Carbon::parse($iuiSecondVisitDate->date)->format('D d M Y') : null;
-                $lmddate = !empty($firstVisitLmpDate) ? \Carbon\Carbon::parse($firstVisitLmpDate) : null;
+                // $lmddate = !empty($iuiSecondVisitDate->date) ? cdate($iuiSecondVisitDate->date)->format('D d M Y') : null;
+                $lmddate = !empty($firstVisitLmpDate) ? cdate($firstVisitLmpDate) : null;
                 $lmdDiff = null;
                 if(!empty($lmddate)){
-                    // $lmddateData = \Carbon\Carbon::parse($lmddate);
+                    // $lmddateData = cdate($lmddate);
                     $now = \Carbon\Carbon::now();
                     $lmdDiff = $lmddate->diffInDays($now);
                     $lmdDiff = $lmdDiff + 1;
-                    $lmddate = \Carbon\Carbon::parse($lmddate)->format('D d M Y');
+                    $lmddate = cdate($lmddate)->format('D d M Y');
                 }
             @endphp
             @if($visitNo == 1)
@@ -110,7 +110,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <span class="input-group-addon">
                                             Visit Date : &nbsp;
                                         </span>
-                                        {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? \Carbon\Carbon::parse($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                        {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? cdate($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                     </div>
                                     <span class="form-error-msg">
                                         {{$errors->first('date')}}
@@ -1755,13 +1755,13 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="input-group">
                                         <span class="input-group-addon">Last Menstrual Date : &nbsp;</span>
                                         @php
-                                            $lmddate = !empty($mh->last_menstrual_date) ? \Carbon\Carbon::parse($mh->last_menstrual_date) : null;
+                                            $lmddate = !empty($mh->last_menstrual_date) ? cdate($mh->last_menstrual_date) : null;
                                             $lmdDiff = null;
                                             if($lmddate){
                                                 $now = \Carbon\Carbon::now();
                                                 $lmdDiff = $lmddate->diffInDays($now);
                                                 $lmdDiff = $lmdDiff + 1;
-                                                $lmddate = \Carbon\Carbon::parse($lmddate)->format('D d M Y');
+                                                $lmddate = cdate($lmddate)->format('D d M Y');
                                             }
                                         @endphp
                                         {{Form::text("mh[last_menstrual_date]",$lmddate,['class'=>'form-control lmd-date','required'])}}
@@ -2072,7 +2072,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <span class="input-group-addon">
                                             Date : &nbsp;
                                         </span>
-                                        {{Form::text("investigation[hystroscopy][finding_date]",!empty($investigation->hystroscopy) ? \Carbon\Carbon::parse($investigation->hystroscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                        {{Form::text("investigation[hystroscopy][finding_date]",!empty($investigation->hystroscopy) ? cdate($investigation->hystroscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -2098,7 +2098,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <span class="input-group-addon">
                                             Date : &nbsp;
                                         </span>
-                                        {{Form::text("investigation[laproscopy][finding_date]",!empty($investigation->laproscopy) ? \Carbon\Carbon::parse($investigation->laproscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                        {{Form::text("investigation[laproscopy][finding_date]",!empty($investigation->laproscopy) ? cdate($investigation->laproscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                     </div>
                                 </div>
                                 @php
@@ -2223,7 +2223,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <span class="input-group-addon">
                                             Date : &nbsp;
                                         </span>
-                                        {{Form::text("investigation[hcg][date]",!empty($investigation->hcg) && !empty($investigation->hcg->date) ? \Carbon\Carbon::parse($investigation->hcg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                        {{Form::text("investigation[hcg][date]",!empty($investigation->hcg) && !empty($investigation->hcg->date) ? cdate($investigation->hcg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
@@ -2361,7 +2361,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <span class="input-group-addon">
                                             Date : &nbsp;
                                         </span>
-                                        {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? \Carbon\Carbon::parse($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                        {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? cdate($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                     </div>
                                 </div>
                             </div>
@@ -2976,7 +2976,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <span class="input-group-addon">
                                             Date : &nbsp;
                                         </span>
-                                        {{Form::text("h_factor[personal_history_date]",!empty($husbandFactor->personal_history_date) ? \Carbon\Carbon::parse($husbandFactor->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                        {{Form::text("h_factor[personal_history_date]",!empty($husbandFactor->personal_history_date) ? cdate($husbandFactor->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                     </div>
                                 </div>
                             </div>
@@ -3134,7 +3134,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                         <span class="input-group-addon">
                                             Date : &nbsp;
                                         </span>
-                                        {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHoHo->personal_history_date) ? \Carbon\Carbon::parse($patientsDetailsHoHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                        {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHoHo->personal_history_date) ? cdate($patientsDetailsHoHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                     </div>
                                 </div>
                                 <div class="col-md-3 ho-past-personal-data">
@@ -4462,11 +4462,11 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                     <div class="input-group">
                                         <span class="input-group-addon">Follow Up: &nbsp;</span>
                                         @if(!empty($historyPlan->follow_up))
-                                            {{Form::text("follow_up",!empty($historyPlan->follow_up) ? \Carbon\Carbon::parse($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date'])}}
+                                            {{Form::text("follow_up",!empty($historyPlan->follow_up) ? cdate($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date'])}}
                                             {{Form::hidden('data[plan][follow_up]',$historyPlan->follow_up)}}
                                             {{Form::hidden('data[new_follow_up]',$historyPlan->follow_up)}}
                                         @else
-                                            {{Form::text("data[plan][follow_up]",!empty($historyPlan->follow_up) ? \Carbon\Carbon::parse($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date'])}}
+                                            {{Form::text("data[plan][follow_up]",!empty($historyPlan->follow_up) ? cdate($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date'])}}
                                         @endif
                                     </div>
                                     <span class="follow-date-msg form-error-msg"></span>
@@ -4914,7 +4914,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                                 | Follow Up :
                                 </th>
                                 <td class="visit-lable-value">
-                                    {{!empty($iuiSecondVisitData->plan->follow_up) ? \Carbon\Carbon::parse($iuiSecondVisitData->plan->follow_up)->format('D d M Y') : null}}
+                                    {{!empty($iuiSecondVisitData->plan->follow_up) ? cdate($iuiSecondVisitData->plan->follow_up)->format('D d M Y') : null}}
                                 </td>
                             </tr>
                         <tbody>
@@ -5288,20 +5288,20 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                     <div class="{{'col-md-4 col-sm-12 hcg-type pr-0 '.$hcgType}}">
                         <div class="input-group">
                             <span class="input-group-addon">Date : &nbsp;</span>
-                            {{Form::text("data[hcg_date]",!empty($historyData->hcg_date) ? \Carbon\Carbon::parse($historyData->hcg_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker hcg-date'])}}
+                            {{Form::text("data[hcg_date]",!empty($historyData->hcg_date) ? cdate($historyData->hcg_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker hcg-date'])}}
                         </div>
                     </div>
                     <div class="{{'col-md-4 col-sm-12 hcg-type pr-0 '.$hcgType}}">
                         <div class="input-group">
                             <span class="input-group-addon">HCG Time : &nbsp;</span>
-                            {{ Form::text('data[hcg][time]', !empty($historyData->hcg->time) ? \Carbon\Carbon::parse($historyData->hcg->time)->format('g:i a') : \Carbon\Carbon::now()->format('g:i a'), ['class'=>'form-control timepicker time hcg-time'])}}
+                            {{ Form::text('data[hcg][time]', !empty($historyData->hcg->time) ? cdate($historyData->hcg->time)->format('g:i a') : \Carbon\Carbon::now()->format('g:i a'), ['class'=>'form-control timepicker time hcg-time'])}}
                         </div>
                         <span class="hcg_time form-error-msg"></span>
                     </div>
                     {{-- <div class="{{'col-md-4 col-sm-12 hcg-iui-type '.$iuiStatus.' '.$hcgType}}">
                         <div class="input-group">
                             <span class="input-group-addon">IUI Time : &nbsp;</span>
-                            {{ Form::text('data[hcg][iui][time]', !empty($historyData->hcg->iui->time) ? \Carbon\Carbon::parse($historyData->hcg->iui->time)->format('g:i a') : \Carbon\Carbon::now()->format('g:i a'), ['class'=>'form-control timepicker time'])}}
+                            {{ Form::text('data[hcg][iui][time]', !empty($historyData->hcg->iui->time) ? cdate($historyData->hcg->iui->time)->format('g:i a') : \Carbon\Carbon::now()->format('g:i a'), ['class'=>'form-control timepicker time'])}}
                         </div>
                         <span class="iui_time form-error-msg"></span>
                     </div> --}}
@@ -5322,7 +5322,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             {{-- @if($ovalution == 'yes')
                                 {{Form::hidden('data[no_follicle]',!empty($historyData->no_follicle) ? $historyData->no_follicle : null)}}
                                 {{Form::hidden('data[ovalution]',!empty($historyData->ovalution) ? $historyData->ovalution : null)}}
-                                {{Form::hidden('data[follow_up]',!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : null)}}
+                                {{Form::hidden('data[follow_up]',!empty($historyData->follow_up) ? cdate($historyData->follow_up)->format('D d M Y') : null)}}
                             @endif --}}
                         </div>
                     </div>
@@ -5349,8 +5349,8 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             @if(!empty($historyData->follow_up))
                                 {{Form::hidden('data[new_follow_up]',$historyData->follow_up)}}
                             @endif
-                            {{-- {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '.$hcgIuiDate,$ovalution == 'yes' || !empty($historyData->follow_up) ? 'disabled' : null])}} --}}
-                            {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '])}}
+                            {{-- {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? cdate($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '.$hcgIuiDate,$ovalution == 'yes' || !empty($historyData->follow_up) ? 'disabled' : null])}} --}}
+                            {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? cdate($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '])}}
                         </div>
                         <span class="follow-date-msg form-error-msg"></span>
                     </div>
@@ -6309,7 +6309,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             @if(!empty($historyData->date))
                                 {{Form::hidden('data[new_follow_up]',$historyData->date)}}
                             @endif
-                            {{Form::text("data[date]",!empty($historyData->date) ? \Carbon\Carbon::parse($historyData->date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date next-date',!empty($historyData->date) ? 'disabled' : ''])}}
+                            {{Form::text("data[date]",!empty($historyData->date) ? cdate($historyData->date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date next-date',!empty($historyData->date) ? 'disabled' : ''])}}
                         </div>
                     </div>
                     </div>

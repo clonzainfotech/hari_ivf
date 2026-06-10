@@ -23,7 +23,7 @@
         @forelse($patients as $row)
             <tr>
                 <td>{{ ((($patients->currentPage() - 1 ) * $patients->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td>{{\Carbon\Carbon::parse($row['created_at'])->format('d-m-Y')}}</td>
+                <td>{{cdate($row['created_at'])->format('d-m-Y')}}</td>
                <td>{{ ucwords(strtolower($row->getPatientsDetails['name'])) }}</td>
                 <td>{{$row->getPatientsDetails->getReferenceDoctor['name']}}</td>
                 <td>{{$row->getPatientsDetails->getReferenceDoctorPro['name']}}</td>
@@ -62,7 +62,7 @@
         @forelse($patients as $row)
             <tr>
                 <td>{{ ((($patients->currentPage() - 1 ) * $patients->perPage() ) + $loop->iteration) . '.' }}</td>
-                <td>{{\Carbon\Carbon::parse($row['created_at'])->format('d-m-Y')}}</td>
+                <td>{{cdate($row['created_at'])->format('d-m-Y')}}</td>
                <td>{{ ucwords(strtolower($row->getPatientsDetails['name'])) }}</td>
                 <td>{{$row->getPatientsDetails->getReferenceDoctor['name']}}</td>
                 <td>{{$row->getPatientsDetails->getReferenceDoctorPro['name']}}</td>

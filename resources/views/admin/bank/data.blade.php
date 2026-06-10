@@ -12,7 +12,7 @@
         <tr data-id="{{encrypt($row->id)}}">
             <td>{{ ((($bank_detail->currentPage() - 1 ) * $bank_detail->perPage() ) + $loop->iteration) . '.' }}</td>
             <td><span class="list-name">{{ ucfirst($row->name) }}</span></td>
-            <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+            <td>{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
             <td>
                 <a href="#" class="a-color">
                     <button class="btn btn-icon btn-neutral candor-color btn-icon-mini delete-bank" data-id="{{$row->id}}">

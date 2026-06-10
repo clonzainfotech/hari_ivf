@@ -53,7 +53,7 @@
                                             <td>{{$requests->appointment_date}}</td>
                                             <td>{{$requests->appointment_time}}</td>
                                             <td class="patient_name">{{strtolower($requests->getPatients['name'])}}</td>
-                                            <td >{{ \Carbon\Carbon::parse($requests->created_at)->format('d-m-Y h:i A')}}</td>
+                                            <td >{{ cdate($requests->created_at)->format('d-m-Y h:i A')}}</td>
                                             <td>
                                                 @if($requests->getPatients['is_approved'] == 1)
                                                     <a class="apt-approve" data-id="{{encrypt($requests->id)}}"><span class="badge is-bill badge-success">Approve</span></a>

@@ -114,7 +114,7 @@
                     </td>
                     <td class="data-font seperator">{{$row->reDrName['name']}}</td>
                     <td class="data-font seperator">{{$row->case_type}}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+                    <td class="data-font seperator">{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
                 </tr>
             @empty
                 <td colspan="9" class="text-center">No records available</td>

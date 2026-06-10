@@ -267,9 +267,9 @@
                                         <span>{{ str_limit($events->discription, $limit = 44, $end = '...') }}</span>
                                     </div>
                                     @if($events->start_date == Carbon\Carbon::today()->format('Y-m-d'))
-                                        <div><small class="text-success"><span>{{Carbon\Carbon::parse($events->start_date)->toFormattedDateString()}}</span></small></div>
+                                        <div><small class="text-success"><span>{{cdate($events->start_date)->toFormattedDateString()}}</span></small></div>
                                     @else
-                                        <div><small class="text-danger"><span>{{Carbon\Carbon::parse($events->start_date)->toFormattedDateString()}}</span></small></div>
+                                        <div><small class="text-danger"><span>{{cdate($events->start_date)->toFormattedDateString()}}</span></small></div>
                                     @endif
                                 </div>
                             </div>
@@ -316,7 +316,7 @@
                                 <td>
                                     {{ ucfirst(strtolower($newPatient->name)) }}</td>
                                 <td class="total-anc-patient">
-                                    <span>@php echo \Carbon\Carbon::parse($newPatient->created_at)->format('d-M-Y'); @endphp</span>
+                                    <span>@php echo cdate($newPatient->created_at)->format('d-M-Y'); @endphp</span>
                                 </td>
                             </tr>
                             @endforeach

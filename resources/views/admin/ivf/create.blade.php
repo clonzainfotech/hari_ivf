@@ -1797,7 +1797,7 @@
                                                 <div class="col-md-3">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">Last Menstrual Date : &nbsp;</span>
-                                                        {{Form::text("mh[last_menstrual_date]",!empty($lastAppointment->date) ? \Carbon\Carbon::parse($lastAppointment->date)->format('D d M Y') : null,['class'=>'form-control lmd-date','required'])}}
+                                                        {{Form::text("mh[last_menstrual_date]",!empty($lastAppointment->date) ? cdate($lastAppointment->date)->format('D d M Y') : null,['class'=>'form-control lmd-date','required'])}}
                                                     </div>
                                                 </div>
                                                 <span class="col-md-1 p-2 lmd-date-diff d-none"></span>

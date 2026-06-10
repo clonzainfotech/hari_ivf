@@ -11,7 +11,7 @@
                 <div class="{{'result-card p-3 '.$class}}">
                     <div class="row">
                         <div class="text-center follow-date">
-                            {{\Carbon\Carbon::parse($key)->format('d M Y')}}
+                            {{cdate($key)->format('d M Y')}}
                         </div>
                         @for($i=0; $i<count($row); $i++)
                             <div class="patients-name text-center">

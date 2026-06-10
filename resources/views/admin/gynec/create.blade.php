@@ -105,7 +105,7 @@
                                                 <div class="col-md-3">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">Age : &nbsp;</span>
-                                                        {{Form::number("p_info[age]",!empty($patient->age) ? $patient->age : (!empty($patient->dob) ? \Carbon\Carbon::parse($patient->dob)->age : null),['class'=>'form-control age'])}}
+                                                        {{Form::number("p_info[age]",!empty($patient->age) ? $patient->age : (!empty($patient->dob) ? cdate($patient->dob)->age : null),['class'=>'form-control age'])}}
                                                     </div>
                                                     <span class="form-error-msg">
                                                         {{$errors->first('age')}}

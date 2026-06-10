@@ -30,7 +30,7 @@
                     <td><span class="list-name">{{ucwords(strtolower($row->name))}}</span></td>
                     <td><span class="list-name">{{!empty($row->mobile_number) ? $row->mobile_number : '-'}}</span></td>
                     <td><div class="list-name text-wrap">{{!empty($row->address) ? $row->address : '-'}}</div></td>
-                    <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+                    <td>{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
                     <td><span class="list-name">{{isset($type[$row->reference_type]) ? $type[$row->reference_type] : ''}}</span></td>
                     <td><span class="list-name">{{$row->is_lead == 1 ?'Yes' : 'No'}}</span></td>
                     <td>

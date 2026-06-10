@@ -102,7 +102,7 @@
                     <td class="data-font seperator">{{ ($i++) . '.' }}</td>
                     <td class="data-font seperator">
                         <div>
-                            {{ !empty($row->time) ? \Carbon\Carbon::parse($row->date)->format('d-m-Y') . ' ' .  \Carbon\Carbon::parse($row->time)->format('h:i') : \Carbon\Carbon::parse($row->date)->format('d-m-Y') }}
+                            {{ !empty($row->time) ? cdate($row->date)->format('d-m-Y') . ' ' .  cdate($row->time)->format('h:i') : cdate($row->date)->format('d-m-Y') }}
                         </div>
                     </td>
                     <td class="data-font seperator">{{$row->getPatientsDetails['code'] }}</td>

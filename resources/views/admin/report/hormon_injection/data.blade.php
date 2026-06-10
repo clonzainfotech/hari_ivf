@@ -29,14 +29,14 @@ use App\Models\IndoorDeposit;
 
                 @php
 
-                // $date = \Carbon\Carbon::parse($data[$i]->created_at)->format('Y-m-d');
+                // $date = cdate($data[$i]->created_at)->format('Y-m-d');
                 // print_r($row->injection);
                     // $indoorDeposit = IndoorDeposit::select('*',DB::raw('count(injection) as totalInj'),DB::raw('sum(amount) as totalAmount'))->where('charge_type',1)->where(\DB::raw('DATE(created_at)'),$date)->where('patient_id',$data[$i]->getPatients['id'])->groupBy('injection')->get();
                 @endphp
                 {{-- @foreach($indoorDeposit as $injection) --}}
                     <tr>
                         <td>{{$j}}</td>
-                        <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                        <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
                         <td>{{$row->getPatientsDetails['name']}}</td>
                         <td>{{$row->injection.' ('. $row->qty.')'}}</td>
                         <td>{{$row->cycle_no}}</td>

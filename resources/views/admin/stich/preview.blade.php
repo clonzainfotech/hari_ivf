@@ -160,7 +160,7 @@
                         <br><span class="pb-1 font-bold ivf-label">Seen By : {{ ucwords(strtolower(isset($stich->getSeenBy->name) ? $stich->getSeenBy->name : '')) }}</span>
                     </th>
                     <th>
-                    <th class="pb-1 float-right font-bold ivf-label">Visit Date:  {{Carbon\Carbon::parse($stich->created_at)->format('d/m/Y')}}
+                    <th class="pb-1 float-right font-bold ivf-label">Visit Date:  {{cdate($stich->created_at)->format('d/m/Y')}}
                         @if($stich->getPatients['weight'])
                             <br>Weight: {{$stich->getPatients['weight'].' kg'}}
                         @endif

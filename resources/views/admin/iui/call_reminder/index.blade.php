@@ -2,7 +2,7 @@
 @section('parentPageTitle', 'Call Reminder')
 @section('title', 'Call Reminder')
 @section('page-style')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/fontawesome.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <style>
          .btn-neutral:hover, .btn-neutral:focus{
              color:#00cfd1 !important;

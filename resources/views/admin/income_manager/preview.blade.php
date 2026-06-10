@@ -129,7 +129,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td colspan="2" class="text-right">Date : {{\Carbon\Carbon::parse($income->date)->format('d-m-Y')}}</td>
+                    <td colspan="2" class="text-right">Date : {{cdate($income->date)->format('d-m-Y')}}</td>
                 </tr>
                     {{-- @if($hormon->charge_type == 1) --}}
                         <tr>

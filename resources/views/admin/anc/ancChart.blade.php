@@ -68,8 +68,8 @@ $weekData =  [1=>'Normal Size',2=>'Just Bulky',3=>'6 Weeks',4=>'6 - 8 Weeks',5=>
                             </div>
                             <div class="col-md-6">
                                 <ul>
-                                    <li><strong>LMP Date : </strong>{{\Carbon\Carbon::parse($otherDetails['lmp_date'])->format('d-m-Y')}}</li>
-                                    <li><strong>EDD Date : </strong>{{\Carbon\Carbon::parse($otherDetails['edd'])->format('d-m-Y')}}</li>
+                                    <li><strong>LMP Date : </strong>{{cdate($otherDetails['lmp_date'])->format('d-m-Y')}}</li>
+                                    <li><strong>EDD Date : </strong>{{cdate($otherDetails['edd'])->format('d-m-Y')}}</li>
                                 </ul>
                             </div>
                         </div>
@@ -228,7 +228,7 @@ $weekData =  [1=>'Normal Size',2=>'Just Bulky',3=>'6 Weeks',4=>'6 - 8 Weeks',5=>
                                         $oe = json_decode($anc->o_e,true);
                                     @endphp
                                     <tr>
-                                        <td>{{\Carbon\Carbon::parse($anc->created_at)->format('d-m-Y')}}</td>
+                                        <td>{{cdate($anc->created_at)->format('d-m-Y')}}</td>
                                         <td>{{!empty($ho->weight) ? $ho->weight.' kg' : '-'}}</td>
                                         <td>{{!empty($oe['le']['bp']) ? $oe['le']['bp'] : ''}}</td>
                                         <td>{{isset($weekData[$oe['utdata'][1]['oe_ut_sac_1']]) ? $weekData[$oe['utdata'][1]['oe_ut_sac_1']] : ''}}</td>

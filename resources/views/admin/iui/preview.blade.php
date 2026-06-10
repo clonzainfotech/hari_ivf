@@ -208,7 +208,7 @@
                                     <span class="iui-label" style="padding-bottom: 30px;">Name : </span>{{ ucwords(strtolower(isset($iui->getPatientsInfoData) ? $iui->getPatientsInfoData->name : $iui->getPatientsInfo->name)) . ' / ' . $patientsInfo->age.' years' }}
                                     <br><span class="iui-label" style="padding-bottom: 30px;">Seen By : </span>{{ ucwords(strtolower(isset($iui->getSeenBy->name) ? $iui->getSeenBy->name : '')) }}
                                 </th>
-                                <th style="padding-bottom: 30px;text-align: right"><span class="iui-label">Visit Date:  </span>{{Carbon\Carbon::parse($iui->created_at)->format('d/m/Y')}}
+                                <th style="padding-bottom: 30px;text-align: right"><span class="iui-label">Visit Date:  </span>{{cdate($iui->created_at)->format('d/m/Y')}}
                                     @if(isset($iui->getPatientsInfoData))
                                     <br>Weight: {{$iui->getPatientsInfoData->weight.' kg'}}
                                     @else
@@ -1308,7 +1308,7 @@
                                         @if(!empty($mh->last_menstrual_date))
                                             <th>
                                                 <span class="iui-label">Last Menstrual Date :</span>
-                                                {{!empty($mh->last_menstrual_date) ?  \Carbon\Carbon::parse($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
+                                                {{!empty($mh->last_menstrual_date) ?  cdate($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
                                                 <br>
                                                 @if (isset($mh->lmd_date_diff) && !empty($mh->lmd_date_diff))
                                                 <span class="iui-label">Day of mense :</span>
@@ -1621,7 +1621,7 @@
                     </div>        
                    
                     <div class="display">
-                        @if($oe  && ($oe->tvs->type == 'yes' || $oe->p_s->type == 'yes' || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
+                        @if($oe  && ((!empty($oe->tvs->type) && $oe->tvs->type == 'yes') || (!empty($oe->p_s->type) && $oe->p_s->type == 'yes') || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
                             <table cellspacing="0" cellpadding="0" class="table m-b-0 module-report-table">
                                 <tbody>
                                     <tr>
@@ -1651,12 +1651,12 @@
                                             </th>
                                         </tr>
                                     @endif
-                                    @if($oe->p_s->type == 'yes')
+                                    @if(!empty($oe->p_s->type) && $oe->p_s->type == 'yes')
                                         <tr>
                                             <th>
                                                 <span class="iui-label">P / S:</span>
-                                                {{ !empty($oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
-                                                @if ($oe->p_s->type == 'yes')
+                                                {{ (!empty($oe->p_s->type) && $oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
+                                                @if (!empty($oe->p_s->type) && $oe->p_s->type == 'yes')
                                                     {{!empty($oe->p_s->details) ? '| '.$oe->p_s->details : '-' }}
                                                 @endif
                                             </th>
@@ -1671,22 +1671,22 @@
                                             </th>
                                         </tr>
                                     @endif
-                                    @if($oe->tvs->type == 'yes')
+                                    @if(!empty($oe->tvs->type) && $oe->tvs->type == 'yes')
                                         <tr>
                                             <th>
                                                 <span class="iui-label">Transvaginal Ultrasonography :</span>
                                             </th>
                                         </tr>
                                     @endif
-                                    @if ($oe->tvs->type == 'yes')
+                                    @if (!empty($oe->tvs->type) && $oe->tvs->type == 'yes')
                                         <tr>
                                             <th>
                                                 <span class="iui-label">Uterus:  </span>
-                                                {{ !empty($oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
+                                                {{ (!empty($oe->uterus->type) && $oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
                                             </th>
                                         </tr>
                                         <tr>
-                                            @if ($oe->uterus->type == '2')
+                                            @if (!empty($oe->uterus->type) && $oe->uterus->type == '2')
                                                 <th>
                                                     <span class="iui-label">Abnormal Details:  </span>
                                                     {{ !empty($oe->uterus->details) ? $oe->uterus->details : '-' }}
@@ -1702,7 +1702,7 @@
                                             </th>
                                         </tr>
                                     @endif
-                                    @if ($oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
+                                    @if (!empty($oe->tvs->type) && $oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
                                         <tr>
                                             <th>
                                                 <span class="iui-label">Endometrial Thickness:  </span>
@@ -1800,7 +1800,7 @@
                                         <tr>
                                             <th>
                                                 <span class="iui-label">Date :</span>
-                                                {{\Carbon\Carbon::parse($patientDetailedHO->personal_history_date)->format('D d M Y')}}
+                                                {{cdate($patientDetailedHO->personal_history_date)->format('D d M Y')}}
                                             </th>
                                         </tr>
                                     @endif
@@ -2544,7 +2544,7 @@
                     </table>
                     @endif
                     @if(isset($oe->follow_up) && !empty($oe->follow_up))
-                        <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                        <h4 class="text-center">{{"ફરીવાર ".cdate($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
                     @endif
 
                     
@@ -2560,7 +2560,7 @@
                                     </th>
                                     <th>
                                         <span class="iui-label">Date: </span>
-                                        {{ \Carbon\Carbon::parse( $iui->created_at)->format('D d M Y') }}
+                                        {{ cdate( $iui->created_at)->format('D d M Y') }}
                                     </th>
                                     {{-- @if(($visit == 3 || $visit == 4) && !empty($iui->cycle_no))
                                         <th>
@@ -2651,7 +2651,7 @@
                                 <tr>
                                     <th>
                                         <span class="iui-label">LMP Date :</span>
-                                        {{ !empty($lmp->date) ? \Carbon\Carbon::parse($lmp->date)->format('d/m/Y').' '.(!empty($lmp->lmp_date_diff) ? ' Day of menses '.$lmp->lmp_date_diff.'' : ''): '-' }}
+                                        {{ !empty($lmp->date) ? cdate($lmp->date)->format('d/m/Y').' '.(!empty($lmp->lmp_date_diff) ? ' Day of menses '.$lmp->lmp_date_diff.'' : ''): '-' }}
                                     </td>
                                 </tr>
                                 
@@ -2859,9 +2859,9 @@
                                                     // if(isset($menses_Day[$keyValue]))
                                                     // {
 
-                                                        // $inducingDisplayDate = \Carbon\Carbon::parse($lmp->date)->addDays(($menses_Day[$keyValue] - 1))->format('d/m/Y');
-                                                        $days = \Carbon\Carbon::parse($lmp->date)->diffInDays($valueData->date);
-                                                        // if(!empty($value) && $is_inj == 1 && (\Carbon\Carbon::parse($valueData->date)->format('d/m/Y') == $inducingDisplayDate))
+                                                        // $inducingDisplayDate = cdate($lmp->date)->addDays(($menses_Day[$keyValue] - 1))->format('d/m/Y');
+                                                        $days = cdate($lmp->date)->diffInDays(cdate($valueData->date));
+                                                        // if(!empty($value) && $is_inj == 1 && (cdate($valueData->date)->format('d/m/Y') == $inducingDisplayDate))
                                                         if(!empty($value) && $is_inj == 1)
                                                         {
                                                             $replacement = '('.' '.')';
@@ -3030,9 +3030,9 @@
                                             <span class="iui-label">IUI Time:</span>
                                             @php
                                                 $cDate = date('Y-m-d').' '.$hcg->time;
-                                                $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i:s');
+                                                $iuiDtaeAndTime = cdate($cDate)->addHours(35)->format('Y-m-d H:i:s');
                                             @endphp
-                                            {{\Carbon\Carbon::parse($iuiDtaeAndTime)->format('g:i a')}}
+                                            {{cdate($iuiDtaeAndTime)->format('g:i a')}}
                                         </th>
                                     </tr>
                                 @endif
@@ -3052,7 +3052,7 @@
                                 @endif
                                 <th  >
                                     <span class="iui-label">Follow Up: </span>
-                                    {{ (isset($description->follow_up) && !empty($description->follow_up)) ? \Carbon\Carbon::parse($description->follow_up)->format('d/m/Y') : (!empty($description->new_follow_up) ? \Carbon\Carbon::parse($description->new_follow_up)->format('d/m/Y') : '-') }}
+                                    {{ (isset($description->follow_up) && !empty($description->follow_up)) ? cdate($description->follow_up)->format('d/m/Y') : (!empty($description->new_follow_up) ? cdate($description->new_follow_up)->format('d/m/Y') : '-') }}
                                 </th>
                             </tr>
                             @if(!empty($description->p_s->type))
@@ -3315,9 +3315,9 @@
                                     <th>
                                         {{-- <span class="iui-label">Follow Up: </span> --}}
                                         @if(!empty($plan->follow_up) && $visit == 2)
-                                        <h5>{{"ફરીવાર ".\Carbon\Carbon::parse($plan->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                                        <h5>{{"ફરીવાર ".cdate($plan->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                                         @elseif(!empty($description->date) && $visit == 4)
-                                        <h5>{{"ફરીવાર ".\Carbon\Carbon::parse($description->date)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                                        <h5>{{"ફરીવાર ".cdate($description->date)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                                         @else
                                         <h5>-</h5>
                                         @endif
@@ -3354,7 +3354,7 @@
                 <div class="row">
                     <div class="col-md-1">
                         <div class="current-date hsg-injection">
-                            {!! \Carbon\Carbon::parse(!empty($description->hcg_date) ? $description->hcg_date : null)->format('d M Y').' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.\Carbon\Carbon::parse(!empty($description->hcg_date) ? $description->hcg_date : null)->format('l') !!}
+                            {!! cdate(!empty($description->hcg_date) ? $description->hcg_date : null)->format('d M Y').' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.cdate(!empty($description->hcg_date) ? $description->hcg_date : null)->format('l') !!}
                         </div>
                     </div>
                 </div>
@@ -3370,7 +3370,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="hsg-time-data">
-                            {{$iui->hcg_time}} <span class="hsg-injection">{{\Carbon\Carbon::parse($hcg->time)->format('g:i')}}</span> વાગ્યે  <span class="hsg-injection">{{implode(',',$hcgInjectionData)}}&nbsp</span> માટે આવશે
+                            {{$iui->hcg_time}} <span class="hsg-injection">{{cdate($hcg->time)->format('g:i')}}</span> વાગ્યે  <span class="hsg-injection">{{implode(',',$hcgInjectionData)}}&nbsp</span> માટે આવશે
                         </div>
                     </div>
                 </div>
@@ -3379,17 +3379,17 @@
                     <div class="col-md-1">
                         <div class="current-date hsg-injection">
                             @php
-                                $cDate = \Carbon\Carbon::parse(!empty($description->hcg_date) ? $description->hcg_date : null)->format('Y-m-d') .' '.$hcg->time;
-                                $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i:s');
+                                $cDate = cdate(!empty($description->hcg_date) ? $description->hcg_date : null)->format('Y-m-d') .' '.$hcg->time;
+                                $iuiDtaeAndTime = cdate($cDate)->addHours(35)->format('Y-m-d H:i:s');
                             @endphp
-                            {!! \Carbon\Carbon::parse($iuiDtaeAndTime)->format('d M Y') .' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.\Carbon\Carbon::parse($iuiDtaeAndTime)->format('l') !!}
+                            {!! cdate($iuiDtaeAndTime)->format('d M Y') .' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.cdate($iuiDtaeAndTime)->format('l') !!}
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="hsg-time-data">
-                            {{$iui->iui_time}} <span class="hsg-injection">{{\Carbon\Carbon::parse($iuiDtaeAndTime)->format('g:i')}}&nbsp</span> વાગ્યે  <span class="hsg-injection">IUI</span> માટે આવશે
+                            {{$iui->iui_time}} <span class="hsg-injection">{{cdate($iuiDtaeAndTime)->format('g:i')}}&nbsp</span> વાગ્યે  <span class="hsg-injection">IUI</span> માટે આવશે
                         </div>
                     </div>
                 </div>
@@ -3536,16 +3536,16 @@
                                     $iuiPrevVisit = IuiHistory::where('patients_id',$row->patients_id)->where('created_at','<',$row->created_at)->orderBy('id','DESC')->first();
                                     if($iuiPrevVisit){
                                         $prevData = json_decode($iuiPrevVisit->description);
-                                        $prevAppointmentDate = !empty($prevData->new_follow_up) ? \Carbon\Carbon::parse($prevData->new_follow_up)->format('d-m-Y') : null;
+                                        $prevAppointmentDate = !empty($prevData->new_follow_up) ? cdate($prevData->new_follow_up)->format('d-m-Y') : null;
                                     }
                                     $data = json_decode($row->description);
                                     $agentData = !empty($data->plan->inducing_agent) ? $data->plan->inducing_agent : [];
-                                    $lmpDate = \Carbon\Carbon::parse($data->lmp->date)->format('d-m-Y');
-                                    $createdAt = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                    $appointmentDate = !empty($data->new_follow_up) ? \Carbon\Carbon::parse($data->new_follow_up)->format('d-m-Y') : \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                    $diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($createdAt));
+                                    $lmpDate = cdate($data->lmp->date)->format('d-m-Y');
+                                    $createdAt = cdate($row->created_at)->format('d-m-Y');
+                                    $appointmentDate = !empty($data->new_follow_up) ? cdate($data->new_follow_up)->format('d-m-Y') : cdate($row->created_at)->format('d-m-Y');
+                                    $diff = cdate($lmpDate)->diffInDays(cdate($createdAt));
                                     $diff = $diff + 1;
-                                    $currentDateDiff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse(date('d-m-Y')));
+                                    $currentDateDiff = cdate($lmpDate)->diffInDays(cdate(date('d-m-Y')));
                                     $left_class_name = 'td-left-overy-'.$row->id.'-text';
                                     $right_class_name = 'td-right-overy-'.$row->id.'-text';
                                     $vascularity_of_endo = ['1' => "Up to Zone 1",'2' => "Up to Zone 2",'3' => "Up to Zone 3",'4' => "Up to Zone 4"];
@@ -3560,7 +3560,7 @@
                                         $skipValue = 1;
                                     }
                                     if($row->visit == 2){
-                                        $appointmentDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
+                                        $appointmentDate = cdate($row->created_at)->format('d-m-Y');
                                         $agentData = !empty($data->plan->agenet) ? $data->plan->agenet: [];
                                     }
                                     if($row->visit != 1)
@@ -3568,7 +3568,7 @@
                                         if(!empty($data->inducing)){
                                             $agentDataValue = [];
                                             foreach($data->inducing as $key => $value) {
-                                                $inducingDateArray[] = \Carbon\Carbon::parse($value->date)->format('d-m-Y');
+                                                $inducingDateArray[] = cdate($value->date)->format('d-m-Y');
                                                 $agentDataValue = !empty($data->plan->inducing_agent) ? $data->plan->inducing_agent : [];
                                                 $value->injection = $agentDataValue;
                                             }
@@ -3579,8 +3579,8 @@
                                 @if(!empty($dateAndInjectionData))
                                     @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
                                     @php
-                                        $date = \Carbon\Carbon::parse($valueData->date)->format('d-m-Y');
-                                        $inducing_diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($valueData->date));
+                                        $date = cdate($valueData->date)->format('d-m-Y');
+                                        $inducing_diff = cdate($lmpDate)->diffInDays(cdate($valueData->date));
                                         $inducing_diff = $inducing_diff + 1;
                                         if($row->visit == 2)
                                         {
@@ -3642,7 +3642,7 @@
                                     @if(!empty($iuiExtraVisit))
                                             @foreach($iuiExtraVisit as $iuiExtra)
                                             <tr >
-                                                <td>{{\Carbon\Carbon::parse($iuiExtra->created_at)->format('d-m-Y')}}</td>
+                                                <td>{{cdate($iuiExtra->created_at)->format('d-m-Y')}}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -3752,8 +3752,8 @@
                                 @if(!empty($dateAndInjectionData))
                                     @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
                                     @php
-                                        $date = \Carbon\Carbon::parse($valueData->date)->format('d-m-Y');
-                                        $inducing_diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($valueData->date));
+                                        $date = cdate($valueData->date)->format('d-m-Y');
+                                        $inducing_diff = cdate($lmpDate)->diffInDays(cdate($valueData->date));
                                         $inducing_diff = $inducing_diff + 1;
                                         if($row->visit == 2)
                                         {
@@ -3813,7 +3813,7 @@
                                     @if(!empty($iuiExtraVisit))
                                             @foreach($iuiExtraVisit as $iuiExtra)
                                             <tr >
-                                                <td>{{\Carbon\Carbon::parse($iuiExtra->created_at)->format('d-m-Y')}}</td>
+                                                <td>{{cdate($iuiExtra->created_at)->format('d-m-Y')}}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -3851,12 +3851,12 @@
                                 <tr>
                                     <td>
                                         @if(!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date))
-                                            {{\Carbon\Carbon::parse($iui_decription->hcg_date)->format('d-m-Y')}}
+                                            {{cdate($iui_decription->hcg_date)->format('d-m-Y')}}
                                         @elseif($row->visit == 4 && !empty($iui_decription->result))
-                                            {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
+                                            {{cdate($row->created_at)->format('d-m-Y')}}
                                     
                                         @elseif((!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes'))
-                                            {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
+                                            {{cdate($row->created_at)->format('d-m-Y')}}
                                         @endif
                                     </td>
                                     <td>
@@ -3875,8 +3875,8 @@
                                         
                                             @if(!empty($iui_decription->hcg->iui->status) && $iui_decription->hcg->iui->status == 'yes' && !empty($iui_decription->hcg_date))
                                                 @php
-                                                    $cDate = \Carbon\Carbon::parse(!empty($iui_decription->hcg_date) ? $iui_decription->hcg_date : null)->format('d-m-Y') .' '.$iui_decription->hcg->time;
-                                                    $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('d-m-Y');
+                                                    $cDate = cdate(!empty($iui_decription->hcg_date) ? $iui_decription->hcg_date : null)->format('d-m-Y') .' '.$iui_decription->hcg->time;
+                                                    $iuiDtaeAndTime = cdate($cDate)->addHours(35)->format('d-m-Y');
                                                 @endphp
                                                 {{$iuiDtaeAndTime}}
                                             @endif
@@ -3896,8 +3896,8 @@
                     @endif
                     @if($skipValue == 1) 
                         @php
-                                $visitDate = \Carbon\Carbon::parse($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
-                                $diff = \Carbon\Carbon::parse(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
+                                $visitDate = cdate($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
+                                $diff = cdate(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(cdate($visitDate));
                                 $diff = $diff + 1;
                         @endphp
                         {{-- <div class="col-md-12"> --}}
@@ -3942,7 +3942,7 @@
                                 @endphp
                                 @if(!empty($historyTreatmentView) && !empty((array)($historyTreatmentView->medicinedata ?? [])))
                                 <tr>
-                                    <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                                    <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
                                     <td class="text-justify">
                                         
                                         @if($historyTreatmentView)
@@ -4028,7 +4028,7 @@
                     {{-- <div class="row"> --}}
                         <div class="col-md-12">
                             <div class="current-date hsg-injection">
-                                <span class="fa fa-arrow-right"></span>&nbsp;&nbsp;{!! \Carbon\Carbon::parse(!empty($description->hcg_date) ? $description->hcg_date : null)->format('d M Y').' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.\Carbon\Carbon::parse(!empty($description->hcg_date) ? $description->hcg_date : null)->format('l') !!}
+                                <span class="fa fa-arrow-right"></span>&nbsp;&nbsp;{!! cdate(!empty($description->hcg_date) ? $description->hcg_date : null)->format('d M Y').' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.cdate(!empty($description->hcg_date) ? $description->hcg_date : null)->format('l') !!}
                             </div>
                         </div>
                     {{-- </div> --}}
@@ -4044,7 +4044,7 @@
                         {{-- <div class="row"> --}}
                             <div class="col-md-12">
                                 <div class="hsg-time-data ml-4">
-                                    {{$iui->hcg_time}} <span class="hsg-injection">{{\Carbon\Carbon::parse($hcg->time)->format('g:i')}}</span> વાગ્યે  <span class="hsg-injection">{{implode(',',$hcgInjectionData)}}&nbsp</span> માટે આવવુ
+                                    {{$iui->hcg_time}} <span class="hsg-injection">{{cdate($hcg->time)->format('g:i')}}</span> વાગ્યે  <span class="hsg-injection">{{implode(',',$hcgInjectionData)}}&nbsp</span> માટે આવવુ
                                 </div>
                             </div>
                         {{-- </div> --}}
@@ -4053,27 +4053,27 @@
                             <div class="col-md-12">
                                 <div class="current-date hsg-injection">
                                     @php
-                                        $cDate = \Carbon\Carbon::parse(!empty($description->hcg_date) ? $description->hcg_date : null)->format('Y-m-d') .' '.$hcg->time;
-                                        $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('Y-m-d H:i:s');
+                                        $cDate = cdate(!empty($description->hcg_date) ? $description->hcg_date : null)->format('Y-m-d') .' '.$hcg->time;
+                                        $iuiDtaeAndTime = cdate($cDate)->addHours(35)->format('Y-m-d H:i:s');
                                     @endphp
-                                    <span class="fa fa-arrow-right"></span>&nbsp;&nbsp;{!! \Carbon\Carbon::parse($iuiDtaeAndTime)->format('d M Y') .' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.\Carbon\Carbon::parse($iuiDtaeAndTime)->format('l') !!}
+                                    <span class="fa fa-arrow-right"></span>&nbsp;&nbsp;{!! cdate($iuiDtaeAndTime)->format('d M Y') .' &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.cdate($iuiDtaeAndTime)->format('l') !!}
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="hsg-time-data ml-4">
-                                    {{$iui->iui_time}} <span class="hsg-injection">{{\Carbon\Carbon::parse($iuiDtaeAndTime)->format('g:i')}}&nbsp</span> વાગ્યે  <span class="hsg-injection">IUI</span> માટે આવવુ
+                                    {{$iui->iui_time}} <span class="hsg-injection">{{cdate($iuiDtaeAndTime)->format('g:i')}}&nbsp</span> વાગ્યે  <span class="hsg-injection">IUI</span> માટે આવવુ
                                 </div>
                             </div>
                         @endif
                         @if(isset($description->follow_up) && !empty($description->follow_up))
                             <div class="col-md-12">
-                                <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($description->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                                <h4 class="text-center">{{"ફરીવાર ".cdate($description->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
                             </div>
                         @endif
                 </div>
             @else
                 @if(isset($description->follow_up) && !empty($description->follow_up))
-                    <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($description->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                    <h4 class="text-center">{{"ફરીવાર ".cdate($description->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
                 @endif
             @endif
             
@@ -4095,7 +4095,7 @@
                         <br><span class="iui-label">Seen By : </span>{{ ucwords(strtolower(isset($iuiExtraVisit->getSeenBy->name) ? $iuiExtraVisit->getSeenBy->name : '')) }}
 
                     </th>
-                    <th style=""><span class="iui-label">Visit Date:  </span>{{Carbon\Carbon::parse($iuiExtraVisit->created_at)->format('d/m/Y')}}
+                    <th style=""><span class="iui-label">Visit Date:  </span>{{cdate($iuiExtraVisit->created_at)->format('d/m/Y')}}
                         @if($iuiPatients->weight)
                             <br>Weight: {{$iuiPatients->weight.' kg'}}
                         @endif
@@ -4122,13 +4122,13 @@
                         <th>
                             <br>
                             <span class="iui-label"> LMP Date: </span>
-                            {{ !empty($lmp->date) ? \Carbon\Carbon::parse($lmp->date)->format('d/m/Y') : '-' }}
+                            {{ !empty($lmp->date) ? cdate($lmp->date)->format('d/m/Y') : '-' }}
                         </th>
                     </tr>
                 @endif
             </tbody>
         </table>
-        @if($oe  && ($oe->tvs->type == 'yes' || $oe->p_s->type == 'yes' || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
+        @if($oe  && ((!empty($oe->tvs->type) && $oe->tvs->type == 'yes') || (!empty($oe->p_s->type) && $oe->p_s->type == 'yes') || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse)))
         
             <table cellspacing="0" cellpadding="0" class="table m-b-0  module-report-table">
                 <tbody>
@@ -4160,12 +4160,12 @@
                             </th>
                         @endif
                     </tr>
-                    @if($oe->p_s->type == 'yes')
+                    @if(!empty($oe->p_s->type) && $oe->p_s->type == 'yes')
                         <tr>
                             <th>
                                 <span class="iui-label">P / S:</span>
-                                {{ !empty($oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
-                                @if ($oe->p_s->type == 'yes')
+                                {{ (!empty($oe->p_s->type) && $oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
+                                @if (!empty($oe->p_s->type) && $oe->p_s->type == 'yes')
                                     {{!empty($oe->p_s->details) ? '| '.$oe->p_s->details : '-' }}
                                 @endif
                             </th>
@@ -4179,20 +4179,20 @@
                             </th>
                         </tr>
                     @endif
-                    @if($oe->tvs->type == 'yes')
+                    @if(!empty($oe->tvs->type) && $oe->tvs->type == 'yes')
                         <tr>
                             <th>
                                 <span class="iui-label">Transvaginal Ultrasonography:</span>
                             </th>
                         </tr>
                     @endif
-                    @if ($oe->tvs->type == 'yes')
+                    @if (!empty($oe->tvs->type) && $oe->tvs->type == 'yes')
                         <tr>
                             <th>
                                 <span class="iui-label">Uterus:  </span>
-                                {{ !empty($oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
+                                {{ (!empty($oe->uterus->type) && $oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
                             </th>
-                            @if ($oe->uterus->type == '2')
+                            @if (!empty($oe->uterus->type) && $oe->uterus->type == '2')
                                 <th>
                                     <span class="iui-label">Abnormal Details:  </span>
                                     {{ !empty($oe->uterus->details) ? $oe->uterus->details : '-' }}
@@ -4208,7 +4208,7 @@
                             </th>
                         </tr>
                     @endif
-                    @if ($oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
+                    @if (!empty($oe->tvs->type) && $oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
                         <tr>
                             <th>
                                 <span class="iui-label">Endometrial Thickness:  </span>
@@ -4377,7 +4377,7 @@
         @endif
         @if(isset($oe->follow_up) && !empty($oe->follow_up))
         <br>
-                    <h4 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                    <h4 class="text-center">{{"ફરીવાર ".cdate($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
         @endif
     </div>
 @endif

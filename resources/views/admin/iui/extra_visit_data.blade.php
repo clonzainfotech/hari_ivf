@@ -99,7 +99,7 @@
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-addon">L.M.P Date : &nbsp;</span>
-                            {{Form::text("lmp[date]",!empty($lmp->date) ? \Carbon\Carbon::parse($lmp->date)->format('D d M Y') : null,['class'=>'form-control lmd-date second-visit-lmd-date'])}}
+                            {{Form::text("lmp[date]",!empty($lmp->date) ? cdate($lmp->date)->format('D d M Y') : null,['class'=>'form-control lmd-date second-visit-lmd-date'])}}
                         </div>
                         <span class="form-error-msg lmp-date-msg"></span>
                     </div>

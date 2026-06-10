@@ -192,7 +192,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 <br><span class="iui-label">Seen By : </span>{{ ucwords(strtolower(isset($ivf->getSeenBy->name) ? $ivf->getSeenBy->name : '')) }}
                             </th>
                             <th>
-                            <th class="pb-1 float-right font-bold ivf-label">Visit Date:  {{Carbon\Carbon::parse($ivf->created_at)->format('d/m/Y')}}
+                            <th class="pb-1 float-right font-bold ivf-label">Visit Date:  {{cdate($ivf->created_at)->format('d/m/Y')}}
                                 @if($ivf->getPatientsDetails['weight'])
                                     <br>Weight: {{$ivf->getPatientsDetails['weight'].' kg'}}
                                 @endif
@@ -1170,7 +1170,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             @if(!empty($mh->last_menstrual_date))
                                                 <th class=" w-300">
                                                     <span class="ivf-label">Last Menstrual Date :</span>
-                                                    {{!empty($mh->last_menstrual_date) ?  \Carbon\Carbon::parse($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
+                                                    {{!empty($mh->last_menstrual_date) ?  cdate($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
                                                     <br>
                                                     @if(isset($mh->lmd_date_diff) && !empty($mh->lmd_date_diff))
                                                         <span class="ivf-label">Day of menses:</span>
@@ -1731,7 +1731,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         <tr>
                                             <th>
                                                 <span class="ivf-label">Date :</span>
-                                                {{\Carbon\Carbon::parse($patientDetailedHO->personal_history_date)->format('D d M Y')}}
+                                                {{cdate($patientDetailedHO->personal_history_date)->format('D d M Y')}}
                                             </th>
                                         </tr>
                                     @endif
@@ -2506,7 +2506,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         <br><span class="ivf-label">Age : </span>{{ $ivf->getPatientsDetails['age']. ' years | '.$gender }}
                                 </th>
                                 <th class="float-right">
-                                    <span class="ivf-label">Visit Date:  </span>{{Carbon\Carbon::parse($ivf->created_at)->format('d/m/Y')}}
+                                    <span class="ivf-label">Visit Date:  </span>{{cdate($ivf->created_at)->format('d/m/Y')}}
                                     @if($ivf->getPatientsDetails['weight'])
                                         <br><span class="ivf-label">Weight: </span>{{$ivf->getPatientsDetails['weight'].' kg'}}
                                     @endif
@@ -2517,7 +2517,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     <th>
                                         <br>
                                         <span class="ivf-label"> LMP Date: </span>
-                                        {{ !empty($lmp->date) ? \Carbon\Carbon::parse($lmp->date)->format('d/m/Y').' '.(!empty($lmp->lmp_date_diff) ? 'Day of menses '.$lmp->lmp_date_diff.'' : '') : '-' }}
+                                        {{ !empty($lmp->date) ? cdate($lmp->date)->format('d/m/Y').' '.(!empty($lmp->lmp_date_diff) ? 'Day of menses '.$lmp->lmp_date_diff.'' : '') : '-' }}
                                     </th>
                                 </tr>
                             @endif
@@ -2804,7 +2804,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 <tr>
                                     <th>
                                         <span class="ivf-label"> Date </span>
-                                        {{!empty($dataa->date) ? $dataa->date : (!empty($lastAppointmentData->date) ? \Carbon\Carbon::parse($lastAppointmentData->date)->format('D d M Y') : '-')}}
+                                        {{!empty($dataa->date) ? $dataa->date : (!empty($lastAppointmentData->date) ? cdate($lastAppointmentData->date)->format('D d M Y') : '-')}}
                                     </th>
                                 </tr>
                             @endif
@@ -3270,7 +3270,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     <th>
                         <br>
                         <span class="ivf-label">Follow Up:</span>
-                        {{!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : '-'}}
+                        {{!empty($historyData->follow_up) ? cdate($historyData->follow_up)->format('D d M Y') : '-'}}
                     </th>
                     @if(!empty($historyData->pt_remark))
                         <th>
@@ -3487,7 +3487,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     <tr>
                         <td>
                             Trigger date :- &nbsp;&nbsp;
-                            {{(\Carbon\Carbon::parse($historyData->trigger_date)->format('D d M Y'))}}
+                            {{(cdate($historyData->trigger_date)->format('D d M Y'))}}
                         </td>
                     </tr>
                     <tr>
@@ -3502,10 +3502,10 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                         <td>
                             Pickup date :- &nbsp;&nbsp;
                             @php
-                                $nowDate = \Carbon\Carbon::parse($historyData->trigger_date)->format('Y-m-d');
-                                $nowTime = \Carbon\Carbon::parse(!empty($historyData->trigger->hcg->time) ? $historyData->trigger->hcg->time : (!empty($historyData->trigger->decapeptyl->time) ? $historyData->trigger->decapeptyl->time : null))->format('H:i:s');
-                                $triggerDateTime = \Carbon\Carbon::parse($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
-                                $triggerDate = \Carbon\Carbon::parse($triggerDateTime)->format('D d M Y');
+                                $nowDate = cdate($historyData->trigger_date)->format('Y-m-d');
+                                $nowTime = cdate(!empty($historyData->trigger->hcg->time) ? $historyData->trigger->hcg->time : (!empty($historyData->trigger->decapeptyl->time) ? $historyData->trigger->decapeptyl->time : null))->format('H:i:s');
+                                $triggerDateTime = cdate($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
+                                $triggerDate = cdate($triggerDateTime)->format('D d M Y');
                             @endphp
                             {{$triggerDate}}
                         </td>
@@ -3513,7 +3513,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     <tr>
                         <td>
                             Time  :- &nbsp;&nbsp;
-                            {{\Carbon\Carbon::parse($triggerDateTime)->format('h:i a')}}
+                            {{cdate($triggerDateTime)->format('h:i a')}}
                         </td>
                     </tr>
                     @if(!empty($historyData->trigger->hcg->status))
@@ -3574,7 +3574,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     </div>
                     <br>
                     <div class="col-md-12">
-                        <span>Date : {{!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : '-'}}</span>
+                        <span>Date : {{!empty($historyData->follow_up) ? cdate($historyData->follow_up)->format('D d M Y') : '-'}}</span>
                     </div>
                     <br>
                     @if($investigation && (!empty($investigation->hystroscopy) && !empty($investigation->hystroscopy->type) && $investigation->hystroscopy->type == 'yes'))
@@ -3741,7 +3741,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     @if(!empty($ivfExtraVisit))
                                             @foreach($ivfExtraVisit as $ivfExtra)
                                             <tr >
-                                                <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                                <td>{{cdate($ivfExtra->created_at)->format('d-m-Y')}}</td>
                                                 @if(!isset($pt_view) || $pt_view != 1)
                                                     <td></td>
                                                     <td></td>
@@ -3797,11 +3797,11 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                             $j++;
                                                         @endphp
                                                             <tr>
-                                                                <td>{{($j===1)?\Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y'):''}}</td>
+                                                                <td>{{($j===1)?cdate($datarow->created_at)->format('d-m-Y'):''}}</td>
                                                                 <td>{{!empty($row->day) ? $row->day : '-'}}</td>
                                                                 <td>{{!empty($row->s_day) ? 's'.$row->s_day : '-'}}</td>
-                                                                {{-- <td>{{!empty($row->date) ? \Carbon\Carbon::parse($row->date)->format('d/m/Y') : '-'}}</td> --}}
-                                                                <td>{{ \Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
+                                                                {{-- <td>{{!empty($row->date) ? cdate($row->date)->format('d/m/Y') : '-'}}</td> --}}
+                                                                <td>{{ cdate($row->date)->format('d-m-Y')}}</td>
                                                                 <td>{{!empty($row->injection) ? $injectionData[$row->injection] : '-'}}</td>
                                                                 <td>{{!empty($row->hmg) ? $row->hmg : '-'}}</td>
                                                                 <td>{{!empty($row->hmg_brand_name) ? $row->hmg_brand_name : '-'}}</td>
@@ -3865,7 +3865,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                    
                                                 @else
                                                 <tr>
-                                                    <td>{{!empty($datarow->created_at) ? \Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y'):''}}</td>
+                                                    <td>{{!empty($datarow->created_at) ? cdate($datarow->created_at)->format('d-m-Y'):''}}</td>
                                                     <td>
                                                             @if($datarow->visit == 2)
                                                                 {{!empty($data->oe->ovary->right->afcs) ? $data->oe->ovary->right->afcs : '-'}}
@@ -3914,7 +3914,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             @if(!empty($ivfExtraVisit))
                                     @foreach($ivfExtraVisit as $ivfExtra)
                                     <tr >
-                                        <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                        <td>{{cdate($ivfExtra->created_at)->format('d-m-Y')}}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -3940,20 +3940,20 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
                             @php
-                                $nowDate = \Carbon\Carbon::parse($historyData->trigger_date)->format('Y-m-d');
-                                $nowTime = \Carbon\Carbon::parse(!empty($historyData->trigger->hcg->time) ? $historyData->trigger->hcg->time : (!empty($historyData->trigger->decapeptyl->time) ? $historyData->trigger->decapeptyl->time : null))->format('H:i:s');
+                                $nowDate = cdate($historyData->trigger_date)->format('Y-m-d');
+                                $nowTime = cdate(!empty($historyData->trigger->hcg->time) ? $historyData->trigger->hcg->time : (!empty($historyData->trigger->decapeptyl->time) ? $historyData->trigger->decapeptyl->time : null))->format('H:i:s');
                                 if(empty($historyData->trigger->hcg->time) && $historyData->trigger->decapeptyl->time && !empty($historyData->trigger->ovutring->time))
                                 {
-                                    $nowTime = \Carbon\Carbon::parse($historyData->trigger->ovutring->time)->format('H:i:s');
+                                    $nowTime = cdate($historyData->trigger->ovutring->time)->format('H:i:s');
                                 }
-                                $triggerDateTime = \Carbon\Carbon::parse($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
-                                $triggerDate = \Carbon\Carbon::parse($triggerDateTime)->format('D d M Y');
+                                $triggerDateTime = cdate($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
+                                $triggerDate = cdate($triggerDateTime)->format('D d M Y');
                             @endphp
                             
-                            <span>Trigger date :- &nbsp;&nbsp; {{(\Carbon\Carbon::parse($historyData->trigger_date)->format('D d M Y'))}}</span><br>
+                            <span>Trigger date :- &nbsp;&nbsp; {{(cdate($historyData->trigger_date)->format('D d M Y'))}}</span><br>
                             <span>Time :- &nbsp;&nbsp;  {{!empty($historyData->trigger->hcg->time) ? $historyData->trigger->hcg->time : (!empty($historyData->trigger->decapeptyl->time) ? $historyData->trigger->decapeptyl->time : null)}}</span><br>
                             <span>Pickup date :- &nbsp;&nbsp; {{$triggerDate}}</span><br>
-                            <span>Time  :- &nbsp;&nbsp;{{\Carbon\Carbon::parse($triggerDateTime)->format('h:i a')}}</span><br>
+                            <span>Time  :- &nbsp;&nbsp;{{cdate($triggerDateTime)->format('h:i a')}}</span><br>
                             @if(!empty($historyData->trigger->hcg->status))
                                         <span>Injection Name :- &nbsp;&nbsp; HCG</span>
                                             @if(!empty($historyData->trigger->hcg->dose))
@@ -3993,8 +3993,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                 @endif
                 @if($skipValue == 1) {{-- skip cycle --}}
                     @php
-                            $visitDate = \Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y');
-                            $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $datarow->created_at)->diffInDays(\Carbon\Carbon::parse($visitDate));
+                            $visitDate = cdate($datarow->created_at)->format('d-m-Y');
+                            $diff = cdate(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $datarow->created_at)->diffInDays(cdate($visitDate));
                             $diff = $diff + 1;
                     @endphp
                     <div class="col-md-12 mt-1">
@@ -4022,8 +4022,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                 @endif
                 @if(!empty($lastHistoryData->transfer->result_type))
                     @php
-                        $visitDate = \Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y');
-                        $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $datarow->created_at)->diffInDays(\Carbon\Carbon::parse($visitDate));
+                        $visitDate = cdate($datarow->created_at)->format('d-m-Y');
+                        $diff = cdate(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $datarow->created_at)->diffInDays(cdate($visitDate));
                         $diff = $diff + 1;
                     @endphp
                     <div class="col-md-12 text-left">
@@ -4059,7 +4059,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             @foreach($ivfCycleData as $row)
                                 @php
                                     $data = json_decode($row->description);
-                                    $visitDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
+                                    $visitDate = cdate($row->created_at)->format('d-m-Y');
                                     $historyTreatmentView = null;
                                     if(!empty($data->medicinedata)){
                                         $historyTreatmentView = !empty($data->medicinedata) ? $data->medicinedata : null;
@@ -4229,8 +4229,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 @php
                                     $historyData = json_decode($row->description);
                                     $investigationData = json_decode($row->investigation);
-                                    $visitDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                    $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $row->created_at)->diffInDays(\Carbon\Carbon::parse($row->created_at));
+                                    $visitDate = cdate($row->created_at)->format('d-m-Y');
+                                    $diff = cdate(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $row->created_at)->diffInDays(cdate($row->created_at));
                                     $diff = $diff + 1;
                                     $vascularity_of_endo = ['1' => "Up to Zone 1",'2' => "Up to Zone 2",'3' => "Up to Zone 3",'4' => "Up to Zone 4"];
                                     
@@ -4260,7 +4260,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     @if(!empty($ivfExtraVisit))
                                             @foreach($ivfExtraVisit as $ivfExtra)
                                             <tr >
-                                                <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                                <td>{{cdate($ivfExtra->created_at)->format('d-m-Y')}}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -4306,7 +4306,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 </tr>
                                 @if(isset($historyData->progesterone_date) && (!empty($historyData->progesterone->type)) && (!empty($historyData->progesterone_date)))
                                     <tr>
-                                        <td>{{\Carbon\Carbon::parse($historyData->progesterone_date)->format('d-m-Y')}}</td>
+                                        <td>{{cdate($historyData->progesterone_date)->format('d-m-Y')}}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -4321,7 +4321,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     @if(!empty($ivfExtraVisit))
                                             @foreach($ivfExtraVisit as $ivfExtra)
                                             <tr >
-                                                <td>{{\Carbon\Carbon::parse($ivfExtra->created_at)->format('d-m-Y')}}</td>
+                                                <td>{{cdate($ivfExtra->created_at)->format('d-m-Y')}}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -4343,8 +4343,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                 @endif
                 @if($skipValue == 1) {{-- skip cycle --}}
                     @php
-                            $visitDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                            $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $row->created_at)->diffInDays(\Carbon\Carbon::parse($visitDate));
+                            $visitDate = cdate($row->created_at)->format('d-m-Y');
+                            $diff = cdate(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $row->created_at)->diffInDays(cdate($visitDate));
                             $diff = $diff + 1;
                     @endphp
                     <div class="col-md-12 mt-1">
@@ -4376,8 +4376,8 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                 @endif
                 @if(!empty($lastHistoryData->transfer->result_type))
                     @php
-                        $visitDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                        $diff = \Carbon\Carbon::parse(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $row->created_at)->diffInDays(\Carbon\Carbon::parse($visitDate));
+                        $visitDate = cdate($row->created_at)->format('d-m-Y');
+                        $diff = cdate(!empty($ivfSecondVisitData->lmp->date) ? $ivfSecondVisitData->lmp->date : $row->created_at)->diffInDays(cdate($visitDate));
                         $diff = $diff + 1;
                     @endphp
                     <div class="col-md-12 mt-1 text-left">
@@ -4413,7 +4413,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             @foreach($ivfCycleData as $row)
                                 @php
                                     $data = json_decode($row->description);
-                                    $visitDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
+                                    $visitDate = cdate($row->created_at)->format('d-m-Y');
                                     $historyTreatmentView = null;
                                     if(!empty($data->medicinedata)){
                                         $historyTreatmentView = !empty($data->medicinedata) ? $data->medicinedata : null;
@@ -4521,7 +4521,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     <br><span class="ivf-label">Age : </span>{{ $ivfPatients->age. ' years | '.$gender }}
                             </th>
                             <th class="float-right">
-                                <span class="ivf-label">Visit Date:  </span>{{Carbon\Carbon::parse($ivfExtraVisit->created_at)->format('d/m/Y')}}
+                                <span class="ivf-label">Visit Date:  </span>{{cdate($ivfExtraVisit->created_at)->format('d/m/Y')}}
                                 @if($ivfPatients->weight)
                                     <br><span class="ivf-label">Weight: </span>{{isset($lmp->weight) && !empty($lmp->weight) ? $lmp->weight.' kg' : $ivfPatients->weight.' kg'}}
                                 @endif
@@ -4549,7 +4549,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             <th>
                                 <br>
                                 <span class="ivf-label"> LMP Date: </span>
-                                {{ !empty($lmp->date) ? \Carbon\Carbon::parse($lmp->date)->format('d/m/Y') : '-' }}
+                                {{ !empty($lmp->date) ? cdate($lmp->date)->format('d/m/Y') : '-' }}
                             </th>
                         </tr>
                     @endif
@@ -4802,7 +4802,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
         </div>
         
         @if(isset($oe->follow_up) && !empty($oe->follow_up))
-                    <h3 class="text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h3>
+                    <h3 class="text-center">{{"ફરીવાર ".cdate($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h3>
         @endif
     @endif
 

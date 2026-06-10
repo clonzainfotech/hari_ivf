@@ -96,7 +96,7 @@ tr td th {
                 <td class="data-font seperator">{{$row->getReffDoctor['name']}}</td>
                 <td class="data-font seperator">{{$row->mobile_number}}</td>
                 <td class="data-font seperator">{{$row->message}}</td>
-                <td class="data-font seperator">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                <td class="data-font seperator">{{cdate($row->created_at)->format('d-m-Y')}}</td>
             </tr>
         @empty
             <td colspan="4" class="text-center">No records available</td>

@@ -101,7 +101,7 @@
                         @php
                             $mhData = json_decode($row->m_h);
                         @endphp
-                        {{\Carbon\Carbon::parse($mhData->edd)->format('d-m-Y')}}
+                        {{cdate($mhData->edd)->format('d-m-Y')}}
                      </td>
                      <td class="data-font seperator">{{ ucwords(strtolower($row->getPatients['name'])) }}</td>
                      <td class="data-font seperator">{{$row->getPatients['mobile_number']}}</td>

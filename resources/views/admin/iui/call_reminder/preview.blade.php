@@ -101,7 +101,7 @@
                     <td class="data-font seperator">{{($i++).'.'}}</td>
                     <td class="data-font seperator">{{ !empty($row->getPatientData['code']) ? $row->getPatientData['code'] : '-' }}</td>
                     <td class="data-font seperator">{{ !empty($row->getIuiPatientData['cycle_no']) ? $row->getIuiPatientData['cycle_no'] : '-' }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($row->date)->format('d-m-Y') }}</td>
+                    <td class="data-font seperator">{{ cdate($row->date)->format('d-m-Y') }}</td>
                     <td class="data-font seperator">{{ strtoupper($row->getPatientData['name']) }}</td>
                     <td class="data-font seperator">{{ $row->getPatientData['mobile_number'] }}</td>
                     <td class="data-font seperator"><div class="response">{{$row->response}}</div></td>

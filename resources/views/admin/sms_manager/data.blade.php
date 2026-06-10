@@ -23,7 +23,7 @@
                 <td>{{$row->getReffDoctor['name']}}</td>
                 <td>{{$row->mobile_number}}</td>
                 <td>{{$row->message}}</td>
-                <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
             </tr>
         @empty
             <td colspan='4' class="text-center smsdata">No records available</td>

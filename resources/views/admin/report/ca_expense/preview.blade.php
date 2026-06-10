@@ -133,7 +133,7 @@ tr td th {
             <tr>
                 @php $totalUsgLeft +=  $usg[$i]->getAppointmentCharges['usg']; @endphp
                 <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($usg[$i]->created_at)->format('d-m-Y')}}</td>
+                <td class="data-font seperator">{{ cdate($usg[$i]->created_at)->format('d-m-Y')}}</td>
                 <td class="data-font seperator">{{strtoupper(@$usg[$i]->getPatientsDetails['name'])}}</td>
                 <td class="data-font seperator">{{ucfirst(@$usg[$i]->categoryDetails['name'])}}</td>
                 <td class="data-font seperator">
@@ -155,7 +155,7 @@ tr td th {
                         $totalUsgRight +=  $usg[$i]->getAppointmentCharges['usg'];
                     @endphp
                     <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($usg[$i]->date)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{ cdate($usg[$i]->date)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{strtoupper(@$usg[$i]->getPatientsDetails['name'])}}</td>
                     <td class="data-font seperator">{{ucfirst(@$usg[$i]->categoryDetails['name'])}}</td>
                     <td class="data-font seperator">
@@ -197,7 +197,7 @@ tr td th {
             <tr>
                 @php $totalHormonLeft +=  $hormon[$i]->amount; @endphp
                 <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($hormon[$i]->created_at)->format('d-m-Y')}}</td>
+                <td class="data-font seperator">{{ cdate($hormon[$i]->created_at)->format('d-m-Y')}}</td>
                 <td class="data-font seperator">{{strtoupper(@$hormon[$i]->getPatients['name'])}}</td>
                 <td class="data-font seperator"></td>
                 <td class="data-font seperator">
@@ -219,7 +219,7 @@ tr td th {
                         $totalHormonRight +=  $hormon[$i]->amount;
                     @endphp
                     <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($hormon[$i]->created_at)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{ cdate($hormon[$i]->created_at)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{strtoupper(@$hormon[$i]->getPatients['name'])}}</td>
                     <td class="data-font seperator"></td>
                     <td class="data-font seperator">
@@ -262,7 +262,7 @@ tr td th {
                     $totalIuiLeft +=  $iui[$i]->amount;
                 @endphp
                 <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($iui[$i]->created_at)->format('d-m-Y')}}</td>
+                <td class="data-font seperator">{{ cdate($iui[$i]->created_at)->format('d-m-Y')}}</td>
                 <td class="data-font seperator">{{strtoupper(@$iui[$i]->getPatients['name'])}}</td>
                 <td class="data-font seperator"></td>
                 <td class="data-font seperator">
@@ -284,7 +284,7 @@ tr td th {
                         $totalIuiRight +=  $iui[$i]->amount;
                     @endphp
                     <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($iui[$i]->created_at)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{ cdate($iui[$i]->created_at)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{strtoupper(@$iui[$i]->getPatients['name'])}}</td>
                     <td class="data-font seperator"></td>
                     <td class="data-font seperator">
@@ -326,7 +326,7 @@ tr td th {
                     $totalIvfLeft +=  $ivf[$i]->amount;
                 @endphp
                 <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($ivf[$i]->created_at)->format('d-m-Y')}}</td>
+                <td class="data-font seperator">{{ cdate($ivf[$i]->created_at)->format('d-m-Y')}}</td>
                 <td class="data-font seperator">{{strtoupper(@$ivf[$i]->getPatients['name'])}}</td>
                 <td class="data-font seperator"></td>
                 <td class="data-font seperator">
@@ -348,7 +348,7 @@ tr td th {
                         $totalIvfRight +=  $ivf[$i]->amount;
                     @endphp
                     <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($ivf[$i]->created_at)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{ cdate($ivf[$i]->created_at)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{strtoupper(@$ivf[$i]->getPatients['name'])}}</td>
                     <td class="data-font seperator"></td>
                     <td class="data-font seperator">
@@ -489,7 +489,7 @@ tr td th {
         @for ($i = 0; $i < $count; $i++)
             <tr>
                 <td class="data-font seperator">{{ ($j = $i + 1) . '.'}}</td>
-                <td class="data-font seperator">{{ !empty($indoorCash[$i]['final_invoice_date']) ? \Carbon\Carbon::parse($indoorCash[$i]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
+                <td class="data-font seperator">{{ !empty($indoorCash[$i]['final_invoice_date']) ? cdate($indoorCash[$i]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
                 <td class="data-font seperator">{{ strtoupper($indoorCash[$i]['get_patients_details']['name']) }}</td>
                 <td class="data-font seperator"> @php
                     $patientProcedure = explode(',', $indoorCash[$i]['procedure_id']);
@@ -518,7 +518,7 @@ tr td th {
                 @endphp
                 @if ($count > 8 && $i < $count)
                     <td class="data-font seperator">{{ ($j = $i + 1) . '.'}}</td>
-                    <td class="data-font seperator">{{ !empty($indoorCash[$i]['final_invoice_date']) ? \Carbon\Carbon::parse($indoorCash[$i]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
+                    <td class="data-font seperator">{{ !empty($indoorCash[$i]['final_invoice_date']) ? cdate($indoorCash[$i]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
                     <td class="data-font seperator">{{ strtoupper($indoorCash[$i]['get_patients_details']['name']) }}</td>
                     <td class="data-font seperator"></td>
                     <td class="data-font seperator">
@@ -558,7 +558,7 @@ tr td th {
         @for ($i = 0; $i < $count; $i++)
             <tr>
                 <td class="data-font seperator">{{ ($j = $i + 1) . '.'}}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($indoorCaseDeposit[$i]['created_at'])->format('d-m-Y')}}</td>
+                <td class="data-font seperator">{{ cdate($indoorCaseDeposit[$i]['created_at'])->format('d-m-Y')}}</td>
                 <td class="data-font seperator">{{ strtoupper($indoorCaseDeposit[$i]['get_patients']['name']) }}</td>
                 <td class="data-font seperator">
                     @php
@@ -589,7 +589,7 @@ tr td th {
                 @endphp
                 @if ($count > 8 && $i < $count)
                     <td class="data-font seperator">{{($j = $i + 1) . '.'}}</td>
-                    <td class="data-font seperator">{{\Carbon\Carbon::parse($indoorCaseDeposit[$i]['created_at'])->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{cdate($indoorCaseDeposit[$i]['created_at'])->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{strtoupper($indoorCaseDeposit[$i]['get_patients']['name']) }}</td>
                     <td class="data-font seperator">
                         @php
@@ -670,7 +670,7 @@ tr td th {
                         $totalIncomeLeft +=  $income[$i]->amount;
                     @endphp
                     <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($income[$i]->date)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{ cdate($income[$i]->date)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{$income[$i]->payment_mode}}</td>
                     <td class="data-font seperator">{{$income[$i]['getExpenseCategory']->name}}</td>
                     <td class="data-font seperator">{{strtoupper($income[$i]->given_by)}}</td>
@@ -694,7 +694,7 @@ tr td th {
                             $totalIncomeRight +=  $income[$i]->amount;
                         @endphp
                         <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                        <td class="data-font seperator">{{ \Carbon\Carbon::parse($income[$i]->date)->format('d-m-Y')}}</td>
+                        <td class="data-font seperator">{{ cdate($income[$i]->date)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">{{$income[$i]->payment_mode}}</td>
                         <td class="data-font seperator">{{$income[$i]['getExpenseCategory']->name}}</td>
                         <td class="data-font seperator">{{strtoupper($income[$i]->given_by)}}</td>
@@ -738,7 +738,7 @@ tr td th {
                         $totalExpenseLeft +=  $expense[$i]->amount;
                     @endphp
                     <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($expense[$i]->date)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{ cdate($expense[$i]->date)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{$expense[$i]->payment_mode}}</td>
                     <td class="data-font seperator">{{$expense[$i]['getExpenseCategory']->name}}</td>
                     <td class="data-font seperator">{{strtoupper($expense[$i]->given_for)}}</td>
@@ -762,7 +762,7 @@ tr td th {
                             $totalExpenseRight +=  $expense[$i]->amount;
                         @endphp
                         <td class="data-font seperator">{{ ($j = $i + 1) . '.' }}</td>
-                        <td class="data-font seperator">{{ \Carbon\Carbon::parse($expense[$i]->date)->format('d-m-Y')}}</td>
+                        <td class="data-font seperator">{{ cdate($expense[$i]->date)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">{{$expense[$i]->payment_mode}}</td>
                         <td class="data-font seperator">{{$expense[$i]['getExpenseCategory']->name}}</td>
                         <td class="data-font seperator">{{strtoupper($expense[$i]->given_for)}}</td>
@@ -807,7 +807,7 @@ tr td th {
                 @if ($number < $debitCount)
                     <tr>
                         <td>{{ ($j = $number + 1) . '.'}}</td>
-                        <td>{{ \Carbon\Carbon::parse($indoorDebit[$number]['created_at'])->format('d-m-Y')}}</td>
+                        <td>{{ cdate($indoorDebit[$number]['created_at'])->format('d-m-Y')}}</td>
                         <td>{{ strtoupper($indoorDebit[$number]['get_patients']['name']) }}</td>
                         <td>
                             @php
@@ -835,7 +835,7 @@ tr td th {
                         @endphp
                         @if ($debitCount > 8 && $number < $debitCount)
                             <td>{{ ($j = $number + 1) . '.'}}</td>
-                            <td>{{ \Carbon\Carbon::parse($indoorDebit[$number]['created_at'])->format('d-m-Y')}}</td>
+                            <td>{{ cdate($indoorDebit[$number]['created_at'])->format('d-m-Y')}}</td>
                             <td>{{ strtoupper($indoorDebit[$number]['get_patients']['name']) }}</td>
                             <td>
                                 @php

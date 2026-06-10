@@ -25,7 +25,7 @@
                    @php
                        $mhData = json_decode($row->m_h);
                    @endphp
-                   {{\Carbon\Carbon::parse($mhData->edd)->format('d-m-Y')}}
+                   {{cdate($mhData->edd)->format('d-m-Y')}}
                 </td>
                 <td>{{ ucwords(strtolower($row->getPatients['name'])) }}</td>
                 <td>{{$row->getPatients['mobile_number'].(!empty($row->getPatients['other_mobile_number']) ? ', '.$row->getPatients['other_mobile_number'] : '')}}</td>

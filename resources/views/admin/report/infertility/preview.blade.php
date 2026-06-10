@@ -99,7 +99,7 @@
             @forelse($appointment as $row)
                 <tr>
                     <td class="data-font seperator">{{($i++).'.'}}</td>
-                    <td class="data-font seperator">{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{cdate($row->date)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{ ucwords(strtolower($row->getPatientsDetails['name'])) }}</td>
                     <td class="data-font seperator">{{$row->getPatientsDetails['mobile_number']}}</td>
                     <td class="data-font seperator">{{ucfirst($row->categoryDetails['name'])}}</td>

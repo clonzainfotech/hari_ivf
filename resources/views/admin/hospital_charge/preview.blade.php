@@ -92,7 +92,7 @@
                     <td class="data-font seperator">{{($i++).'.'}}</td>
                     <td class="data-font seperator">{{ ucfirst($row->title) }}</td>
                     <td class="data-font seperator">{{ $row->charge }}</td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+                    <td class="data-font seperator">{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
                 </tr>
             @empty
                 <td colspan="4" class="text-center">No records available</td>

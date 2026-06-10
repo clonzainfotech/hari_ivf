@@ -203,7 +203,7 @@
                             <br>Age: {{$patients->age.' | '.$gender}}
                             <br>Seen By: {{isset($ancData->getSeenBy->name) ? $ancData->getSeenBy->name : ''}}
                         </th>
-                        <th style="padding-bottom: 30px;text-align: justify;float: right;">Visit Date: {{\Carbon\Carbon::parse($ancData->created_at)->format('d-m-Y') }}
+                        <th style="padding-bottom: 30px;text-align: justify;float: right;">Visit Date: {{cdate($ancData->created_at)->format('d-m-Y') }}
                             <br>Weight: {{ $weight." kg." }}</th>
                     </tr>
                 </tbody>
@@ -216,10 +216,10 @@
                             <div class="panel-title header-print-title">1. O/E
                                 <span class="text-danger">{{!empty($oe->late_concept) && $oe->late_concept == 1 ? 'Late Conception' : null}}</span>
                                 @if(!empty($lmdDate))
-                                    &nbsp&nbsp L.M.D Date:  <span class="text-danger">{{\Carbon\Carbon::parse($lmdDate)->format('d-m-Y') }}</span>
+                                    &nbsp&nbsp L.M.D Date:  <span class="text-danger">{{cdate($lmdDate)->format('d-m-Y') }}</span>
                                 @endif
                                 @if(!empty($eddDate))
-                                    &nbsp&nbsp EDD Date: <span class="text-danger">{{\Carbon\Carbon::parse($eddDate)->format('d-m-Y') }}</span>
+                                    &nbsp&nbsp EDD Date: <span class="text-danger">{{cdate($eddDate)->format('d-m-Y') }}</span>
                                 @endif
                             </div>
                         </td>
@@ -820,9 +820,9 @@
                     $noValueData = [];
                     $secondNoValueData = [];
                     $ancFirst_mh_date = isset($ancFirstVisitData) ? json_decode($ancFirstVisitData->m_h) : null;
-                    $ancFirstlmdDate = !empty($ancFirst_mh_date->last_menstrual_date) ? \Carbon\Carbon::parse($ancFirst_mh_date->last_menstrual_date)->format('d/m/Y'): null;
-                    $ancFirsteddDate = !empty($ancFirst_mh_date->edd) ? \Carbon\Carbon::parse($ancFirst_mh_date->edd)->format('D d M Y') : null;
-                    $ancFirstusgEddDate = !empty($ancFirst_mh_date->usg_edd) ? \Carbon\Carbon::parse($ancFirst_mh_date->usg_edd)->format('D d M Y'): null;
+                    $ancFirstlmdDate = !empty($ancFirst_mh_date->last_menstrual_date) ? cdate($ancFirst_mh_date->last_menstrual_date)->format('d/m/Y'): null;
+                    $ancFirsteddDate = !empty($ancFirst_mh_date->edd) ? cdate($ancFirst_mh_date->edd)->format('D d M Y') : null;
+                    $ancFirstusgEddDate = !empty($ancFirst_mh_date->usg_edd) ? cdate($ancFirst_mh_date->usg_edd)->format('D d M Y'): null;
                 @endphp
                 @if($patientsObstratics)
                     <table cellspacing="0" cellpadding="0" class="{{'table m-b-0  module-report-table '.$class}}">
@@ -842,7 +842,7 @@
                                     @endif
                                 </tr>
                             @endif
-                            @if(!empty($patientsObstratics) && ($patientsObstratics->child_no != null && $patientsObstratics->child_no != 0))
+                            @if(!empty($patientsObstratics->child_no) && $patientsObstratics->child_no != 0)
                                 @foreach($patientsObstratics->child->child_data as $key=>$row)
                                     <tr>
                                         <th>
@@ -917,7 +917,7 @@
                                     </tr>
                                 @endforeach
                             @endif
-                            @if(!empty($patientsObstratics)  && $patientsObstratics->mtp_no != null && $patientsObstratics->mtp_no != 0 )
+                            @if(!empty($patientsObstratics->mtp_no) && $patientsObstratics->mtp_no != 0 )
                                 @foreach($patientsObstratics->mtp->mtp_data as $key=>$row)
                                 {{-- @if($row->mtp_status == 'yes')
                                     <tr>
@@ -1013,7 +1013,7 @@
                                     $noValueData[] = ' Abortion';
                                 @endphp
                             @endif
-                            @if(!empty($patientsObstratics) && ($patientsObstratics->abortion_no != null && $patientsObstratics->abortion_no != 0 ))
+                            @if(!empty($patientsObstratics->abortion_no) && $patientsObstratics->abortion_no != 0 )
                                 @foreach($patientsObstratics->abortion->abortion_data as $key=>$value)
                                     @php
                                         $numberKey = addOrdinalNumberSuffix($key);
@@ -1153,7 +1153,7 @@
                                     @endif
                                 </tr>
                             @endif
-                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics) && $patientsObstratics->second_marriage->child_no != null && $patientsObstratics->second_marriage->child_no != 0)
+                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics->second_marriage->child_no) && $patientsObstratics->second_marriage->child_no != 0)
                                 @foreach($patientsObstratics->second_marriage->child->child_data as $key=>$row)
                                     <tr>
                                         <th>
@@ -1229,7 +1229,7 @@
                                     </tr>
                                 @endforeach
                             @endif
-                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics)  && $patientsObstratics->second_marriage->mtp_no != null && $patientsObstratics->second_marriage->mtp_no != 0)
+                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics->second_marriage->mtp_no) && $patientsObstratics->second_marriage->mtp_no != 0)
                                 @foreach($patientsObstratics->second_marriage->mtp->mtp_data as $key=>$row)
                                     @if($row->mtp_status == 'yes')
                                         <tr>
@@ -1292,7 +1292,7 @@
                                     $secondNoValueData[] = ' Abortion';
                                 @endphp
                             @endif
-                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics) && $patientsObstratics->second_marriage->abortion_no != null && $patientsObstratics->second_marriage->abortion_no != 0 )
+                            @if(isset($patientsObstratics->second_marriage_life) && $patientsObstratics->second_marriage_life == 'yes' && !empty($patientsObstratics->second_marriage->abortion_no) && $patientsObstratics->second_marriage->abortion_no != 0 )
                                 @foreach($patientsObstratics->second_marriage->abortion->abortion_data as $key=>$value)
                                     @if($value->spontancous_abortion_status == 'yes')
                                         <tr>
@@ -1523,9 +1523,9 @@
                             @endif
                             @php
                                 
-                                $lmddate = !empty($mh->last_menstrual_date) ? \Carbon\Carbon::parse($mh->last_menstrual_date)->format('d/m/Y') : null;
-                                $date = !empty($mh->edd) ? \Carbon\Carbon::parse($mh->edd)->format('D d M Y') : null;
-                                $usgDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
+                                $lmddate = !empty($mh->last_menstrual_date) ? cdate($mh->last_menstrual_date)->format('d/m/Y') : null;
+                                $date = !empty($mh->edd) ? cdate($mh->edd)->format('D d M Y') : null;
+                                $usgDate = !empty($mh->usg_edd) ? cdate($mh->usg_edd)->format('D d M Y') : null;
                             @endphp
                             @if($lmddate || $date)
                                 <tr>
@@ -1637,7 +1637,7 @@
                                 <tr>
                                     <th>
                                         <span class="anc-label">Date :</span>
-                                        {{\Carbon\Carbon::parse($patientsDetails->personal_history_date)->format('D d M Y')}}
+                                        {{cdate($patientsDetails->personal_history_date)->format('D d M Y')}}
                                     </th>
                                 </tr>
                             @endif
@@ -2127,10 +2127,10 @@
                 {{-- usg data --}}
                 @php
                     $usgData = array_filter((array)$usg);
-                    $ntScanDate = !empty($usg->nt_scan) ? \Carbon\Carbon::parse($usg->nt_scan)->format('Y-m-d') : null;
-                    $earlyScanDataValue = !empty($usg->early_scan) ? \Carbon\Carbon::parse($usg->early_scan)->format('Y-m-d') : null;
-                    $anomaliesMilesScanDateValue = !empty($usg->anomalies_miles) ? \Carbon\Carbon::parse($usg->anomalies_miles)->format('Y-m-d') : null;
-                    $growthScanDate = !empty($usg->growth_scan) ? \Carbon\Carbon::parse($usg->growth_scan)->format('Y-m-d') : null;
+                    $ntScanDate = !empty($usg->nt_scan) ? cdate($usg->nt_scan)->format('Y-m-d') : null;
+                    $earlyScanDataValue = !empty($usg->early_scan) ? cdate($usg->early_scan)->format('Y-m-d') : null;
+                    $anomaliesMilesScanDateValue = !empty($usg->anomalies_miles) ? cdate($usg->anomalies_miles)->format('Y-m-d') : null;
+                    $growthScanDate = !empty($usg->growth_scan) ? cdate($usg->growth_scan)->format('Y-m-d') : null;
                     $nowDate = \Carbon\Carbon::now()->format('Y-m-d');
                 @endphp
                 @if(!empty($usgData) && !empty($usg->is_usg_print) && $usg->is_usg_print == 1 && (!empty($usg->early_scan) || !empty($usg->early_scan) || !empty($usg->nt_scan && (strtotime($ntScanDate) > strtotime($nowDate))) || !empty($usg->anomalies_miles)))
@@ -2152,7 +2152,7 @@
                                                 Approx Appointment For Early Scan :
                                             @endif
                                         </span>
-                                        {{\Carbon\Carbon::parse($usg->early_scan)->format('D d M Y')}}
+                                        {{cdate($usg->early_scan)->format('D d M Y')}}
                                     </th>
                                 </tr>
                                 @endif
@@ -2166,7 +2166,7 @@
                                                 Approx Appointment For N.T Scan :
                                             @endif
                                         </span>
-                                        {{\Carbon\Carbon::parse($usg->nt_scan)->format('D d M Y')}}
+                                        {{cdate($usg->nt_scan)->format('D d M Y')}}
                                     </th>
                                 </tr>
                                 @endif
@@ -2181,7 +2181,7 @@
                                                 Approx Appointment For Anomaly Scan :
                                             @endif
                                         </span>
-                                        {{\Carbon\Carbon::parse($usg->anomalies_miles)->format('D d M Y')}}
+                                        {{cdate($usg->anomalies_miles)->format('D d M Y')}}
                                     </th>
                                 </tr>
                                 @endif
@@ -2195,7 +2195,7 @@
                                                 Approx Appointment For Growth Scan :
                                             @endif
                                         </span>
-                                        {{\Carbon\Carbon::parse($usg->growth_scan)->format('D d M Y')}}
+                                        {{cdate($usg->growth_scan)->format('D d M Y')}}
                                     </th>
                                 </tr>
                                 @endif
@@ -2345,8 +2345,11 @@
                                             $investigationValueDetails = [];
                                             $investigationReport = $investigationReport['reportData'];
                                             $data = $patientsInvestigation->investigation_data;
-                                            $investigationValueData = (array)$patientsInvestigation->investigation_details;
+                                            $investigationValueData = (array)($patientsInvestigation->investigation_details ?? []);
                                             foreach($data as $key => $value){
+                                                if(!isset($investigationReport[$value])){
+                                                    continue;
+                                                }
                                                 if(!empty($investigationValueData[$value])){
                                                     $investigationValueDetails[$investigationReport[$value]] = $investigationValueData[$value];
                                                 }else{
@@ -2378,7 +2381,7 @@
                                             {{ !empty($patientsInvestigation->early_scan_type) && $patientsInvestigation->early_scan_type == 'yes' ? 'Yes' : 'No' }}
                                             @if(!empty($patientsInvestigation->early_scan_type) && $patientsInvestigation->early_scan_type == 'yes')
                                                 <span class="anc-label">| Date : </span>&nbsp;
-                                                {{!empty($patientsInvestigation->investigation_early_scan_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_early_scan_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
+                                                {{!empty($patientsInvestigation->investigation_early_scan_date) ? cdate($patientsInvestigation->investigation_early_scan_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
                                                 @if (!empty($patientsInvestigation->investigation_early_scan_hb))
                                                 <span class="anc-label">| HB : </span>{{$patientsInvestigation->investigation_early_scan_hb}}
                                                 @endif
@@ -2412,7 +2415,7 @@
                                         @if (isset($patientsInvestigation->anc_profile_type) && $patientsInvestigation->anc_profile_type  == 'yes')
                                             <br>
                                             <span class="anc-label">Date : </span>
-                                            {{!empty($patientsInvestigation->investigation_anc_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_anc_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
+                                            {{!empty($patientsInvestigation->investigation_anc_date) ? cdate($patientsInvestigation->investigation_anc_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
                                             @if (!empty($patientsInvestigation->investigation_cbc_mp->status))
                                                 <br>
                                                 <span class="anc-label">CBC MP Type: </span>{{$wnlType[$patientsInvestigation->investigation_cbc_mp->status]}}
@@ -2467,7 +2470,7 @@
                                             {{ !empty($patientsInvestigation->growth_report_type) && $patientsInvestigation->growth_report_type == 'yes' ? 'Yes' : 'No' }}
                                             @if (!empty($patientsInvestigation->growth_report_type) && $patientsInvestigation->growth_report_type == 'yes')
                                                 <span class="anc-label ">| Date : </span>
-                                                {{!empty($patientsInvestigation->investigation_growth_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_growth_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
+                                                {{!empty($patientsInvestigation->investigation_growth_date) ? cdate($patientsInvestigation->investigation_growth_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y')}}
                                                 @if (!empty($patientsInvestigation->investigation_growth_hb))
                                                 <span class="anc-label ">| HB : </span>{{$patientsInvestigation->investigation_growth_hb}}
                                                 @endif
@@ -2523,10 +2526,10 @@
                                             {{ !empty($patientsInvestigation->other_report_type) && $patientsInvestigation->other_report_type == 'yes' ? 'Yes' : 'No' }}
                                             @if (!empty($patientsInvestigation->growth_report_type) && $patientsInvestigation->other_report_type == 'yes')
                                                 <span class="anc-label ">| Double Marker : </span> @if (in_array('double_marker',$otherReport)) Yes @else No @endif
-                                                <span class="anc-label ">| Double Marker Date: </span>{{ !empty($patientsInvestigation->d_m_date) ? \Carbon\Carbon::parse($patientsInvestigation->d_m_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
+                                                <span class="anc-label ">| Double Marker Date: </span>{{ !empty($patientsInvestigation->d_m_date) ? cdate($patientsInvestigation->d_m_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
                                                 <span class="anc-label ">| Genetic Test : </span>@if (in_array('genetic_test', $otherReport)) Yes @else No @endif
                                                 <span class="anc-label ">| Amniocentesis : </span>@if (in_array('amniocentesis', $otherReport)) Yes @else No @endif
-                                                <span class="anc-label ">| Amniocentesis Date: </span>{{ !empty($patientsInvestigation->amniocentesis_date) ? \Carbon\Carbon::parse($patientsInvestigation->amniocentesis_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
+                                                <span class="anc-label ">| Amniocentesis Date: </span>{{ !empty($patientsInvestigation->amniocentesis_date) ? cdate($patientsInvestigation->amniocentesis_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y') }}
                                                 @if (!empty($patientsInvestigation->investigation_extra))
                                                     Extra : {{ $patientsInvestigation->investigation_extra }}
                                                 @endif
@@ -2553,12 +2556,12 @@
                                         {{-- <span class="anc-label ">TT1 :</span> --}}
                                         @php
                                         $tt1Value = ' taken ';
-                                            if(\Carbon\Carbon::parse($patientsInjection->tt1)->format('Y-m-d') > date('Y-m-d'))
+                                            if(cdate($patientsInjection->tt1)->format('Y-m-d') > date('Y-m-d'))
                                             {
                                                 $tt1Value = ' advice ';
                                             }
                                         @endphp
-                                        {{'TT 1st dose'.$tt1Value.\Carbon\Carbon::parse($patientsInjection->tt1)->format('d/m/Y')}}
+                                        {{'TT 1st dose'.$tt1Value.cdate($patientsInjection->tt1)->format('d/m/Y')}}
                                     </th>
                                 @endif
 
@@ -2567,12 +2570,12 @@
                                         {{-- <span class="anc-label ">TT2 :</span> --}}
                                         @php
                                         $tt2Value = ' taken ';
-                                            if(\Carbon\Carbon::parse($patientsInjection->tt2)->format('Y-m-d') > date('Y-m-d'))
+                                            if(cdate($patientsInjection->tt2)->format('Y-m-d') > date('Y-m-d'))
                                             {
                                                 $tt2Value = ' advice ';
                                             }
                                         @endphp
-                                        {{'TT 2nd dose'.$tt2Value.\Carbon\Carbon::parse($patientsInjection->tt2)->format('d/m/Y')}}
+                                        {{'TT 2nd dose'.$tt2Value.cdate($patientsInjection->tt2)->format('d/m/Y')}}
                                     </th>
                                 @endif
                             </tr>
@@ -2582,7 +2585,7 @@
                                 @if(!empty($patientsInjection->betnasol_1))
                                     @php 
                                         $betnasol_1Value = ' taken ';
-                                        if(\Carbon\Carbon::parse($patientsInjection->betnasol_1)->format('Y-m-d') > date('Y-m-d'))
+                                        if(cdate($patientsInjection->betnasol_1)->format('Y-m-d') > date('Y-m-d'))
                                         {
                                             $betnasol_1Value = ' advice ';
                                         }
@@ -2596,7 +2599,7 @@
                                 <br>
                                     @php 
                                         $betnasol_2Value = ' taken ';
-                                        if(\Carbon\Carbon::parse($patientsInjection->betnasol_2)->format('Y-m-d') > date('Y-m-d'))
+                                        if(cdate($patientsInjection->betnasol_2)->format('Y-m-d') > date('Y-m-d'))
                                         {
                                             $betnasol_2Value = ' advice ';
                                         }
@@ -2612,12 +2615,12 @@
                     </table>
                 @endif
                     <br>
-                @if(!empty($usgStatus) && $usgStatus == 1 && \Carbon\Carbon::parse($oe->follow_up)->format('Y-m-d') > date('Y-m-d'))
-                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર સોનોગ્રાફી માટે ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                @if(!empty($usgStatus) && $usgStatus == 1 && cdate($oe->follow_up)->format('Y-m-d') > date('Y-m-d'))
+                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર સોનોગ્રાફી માટે ".cdate($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                 @elseif(isset($oe->follow_up) && !empty($oe->follow_up))
-                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
+                    <h5 class="lmd-lable font-bold text-center">{{"ફરીવાર ".cdate($oe->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h5>
                 @elseif($isNextAppointment == 1)
-                    <h4 class="lmd-lable font-bold text-center">{{"ફરીવાર ".\Carbon\Carbon::parse($nextAppointmentDate)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                    <h4 class="lmd-lable font-bold text-center">{{"ફરીવાર ".cdate($nextAppointmentDate)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
                 @endif
                 <h6 class="lmd-lable font-bold text-center">{{$instra}}</h6>
             @endif

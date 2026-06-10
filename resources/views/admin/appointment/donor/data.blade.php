@@ -25,7 +25,7 @@
                 
                     <td>
                         <div>
-                            {{ !empty($row->time) ? \Carbon\Carbon::parse($row->date)->format('d-m-Y') . ' ' .  \Carbon\Carbon::parse($row->time)->format('h:i') : \Carbon\Carbon::parse($row->date)->format('d-m-Y') }}
+                            {{ !empty($row->time) ? cdate($row->date)->format('d-m-Y') . ' ' .  cdate($row->time)->format('h:i') : cdate($row->date)->format('d-m-Y') }}
                         </div>
                     </td>
                     <td>{{$row->getPatientsDetails['code'] }}</td>
@@ -57,7 +57,7 @@
                         {{ ucwords(strtolower($row->getPatientsDetails['name'])) }}
                     </td> --}}
                     {{-- <td>
-                        {{ !empty($row->arrival_time) ? \Carbon\Carbon::parse($row->arrival_time)->format('H:i A') : '-' }}
+                        {{ !empty($row->arrival_time) ? cdate($row->arrival_time)->format('H:i A') : '-' }}
                     </td>
                     <td>
                         {{ !empty($row->getPatientsDetails['mobile_number']) ? $row->getPatientsDetails['mobile_number'] : '-' }}

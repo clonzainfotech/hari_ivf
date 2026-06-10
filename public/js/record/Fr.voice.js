@@ -107,10 +107,12 @@
 		 * Pause the recording
 		 */
 		pause: function(){
+			if(!this.recorder){ return; }
 			this.recorder.stop();
 		},
 
 		resume: function(){
+			if(!this.recorder){ return; }
 			this.recorder.record();
 		},
 
@@ -121,11 +123,14 @@
 		 * @return {Fr.voice}
 		 */
 		stop: function(){
+			if(!this.recorder){ return this; }
 			this.recorder.stop();
 			this.recorder.clear();
-			this.stream.getTracks().forEach(function (track) {
-				track.stop();
-			});
+			if(this.stream){
+				this.stream.getTracks().forEach(function (track) {
+					track.stop();
+				});
+			}
 			return this;
 		},
 
@@ -134,12 +139,14 @@
 		 * @param {[type]} [varname] [description]
 		 */
 		export: function(callback, type){
+			if(!this.recorder){ console.warn('Fr.voice: no active recording to export.'); return; }
 			this.recorder.exportWAV(function(blob){
 				Fr.voice.callExportCallback(blob, callback, type);
 			});
 		},
 
 		exportMP3: function(callback, type){
+			if(!this.recorder){ console.warn('Fr.voice: no active recording to export.'); return; }
 			this.recorder.exportMP3(function(blob){
 				Fr.voice.callExportCallback(blob, callback, type);
 			});

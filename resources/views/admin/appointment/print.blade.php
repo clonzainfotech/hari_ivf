@@ -35,7 +35,7 @@ td{
     <tbody>
     <tr>
         <td class="print-first-td">Patient Name : {{$appointment->getPatientsDetails['name']}}</td>
-        <td><span class="sticker-bold">Date : </span>{{\Carbon\Carbon::parse($appointment->date)->format('D, d M Y')}} </td>
+        <td><span class="sticker-bold">Date : </span>{{cdate($appointment->date)->format('D, d M Y')}} </td>
     </tr>
     <tr>
         <td><span class="sticker-bold">Age</span> : {{($appointment->getPatientsDetails['age']) .' | ' .($appointment->getPatientsDetails['gender'] == 1 ? 'M' : 'F') }}</td>

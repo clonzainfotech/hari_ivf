@@ -2,7 +2,7 @@
 @section('parentPageTitle', 'Patient History')
 @section('title', 'Patient History')
 @section('page-style')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/fontawesome.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
 <style>
     .follicular-table tbody,.follicular-table thead
@@ -78,7 +78,7 @@
                                 <div class="header category-header">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h2><strong>{{Carbon\Carbon::parse($key)->format('d/m/Y').' - '.$category}}</strong></h2>
+                                            <h2><strong>{{cdate($key)->format('d/m/Y').' - '.$category}}</strong></h2>
                                         </div>
                                         <div class="col-md-6 text-right">
                                                 @if(!empty($cycleNo))

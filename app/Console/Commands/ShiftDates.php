@@ -55,7 +55,9 @@ class ShiftDates extends Command
         'Y-m-d',         // 2020-03-18
         'd-m-Y',
         'd-M-Y',
-        'd/m/Y',
+        // Slash dates: the app stores these as m/d/Y (US). Do NOT add 'd/m/Y' —
+        // it is ambiguous with m/d/Y and mis-shifts ambiguous values (see the
+        // data:fix-slash-dates incident). m/d/Y only.
         'm/d/Y',
     ];
 

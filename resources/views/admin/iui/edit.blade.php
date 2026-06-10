@@ -13,15 +13,15 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
             {{Form::hidden('patients_id',encrypt($iui->patients_id), ['id' => 'patients_id'])}}
             {{Form::hidden('cycle_no', $cycleNo, ['id' => 'cycle_no'])}}
             @php
-                // $lmddate = !empty($iuiSecondVisitDate->date) ? \Carbon\Carbon::parse($iuiSecondVisitDate->date)->format('D d M Y') : null;
-                $lmddate = !empty($firstVisitLmpDate) ? \Carbon\Carbon::parse($firstVisitLmpDate) : null;
+                // $lmddate = !empty($iuiSecondVisitDate->date) ? cdate($iuiSecondVisitDate->date)->format('D d M Y') : null;
+                $lmddate = !empty($firstVisitLmpDate) ? cdate($firstVisitLmpDate) : null;
                 $lmdDiff = null;
                 if(!empty($lmddate)){
-                    // $lmddateData = \Carbon\Carbon::parse($lmddate);
+                    // $lmddateData = cdate($lmddate);
                     $now = \Carbon\Carbon::now();
                     $lmdDiff = $lmddate->diffInDays($now);
                     $lmdDiff = $lmdDiff + 1;
-                    $lmddate = \Carbon\Carbon::parse($lmddate)->format('D d M Y');
+                    $lmddate = cdate($lmddate)->format('D d M Y');
                 }
             @endphp
             {{Form::hidden("appointment_time", '',['class'=>'form-control next-time'])}}
@@ -569,12 +569,12 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                     <div class="input-group">
                                         <span class="input-group-addon">Follow Up: &nbsp;</span>
                                         @if(!empty($historyPlan->follow_up))
-                                            {{Form::text("follow_up",!empty($historyPlan->follow_up) ? \Carbon\Carbon::parse($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date','disabled'])}}
+                                            {{Form::text("follow_up",!empty($historyPlan->follow_up) ? cdate($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date','disabled'])}}
                                             {{Form::hidden('data[plan][follow_up]',$historyPlan->follow_up)}}
                                             {{Form::hidden('data[new_follow_up]',$historyPlan->follow_up)}}
                                             {{Form::hidden('is_notAvailable',0,['class'=>'is-notAvailable'])}}
                                         @else
-                                            {{Form::text("data[plan][follow_up]",!empty($historyPlan->follow_up) ? \Carbon\Carbon::parse($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date'])}}
+                                            {{Form::text("data[plan][follow_up]",!empty($historyPlan->follow_up) ? cdate($historyPlan->follow_up)->format('D d M Y') : null,['class'=>'form-control datetimepicker follow-up-date next-date'])}}
                                             {{Form::hidden('is_notAvailable',0,['class'=>'is-notAvailable'])}}
                                         @endif
                                     </div>
@@ -1410,7 +1410,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                             @if(!empty($historyData->date))
                                 {{Form::hidden('data[new_follow_up]',$historyData->date)}}
                             @endif
-                            {{Form::text("data[date]",!empty($historyData->date) ? \Carbon\Carbon::parse($historyData->date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date next-date',!empty($historyData->date) ? 'disabled' : ''])}}
+                            {{Form::text("data[date]",!empty($historyData->date) ? cdate($historyData->date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date next-date',!empty($historyData->date) ? 'disabled' : ''])}}
                             {{Form::hidden('is_notAvailable',0,['class'=>'is-notAvailable'])}}
                         </div>
                     </div>
@@ -1596,17 +1596,17 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             $iuiPrevVisit = IuiHistory::where('patients_id',$row->patients_id)->where('created_at','<',$row->created_at)->orderBy('id','DESC')->first();
                                             if($iuiPrevVisit){
                                                 $prevData = json_decode($iuiPrevVisit->description);
-                                                $prevAppointmentDate = !empty($prevData->new_follow_up) ? \Carbon\Carbon::parse($prevData->new_follow_up)->format('d-m-Y') : null;
+                                                $prevAppointmentDate = !empty($prevData->new_follow_up) ? cdate($prevData->new_follow_up)->format('d-m-Y') : null;
                                             }
                                             $data = json_decode($row->description);
                                             $agentData = !empty($data->plan->inducing_agent) ? $data->plan->inducing_agent : [];
-                                            $lmpDate = !isset($data->lmp->date) ?\Carbon\Carbon::parse($iuiSecondVisitData->lmp->date)->format('d-m-Y') : \Carbon\Carbon::parse($data->lmp->date)->format('d-m-Y');
-                                            // $lmpDate = \Carbon\Carbon::parse($data->new_follow_up)->format('d-m-Y');
-                                            $createdAt = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                            $appointmentDate = !empty($data->new_follow_up) ? \Carbon\Carbon::parse($data->new_follow_up)->format('d-m-Y') : \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
-                                            $diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($createdAt));
+                                            $lmpDate = !isset($data->lmp->date) ?cdate($iuiSecondVisitData->lmp->date)->format('d-m-Y') : cdate($data->lmp->date)->format('d-m-Y');
+                                            // $lmpDate = cdate($data->new_follow_up)->format('d-m-Y');
+                                            $createdAt = cdate($row->created_at)->format('d-m-Y');
+                                            $appointmentDate = !empty($data->new_follow_up) ? cdate($data->new_follow_up)->format('d-m-Y') : cdate($row->created_at)->format('d-m-Y');
+                                            $diff = cdate($lmpDate)->diffInDays(cdate($createdAt));
                                             $diff = $diff + 1;
-                                            $currentDateDiff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse(date('d-m-Y')));
+                                            $currentDateDiff = cdate($lmpDate)->diffInDays(cdate(date('d-m-Y')));
                                             $isCycleComplete = false;
                                             $left_class_name = 'td-left-overy-'.$row->id.'-text';
                                             $right_class_name = 'td-right-overy-'.$row->id.'-text';
@@ -1624,7 +1624,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 $skipValue = 1;
                                             }
                                             if($row->visit == 2){
-                                                $appointmentDate = \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
+                                                $appointmentDate = cdate($row->created_at)->format('d-m-Y');
                                                 $agentData = !empty($data->plan->agenet) ? $data->plan->agenet: [];
                                             }
                                             if($row->visit == 4 && !empty($data->result))
@@ -1636,7 +1636,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 if(!empty($data->inducing)){
                                                     $agentDataValue = [];
                                                     foreach($data->inducing as $key => $value) {
-                                                        $inducingDateArray[] = \Carbon\Carbon::parse($value->date)->format('d-m-Y');
+                                                        $inducingDateArray[] = cdate($value->date)->format('d-m-Y');
                                                         $agentDataValue = !empty($data->plan->inducing_agent) ? $data->plan->inducing_agent : [];
                                                         $value->injection = $agentDataValue;
                                                     }
@@ -1648,8 +1648,8 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                         @if(!empty($dateAndInjectionData))
                                             @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
                                             @php
-                                                $date = \Carbon\Carbon::parse($valueData->date)->format('d-m-Y');
-                                                $inducing_diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($valueData->date));
+                                                $date = cdate($valueData->date)->format('d-m-Y');
+                                                $inducing_diff = cdate($lmpDate)->diffInDays(cdate($valueData->date));
                                                 $inducing_diff = $inducing_diff + 1;
                                                 if($row->visit == 2)
                                                 {
@@ -1703,7 +1703,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             @if(!empty($iuiExtraVisit))
                                                     @foreach($iuiExtraVisit as $iuiExtra)
                                                     <tr >
-                                                        <td>{{\Carbon\Carbon::parse($iuiExtra->created_at)->format('d-m-Y')}}</td>
+                                                        <td>{{cdate($iuiExtra->created_at)->format('d-m-Y')}}</td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -1806,7 +1806,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 </a>
                                                 @if((isset($data->hsa_report->images) && !empty($data->hsa_report->images)) || (isset($data->blood_report->image) && !empty($data->blood_report->image)) || (isset($data->usg->images) && !empty($data->usg->images)))
                                                 
-                                                <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{\Carbon\Carbon::parse($row->created_at)->format('d M Y')}}">
+                                                <a href="#" class="btn btn-icon btn-neutral candor-color btn-icon-mini report-btn" data-id="{{ encrypt($row->id) }}" data-date="{{cdate($row->created_at)->format('d M Y')}}">
                                                     <i class="zmdi zmdi-camera material-icons"></i>
                                                 </a>
                                                 @endif
@@ -1815,8 +1815,8 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                         @if(!empty($dateAndInjectionData))
                                             @foreach(array_flatten($dateAndInjectionData) as $keyValue=>$valueData)
                                             @php
-                                                $date = \Carbon\Carbon::parse($valueData->date)->format('d-m-Y');
-                                                $inducing_diff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($valueData->date));
+                                                $date = cdate($valueData->date)->format('d-m-Y');
+                                                $inducing_diff = cdate($lmpDate)->diffInDays(cdate($valueData->date));
                                                 $inducing_diff = $inducing_diff + 1;
                                                 if($row->visit == 2)
                                                 {
@@ -1870,7 +1870,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             @if(!empty($iuiExtraVisit))
                                                     @foreach($iuiExtraVisit as $iuiExtra)
                                                     <tr >
-                                                        <td>{{\Carbon\Carbon::parse($iuiExtra->created_at)->format('d-m-Y')}}</td>
+                                                        <td>{{cdate($iuiExtra->created_at)->format('d-m-Y')}}</td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -1893,8 +1893,8 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                     $iuiLastVisit = IuiHistory::where('patients_id',$row->patients_id)->orderBy('created_at','DESC')->first();
                                     if($iuiLastVisit){
                                         $lastVisitData = json_decode($iuiLastVisit->description);
-                                        $prevAppointmentDate = !empty($lastVisitData->new_follow_up) ? \Carbon\Carbon::parse($lastVisitData->new_follow_up)->format('d-m-Y') : null;
-                                        $currentDateDiff = \Carbon\Carbon::parse($lmpDate)->diffInDays(\Carbon\Carbon::parse($prevAppointmentDate));
+                                        $prevAppointmentDate = !empty($lastVisitData->new_follow_up) ? cdate($lastVisitData->new_follow_up)->format('d-m-Y') : null;
+                                        $currentDateDiff = cdate($lmpDate)->diffInDays(cdate($prevAppointmentDate));
                                         
                                     }
                                 @endphp
@@ -1905,7 +1905,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                             $right_class_name = 'td-right-overy-'.$prevAppointmentDate.'-text';
                                         @endphp
                                         <tr class="">
-                                            {{-- <td>{{\Carbon\Carbon::parse($prevAppointmentDate)->format('d-m-Y')}}</td> --}}
+                                            {{-- <td>{{cdate($prevAppointmentDate)->format('d-m-Y')}}</td> --}}
                                             <td>
                                                 <div class="{{'edit-follow-data edit-follow-'.$iuiHistoryData[count($iuiHistoryData)-1]['id']}}">
                                                     {{$prevAppointmentDate}}
@@ -1968,13 +1968,13 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                     <tr>
                                                         <td>
                                                             @if(!empty($iui_decription->hcg->type) && $iui_decription->hcg->type == 'yes' && !empty($iui_decription->hcg_date))
-                                                                {{\Carbon\Carbon::parse($iui_decription->hcg_date)->format('d-m-Y')}}
+                                                                {{cdate($iui_decription->hcg_date)->format('d-m-Y')}}
                                                             
                                                             @elseif($row->visit == 4 && !empty($iui_decription->result))
-                                                                {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
+                                                                {{cdate($row->created_at)->format('d-m-Y')}}
                                                         
                                                             @elseif((!empty($iui_decription->ovalution) && $iui_decription->ovalution == 'yes'))
-                                                                {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
+                                                                {{cdate($row->created_at)->format('d-m-Y')}}
                                                             @endif
                                                         </td>
                                                         <td>
@@ -2002,8 +2002,8 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                                
                                                                 @if(!empty($iui_decription->hcg->iui->status) && $iui_decription->hcg->iui->status == 'yes' && !empty($iui_decription->hcg_date))
                                                                     @php
-                                                                        $cDate = \Carbon\Carbon::parse(!empty($iui_decription->hcg_date) ? $iui_decription->hcg_date : null)->format('d-m-Y') .' '.$iui_decription->hcg->time;
-                                                                        $iuiDtaeAndTime = \Carbon\Carbon::parse($cDate)->addHours(35)->format('d-m-Y');
+                                                                        $cDate = cdate(!empty($iui_decription->hcg_date) ? $iui_decription->hcg_date : null)->format('d-m-Y') .' '.$iui_decription->hcg->time;
+                                                                        $iuiDtaeAndTime = cdate($cDate)->addHours(35)->format('d-m-Y');
                                                                     @endphp
                                                                     {{$iuiDtaeAndTime}}
                                                                 @endif
@@ -2079,13 +2079,13 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 <div class="{{'col-md-2 col-sm-12 hcg-type pr-0 '.$hcgType}}">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">Date : &nbsp;</span>
-                                                        {{Form::text("data[hcg_date]",!empty($historyData->hcg_date) ? \Carbon\Carbon::parse($historyData->hcg_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker hcg-date'])}}
+                                                        {{Form::text("data[hcg_date]",!empty($historyData->hcg_date) ? cdate($historyData->hcg_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker hcg-date'])}}
                                                     </div>
                                                 </div>
                                                 <div class="{{'col-md-2 col-sm-12 hcg-type pr-0 '.$hcgType}}">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">HCG Time : &nbsp;</span>
-                                                        {{ Form::text('data[hcg][time]', !empty($historyData->hcg->time) ? \Carbon\Carbon::parse($historyData->hcg->time)->format('g:i a') : \Carbon\Carbon::now()->format('g:i a'), ['class'=>'form-control timepicker time hcg-time'])}}
+                                                        {{ Form::text('data[hcg][time]', !empty($historyData->hcg->time) ? cdate($historyData->hcg->time)->format('g:i a') : \Carbon\Carbon::now()->format('g:i a'), ['class'=>'form-control timepicker time hcg-time'])}}
                                                     </div>
                                                     <span class="hcg_time form-error-msg"></span>
                                                 </div>
@@ -2109,7 +2109,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                         @if($ovalution == 'yes')
                                                             {{Form::hidden('data[no_follicle]',!empty($historyData->no_follicle) ? $historyData->no_follicle : null)}}
                                                             {{Form::hidden('data[ovalution]',!empty($historyData->ovalution) ? $historyData->ovalution : null)}}
-                                                            {{Form::hidden('data[follow_up]',!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : null)}}
+                                                            {{Form::hidden('data[follow_up]',!empty($historyData->follow_up) ? cdate($historyData->follow_up)->format('D d M Y') : null)}}
                                                         @endif
                                                     </div>
                                                 </div>
@@ -2372,7 +2372,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                         @if(!empty($historyData->follow_up))
                                                             {{Form::hidden('data[new_follow_up]',$historyData->follow_up)}}
                                                         @endif
-                                                        {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? \Carbon\Carbon::parse($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '.$hcgIuiDate,$ovalution == 'yes' || !empty($historyData->follow_up) ? 'disabled' : null])}}
+                                                        {{Form::text("data[follow_up]",!empty($historyData->follow_up) ? cdate($historyData->follow_up)->format('D d M Y') : \Carbon\Carbon::now()->addHours(35)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date next-date '.$hcgIuiDate,$ovalution == 'yes' || !empty($historyData->follow_up) ? 'disabled' : null])}}
                                                         {{Form::hidden('is_notAvailable',0,['class'=>'is-notAvailable'])}}
                                                     </div>
                                                     <span class="follow-date-msg form-error-msg"></span>
@@ -2400,8 +2400,8 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                         </table>
                         @if($skipValue == 1) 
                             @php
-                                    $visitDate = \Carbon\Carbon::parse($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
-                                    $diff = \Carbon\Carbon::parse(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(\Carbon\Carbon::parse($visitDate));
+                                    $visitDate = cdate($iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->format('d-m-Y');
+                                    $diff = cdate(!empty($lmpDate) ? $lmpDate : $iuiHistoryData[count($iuiHistoryData)-1]['created_at'])->diffInDays(cdate($visitDate));
                                     $diff = $diff + 1;
                             @endphp
                             {{-- <div class="col-md-12"> --}}
@@ -2446,7 +2446,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                     @endphp
                                     @if(!empty($historyTreatmentView) && (!empty($historyTreatmentView->medicinedata[0])))
                                     <tr>
-                                        <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                                        <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
                                         <td class="text-justify">
                                             
                                             @if($historyTreatmentView)
@@ -2616,7 +2616,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     
                         <div class="col-md-12 d-none">
                             @if(isset($iuiLastVisit) && isset($lastVisitData->follow_up) && !empty($lastVisitData->follow_up))
-                                <h4>{{"ફરીવાર ".\Carbon\Carbon::parse($lastVisitData->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
+                                <h4>{{"ફરીવાર ".cdate($lastVisitData->follow_up)->format('d-m-Y')." તારીખે બતાવવા આવવું."}}</h4>
                             @endif
                         </div>
                     {{-- @endif --}}

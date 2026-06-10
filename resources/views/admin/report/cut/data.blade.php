@@ -44,7 +44,7 @@
                     $mobile = ($row->charge_type == 3) ? @$row->getPatients['mobile_number'] : (($row->is_final_invoice == 1) ? $row->getPatientsDetails['mobile_number'] : $row->getAppointment->getPatientsDetails['mobile_number']) ;
                 @endphp
                 <td>{{ ($i + 1) . '.' }}</td>
-                <td>{{ ($row->final_invoice_date) ? \Carbon\Carbon::parse($row->final_invoice_date)->format('d-m-Y') : \Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                <td>{{ ($row->final_invoice_date) ? cdate($row->final_invoice_date)->format('d-m-Y') : cdate($row->created_at)->format('d-m-Y')}}</td>
                 <td>{{ $patient_name}}</td>
                 <td>{{ $mobile }}</td>
                 <td class="procedure-font">
@@ -75,14 +75,14 @@
                               Dressing: <span class="procedure-value">{{$row->dressing}} </span><br/>
                         @endif
                         @php
-                            $extraField = unserialize($row->extra_field);
-                            $extraField1 = $extraField[0];
-                            $extraField2 = $extraField[1];
-                            if($extraField1[0] && $extraField1[1] > 0)
+                            $extraField = @unserialize($row->extra_field);
+                            $extraField1 = is_array($extraField) && isset($extraField[0]) ? $extraField[0] : null;
+                            $extraField2 = is_array($extraField) && isset($extraField[1]) ? $extraField[1] : null;
+                            if(is_array($extraField1) && !empty($extraField1[0]) && !empty($extraField1[1]) && $extraField1[1] > 0)
                             {
                                 echo ucfirst($extraField1[0]) . ': <span class="procedure-value">' . $extraField1[1] . '</span>, ';
                             }
-                            if($extraField2[0] && $extraField2[1] > 0)
+                            if(is_array($extraField2) && !empty($extraField2[0]) && !empty($extraField2[1]) && $extraField2[1] > 0)
                             {
                                 echo ucfirst($extraField2[0]) . ': <span class="procedure-value">' .  $extraField2[1] . '</span>';
                             }

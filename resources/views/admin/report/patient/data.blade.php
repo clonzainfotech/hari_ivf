@@ -48,11 +48,11 @@
                         <td>{{ ($i++) . '.' }}</td>
                         <td>
                             @if(isset($row['is_final_invoice']) && isset($row['amount']))
-                                {{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}
+                                {{cdate($row->date)->format('d-m-Y')}}
                             @elseif(isset($row['amount']))
-                                {{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
+                                {{cdate($row->created_at)->format('d-m-Y')}}
                             @else
-                                {{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}
+                                {{cdate($row->date)->format('d-m-Y')}}
                             @endif
                         </td>
                         <td>

@@ -50,7 +50,7 @@
             @endphp
             <tr data-id="{{encrypt($row->id)}}" data-next="{{$row->next_appointment}}" class="{{'appointmentdata '.$isDone.' '.$inConsultingroom}}">
                 <td>
-                    {{-- <div class="inline @if(empty($row->time) || \Carbon\Carbon::parse($row->getPatientsDetails['created_at'])->format('Y-m-d') == \Carbon\Carbon::now()->format('Y-m-d')) new-opd-patient @endif"> --}}
+                    {{-- <div class="inline @if(empty($row->time) || cdate($row->getPatientsDetails['created_at'])->format('Y-m-d') == \Carbon\Carbon::now()->format('Y-m-d')) new-opd-patient @endif"> --}}
                         {{ ((($appointment->currentPage() - 1 ) * $appointment->perPage() ) + $loop->iteration) . '.' }}
                     {{-- </div> --}}
                 </td>
@@ -62,12 +62,12 @@
                     @if(in_array(Auth::user()->role,[1,2])) 
                         @if($row->arrival_time == null)
                             <span class="appointment-time">
-                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}">add</i></a>
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{cdate($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}">add</i></a>
                             </span>
                         @else
                             {{date('h:i', strtotime($row->arrival_time))}}
                             <span class="appointment-time">
-                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{cdate($row->date)->format('D d M Y')}}" data-time="{{$row->time ? array_search($appointmentTime,$hospitalTime) : null}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
                             </span>
                         @endif
                     @else
@@ -75,15 +75,15 @@
                     @endif
                 </td>
                 <td>
-                    {!! !empty($row->time) ? \Carbon\Carbon::parse($row->date)->format('d-m-Y') . ' ' .  \Carbon\Carbon::parse($row->time)->format('h:i') : \Carbon\Carbon::parse($row->date)->format('d-m-Y') !!}
+                    {!! !empty($row->time) ? cdate($row->date)->format('d-m-Y') . ' ' .  cdate($row->time)->format('h:i') : cdate($row->date)->format('d-m-Y') !!}
                     @if(in_array(Auth::user()->role,[1,2]))
                         @if($row->time)
                             <span class="appointment-time">
-                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-time="{{array_search($appointmentTime,$hospitalTime)}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time pencil-icon a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{cdate($row->date)->format('D d M Y')}}" data-time="{{array_search($appointmentTime,$hospitalTime)}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">edit</i></a>
                             </span>
                         @else
                             <span class="appointment-time">
-                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('D d M Y')}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">add</i></a>
+                                <a class="edit-appointment-time" data-toggle="modal" data-target="#edit-appointment-time"><i class="material-icons edit-appointment-time a-time" data-appointmentid="{{encrypt($row->id)}}" data-date="{{cdate($row->date)->format('D d M Y')}}" data-arrival="{{$row->arrival_time ? array_search($arrivalTime,$hospitalTime) : null}}">add</i></a>
                             </span>
                         @endif
                     @endif
@@ -98,7 +98,7 @@
                 <td class="{{"patient_dropdown line-height".$className}}">&nbsp;
                     @php
                         $isBirthDay = 0;
-                        $isBirthDay =   !empty($row->getPatientsDetails['dob']) && \Carbon\Carbon::parse($row->getPatientsDetails['dob'])->format('d-m') == \Carbon\Carbon::now()->format('d-m') ? 1 : 0;
+                        $isBirthDay =   !empty($row->getPatientsDetails['dob']) && cdate($row->getPatientsDetails['dob'])->format('d-m') == \Carbon\Carbon::now()->format('d-m') ? 1 : 0;
                     @endphp
                     @if($isBirthDay == 1)
                         <i class="zmdi zmdi-card-giftcard candor-color" title="Birthday"></i>
@@ -106,7 +106,7 @@
                     {{ ucwords(strtolower($row->getPatientsDetails['name'])).' '.($row->getChildNumber() ? '('.$row->getChildNumber().')' : '')}}
                     {{-- <td class="patient_dropdown ">{{ucwords(strtolower($row->getPatientsDetails['name']))}}&nbsp; --}}
                         @if(in_array($row->categoryDetails['id'],[1,2,3,4,5,6,10,13]))
-                            <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
+                            <i class="material-icons candor-color pencil-icon appoitment_content" data-category="{{$row->categoryDetails['id']}}" data-ptid="{{encrypt($row->getPatientsDetails['id'])}}" data-date="{{cdate($row->date)->format('d-m-Y')}}" data-class="{{'appointment_dropdown_content_'.$uniqId}}">visibility</i>
                             <div class="{{'appointment_dropdown_content appointment_dropdown_content_'.$uniqId}}">
                             </div>
                         @endif
@@ -172,7 +172,7 @@
                 @endif
                 <td>{{!empty($row->getUsgReason()) ? $row->getUsgReason() : '-'}}</td>
                 <td>{{$row->getAppointmentCharges['netamount'] ?? ''}}</td>
-                <td>{{($row->nextAppointmentDate() && $row->next_appointment == false && ($row->nextAppointmentDate() != \Carbon\Carbon::parse($row->date)->format('d-m-Y'))) ? (($row->nextAppointmentUsg()) ? 'USG - '.$row->nextAppointmentDate() : $row->nextAppointmentDate()) : $row->nextAppointmentDate() }}</td>
+                <td>{{($row->nextAppointmentDate() && $row->next_appointment == false && ($row->nextAppointmentDate() != cdate($row->date)->format('d-m-Y'))) ? (($row->nextAppointmentUsg()) ? 'USG - '.$row->nextAppointmentDate() : $row->nextAppointmentDate()) : $row->nextAppointmentDate() }}</td>
                 @if(in_array(Auth::user()->role,[1,2]))
                 <td>
                     <div class="{{'edit-remark-data edit-remark-'.$row->id}}">

@@ -22,7 +22,7 @@
     $ivfReport = !empty($ivfReport) ? json_decode($ivfReport->description) : null;
     $abortion_reason = [];
     $total_abortion = null;
-    if(!empty($o_h) && ($o_h->abortion_no != null && $o_h->abortion_no != 0 ))
+    if(!empty($o_h->abortion_no) && $o_h->abortion_no != 0 )
     {
         $total_abortion = $o_h->abortion_no;
         foreach($o_h->abortion->abortion_data as $key=>$value)
@@ -30,7 +30,7 @@
             $abortion_reason[] = isset($value->reason) && !empty($value->reason) ? $value->reason : null;
         }
     }
-    if(!empty($o_h) && isset($o_h->second_marriage) && ($o_h->second_marriage->abortion_no != null && $o_h->second_marriage->abortion_no != 0 ))
+    if(!empty($o_h->second_marriage->abortion_no) && $o_h->second_marriage->abortion_no != 0 )
     {
         // if(!empty($o_h) && isset($o_h->second_marriage) && ($o_h->second_marriage->child_no != null && $o_h->second_marriage->child_no != 0))
         // {

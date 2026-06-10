@@ -144,7 +144,7 @@ td{
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Reg.date</span></td>
-                            <td>: {{\Carbon\Carbon::parse($appointment->date)->format('D d M Y')}}</td>
+                            <td>: {{cdate($appointment->date)->format('D d M Y')}}</td>
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">UHID</span></td>
@@ -183,7 +183,7 @@ td{
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">Reg.date</span></td>
-                            <td>: {{\Carbon\Carbon::parse($appointment->date)->format('D d M Y')}}</td>
+                            <td>: {{cdate($appointment->date)->format('D d M Y')}}</td>
                         </tr>
                         <tr>
                             <td class="sticker-sub-header"><span class="sticker-sub-span">UHID</span></td>

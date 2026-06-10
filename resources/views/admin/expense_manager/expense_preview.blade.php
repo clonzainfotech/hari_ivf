@@ -130,7 +130,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td colspan="2" class="text-right">Date : {{\Carbon\Carbon::parse($expense->date)->format('d-m-Y')}}</td>
+                    <td colspan="2" class="text-right">Date : {{cdate($expense->date)->format('d-m-Y')}}</td>
                 </tr>
                     <tr>
                         <td>Category : <b>{{$expense->getExpenseCategory->name}}</b></td>

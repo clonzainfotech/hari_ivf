@@ -234,7 +234,7 @@
                         <td class="seperator">
                             Date & Time :- &nbsp;&nbsp;
                             @if($triggerHistoryData)
-                                {{$triggerHistory ? (\Carbon\Carbon::parse($triggerHistory->trigger_date)->format('D d M Y')) : ''}} {{!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null)}}
+                                {{$triggerHistory ? (cdate($triggerHistory->trigger_date)->format('D d M Y')) : ''}} {{!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null)}}
                             @endif
                         </td>
                     </tr>
@@ -243,10 +243,10 @@
                             OPU :- &nbsp;&nbsp;
                             @if($triggerHistoryData)
                                 @php
-                                    $nowDate = \Carbon\Carbon::parse($triggerHistory->trigger_date)->format('Y-m-d');
-                                    $nowTime = \Carbon\Carbon::parse(!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null))->format('H:i:s');
-                                    $triggerDateTime = \Carbon\Carbon::parse($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
-                                    $triggerDate = \Carbon\Carbon::parse($triggerDateTime)->format('D d M Y');
+                                    $nowDate = cdate($triggerHistory->trigger_date)->format('Y-m-d');
+                                    $nowTime = cdate(!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null))->format('H:i:s');
+                                    $triggerDateTime = cdate($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
+                                    $triggerDate = cdate($triggerDateTime)->format('D d M Y');
                                 @endphp
                             @endif
                         </td>
@@ -255,7 +255,7 @@
                         <td class="seperator">
                             Date & Time  :- &nbsp;&nbsp;
                             @if($triggerHistoryData)
-                                {{$triggerDate.' '.\Carbon\Carbon::parse($triggerDateTime)->format('h:i a')}}
+                                {{$triggerDate.' '.cdate($triggerDateTime)->format('h:i a')}}
                             @endif
                         </td>
                     </tr>

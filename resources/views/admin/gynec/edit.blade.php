@@ -80,7 +80,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <span class="input-group-addon">
                             Visit Date : &nbsp;
                         </span>
-                        {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? \Carbon\Carbon::parse($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                        {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? cdate($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                     </div>
                     <span class="form-error-msg">
                         {{$errors->first('date')}}
@@ -1660,7 +1660,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="input-group">
                             <span class="input-group-addon">Last Menstrual Date : &nbsp;</span>
                             @php
-                                $lmddate = !empty($mh->last_menstrual_date) ? \Carbon\Carbon::parse($mh->last_menstrual_date)->format('D d M Y') : null;
+                                $lmddate = !empty($mh->last_menstrual_date) ? cdate($mh->last_menstrual_date)->format('D d M Y') : null;
                             @endphp
                             {{Form::text("mh[last_menstrual_date]",$lmddate,['class'=>'form-control lmd-date','required'])}}
                         </div>
@@ -1674,7 +1674,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                         <div class="input-group">
                             <span class="input-group-addon">EDD : &nbsp;</span>
                             @php
-                                $date = !empty($mh->edd) ? \Carbon\Carbon::parse($mh->edd)->format('D d M Y') : null;
+                                $date = !empty($mh->edd) ? cdate($mh->edd)->format('D d M Y') : null;
                             @endphp
                             {{Form::text("mh[edd]",$date,['class'=>'form-control datetimepicker date edd-date','disabled'])}}
                         </div>
@@ -1734,7 +1734,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHo->personal_history_date) ? \Carbon\Carbon::parse($patientsDetailsHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHo->personal_history_date) ? cdate($patientsDetailsHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div> --}}
                     <div class="col-md-4 ho-past-personal-data">
@@ -2480,7 +2480,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[usg][date]",!empty($investigation->usg->date) ? \Carbon\Carbon::parse($investigation->usg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[usg][date]",!empty($investigation->usg->date) ? cdate($investigation->usg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="{{'col-sm-3'}}">
@@ -2544,7 +2544,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[hystroscopy][finding_date]",!empty($investigation) && isset($investigation->hystroscopy) ? \Carbon\Carbon::parse($investigation->hystroscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[hystroscopy][finding_date]",!empty($investigation) && isset($investigation->hystroscopy) ? cdate($investigation->hystroscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="col-sm-3">
@@ -2567,7 +2567,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[laproscopy][finding_date]",!empty($investigation) && isset($investigation->laproscopy) ? \Carbon\Carbon::parse($investigation->laproscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[laproscopy][finding_date]",!empty($investigation) && isset($investigation->laproscopy) ? cdate($investigation->laproscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     @php
@@ -2698,7 +2698,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[hcg][date]",!empty($investigation->hcg->date) ? \Carbon\Carbon::parse($investigation->hcg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[hcg][date]",!empty($investigation->hcg->date) ? cdate($investigation->hcg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -2824,7 +2824,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[date_1]",!empty($investigation->date_1) ? \Carbon\Carbon::parse($investigation->date_1)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[date_1]",!empty($investigation->date_1) ? cdate($investigation->date_1)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                 </div>
@@ -2860,7 +2860,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? \Carbon\Carbon::parse($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? cdate($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     {{-- <div class="col-md-3">
@@ -2902,7 +2902,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? \Carbon\Carbon::parse($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? cdate($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                 </div> --}}
@@ -3456,7 +3456,7 @@ $dose =  ['' => 'Select Dose','1'=>'Daily','2'=>"Once a week",'3'=>"Twice a week
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[investigation_anc_date]",!empty($investigation->investigation_anc_date) ? \Carbon\Carbon::parse($investigation->investigation_anc_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date f-date'])}}
+                            {{Form::text("investigation[investigation_anc_date]",!empty($investigation->investigation_anc_date) ? cdate($investigation->investigation_anc_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date f-date'])}}
                         </div>
                     </div>
                     <div class="{{'col-sm-3 anc-data '.$ancProfileStatus}}">

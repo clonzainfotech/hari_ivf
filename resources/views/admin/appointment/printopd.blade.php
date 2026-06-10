@@ -117,7 +117,7 @@
                     <thead>
                         <tr>
                             <th class="opd-left opd-data-header">Receipt No. : {{$appointmentCharges->id}}</th><th class="opd-right opd-data-header">Date : 
-                                {{\Carbon\Carbon::parse($appointmentCharges->created_at)->format('d-M-Y')}} 
+                                {{cdate($appointmentCharges->created_at)->format('d-M-Y')}} 
                                 <div class="opd-main-doctor">{{config('app.doctor') }}</div>
                             </th>
                         </tr>

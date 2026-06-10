@@ -65,7 +65,7 @@
                                             'class'=>'gynec-date',
                                         ])}}
                                     <label class="pl-0 pr-3" for="dt_{{$ij}}">
-                                        {{\Carbon\Carbon::parse($dt)->format('d-m-Y') }}
+                                        {{cdate($dt)->format('d-m-Y') }}
                                     </label>
                                 @endforeach
                             @endif

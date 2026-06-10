@@ -68,7 +68,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{Form::text('time',(!empty($event->time)) ? \Carbon\Carbon::parse($event->time)->format('h:i a') : null,[
+                                    {{Form::text('time',(!empty($event->time)) ? cdate($event->time)->format('h:i a') : null,[
                                         'class'=>'form-control time timepicker',
                                         'placeholder'=>'Time',
                                         'required'
@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{Form::text('startDate',\Carbon\Carbon::parse($event->start_date)->format('D d M Y'),[
+                                    {{Form::text('startDate',cdate($event->start_date)->format('D d M Y'),[
                                         'class'=>'form-control datetimepicker date startDate',
                                         'placeholder'=>'Start Date',
                                         'required'
@@ -92,7 +92,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    {{Form::text('endDate',\Carbon\Carbon::parse($event->end_date)->format('D d M Y'),[
+                                    {{Form::text('endDate',cdate($event->end_date)->format('D d M Y'),[
                                         'class'=>'form-control datetimepicker date endDate',
                                         'placeholder'=>'End Date',
                                         'required'

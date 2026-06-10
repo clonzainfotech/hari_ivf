@@ -94,7 +94,7 @@
             @forelse($patients as $row)
                  <tr>
                     <td class="data-font seperator">{{($i++).'.'}}</td>
-                    <td class="data-font seperator">{{\Carbon\Carbon::parse($row->getAppointment['date'])->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{cdate($row->getAppointment['date'])->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{ ucwords(strtolower($row->name)) }}</td>
                     <td class="data-font seperator">{{$row->getPatientsDetails->getReferenceDoctor['name']}}</td>
                     <td class="data-font seperator">{{$row->getPatientsDetails->getReferenceDoctorPro['name']}}</td>
@@ -108,7 +108,7 @@
     
     <!-- <tr>
         <td class="data-font seperator">{{($i++).'.'}}</td>
-        <td class="data-font seperator">{{\Carbon\Carbon::parse($row->getAppointment['date'])->format('d-m-Y')}}</td>
+        <td class="data-font seperator">{{cdate($row->getAppointment['date'])->format('d-m-Y')}}</td>
         <td class="data-font seperator">{{ ucwords(strtolower($row->name)) }}</td>
         <td class="data-font seperator">{{$row->getReferenceDoctor['name']}}</td>
         <td class="data-font seperator">{{$row->getReferenceDoctorPro['name']}}</td>

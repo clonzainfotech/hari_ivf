@@ -110,7 +110,7 @@
             @endphp
             <tr>
                 <td class="data-font seperator">{{ ($i++) . '.' }}</td>
-                <td class="data-font seperator">{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y') }}</td>
+                <td class="data-font seperator">{{ cdate($row->created_at)->format('d-m-Y') }}</td>
                 <td class="data-font seperator">{{ ($row->charge_type == 3) ? strtoupper(@$row->getPatients['name']) : strtoupper(@$row->getAppointment->getPatientsDetails['name']) }}</td>
                 <td class="data-font seperator">{{ ($row->charge_type == 3) ? $row->getPatients['mobile_number'] : @$row->getAppointment->getPatientsDetails['mobile_number']}}</td>
                 <td class="data-font seperator">{{ucfirst(@$row->getAppointment->categoryDetails['name'])}}</td>
@@ -141,15 +141,15 @@
                         @endif
                     
                         @php
-                            $extraField = unserialize($row->extra_field);
-                            $extraField1 = $extraField[0];
-                            $extraField2 = $extraField[1];
-                            if($extraField1[0] && $extraField1[1] > 0)
+                            $extraField = @unserialize($row->extra_field);
+                            $extraField1 = is_array($extraField) && isset($extraField[0]) ? $extraField[0] : null;
+                            $extraField2 = is_array($extraField) && isset($extraField[1]) ? $extraField[1] : null;
+                            if(is_array($extraField1) && !empty($extraField1[0]) && !empty($extraField1[1]) && $extraField1[1] > 0)
                             {
-                                
+
                                 echo ucfirst($extraField1[0]) . ': <span class="charges">' . $extraField1[1] . '</span><br/>';
                             }
-                            if($extraField2[0] && $extraField2[1] > 0)
+                            if(is_array($extraField2) && !empty($extraField2[0]) && !empty($extraField2[1]) && $extraField2[1] > 0)
                             {
                                 echo ucfirst($extraField2[0]) . ': <span class="charges">' .  $extraField2[1] . '</span>';
                             }

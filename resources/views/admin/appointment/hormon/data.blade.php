@@ -81,10 +81,10 @@
                 <td>{{$row->reDrName['name']}}</td>
                 <td>{{$row->case_type}}</td>
                 <td>{{!empty($row->payment_type) ? $pMethod[$row->payment_type] : null}}</td>
-                <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+                <td>{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
                 <td>{{ $row->remark}}</td>
                 <td>
-                    @if($row->checkIndorDeposit()['id'] == $row->id && $row->total != 0 && (strtotime(\Carbon\Carbon::parse($row->created_at)->format('Y-m-d')) >= strtotime(\Carbon\Carbon::now()->format('Y-m-d'))))
+                    @if($row->checkIndorDeposit()['id'] == $row->id && $row->total != 0 && (strtotime(cdate($row->created_at)->format('Y-m-d')) >= strtotime(\Carbon\Carbon::now()->format('Y-m-d'))))
                         <a href="javascript:void(0)" class="btn btn-primary btn-sm change-hormon change-hormon-{{$key}} ivf-payment-font" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}} data-nextpayment={{!empty($row->getIvfPaymentReminder()['next_payment']) ? $row->getIvfPaymentReminder()['next_payment'] : '0'}} data-nextpaymentdate="{{!empty($row->getIvfPaymentReminder()['next_payment_date']) ? $row->getIvfPaymentReminder()['next_payment_date'] : null}}" data-paymentmethod="{{$row->payment_type}}">Change</a>
                         <a href="javascript:void(0)" class="btn btn-primary btn-sm save-hormon save-hormon-{{$key}} ivf-payment-font d-none" data-id={{$key}} data-amount={{$row->total}} data-categoryid={{$row->charge_type}} data-hormon={{encrypt($row->id)}}>Save</a>
                         <a href="javascript:void(0)" class="btn btn-primary btn-sm delete-hormon ivf-payment-font " data-hormon={{encrypt($row->id)}}>Delete</a>

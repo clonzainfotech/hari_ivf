@@ -16,7 +16,7 @@
     $injectionData = ['1'=>'Only HMG','2'=>'Only FSH','3'=>'FSH + HMG','4'=>'Lupride','5'=>'Letrozole + HMG','6'=>'Letrozole + FSH','7'=>'Clomiphene Citrate + HMG','8'=>'Clomiphene Citrate + FSH','9'=>'Antagonist'];
     $historyLmdDiff = 0;
     if(!empty($ivfSecondVisitData) && !empty($ivfSecondVisitData->lmp->date)){
-        $historyLmddateData = \Carbon\Carbon::parse($ivfSecondVisitData->lmp->date);
+        $historyLmddateData = cdate($ivfSecondVisitData->lmp->date);
         $now = \Carbon\Carbon::now();
         $historyLmdDiff = $historyLmddateData->diffInDays($now);
         $historyLmdDiff = $historyLmdDiff + 1;
@@ -143,7 +143,7 @@
                                                     <span class="input-group-addon">
                                                         Visit Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? \Carbon\Carbon::parse($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? cdate($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                                 <span class="form-error-msg">
                                                     {{$errors->first('date')}}
@@ -1991,7 +1991,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Last Menstrual Date : &nbsp;</span>
                                                     @php
-                                                        $lmddate = !empty($mh->last_menstrual_date) ? \Carbon\Carbon::parse($mh->last_menstrual_date)->format('D d M Y') : null;
+                                                        $lmddate = !empty($mh->last_menstrual_date) ? cdate($mh->last_menstrual_date)->format('D d M Y') : null;
                                                     @endphp
                                                     {{Form::text("mh[last_menstrual_date]",$lmddate,['class'=>'form-control lmd-date'])}}
                                                 </div>
@@ -2299,7 +2299,7 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("investigation[hystroscopy][finding_date]",!empty($investigation->hystroscopy) ? \Carbon\Carbon::parse($investigation->hystroscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("investigation[hystroscopy][finding_date]",!empty($investigation->hystroscopy) ? cdate($investigation->hystroscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
@@ -2325,7 +2325,7 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("investigation[laproscopy][finding_date]",!empty($investigation->laproscopy) ? \Carbon\Carbon::parse($investigation->laproscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("investigation[laproscopy][finding_date]",!empty($investigation->laproscopy) ? cdate($investigation->laproscopy->finding_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                             </div>
                                             @php
@@ -2450,7 +2450,7 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("investigation[hcg][date]",!empty($investigation->hcg) && !empty($investigation->hcg->date) ? \Carbon\Carbon::parse($investigation->hcg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("investigation[hcg][date]",!empty($investigation->hcg) && !empty($investigation->hcg->date) ? cdate($investigation->hcg->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                             </div>
                                             <div class="col-sm-2">
@@ -2579,7 +2579,7 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("investigation[date_1]",!empty($investigation->date_1) ? \Carbon\Carbon::parse($investigation->date_1)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("investigation[date_1]",!empty($investigation->date_1) ? cdate($investigation->date_1)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -2641,7 +2641,7 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? \Carbon\Carbon::parse($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("investigation[date_2]",!empty($investigation->date_2) ? cdate($investigation->date_2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -3256,7 +3256,7 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("h_factor[personal_history_date]",!empty($husbandFactor->personal_history_date) ? \Carbon\Carbon::parse($husbandFactor->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("h_factor[personal_history_date]",!empty($husbandFactor->personal_history_date) ? cdate($husbandFactor->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                             </div>
                                         </div>
@@ -3413,7 +3413,7 @@
                                                     <span class="input-group-addon">
                                                         Date : &nbsp;
                                                     </span>
-                                                    {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHo->personal_history_date) ? \Carbon\Carbon::parse($patientsDetailsHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                                                    {{Form::text("p_detailes[personal_history_date]",!empty($patientsDetailsHo->personal_history_date) ? cdate($patientsDetailsHo->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                                                 </div>
                                             </div>
                                             <div class="col-md-3 ho-past-personal-data">

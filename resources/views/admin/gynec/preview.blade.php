@@ -195,8 +195,8 @@
             </div>
             <br>
             <div class="col-md-12">
-                <span>Date : {{isset($planManagement->surgically_date) && !empty($planManagement->surgically_date) ? Carbon\Carbon::parse($planManagement->surgically_date)->format('D d M Y') : '-'}}</span><br>
-                <span>Time : {{isset($planManagement->surgically_time) && !empty($planManagement->surgically_time) ? Carbon\Carbon::parse($planManagement->surgically_time)->format('h:i') : '-'}}</span>
+                <span>Date : {{isset($planManagement->surgically_date) && !empty($planManagement->surgically_date) ? cdate($planManagement->surgically_date)->format('D d M Y') : '-'}}</span><br>
+                <span>Time : {{isset($planManagement->surgically_time) && !empty($planManagement->surgically_time) ? cdate($planManagement->surgically_time)->format('h:i') : '-'}}</span>
             </div>
             <br>
         </div>
@@ -216,7 +216,7 @@
                             <br><span class="pb-1 font-bold anc-label">Seen By : {{ ucwords(strtolower(isset($gynec->getSeenBy->name) ? $gynec->getSeenBy->name : '')) }}</span>
                         </th>
                         <th>
-                        <th class="pb-1 float-right font-bold anc-label">Visit Date:  {{Carbon\Carbon::parse($gynec->created_at)->format('d/m/Y')}}
+                        <th class="pb-1 float-right font-bold anc-label">Visit Date:  {{cdate($gynec->created_at)->format('d/m/Y')}}
                             @if($gynec->getGynecPatients['weight'])
                                 <br>Weight: {{$gynec->getGynecPatients['weight'].' kg'}}
                             @endif
@@ -1095,7 +1095,7 @@
                             @if(!empty($mh->last_menstrual_date))
                                 <th>
                                     <span class="anc-label">Last Menstrual Date :</span>
-                                    {{!empty($mh->last_menstrual_date) ?  \Carbon\Carbon::parse($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
+                                    {{!empty($mh->last_menstrual_date) ?  cdate($mh->last_menstrual_date)->format('d/m/Y') : '-' }}
                                     <br>
                                     @if (isset($mh->lmd_date_diff) && !empty($mh->lmd_date_diff))
                                     <span class="anc-label">Day of mense :</span>
@@ -1358,7 +1358,7 @@
                             <tr>
                                 <th>
                                     <span class="anc-label">Date :</span>
-                                    {{\Carbon\Carbon::parse($patientDetailedHO->personal_history_date)->format('D d M Y')}}
+                                    {{cdate($patientDetailedHO->personal_history_date)->format('D d M Y')}}
                                 </th>
                             </tr>
                         @endif --}}

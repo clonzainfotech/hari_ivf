@@ -96,7 +96,7 @@
                     <td class="data-font seperator">{{($i++).'.'}}</td>
                     <td class="data-font seperator"><span class="list-name">{{ucwords(strtolower($row->name))}}</span></td>
                     <td class="data-font seperator"><span class="list-name">{{!empty($row->mobile_number) ? $row->mobile_number : '-'}}</span></td>
-                    <td class="data-font seperator">{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+                    <td class="data-font seperator">{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
                     <td class="data-font seperator"><span class="list-name">{{isset($type[$row->reference_type]) ? $type[$row->reference_type] : ''}}</span></td>
                     
                 </tr>

@@ -230,7 +230,7 @@
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <span class="input-group-addon unik-lbl-spn">Date of Surgery :</span>
-                                                    {{Form::text('surgerydate',$dischargedata->dos_date ? \Carbon\Carbon::parse($dischargedata->dos_date)->format('D d M Y') : null,[
+                                                    {{Form::text('surgerydate',$dischargedata->dos_date ? cdate($dischargedata->dos_date)->format('D d M Y') : null,[
                                                         'class'=>'form-control datetimepicker surgerydate',
                                                         'placeholder'=>'Date of Surgery',
                                                     ])}}
@@ -603,7 +603,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon unik-lbl-spn">Follow up date : &nbsp;</span>
-                                                    {{Form::text('followdate',$dischargedata->followup_date ? \Carbon\Carbon::parse($dischargedata->followup_date)->format('D d M Y') : null,[
+                                                    {{Form::text('followdate',$dischargedata->followup_date ? cdate($dischargedata->followup_date)->format('D d M Y') : null,[
                                                         'class'=>'form-control datetimepicker followdate',
                                                         'placeholder'=>'Follow up date',
                                                         'required'

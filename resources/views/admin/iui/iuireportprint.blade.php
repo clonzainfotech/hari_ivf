@@ -76,7 +76,7 @@ $iuireportData = json_decode($iuiReport->description);
                     </th>
                     <th>
                     <th class="pb-1 float-right ivf-label">
-                        <span class="pb-1 ivf-label">Date :</span> <span class="pb-1 font-bold ivf-label">{{\Carbon\Carbon::parse($iuiReport->created_at)->format('d-m-Y')}}</span><br>
+                        <span class="pb-1 ivf-label">Date :</span> <span class="pb-1 font-bold ivf-label">{{cdate($iuiReport->created_at)->format('d-m-Y')}}</span><br>
                         <span class="pb-1 ivf-label">Reason :</span> <span class="pb-1 font-bold ivf-label"> {{!empty($iuireportData->reason) ? $iuireportData->reason : '-'}}</span>
                     </th>
                 </tr>
@@ -150,7 +150,7 @@ $iuireportData = json_decode($iuiReport->description);
                 </tr>
                 <tr>
                     <th>
-                        <span class="pb-1 ivf-label">Follow Up Date : {{Carbon\Carbon::parse(!empty($iuireportData->follow_up) ? $iuireportData->follow_up : null)->format('D d M Y')}}</span><br>
+                        <span class="pb-1 ivf-label">Follow Up Date : {{cdate(!empty($iuireportData->follow_up) ? $iuireportData->follow_up : null)->format('D d M Y')}}</span><br>
                         <span class="pb-1 ivf-label">Best Of Luck</span>
                     </th>
                     <th>

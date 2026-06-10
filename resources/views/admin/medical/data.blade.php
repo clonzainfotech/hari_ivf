@@ -10,7 +10,8 @@
     <tbody>
     @forelse($patients as $row)
     @php
-        $class = $row->getCurrentDoneAppointment()['status'] == 1 && $row->getCurrentDoneAppointment()['medicine_status'] == 1 ? 'medicine-given' : 'medicine-not-given';
+        $doneAppointment = $row->getCurrentDoneAppointment();
+        $class = (!empty($doneAppointment) && $doneAppointment['status'] == 1 && $doneAppointment['medicine_status'] == 1) ? 'medicine-given' : 'medicine-not-given';
     @endphp
         <tr data-id="{{encrypt($row->id)}}" class="{{$class}}">
             <td>{{((($patients->currentPage() - 1 ) * $patients->perPage()) + $loop->iteration) . '.'}}</td>
@@ -18,7 +19,7 @@
             <td>{{$row->name}}</td>
             <td>
                 <a href="{{URL::to('get-medicine/'.encrypt($row->id))}}" class="btn btn-primary btn-sm m-0">View</a>
-                @if($row->getCurrentDoneAppointment()['status'] == 1 && $row->getCurrentDoneAppointment()['medicine_status'] != 1 && in_array(Auth::user()->role,[1,5]))
+                @if(!empty($doneAppointment) && $doneAppointment['status'] == 1 && $doneAppointment['medicine_status'] != 1 && in_array(Auth::user()->role,[1,5]))
                     <a href="javascript:void(0);" data-pid={{($row->id)}} class="medicine-given btn btn-primary btn-sm m-0">Done</a>
                 @endif
             </td>

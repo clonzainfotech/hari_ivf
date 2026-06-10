@@ -126,7 +126,7 @@ tr td th {
                     <tr data-id="{{encrypt($row->id)}}">
 
                         <td class="data-font seperator">{{ ($i++) . '.' }}</td>
-                        <td class="data-font seperator">{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
+                        <td class="data-font seperator">{{cdate($row->date)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">
                             @if(isset($row['is_final_invoice']) && isset($row['amount']))
                                 IPD

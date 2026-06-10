@@ -43,7 +43,7 @@
                                                         <span class="input-group-addon">
                                                             <i class="zmdi zmdi-calendar"></i>
                                                         </span>
-                                                        {{Form::text('date',\Carbon\Carbon::parse($income->date)->format('D d M Y'),['class'=>'form-control datetimepicker date','placeholder'=>'Date','required'])}}
+                                                        {{Form::text('date',cdate($income->date)->format('D d M Y'),['class'=>'form-control datetimepicker date','placeholder'=>'Date','required'])}}
                                                     </div>
                                                     <span class="form-error-msg">
                                                         {{$errors->first('date')}}

@@ -45,7 +45,7 @@
                             $totalUsgLeft +=  $usg[$number]->getAppointmentCharges['usg'];
                         @endphp
                         <td>{{ ((($usg->currentPage() - 1 ) * $usg->perPage() ) + $loop->iteration) . '.'}}</td>
-                        <td>{{ \Carbon\Carbon::parse($usg[$number]->date)->format('d-m-Y')}}</td>
+                        <td>{{ cdate($usg[$number]->date)->format('d-m-Y')}}</td>
                         <td>{{strtoupper(@$usg[$number]->getPatientsDetails['name'])}}</td>
                         <td>{{ucfirst(@$usg[$number]->categoryDetails['name'])}}</td>
                         <td>
@@ -63,7 +63,7 @@
                                 $totalUsgRight +=  $usg[$number]->getAppointmentCharges['usg'];
                             @endphp
                             <td>{{ ((($usg->currentPage() - 1 ) * $usg->perPage() ) + $loop->iteration + 1) . '.'}}</td>
-                            <td>{{ \Carbon\Carbon::parse($usg[$number]->date)->format('d-m-Y')}}</td>
+                            <td>{{ cdate($usg[$number]->date)->format('d-m-Y')}}</td>
                             <td>{{strtoupper(@$usg[$number]->getPatientsDetails['name'])}}</td>
                             <td>{{ucfirst(@$usg[$number]->categoryDetails['name'])}}</td>
                             <td>
@@ -122,7 +122,7 @@
                             $totalHormonLeft +=  $hormon[$number]->amount;
                         @endphp
                         <td>{{ ((($hormon->currentPage() - 1 ) * $hormon->perPage()) + $loop->iteration) . '.' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($hormon[$number]->created_at)->format('d-m-Y')}}</td>
+                        <td>{{ cdate($hormon[$number]->created_at)->format('d-m-Y')}}</td>
                         <td>{{strtoupper(@$hormon[$number]->getPatients['name'])}}</td>
                         <td></td>
                         <td>
@@ -140,7 +140,7 @@
                                 $totalHormonRight +=  $hormon[$number]->amount;
                             @endphp
                             <td>{{ ((($hormon->currentPage() - 1 ) * $hormon->perPage()) + $loop->iteration + 1) . '.'}}</td>
-                            <td>{{ \Carbon\Carbon::parse($hormon[$number]->created_at)->format('d-m-Y')}}</td>
+                            <td>{{ cdate($hormon[$number]->created_at)->format('d-m-Y')}}</td>
                             <td>{{strtoupper(@$hormon[$number]->getPatients['name'])}}</td>
                             <td></td>
                             <td>
@@ -195,7 +195,7 @@
                             $totalIuiLeft +=  $iui[$number]->amount;
                         @endphp
                         <td>{{ ((($iui->currentPage() - 1 ) * $iui->perPage()) + $loop->iteration) . '.' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($iui[$number]->created_at)->format('d-m-Y')}}</td>
+                        <td>{{ cdate($iui[$number]->created_at)->format('d-m-Y')}}</td>
                         <td>{{ strtoupper(@$iui[$number]->getPatients['name']) }}</td>
                         <td></td>
                         <td>
@@ -214,7 +214,7 @@
                                 $totalIuiRight +=  $iui[$number]->amount;
                             @endphp
                             <td>{{ ((($iui->currentPage() - 1 ) * $iui->perPage()) + $loop->iteration + 1) . '.' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($iui[$number]->created_at)->format('d-m-Y')}}</td>
+                            <td>{{ cdate($iui[$number]->created_at)->format('d-m-Y')}}</td>
                             <td>{{strtoupper(@$iui[$number]->getPatients['name'])}}</td>
                             <td></td>
                             <td>
@@ -269,7 +269,7 @@
                             $totalIvfLeft +=  $ivf[$number]->amount;
                         @endphp
                         <td>{{((($ivf->currentPage() - 1 ) * $ivf->perPage()) + $loop->iteration) . '.' }}</td>
-                        <td>{{\Carbon\Carbon::parse($ivf[$number]->created_at)->format('d-m-Y')}}</td>
+                        <td>{{cdate($ivf[$number]->created_at)->format('d-m-Y')}}</td>
                         <td>{{strtoupper(@$ivf[$number]->getPatients['name']) }}</td>
                         <td></td>
                         <td>
@@ -287,7 +287,7 @@
                                 $totalIvfRight +=  $ivf[$number]->amount;
                             @endphp
                             <td>{{((($ivf->currentPage() - 1 ) * $ivf->perPage()) + $loop->iteration + 1) . '.' }}</td>
-                            <td>{{\Carbon\Carbon::parse($ivf[$number]->created_at)->format('d-m-Y')}}</td>
+                            <td>{{cdate($ivf[$number]->created_at)->format('d-m-Y')}}</td>
                             <td>{{strtoupper(@$ivf[$number]->getPatients['name'])}}</td>
                             <td></td>
                             <td>
@@ -389,7 +389,7 @@
                 @if ($number < $count)
                     <tr>
                         <td>{{($j = $number + 1) . '.'}}</td>
-                        <td>{{!empty($indoorCash[$number]['final_invoice_date']) ? \Carbon\Carbon::parse($indoorCash[$number]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
+                        <td>{{!empty($indoorCash[$number]['final_invoice_date']) ? cdate($indoorCash[$number]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
                         <td>{{strtoupper($indoorCash[$number]['get_patients_details']['name']) }}</td>
                         <td>
                             @php
@@ -416,7 +416,7 @@
                         @endphp
                         @if ($count > 8 && $number < $count)
                             <td>{{ ($j = $number + 1) . '.'}}</td>
-                            <td>{{ !empty($indoorCash[$number]['final_invoice_date']) ? \Carbon\Carbon::parse($indoorCash[$number]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
+                            <td>{{ !empty($indoorCash[$number]['final_invoice_date']) ? cdate($indoorCash[$number]['final_invoice_date'])->format('d-m-Y') : '-'}}</td>
                             <td>{{ strtoupper($indoorCash[$number]['get_patients_details']['name']) }}</td>
                             <td></td>
                             <td>
@@ -457,7 +457,7 @@
                 @if($number < $count)
                     <tr>
                         <td>{{ ($j = $number + 1) . '.'}}</td>
-                        <td>{{ \Carbon\Carbon::parse($indoorCaseDeposit[$number]['created_at'])->format('d-m-Y')}}</td>
+                        <td>{{ cdate($indoorCaseDeposit[$number]['created_at'])->format('d-m-Y')}}</td>
                         <td>{{ strtoupper($indoorCaseDeposit[$number]['get_patients']['name']) }}</td>
                         <td>
                             @php
@@ -484,7 +484,7 @@
                         @endphp
                         @if($count > 8 && $number < $count)
                             <td>{{ ($j = $number + 1) . '.'}}</td>
-                            <td>{{ \Carbon\Carbon::parse($indoorCaseDeposit[$number]['created_at'])->format('d-m-Y')}}</td>
+                            <td>{{ cdate($indoorCaseDeposit[$number]['created_at'])->format('d-m-Y')}}</td>
                             <td>{{ strtoupper($indoorCaseDeposit[$number]['get_patients']['name']) }}</td>
                             <td>
                                 @php
@@ -570,7 +570,7 @@
                                 $totalIncomeLeft +=  $income[$number]->amount;
                             @endphp
                             <td>{{ ((($income->currentPage() - 1 ) * $income->perPage()) + $loop->iteration) . '.' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($income[$number]->date)->format('d-m-Y')}}</td>
+                            <td>{{ cdate($income[$number]->date)->format('d-m-Y')}}</td>
                             <td>{{$income[$number]->payment_mode}}</td>
                             <td>{{$income[$number]['getExpenseCategory']->name}}</td>
                             <td>{{strtoupper($income[$number]->given_by)}}</td>
@@ -590,7 +590,7 @@
                                     $totalIncomeRight +=  $income[$number]->amount;
                                 @endphp
                                 <td>{{ ((($income->currentPage() - 1 ) * $income->perPage() ) + $loop->iteration + 1) . '.' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($income[$number]->date)->format('d-m-Y')}}</td>
+                                <td>{{ cdate($income[$number]->date)->format('d-m-Y')}}</td>
                                 <td>{{$income[$number]->payment_mode}}</td>
                                 <td>{{$income[$number]['getExpenseCategory']->name}}</td>
                                 <td>{{strtoupper($income[$number]->given_by)}}</td>
@@ -641,7 +641,7 @@
                                 $totalExpenseLeft += $expense[$number]->amount;
                             @endphp
                             <td>{{ ((($expense->currentPage() - 1 ) * $expense->perPage()) + $loop->iteration) . '.' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($expense[$number]->date)->format('d-m-Y')}}</td>
+                            <td>{{ cdate($expense[$number]->date)->format('d-m-Y')}}</td>
                             <td>{{$expense[$number]->payment_mode}}</td>
                             <td>{{$expense[$number]['getExpenseCategory']->name}}</td>
                             <td>{{strtoupper($expense[$number]->given_for)}}</td>
@@ -661,7 +661,7 @@
                                     $totalExpenseRight += $expense[$number]->amount;
                                 @endphp
                                 <td>{{((($expense->currentPage() - 1 ) * $expense->perPage() ) + $loop->iteration + 1) . '.' }}</td>
-                                <td>{{\Carbon\Carbon::parse($expense[$number]->date)->format('d-m-Y')}}</td>
+                                <td>{{cdate($expense[$number]->date)->format('d-m-Y')}}</td>
                                 <td>{{$expense[$number]->payment_mode}}</td>
                                 <td>{{$expense[$number]['getExpenseCategory']->name}}</td>
                                 <td>{{strtoupper($expense[$number]->given_for)}}</td>

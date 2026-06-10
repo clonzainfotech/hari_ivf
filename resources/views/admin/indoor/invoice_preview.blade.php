@@ -114,7 +114,7 @@
                             <td>Room Number :</td>
                             <td>{{ $invoice->getBookedBed->getRoom['room_no'] }} </td>
                             <td>DOA :</td>
-                            <td>{{ \Carbon\Carbon::parse($invoice->getBookedBed['doa_date'])->format('d-M-Y') }} </td>
+                            <td>{{ cdate($invoice->getBookedBed['doa_date'])->format('d-M-Y') }} </td>
                         </tr>
                         <tr>
                             <td>Room Type :</td>
@@ -124,7 +124,7 @@
                             <td>Under C/O Doctor :</td>
                             <td>{{ ucwords(strtolower($invoice->getBookedBed->getPatientsDetails->getHospitalDoctor['name'])) }} </td>
                             <td>DOD :</td>
-                            <td>{{ \Carbon\Carbon::parse($invoice->getBookedBed['dod_date'])->format('d-M-Y') }} </td>
+                            <td>{{ cdate($invoice->getBookedBed['dod_date'])->format('d-M-Y') }} </td>
                         </tr>
                         @if(!empty($invoice->bill_type))
                             <tr>

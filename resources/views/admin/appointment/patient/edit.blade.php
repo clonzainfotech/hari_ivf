@@ -99,7 +99,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon unik-lbl-spn">Age : &nbsp;</span>
-                                                        {{Form::text('age',!empty($patient['age']) ? $patient['age'] : (!empty($patient->dob) ? \Carbon\Carbon::parse($patient->dob)->age : null),['class'=>'form-control age valid-age years','placeholder'=>'Years','maxlength' => 4])}}
+                                                        {{Form::text('age',!empty($patient['age']) ? $patient['age'] : (!empty($patient->dob) ? cdate($patient->dob)->age : null),['class'=>'form-control age valid-age years','placeholder'=>'Years','maxlength' => 4])}}
                                                     </div>
                                                     <span class="form-error-msg age-error"></span>
                                                 </div>
@@ -383,7 +383,7 @@
                                                 <div class="col-md-4 col-sm-4">
                                                     <div class="input-group">
                                                         <span class="input-group-addon unik-lbl-spn">Birth Date : &nbsp;</span>
-                                                        {{Form::text('dob',!empty($patient->dob) ? \Carbon\Carbon::parse($patient->dob)->format('d-m-Y') : null,[
+                                                        {{Form::text('dob',!empty($patient->dob) ? cdate($patient->dob)->format('d-m-Y') : null,[
                                                         'id'=>'birthdate',
                                                             'class'=>'dob border-color border-1',
                                                             'placeholder'=>'BirthDate',

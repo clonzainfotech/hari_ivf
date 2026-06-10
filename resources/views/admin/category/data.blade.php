@@ -13,7 +13,7 @@
         <tr data-id="{{encrypt($row->id)}}" class="{{in_array($row->id, [1,2,3,4,5,6,7,8,9,10]) ? 'main-category' : ''}}">
             <td>{{ ((($category->currentPage() - 1 ) * $category->perPage() ) + $loop->iteration) . '.' }}</td>
             <td><span class="list-name">{{ ucfirst($row->name) }}</span></td>
-            <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+            <td>{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
             <td><span class="badge badge-{{$row->status == 'Active' ? 'success' : 'danger'}}">{{$row->status}}</td>
             <td>
                 @if(!in_array($row->id, [1,2,3,4,5,6,7,8,9,10]))

@@ -24,7 +24,7 @@
         @forelse($report as $row)
             <tr class="reportdata" data-id="{{encrypt($row->id)}}">
                 <td>{{ ((($report->currentPage() - 1 ) * $report->perPage() ) + $loop->iteration) . '.'}}</td>
-                <td>{{ \Carbon\Carbon::parse($row->getAppointment->date)->format('d-m-Y') }} </td>
+                <td>{{ cdate($row->getAppointment->date)->format('d-m-Y') }} </td>
                 <td>{{$row->getAppointment->getPatientsDetails['code'] }}</td>
                 <td>{{strtoupper($row->getAppointment->getPatientsDetails['name'])}}</td>
                 <td>{{ucfirst($row->getAppointment->categoryDetails['name'])}}</td>

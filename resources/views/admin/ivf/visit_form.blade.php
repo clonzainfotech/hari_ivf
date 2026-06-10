@@ -81,15 +81,15 @@
                 <div class="input-group">
                     <span class="input-group-addon">L.M.P Date : &nbsp;</span>
                     @php
-                        // $lmpDateValue = !empty($ivfData->lmp->date) ? \Carbon\Carbon::parse($ivfData->lmp->date)->format('Y-m-d') : null;
+                        // $lmpDateValue = !empty($ivfData->lmp->date) ? cdate($ivfData->lmp->date)->format('Y-m-d') : null;
                         $currentDateValue = Carbon\Carbon::now()->format('Y-m-d');
                         // $lmpDateDiff = $currentDateValue->diffInDays($lmpDateValue);
-                        $lmpDateValue = !empty($lmpDate) ? \Carbon\Carbon::parse($lmpDate) : null;
+                        $lmpDateValue = !empty($lmpDate) ? cdate($lmpDate) : null;
                         // $currentDateValue = Carbon\Carbon::now();
                         $lmpDateDiff = $lmpDateValue->diffInDays($currentDateValue);
                         $lmpDateDiff = $lmpDateDiff + 1;
                     @endphp
-                    {{Form::text("data[lmp][date]",!empty($lmpDateValue) ? \Carbon\Carbon::parse($lmpDateValue)->format('D d M Y') : null ,['class'=>'form-control history-lmd-date'])}}
+                    {{Form::text("data[lmp][date]",!empty($lmpDateValue) ? cdate($lmpDateValue)->format('D d M Y') : null ,['class'=>'form-control history-lmd-date'])}}
                 </div>
                 <span class="lmp-date-error form-error-msg"></span>
             </div>
@@ -673,7 +673,7 @@
                 <div class="col-md-3">
                     <div class="input-group">
                         <span class="input-group-addon">Date : &nbsp;</span>
-                        {{Form::text("report_date",!empty($ivfReport->date) ? \Carbon\Carbon::parse($ivfReport->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker report_date','required'])}}
+                        {{Form::text("report_date",!empty($ivfReport->date) ? cdate($ivfReport->date)->format('D d M Y') : null,['class'=>'form-control datetimepicker report_date','required'])}}
                     </div>
                     <span class="form-error-msg">
                         {{$errors->first('report_date')}}
@@ -902,7 +902,7 @@
                         <div class="{{'col-md-3 trigger '.$triggerStatus}}">
                             <div class="input-group">
                                 <span class="input-group-addon">Trigger Date: &nbsp;</span>
-                                {{Form::text("data[trigger_date]", !empty($ivfData->trigger_date) ? \Carbon\Carbon::parse($ivfData->trigger_date)->format('D d M Y') : '', ['class'=>'form-control history-lmd-date'])}}
+                                {{Form::text("data[trigger_date]", !empty($ivfData->trigger_date) ? cdate($ivfData->trigger_date)->format('D d M Y') : '', ['class'=>'form-control history-lmd-date'])}}
                             </div>
                         </div>
                     </div>
@@ -1969,7 +1969,7 @@
                         {{Form::text("data[follow_up]",'',['class'=>'form-control datetimepicker follow-up-date'])}}
                     @endif --}}
                     {{Form::hidden('appointment_date',$ivfData->follow_up,['class'=>'last-appointment-date'])}}
-                    {{Form::text("data[follow_up]",\Carbon\Carbon::parse($ivfData->follow_up)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date tranfer-follow-date next-date'])}}
+                    {{Form::text("data[follow_up]",cdate($ivfData->follow_up)->format('D d M Y'),['class'=>'form-control datetimepicker follow-up-date tranfer-follow-date next-date'])}}
                     {{Form::hidden('is_notAvailable',0,['class'=>'is-notAvailable'])}}
                 </div>
             </div>

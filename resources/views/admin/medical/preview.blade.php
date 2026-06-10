@@ -117,7 +117,7 @@
                             @if(!empty($key) && $key != 0)
                                 <hr>
                             @endif
-                            <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <br>
                         <div class="medicines-table">
@@ -251,7 +251,7 @@
                             @if(!empty($key) && $key != 0)
                                 <hr>
                             @endif
-                            <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <br>
                         <div class="medicines-table">
@@ -386,7 +386,7 @@
                             @if(!empty($key) && $key != 0)
                                 <hr>
                             @endif
-                            <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <br>
                         @if(!empty($treatment))
@@ -514,7 +514,7 @@
                                 @if(!empty($key) && $key != 0)
                                     <hr>
                                 @endif
-                                <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                                <div class="col-md-5 ml-2 sub-title">Appointment Date :- <span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                             </div>
                             <br>
                             <div class="medicines-table">

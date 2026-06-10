@@ -22,7 +22,7 @@
             $total = $total + $row->amount;
         @endphp
             <tr data-id="{{encrypt($row->id)}}">
-                <td>{{\Carbon\Carbon::parse($row->date)->format('d-m-Y')}}</td>
+                <td>{{cdate($row->date)->format('d-m-Y')}}</td>
                 <td>{{$row->amount}}</td>
                 <td>{{$row->payment_method}}</td>
                 <td>{{$row->given_by}}</td>
@@ -30,7 +30,7 @@
                 <td>{{$row->note}}</td>
                 <td>{{ucfirst($row->getExpenseCategory['name'])}}</td>
                 <td>{{ ucwords(strtolower($row->getUser['name'])) }}</td>
-                <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i')}}</td>
+                <td>{{cdate($row->created_at)->format('d-m-Y H:i')}}</td>
                 <td>
                     <a href="#" class="a-color">
                         <button class="btn  btn-icon  btn-neutral candor-color btn-icon-mini delete-income" data-id="{{$row->id}}">

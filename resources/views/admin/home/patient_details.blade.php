@@ -56,12 +56,12 @@
                         <br>
 
                             @foreach($patientAppointments->getAppointments as $row)
-                                @if (\Carbon\Carbon::parse($row->date) < \Carbon\Carbon::now())
+                                @if (cdate($row->date) < \Carbon\Carbon::now())
                                     <small class="text-muted">
-                                        {{ (!empty($row)) ? \Carbon\Carbon::parse($row->date)->englishDayOfWeek : null }}
+                                        {{ (!empty($row)) ? cdate($row->date)->englishDayOfWeek : null }}
                                     </small>
                                     <p>
-                                        {{ (!empty($row)) ? \Carbon\Carbon::parse($row->date)->format('d M Y') : null }}
+                                        {{ (!empty($row)) ? cdate($row->date)->format('d M Y') : null }}
                                     </p>
                                     @break
                                 @endif
@@ -90,11 +90,11 @@
                             <br>
                             <small class="text-muted">
 
-                                {{  (!empty($patientAppointments->getBookings[0]['doa_date'])) ? 'DOA : ' . \Carbon\Carbon::parse($patientAppointments->getBookings[0]['doa_date'])->englishDayOfWeek . ', ' . \Carbon\Carbon::parse($patientAppointments->getBookings[0]['doa_date'])->format('d M Y'): null }}
+                                {{  (!empty($patientAppointments->getBookings[0]['doa_date'])) ? 'DOA : ' . cdate($patientAppointments->getBookings[0]['doa_date'])->englishDayOfWeek . ', ' . cdate($patientAppointments->getBookings[0]['doa_date'])->format('d M Y'): null }}
                             </small>
                             <br />
                             <small class="text-muted">
-                                {{  (!empty($patientAppointments->getBookings[0]['dod_date'])) ? 'DOD : ' . \Carbon\Carbon::parse($patientAppointments->getBookings[0]['dod_date'])->englishDayOfWeek . ', ' . \Carbon\Carbon::parse($patientAppointments->getBookings[0]['dod_date'])->format('d M Y') : null }}
+                                {{  (!empty($patientAppointments->getBookings[0]['dod_date'])) ? 'DOD : ' . cdate($patientAppointments->getBookings[0]['dod_date'])->englishDayOfWeek . ', ' . cdate($patientAppointments->getBookings[0]['dod_date'])->format('d M Y') : null }}
                             </small>
                             <p>
                                 {{ $patientAppointments->getBookings[0]->getRoomType['name'] . ', Room no. '. $patientAppointments->getBookings[0]->getRoom['room_no'] }}
@@ -245,9 +245,9 @@
                                             <div class="item-content">
                                                 <div class="text-small">
                                                     <a href="{{ URL::to('appointment/' . encrypt($row->id) . '/edit')}}" class="link-color">
-                                                        {{ \Carbon\Carbon::parse($row->date)->format('d M Y') }}
+                                                        {{ cdate($row->date)->format('d M Y') }}
                                                         @if (!empty($row->time))
-                                                            {{ \Carbon\Carbon::parse($row->time)->format('h:i A') }}
+                                                            {{ cdate($row->time)->format('h:i A') }}
                                                         @endif
                                                     </a>
                                                 </div>

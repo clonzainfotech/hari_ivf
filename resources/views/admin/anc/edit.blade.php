@@ -180,12 +180,12 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     @endif
                     @if($utType == 'yes')
                         @if(!empty($lmdDate))
-                            &nbsp&nbsp<span class="lmd-text">{{'L.M.D Date: ' .\Carbon\Carbon::parse($lmdDate)->format('d-m-Y') }}</span>
-                            {{Form::hidden('oe_lmd_date',\Carbon\Carbon::parse($lmdDate)->format('d-m-Y'))}}
+                            &nbsp&nbsp<span class="lmd-text">{{'L.M.D Date: ' .cdate($lmdDate)->format('d-m-Y') }}</span>
+                            {{Form::hidden('oe_lmd_date',cdate($lmdDate)->format('d-m-Y'))}}
                         @endif
                         @if(!empty($eddDate))
-                            &nbsp&nbsp<span class="lmd-text">{{'EDD Date: ' .\Carbon\Carbon::parse($eddDate)->format('d-m-Y') }}</span>
-                            {{Form::hidden('oe_edd_date',\Carbon\Carbon::parse($eddDate)->format('d-m-Y'))}}
+                            &nbsp&nbsp<span class="lmd-text">{{'EDD Date: ' .cdate($eddDate)->format('d-m-Y') }}</span>
+                            {{Form::hidden('oe_edd_date',cdate($eddDate)->format('d-m-Y'))}}
                         @endif
                     @endif
                 </a></h4>
@@ -832,8 +832,8 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 $isFefalReduction = 'd-none';
                 $fefalDate = '-';
                 if (!empty($oe->fefal_reduction) && isset($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && !empty($oe->fefal_reduction->date)) {
-                    $isFefalReduction = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (\Carbon\Carbon::parse($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) ? '' : 'd-none';
-                    $fefalDate = !empty($oe->fefal_reduction) ? \Carbon\Carbon::parse($oe->fefal_reduction->date)->format('D d m Y') : null;
+                    $isFefalReduction = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (cdate($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) ? '' : 'd-none';
+                    $fefalDate = !empty($oe->fefal_reduction) ? cdate($oe->fefal_reduction->date)->format('D d m Y') : null;
                 }
             @endphp
             <div class="{{ 'row fefal-reduction-data ' . $isFefalReduction }} ">
@@ -861,7 +861,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 <div class="col-md-3 fefal-date">
                     <div class="input-group">
                         <span class="input-group-addon">Date: &nbsp;</span>
-                        {{Form::text("oe[fefal_reduction][date]",!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date) ? \Carbon\Carbon::parse($oe->fefal_reduction->date)->format('D d M Y') : null,[
+                        {{Form::text("oe[fefal_reduction][date]",!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date) ? cdate($oe->fefal_reduction->date)->format('D d M Y') : null,[
                             'class'=>'form-control datetimepicker',!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date) && (!empty($ancId) || !empty($ancHistoryId)) ? 'disabled' : ''])}}
                     </div>
                 </div>
@@ -873,7 +873,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     $followDate = null;
                     $howMuch = 'no';
                     if(!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date)){
-                        $followDate = strtotime(\Carbon\Carbon::parse($oe->fefal_reduction->date)->format('Y-m-d'));
+                        $followDate = strtotime(cdate($oe->fefal_reduction->date)->format('Y-m-d'));
                     }
                     $currentDate = strtotime(\Carbon\Carbon::now()->format('Y-m-d'));
                     if(!empty($followDate) && ($followDate <= $currentDate)){
@@ -899,7 +899,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         </div>
                     </div>
                     @php
-                        $isFefalHowMuch = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (\Carbon\Carbon::parse($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) && !empty($oe->fefal_reduction->type) && $oe->fefal_reduction->type == 'yes' ? '' : 'd-none';
+                        $isFefalHowMuch = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (cdate($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) && !empty($oe->fefal_reduction->type) && $oe->fefal_reduction->type == 'yes' ? '' : 'd-none';
                     @endphp
                     <div class="{{ 'col-md-2 how-much-type-data update-fefal-how-much ' . $isFefalHowMuch }}">
                         <div class="input-group">
@@ -1112,7 +1112,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Visit Date : &nbsp;
                             </span>
-                            {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? \Carbon\Carbon::parse($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("p_info[visit_date]",!empty($patientsInfo->visit_date) ? cdate($patientsInfo->visit_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('date')}}
@@ -2553,7 +2553,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         <div class="input-group">
                             <span class="input-group-addon">Last Menstrual Date : &nbsp;</span>
                             @php
-                                $lmddate = !empty($mh->last_menstrual_date) ? \Carbon\Carbon::parse($mh->last_menstrual_date)->format('D d M Y') : null;
+                                $lmddate = !empty($mh->last_menstrual_date) ? cdate($mh->last_menstrual_date)->format('D d M Y') : null;
                             @endphp
                             {{Form::text("mh[last_menstrual_date]",$lmddate,['class'=>'form-control lmd-date','required'])}}
                         </div>
@@ -2569,8 +2569,8 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         <div class="input-group edd-week-data">
                             <span class="input-group-addon">EDD : &nbsp;</span>
                             @php
-                                $date = !empty($mh->edd) ? \Carbon\Carbon::parse($mh->edd)->format('D d M Y') : null;
-                                // $usgEddDate = !empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null;
+                                $date = !empty($mh->edd) ? cdate($mh->edd)->format('D d M Y') : null;
+                                // $usgEddDate = !empty($mh->usg_edd) ? cdate($mh->usg_edd)->format('D d M Y') : null;
                             @endphp
                             {{Form::text("mh[edd]",$date,['class'=>'form-control date edd-date','disabled'])}}
                         </div>
@@ -2582,7 +2582,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-4">
                         <div class="input-group edd-week-data">
                             <span class="input-group-addon">USG EDD : &nbsp;</span>
-                            {{Form::text("mh[usg_edd]",!empty($mh->usg_edd) ? \Carbon\Carbon::parse($mh->usg_edd)->format('D d M Y') : null,['class'=>'form-control datetimepicker usg-edd-date'])}}
+                            {{Form::text("mh[usg_edd]",!empty($mh->usg_edd) ? cdate($mh->usg_edd)->format('D d M Y') : null,['class'=>'form-control datetimepicker usg-edd-date'])}}
                         </div>
                     </div>
                 </div>
@@ -2657,7 +2657,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                 <span class="input-group-addon">
                                     Date : &nbsp;
                                 </span>
-                            {{Form::text("p_detailes[personal_history_date]",(isset($patientsDetails->personal_history_date) && !empty($patientsDetails->personal_history_date)) ? \Carbon\Carbon::parse($patientsDetails->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("p_detailes[personal_history_date]",(isset($patientsDetails->personal_history_date) && !empty($patientsDetails->personal_history_date)) ? cdate($patientsDetails->personal_history_date)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="col-md-3 ho-past-personal-data">
@@ -2712,16 +2712,16 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                 @endif --}}
                     @if($utType == 'yes')
                         @if(!empty($lmdDate))
-                            &nbsp&nbsp<span class="lmd-text">{{'( L.M.P Date: ' .\Carbon\Carbon::parse($lmdDate)->format('d-m-Y') . ' ) '}}</span>
-                            {{Form::hidden('oe_lmd_date',\Carbon\Carbon::parse($lmdDate)->format('d-m-Y'))}}
+                            &nbsp&nbsp<span class="lmd-text">{{'( L.M.P Date: ' .cdate($lmdDate)->format('d-m-Y') . ' ) '}}</span>
+                            {{Form::hidden('oe_lmd_date',cdate($lmdDate)->format('d-m-Y'))}}
                         @endif
                         @if(!empty($eddDate))
-                            &nbsp&nbsp<span class="lmd-text" style="color: red;">{{'( EDD Date: ' .\Carbon\Carbon::parse($eddDate)->format('d-m-Y') . ' )' }}</span>
-                            {{Form::hidden('oe_edd_date',\Carbon\Carbon::parse($eddDate)->format('d-m-Y'))}}
+                            &nbsp&nbsp<span class="lmd-text" style="color: red;">{{'( EDD Date: ' .cdate($eddDate)->format('d-m-Y') . ' )' }}</span>
+                            {{Form::hidden('oe_edd_date',cdate($eddDate)->format('d-m-Y'))}}
                         @endif
                         @if(!empty($usgEddDate))
-                            &nbsp&nbsp<span class="lmd-text">{{'( USG EDD Date: ' .\Carbon\Carbon::parse($usgEddDate)->format('d-m-Y') . ' ) ' }}</span>
-                            {{Form::hidden('oe_usg_edd_date',\Carbon\Carbon::parse($usgEddDate)->format('d-m-Y'))}}
+                            &nbsp&nbsp<span class="lmd-text">{{'( USG EDD Date: ' .cdate($usgEddDate)->format('d-m-Y') . ' ) ' }}</span>
+                            {{Form::hidden('oe_usg_edd_date',cdate($usgEddDate)->format('d-m-Y'))}}
                         @endif
                         @if(!empty($utersWeek) && empty($ancHistoryId) && empty($ancId))
                             &nbsp&nbsp<span class="lmd-text">{{'(Approx Uters Week: ' .$utersWeek . ' week) ' }}</span>
@@ -3591,8 +3591,8 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     $isFefalReduction = 'd-none';
                     $fefalDate = '-';
                     if (!empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && !empty($oe->fefal_reduction->date)) {
-                        $isFefalReduction = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (\Carbon\Carbon::parse($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) ? '' : 'd-none';
-                        $fefalDate = !empty($oe->fefal_reduction) ? \Carbon\Carbon::parse($oe->fefal_reduction->date)->format('D d m Y') : null;
+                        $isFefalReduction = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (cdate($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) ? '' : 'd-none';
+                        $fefalDate = !empty($oe->fefal_reduction) ? cdate($oe->fefal_reduction->date)->format('D d m Y') : null;
                     }
                 @endphp
                 <div class="{{ 'row fefal-reduction-data ' . $isFefalReduction }} ">
@@ -3619,7 +3619,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     <div class="col-md-3 fefal-date">
                         <div class="input-group">
                             <span class="input-group-addon">Date: &nbsp;</span>
-                            {{Form::text("oe[fefal_reduction][date]",!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date) ? \Carbon\Carbon::parse($oe->fefal_reduction->date)->format('D d M Y') : null,[
+                            {{Form::text("oe[fefal_reduction][date]",!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date) ? cdate($oe->fefal_reduction->date)->format('D d M Y') : null,[
                                 'class'=>'form-control datetimepicker',!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date) && (!empty($ancId) || !empty($ancHistoryId)) ? 'disabled' : ''])}}
                         </div>
                     </div>
@@ -3631,7 +3631,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         $followDate = null;
                         $howMuch = 'no';
                         if(!empty($oe->fefal_reduction) && !empty($oe->fefal_reduction->date)){
-                            $followDate = strtotime(\Carbon\Carbon::parse($oe->fefal_reduction->date)->format('Y-m-d'));
+                            $followDate = strtotime(cdate($oe->fefal_reduction->date)->format('Y-m-d'));
                         }
                         $currentDate = strtotime(\Carbon\Carbon::now()->format('Y-m-d'));
                         if(!empty($followDate) && ($followDate <= $currentDate)){
@@ -3659,7 +3659,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                         </div>
                         @php
 
-                            $isFefalHowMuch = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (\Carbon\Carbon::parse($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) && !empty($oe->fefal_reduction->type) && $oe->fefal_reduction->type == 'yes' ? '' : 'd-none';
+                            $isFefalHowMuch = !empty($oe->fefal_reduction) && isset($oe->fefal_reduction->date) && (cdate($oe->fefal_reduction->date)->format('Y-m-d') <= \Carbon\Carbon::now()->format('Y-m-d')) && !empty($oe->fefal_reduction->type) && $oe->fefal_reduction->type == 'yes' ? '' : 'd-none';
 
                         @endphp
                         <div class="{{ 'col-md-2 how-much-type-data update-fefal-how-much ' . $isFefalHowMuch }}">
@@ -4287,7 +4287,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[investigation_early_scan_date]",!empty($patientsInvestigation->investigation_early_scan_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_early_scan_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[investigation_early_scan_date]",!empty($patientsInvestigation->investigation_early_scan_date) ? cdate($patientsInvestigation->investigation_early_scan_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="col-sm-3 early-scan-data d-none">
@@ -4381,7 +4381,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[investigation_anc_date]",!empty($patientsInvestigation->investigation_anc_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_anc_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[investigation_anc_date]",!empty($patientsInvestigation->investigation_anc_date) ? cdate($patientsInvestigation->investigation_anc_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="{{'col-md-3 anc-data '.$ancProfieType}}">
@@ -4600,7 +4600,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Date : &nbsp;
                             </span>
-                            {{Form::text("investigation[investigation_growth_date]",!empty($patientsInvestigation->investigation_growth_date) ? \Carbon\Carbon::parse($patientsInvestigation->investigation_growth_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[investigation_growth_date]",!empty($patientsInvestigation->investigation_growth_date) ? cdate($patientsInvestigation->investigation_growth_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="{{'col-sm-4 growth-report-data '.$growthReportType}}">
@@ -4683,7 +4683,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Double Marker Date: &nbsp;
                             </span>
-                            {{Form::text("investigation[d_m_date]",!empty($patientsInvestigation->d_m_date) ? \Carbon\Carbon::parse($patientsInvestigation->d_m_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[d_m_date]",!empty($patientsInvestigation->d_m_date) ? cdate($patientsInvestigation->d_m_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="{{'col-md-2 investigation-report '.$otherReportType}}">
@@ -4710,7 +4710,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Amniocentesis Date: &nbsp;
                             </span>
-                            {{Form::text("investigation[amniocentesis_date]",!empty($patientsInvestigation->amniocentesis_date) ? \Carbon\Carbon::parse($patientsInvestigation->amniocentesis_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("investigation[amniocentesis_date]",!empty($patientsInvestigation->amniocentesis_date) ? cdate($patientsInvestigation->amniocentesis_date)->format('D d M Y') : \Carbon\Carbon::now()->format('D d M Y'),['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                 </div>
@@ -4804,7 +4804,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                     @php
                         // $tt2 = 'tt2 d-none';
                         // if(!empty($patientsInjection->tt1)){
-                        //     $tt1Date = \Carbon\Carbon::parse($patientsInjection->tt1)->addMonths(1)->format('Y-m-d');
+                        //     $tt1Date = cdate($patientsInjection->tt1)->addMonths(1)->format('Y-m-d');
                         //     $currentDate = \Carbon\Carbon::now()->format('Y-m-d');
                         //     if($currentDate == $tt1Date){
                         //         $tt2 = '';
@@ -4824,7 +4824,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 TT2 : &nbsp;
                             </span>
-                            {{Form::text("injection[tt2]",!empty($patientsInjection->tt2) ? \Carbon\Carbon::parse($patientsInjection->tt2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date tt2-date'])}}
+                            {{Form::text("injection[tt2]",!empty($patientsInjection->tt2) ? cdate($patientsInjection->tt2)->format('D d M Y') : null,['class'=>'form-control datetimepicker date tt2-date'])}}
                         </div>
                     </div>
                     <div class="{{'col-md-3 betnasol '.$bClass}}">
@@ -4832,7 +4832,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Betnasol : &nbsp;
                             </span>
-                            {{Form::text("injection[betnasol_1]",!empty($patientsInjection->betnasol_1) ? \Carbon\Carbon::parse($patientsInjection->betnasol_1)->format('D d M Y') : null,['class'=>'form-control b1 datetimepicker date betnasol-date'])}}
+                            {{Form::text("injection[betnasol_1]",!empty($patientsInjection->betnasol_1) ? cdate($patientsInjection->betnasol_1)->format('D d M Y') : null,['class'=>'form-control b1 datetimepicker date betnasol-date'])}}
                         </div>
                     </div>
                     <div class="{{'col-md-3 betnasol '.$bClass}}">
@@ -4840,7 +4840,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Betnasol : &nbsp;
                             </span>
-                            {{Form::text("injection[betnasol_2]",!empty($patientsInjection->betnasol_2) ? \Carbon\Carbon::parse($patientsInjection->betnasol_2)->format('D d M Y') : null,['class'=>'form-control b2 datetimepicker date betnasol-date'])}}
+                            {{Form::text("injection[betnasol_2]",!empty($patientsInjection->betnasol_2) ? cdate($patientsInjection->betnasol_2)->format('D d M Y') : null,['class'=>'form-control b2 datetimepicker date betnasol-date'])}}
                         </div>
                     </div>
                 </div>
@@ -4900,7 +4900,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Early Scan : &nbsp;
                             </span>
-                            {{Form::text("usg[early_scan]",!empty($usg->early_scan) ? \Carbon\Carbon::parse($usg->early_scan)->format('D d M Y') : null ,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("usg[early_scan]",!empty($usg->early_scan) ? cdate($usg->early_scan)->format('D d M Y') : null ,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -4915,7 +4915,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                                 }
                             @endphp
                             {{Form::hidden('date_type',$type,['class'=>'date-type'])}}
-                            {{Form::text("usg[nt_scan]",!empty($usg->nt_scan) ? \Carbon\Carbon::parse($usg->nt_scan)->format('D d M Y') : null,['class'=>'form-control datetimepicker date nt-scan-date'])}}
+                            {{Form::text("usg[nt_scan]",!empty($usg->nt_scan) ? cdate($usg->nt_scan)->format('D d M Y') : null,['class'=>'form-control datetimepicker date nt-scan-date'])}}
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -4923,7 +4923,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Anomalies Miles : &nbsp;
                             </span>
-                            {{Form::text("usg[anomalies_miles]",!empty($usg->anomalies_miles) ?  \Carbon\Carbon::parse($usg->anomalies_miles)->format('D d M Y') : null,['class'=>'form-control datetimepicker date anomalies-scan-date'])}}
+                            {{Form::text("usg[anomalies_miles]",!empty($usg->anomalies_miles) ?  cdate($usg->anomalies_miles)->format('D d M Y') : null,['class'=>'form-control datetimepicker date anomalies-scan-date'])}}
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -4931,7 +4931,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             <span class="input-group-addon">
                                 Growth Scan : &nbsp;
                             </span>
-                            {{Form::text("usg[growth_scan]",!empty($usg->growth_scan) ? \Carbon\Carbon::parse($usg->growth_scan)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
+                            {{Form::text("usg[growth_scan]",!empty($usg->growth_scan) ? cdate($usg->growth_scan)->format('D d M Y') : null,['class'=>'form-control datetimepicker date'])}}
                         </div>
                     </div>
                 </div>

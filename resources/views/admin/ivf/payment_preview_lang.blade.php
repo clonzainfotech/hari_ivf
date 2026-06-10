@@ -65,7 +65,7 @@
                     હું <b>{{$ivfPayment->patient_name}}</b>  અને મારા પતિ <b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> IVF ટેસ્ટ ટ્યુબ બેબીની સારવાર રાધા હોસ્પિટલ ખાતે શરૂ કરવામાં આવેલ છે.
                 </div>
                 <div class="col-md-3 p-name-text">
-                    Date : <b>{{\Carbon\Carbon::parse($ivfPayment->date)->format('d-m-Y')}}</b>  
+                    Date : <b>{{cdate($ivfPayment->date)->format('d-m-Y')}}</b>  
                 </div>
             </div>
             <div class="row mt-3 p-1">
@@ -372,7 +372,7 @@
                     मे <b>{{$ivfPayment->patient_name}}</b>  और मेरे पति <b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> आईवीएफ टेस्ट ट्यूब बेबी का उपचार राधा अस्पताल में शुरू किया गया है।
                 </div>
                 <div class="col-md-3 p-name-text">
-                    Date : <b>{{\Carbon\Carbon::parse($ivfPayment->date)->format('d-m-Y')}}</b>
+                    Date : <b>{{cdate($ivfPayment->date)->format('d-m-Y')}}</b>
                 </div>  
             </div>
             <div class="row mt-3 p-1">
@@ -683,7 +683,7 @@
                     I <b>{{$ivfPayment->patient_name}}</b>  Andddd my husband<b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> Treatment of IVF test tube baby has been started at Radha Hospital.
                 </div>
                 <div class="col-md-3 p-name-text">
-                    Date : <b>{{\Carbon\Carbon::parse($ivfPayment->date)->format('d-m-Y')}}</b>  
+                    Date : <b>{{cdate($ivfPayment->date)->format('d-m-Y')}}</b>  
                 </div>
             </div>
             <div class="row mt-3 p-1">

@@ -13,7 +13,7 @@
         @if ($number < $dataCount)
             <tr>
                 <td>{{ ($j = $number + 1) . '.'}}</td>
-                <td>{{ \Carbon\Carbon::parse($data[$number]['date'])->format('d-m-Y')}}</td>
+                <td>{{ cdate($data[$number]['date'])->format('d-m-Y')}}</td>
                 <td>{{ strtoupper($data[$number]['get_patients_details']['name']) }}</td>
                 <td>
                     @php
@@ -69,7 +69,7 @@
 
                 @if ($dataCount > 8 && $number < $dataCount)
                     <td>{{ ($j = $number + 1) . '.'}}</td>
-                    <td>{{ \Carbon\Carbon::parse($data[$number]['date'])->format('d-m-Y')}}</td>
+                    <td>{{ cdate($data[$number]['date'])->format('d-m-Y')}}</td>
                     <td>{{ strtoupper(@$data[$number]['get_patients_details']['name']) }}</td>
                     <td>
                         @php

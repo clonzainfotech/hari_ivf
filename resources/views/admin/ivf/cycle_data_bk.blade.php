@@ -2,7 +2,7 @@
 @section('parentPageTitle', 'Ivf Cycle')
 @section('title', 'Cycle')
 @section('page-style')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/fontawesome.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
     <style>
         .history-lmp-date{
@@ -147,7 +147,7 @@
             $historyLmddateDate = null;
             $historyLmdDiff = null;
             if($LMPDate){
-                $historyLmddateDate = \Carbon\Carbon::parse($LMPDate);
+                $historyLmddateDate = cdate($LMPDate);
                 $now = \Carbon\Carbon::now();
                 $historyLmdDiff = $historyLmddateDate->diffInDays($now);
                 $historyLmdDiff = $historyLmdDiff + 1;
@@ -270,10 +270,10 @@
                                                     @endphp
                                                     @if(!empty($row->hmg) || !empty($row->hmg_brand_name) || !empty($row->fsh) || !empty($row->fsh_brand_name) || !empty($row->antagonist))
                                                         <tr>
-                                                            <td>{{($j===1)?$datarow->visit .' ('.\Carbon\Carbon::parse($datarow->created_at)->format('d-m-Y').')':''}}</td>
+                                                            <td>{{($j===1)?$datarow->visit .' ('.cdate($datarow->created_at)->format('d-m-Y').')':''}}</td>
                                                             <td>{{!empty($row->day) ? $row->day : '-'}}</td>
                                                             <td>{{!empty($row->s_day) ? 's'.$row->s_day : '-'}}</td>
-                                                            <td>{{!empty($row->date) ? \Carbon\Carbon::parse($row->date)->format('d/m/Y') : '-'}}</td>
+                                                            <td>{{!empty($row->date) ? cdate($row->date)->format('d/m/Y') : '-'}}</td>
                                                             <td>{{!empty($row->injection) ? $injectionData[$row->injection] : '-'}}</td>
                                                             <td>{{!empty($row->hmg) ? $row->hmg : '-'}}</td>
                                                             <td>{{!empty($row->hmg_brand_name) ? $row->hmg_brand_name : '-'}}</td>
@@ -365,7 +365,7 @@
                                                 <td>Date & Time</td>
                                                 <td>
                                                     @if($triggerHistoryData)
-                                                        {{$triggerHistory ? (\Carbon\Carbon::parse($triggerHistory->trigger_date)->format('D d M Y')) : ''}} {{!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null)}}
+                                                        {{$triggerHistory ? (cdate($triggerHistory->trigger_date)->format('D d M Y')) : ''}} {{!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null)}}
                                                     @endif
                                                 </td>
                                             </tr>
@@ -374,10 +374,10 @@
                                                 <td>
                                                     @if($triggerHistoryData)
                                                         @php
-                                                            $nowDate = \Carbon\Carbon::parse($triggerHistory->trigger_date)->format('Y-m-d');
-                                                            $nowTime = \Carbon\Carbon::parse(!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null))->format('H:i:s');
-                                                            $triggerDateTime = \Carbon\Carbon::parse($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
-                                                            $triggerDate = \Carbon\Carbon::parse($triggerDateTime)->format('D d M Y');
+                                                            $nowDate = cdate($triggerHistory->trigger_date)->format('Y-m-d');
+                                                            $nowTime = cdate(!empty($triggerHistoryData->trigger->hcg->time) ? $triggerHistoryData->trigger->hcg->time : (!empty($triggerHistoryData->trigger->decapeptyl->time) ? $triggerHistoryData->trigger->decapeptyl->time : null))->format('H:i:s');
+                                                            $triggerDateTime = cdate($nowDate.' '.$nowTime)->addHours(35)->format('Y-m-d H:i:s');
+                                                            $triggerDate = cdate($triggerDateTime)->format('D d M Y');
                                                         @endphp
                                                     @endif
                                                 </td>
@@ -386,7 +386,7 @@
                                                 <td>Date & Time</td>
                                                 <td>
                                                     @if($triggerHistoryData)
-                                                        {{$triggerDate.' '.\Carbon\Carbon::parse($triggerDateTime)->format('h:i a')}}
+                                                        {{$triggerDate.' '.cdate($triggerDateTime)->format('h:i a')}}
                                                     @endif
                                                 </td>
                                             </tr>
@@ -442,7 +442,7 @@
                         <div class="{{'visit-data-'.$row->id}}">
                             {{-- start all visit data display --}}
                             <div class="row">
-                                <h4 class="col-md-4 visit-lable m-0">Visit :<span class="col-md-4 visit-lable-value">{{$row->visit .' ('.\Carbon\Carbon::parse($row->created_at)->format('d-m-Y').')'}}</span></h4>
+                                <h4 class="col-md-4 visit-lable m-0">Visit :<span class="col-md-4 visit-lable-value">{{$row->visit .' ('.cdate($row->created_at)->format('d-m-Y').')'}}</span></h4>
                                 <div class="col-md-6"></div>
                                 @if($historyData->is_transfer == 'no' || $historyData->is_transfer_print == 'no')
                                     <div class="col-md-1"><button class="btn btn-primary edit-visit-data" data-id="{{encrypt($row->id)}}">Edit</button></div>
@@ -1134,7 +1134,7 @@
                                     <div class="col-md-4">
                                         <div class="input-group">
                                             <span class="input-group-addon">L.M.P Date : &nbsp;</span>
-                                            {{Form::text("data[lmp][date]",!empty($historyLmddateDate) ? \Carbon\Carbon::parse($historyLmddateDate)->format('D d M Y') : null ,['class'=>'form-control history-lmd-date','autocomplete'=>'off'])}}
+                                            {{Form::text("data[lmp][date]",!empty($historyLmddateDate) ? cdate($historyLmddateDate)->format('D d M Y') : null ,['class'=>'form-control history-lmd-date','autocomplete'=>'off'])}}
                                         </div>
                                         <span class="lmp-date-error form-error-msg"></span>
                                     </div>
@@ -1542,7 +1542,7 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Date : &nbsp;</span>
-                                                    {{Form::text("report_date",\Carbon\Carbon::parse($lastAppointment->date)->format('D d M Y'),['class'=>'form-control datetimepicker report_date','required'])}}
+                                                    {{Form::text("report_date",cdate($lastAppointment->date)->format('D d M Y'),['class'=>'form-control datetimepicker report_date','required'])}}
                                                 </div>
                                                 <span class="form-error-msg">
                                                     {{$errors->first('report_date')}}

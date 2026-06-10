@@ -14,7 +14,7 @@
             <tr>
                 <td>{{ !empty($row->getPatientData['code']) ? $row->getPatientData['code'] : '-' }}</td>
                 <td>{{ !empty($row->getIuiPatientData['cycle_no']) ? $row->getIuiPatientData['cycle_no'] : '-' }}</td>
-                <td>{{ \Carbon\Carbon::parse($row->date)->format('d-m-Y') }}</td>
+                <td>{{ cdate($row->date)->format('d-m-Y') }}</td>
                 <td>{{ strtoupper($row->getPatientData['name']) }}</td>
                 <td>{{ $row->getPatientData['mobile_number'] }}</td>
                 <td>

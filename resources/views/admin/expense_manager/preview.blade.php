@@ -107,7 +107,7 @@
                 @endphp
                     <tr>
                         <td class="data-font seperator">{{($i++).'.'}}</td>
-                        <td class="data-font seperator">{{\Carbon\Carbon::parse($item->date)->format('d-m-Y')}}</td>
+                        <td class="data-font seperator">{{cdate($item->date)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">{{$item->amount}}</td>
                         <td class="data-font seperator">{{$item->given_for}}</td>
                         <td class="data-font seperator"><div class="response">{{$item->note}}</div></td> 

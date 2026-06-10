@@ -270,7 +270,7 @@ foreach($ivf as $ivf)
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Date: &nbsp;</span>
-                            {{Form::text("data[simulation][trigger][date]",\Carbon\Carbon::parse(!empty($ivfReportData->simulation->trigger->date) ? $ivfReportData->simulation->trigger->date :  $triggerDate)->format('D d M Y'),['class'=>'form-control datetimepicker triggerdate'])}}
+                            {{Form::text("data[simulation][trigger][date]",cdate(!empty($ivfReportData->simulation->trigger->date) ? $ivfReportData->simulation->trigger->date :  $triggerDate)->format('D d M Y'),['class'=>'form-control datetimepicker triggerdate'])}}
                             {{-- {{Form::text('data[ovum][trigger][date]','',['class'=>'form-control trigger col-md-10'])}} --}}
                         </div>
                         <span class="form-error-msg">
@@ -293,7 +293,7 @@ foreach($ivf as $ivf)
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon">Sp2 Date: &nbsp;</span>
-                            {{Form::text("data[simulation][sp2date]",\Carbon\Carbon::parse(!empty($ivfReportData->simulation->sp2date) ? $ivfReportData->simulation->sp2date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker sp2date'])}}
+                            {{Form::text("data[simulation][sp2date]",cdate(!empty($ivfReportData->simulation->sp2date) ? $ivfReportData->simulation->sp2date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker sp2date'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('sp2date')}}
@@ -336,7 +336,7 @@ foreach($ivf as $ivf)
                     <div class="col-md-3 col-sm-3">
                         <div class="input-group">
                             <span class="input-group-addon">Date : &nbsp;</span>
-                            {{Form::text("data[ovum][date]",\Carbon\Carbon::parse(!empty($ivfReportData->ovum->date) ? $ivfReportData->ovum->date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker ovumdate'])}}
+                            {{Form::text("data[ovum][date]",cdate(!empty($ivfReportData->ovum->date) ? $ivfReportData->ovum->date : $lastAppointmentData->date)->format('D d M Y'),['class'=>'form-control datetimepicker ovumdate'])}}
                         </div>
                         <span class="form-error-msg">
                             {{$errors->first('ovumdate')}}

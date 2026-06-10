@@ -90,8 +90,8 @@
                 </div>
             </td>
             <td class="data-font seperator">{{ $patients->getRoomType['name'] }}</td>
-            <td class="data-font seperator">{{ (!empty($patients->doa_date)) ? \Carbon\Carbon::parse($patients->doa_date)->format('d-m-Y') : '-' }}</td>
-            <td class="data-font seperator">{{ (!empty($patients->dod_date)) ? \Carbon\Carbon::parse($patients->dod_date)->format('d-m-Y') : '-' }}</td>
+            <td class="data-font seperator">{{ (!empty($patients->doa_date)) ? cdate($patients->doa_date)->format('d-m-Y') : '-' }}</td>
+            <td class="data-font seperator">{{ (!empty($patients->dod_date)) ? cdate($patients->dod_date)->format('d-m-Y') : '-' }}</td>
         </tr>
     @empty
         <td colspan="7" class="text-center">No records available</td>

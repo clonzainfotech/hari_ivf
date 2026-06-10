@@ -32,7 +32,7 @@
             @foreach($data as $row)
                     <tr>
                         <td>{{$j}}</td>
-                        <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                        <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
                         <td>{{ucWords(strtolower($row->getPatient['name']))}}</td>
                         <td>{{$row->given_by}}</td>
                         <td>{{$row->note}}</td>
@@ -70,7 +70,7 @@
         @foreach($indoorCaseDeposit as $rowList => $data)
             <tr>
                 <td>{{$j}}</td>
-                <td>{{\Carbon\Carbon::parse($data->created_at)->format('d-m-Y')}}</td>
+                <td>{{cdate($data->created_at)->format('d-m-Y')}}</td>
                 <td>{{ucWords(strtolower($data->getPatientsDetails['name']))}}</td>
                 <td>{{$data->procedure_name}}</td>
                 <td></td>
@@ -85,7 +85,7 @@
         @forelse($indoorBook as $rowlist => $data)
             <tr>
                 <td>{{$j}}</td>
-                <td>{{\Carbon\Carbon::parse($data->date)->format('d-m-Y')}}</td>
+                <td>{{cdate($data->date)->format('d-m-Y')}}</td>
                 <td>{{ucWords(strtolower($data->getPatientsDetails['name']))}}</td>
                 <td></td>
                 <td></td>
@@ -135,7 +135,7 @@
             @foreach($data as $row)
                     <tr>
                         <td>{{$j}}</td>
-                        <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                        <td>{{cdate($row->created_at)->format('d-m-Y')}}</td>
                         <td>{{ucWords(strtolower($row->getPatient['name']))}}</td>
                         <td>{{$row->given_by}}</td>
                         <td>{{$row->note}}</td>

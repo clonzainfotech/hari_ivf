@@ -16,7 +16,7 @@
                 <td><span class="list-name">{{ucwords(strtolower($row->name))}}</span></td>
                 <td><span class="list-name">{{!empty($row->mobile_number) ? $row->mobile_number : '-'}}</span></td>
                 <td><div class="list-name text-wrap">{{!empty($row->address) ? $row->address : '-'}}</div></td>
-                <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y h:i A') }}</td>
+                <td>{{ cdate($row->created_at)->format('d-m-Y h:i A') }}</td>
                 <td>
                     <a href="#" class="a-color">
                         <button class="btn  btn-icon btn-neutral candor-color btn-icon-mini delete-reference-doctor" data-id="{{encrypt($row->id)}}">

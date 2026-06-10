@@ -43,8 +43,8 @@
             <td>{{ $patients->room_id }}</td>
             <td>{{ $patients->getRoom['room_no'] }}</td>
             <td></td>
-            <td>{{ (!empty($patients->doa_date)) ? \Carbon\Carbon::parse($patients->doa_date)->format('d-m-Y') : '-' }}</td>
-            <td>{{ (!empty($patients->dod_date)) ? \Carbon\Carbon::parse($patients->dod_date)->format('d-m-Y') : '-' }}</td>
+            <td>{{ (!empty($patients->doa_date)) ? cdate($patients->doa_date)->format('d-m-Y') : '-' }}</td>
+            <td>{{ (!empty($patients->dod_date)) ? cdate($patients->dod_date)->format('d-m-Y') : '-' }}</td>
             <td>
                 <div class="header custom-dropdown">
                     <ul class="header-dropdown">

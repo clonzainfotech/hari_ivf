@@ -89,7 +89,7 @@
                     <tbody>
                         <tr>
                             <td>ET Date</td>
-                            <td>{{ !empty($transferReport->et_date) ? Carbon\Carbon::parse($transferReport->et_date)->format('D d-M-Y') : '-' }}</td>
+                            <td>{{ !empty($transferReport->et_date) ? cdate($transferReport->et_date)->format('D d-M-Y') : '-' }}</td>
                             <td>Day</td>
                             <td>{{ !empty($transferReport->day) ? $transferReport->day : '-' }}</td>
                         </tr>
@@ -131,7 +131,7 @@
                         @endphp
                         <tr>
                             <th>
-                                <span class="pb-1 ivf-label">Follow Up Date : {{Carbon\Carbon::parse(!empty($transferReport->created_at) ? $transferReport->created_at : $todayDate)->addDays(14)->format('D d-M-Y')}}</span><br>
+                                <span class="pb-1 ivf-label">Follow Up Date : {{cdate(!empty($transferReport->created_at) ? $transferReport->created_at : $todayDate)->addDays(14)->format('D d-M-Y')}}</span><br>
                                 <span class="pb-1 ivf-label">Best Of Luck</span>
                             </th>
                             <th>

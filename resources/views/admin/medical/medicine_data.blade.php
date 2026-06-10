@@ -29,7 +29,7 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                             unset($treatment->medicinedata);
                         @endphp<br>
                         <div class="row">
-                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
@@ -63,12 +63,12 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(!empty($treatment))
+                                    @if(!empty($treatment) && (is_array($treatment) || is_object($treatment)))
                                         @foreach($treatment as $key=>$row)
                                         <tr>
                                             <?php
                                                 $medicine_status = '';
-                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                                 $firstCharacter = strtoupper(substr($mId, 0, 3));
                                                 if($firstCharacter == "INJ"){
                                                     if(!empty($row->medicine_time)){
@@ -175,7 +175,7 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                             }
                         @endphp<br>
                         <div class="row">
-                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
@@ -209,12 +209,12 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(!empty($treatment))
+                                    @if(!empty($treatment) && (is_array($treatment) || is_object($treatment)))
                                         @foreach($treatment as $key=>$row)
                                         <tr>
                                             <?php
                                                 $medicine_status = '';
-                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                                 $firstCharacter = strtoupper(substr($mId, 0, 3));
                                                 if($firstCharacter == "INJ"){
                                                     if(!empty($row->medicine_time)){
@@ -334,7 +334,7 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                             }
                         @endphp<br>
                         <div class="row">
-                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
@@ -368,12 +368,12 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(!empty($treatment))
+                                    @if(!empty($treatment) && (is_array($treatment) || is_object($treatment)))
                                         @foreach($treatment as $key=>$row)
                                         <tr>
                                             <?php
                                                 $medicine_status = '';
-                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                                 $firstCharacter = strtoupper(substr($mId, 0, 3));
                                                 if($firstCharacter == "INJ"){
                                                     if(!empty($row->medicine_time)){
@@ -472,7 +472,7 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                             unset($treatment->medicinedata);
                         @endphp<br>
                         <div class="row">
-                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
@@ -507,12 +507,12 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(!empty($treatment))
+                                    @if(!empty($treatment) && (is_array($treatment) || is_object($treatment)))
                                         @foreach($treatment as $key=>$row)
                                         <tr>
                                             <?php
                                                 $medicine_status = '';
-                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                                 $firstCharacter = strtoupper(substr($mId, 0, 3));
                                                 if($firstCharacter == "INJ"){
                                                     if(!empty($row->medicine_time)){
@@ -620,7 +620,7 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                             }
                         @endphp<br>
                         <div class="row">
-                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
+                            <div class="col-md-5 ml-2"><span class="font-weight-bold">Appointment Date : </span><span class="font-weight-bold">{{cdate($row->created_at)->format('d-m-Y H:i:s')}}</span></div>
                         </div>
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
@@ -654,12 +654,12 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(!empty($treatment))
+                                    @if(!empty($treatment) && (is_array($treatment) || is_object($treatment)))
                                         @foreach($treatment as $key=>$row)
                                         <tr>
                                             <?php
                                                 $medicine_status = '';
-                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                                 $firstCharacter = strtoupper(substr($mId, 0, 3));
                                                 if($firstCharacter == "INJ"){
                                                     if(!empty($row->medicine_time)){

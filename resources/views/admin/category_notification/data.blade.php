@@ -11,7 +11,7 @@
     @forelse($data as $row)
         <tr data-id="{{encrypt($row->id)}}" class="">
             <td>{{ ((($data->currentPage() - 1 ) * $data->perPage() ) + $loop->iteration) . '.' }}</td>
-            <td>{{ \Carbon\Carbon::parse($row->date)->format('d-m-Y h:i A') }}</td>
+            <td>{{ cdate($row->date)->format('d-m-Y h:i A') }}</td>
             <td><span class="list-name">{{ ucfirst($row->getPatients['name']) }}</span></td>
             <td class="">{{ $row->message}}</td>
         </tr>
@@ -71,7 +71,7 @@
                                 <a href="" class="m-r-10 text-dark">{{ ucWords($row->getPatients['name']) }}</a>
                                 <span class="{{'badge rounded-pill '.$class}}">{{$row->categoryDetails['name']}}</span>
                                 
-                                <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">{{ \Carbon\Carbon::parse($row->date)->format('d M Y h:i A') }}</time></small>
+                                <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">{{ cdate($row->date)->format('d M Y h:i A') }}</time></small>
                                 
                             </div>
                             <p class="msg">{{ $row->message}} <small class="text-muted font-bold">{{' - '.$status }}</small></p>
@@ -125,7 +125,7 @@
                             <a href="" class="m-r-10 text-dark">{{ ucWords($row->getPatientsData['name']) }}</a>
                             <span class="{{'badge rounded-pill '.$class}}">{{$row->category}}</span>
                             
-                            <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">{{ \Carbon\Carbon::parse($row->date)->format('d M Y') }}</time></small>
+                            <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">{{ cdate($row->date)->format('d M Y') }}</time></small>
                             
                         </div>
                         <p class="msg">&#x20b9;&nbsp;{{ $row->payment}} <small class="text-muted font-bold">{{' - '.$status }}</small></p>

@@ -129,7 +129,7 @@
                 @foreach($data as $row)
                     <tr>
                         <td class="data-font seperator">{{ ($j++) . '.' }}</td>
-                        <td class="data-font seperator">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                        <td class="data-font seperator">{{cdate($row->created_at)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">{{ucWords(strtolower($row->getPatient['name']))}}</td>
                         <td class="data-font seperator"></td>
                         <td class="data-font seperator">{{$row->given_by}}</td>
@@ -167,7 +167,7 @@
             @foreach($indoorCaseDeposit as $rowList => $data)
                 <tr>
                     <td class="data-font seperator">{{$j}}</td>
-                    <td class="data-font seperator">{{\Carbon\Carbon::parse($data->created_at)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{cdate($data->created_at)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{ucWords(strtolower($data->getPatientsDetails['name']))}}</td>
                     <td class="data-font seperator">{{$data->procedure_name}}</td>
                     <td class="data-font seperator"></td>
@@ -183,7 +183,7 @@
             @forelse($indoorBook as $rowlist => $data)
                 <tr>
                     <td class="data-font seperator">{{$j}}</td>
-                    <td class="data-font seperator">{{\Carbon\Carbon::parse($data->date)->format('d-m-Y')}}</td>
+                    <td class="data-font seperator">{{cdate($data->date)->format('d-m-Y')}}</td>
                     <td class="data-font seperator">{{ucWords(strtolower($data->getPatientsDetails['name']))}}</td>
                     <td class="data-font seperator"></td>
                     <td class="data-font seperator"></td>
@@ -232,7 +232,7 @@
                 @foreach($data as $row)
                     <tr>
                         <td class="data-font seperator">{{ ($j++) . '.' }}</td>
-                        <td class="data-font seperator">{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
+                        <td class="data-font seperator">{{cdate($row->created_at)->format('d-m-Y')}}</td>
                         <td class="data-font seperator">{{ucWords(strtolower($row->getPatient['name']))}}</td>
                         <td class="data-font seperator">{{$row->given_for}}</td>
                         <td class="data-font seperator">{{$row->note}}</td>
