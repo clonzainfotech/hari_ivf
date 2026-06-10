@@ -21,8 +21,9 @@ class IvfResultReview extends BaseModel
             'patients_id' => $this->patients_id,
             'plan' => $this->plan
         ])->whereJsonContains('description',['collection' => 'progesterone'])->first();
-        $data['transfer_date'] = !empty($ivf) ? carbon::parse(json_decode($ivf->description)->follow_up)->format('d-M-Y') : null;
-        $data['transfer_by'] = !empty($ivf) ? $ivf->getSeenBy->name : null;
+        $ivfDescription = !empty($ivf) ? json_decode($ivf->description) : null;
+        $data['transfer_date'] = !empty($ivfDescription->follow_up) ? carbon::parse($ivfDescription->follow_up)->format('d-M-Y') : null;
+        $data['transfer_by'] = (!empty($ivf) && !empty($ivf->getSeenBy)) ? $ivf->getSeenBy->name : null;
         return $data;
     }
     public function getResult()

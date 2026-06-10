@@ -385,7 +385,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         $noValueData[] = ' Child';
                                     @endphp
                                 @endif
-                                @if(!empty($oh)  && $oh->mtp_no != null && $oh->mtp_no != 0 )
+                                @if(!empty($oh->mtp_no) && $oh->mtp_no != 0 )
                                     @foreach($oh->mtp->mtp_data as $key=>$row)
                                         @php
                                         $numberKey = addOrdinalNumberSuffix($key);
@@ -435,7 +435,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         $noValueData[] = ' MTP';
                                     @endphp
                                 @endif
-                                @if(!empty($oh) && ($oh->abortion_no != null && $oh->abortion_no != 0 ))
+                                @if(!empty($oh->abortion_no) && $oh->abortion_no != 0 )
                                     @foreach($oh->abortion->abortion_data as $key=>$value)
                                         @php
                                             $numberKey = addOrdinalNumberSuffix($key);
@@ -725,7 +725,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                         if(!empty($row->ho_type) && !in_array($row->ho_type,$hoTypeValue)){
                                                             $dNone = 'd-none';
                                                         }
-                                                        if($oh->mtp_no != null && $oh->mtp_no != 0 && $dNone == '' && !empty($row->when_where)){
+                                                        if(!empty($oh->mtp_no) && $dNone == '' && !empty($row->when_where)){
                                                         $firstAbortionData .= ' - '.$row->when_where;
                                                     }
                                                         
@@ -987,7 +987,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($husbandFactor->seman_analysis == 2 && (!empty($husbandFactor->medicine) || !empty($husbandFactor->duration) || !empty($husbandFactor->sperm_report)))
+                                    @if (!empty($husbandFactor->seman_analysis) && $husbandFactor->seman_analysis == 2 && (!empty($husbandFactor->medicine) || !empty($husbandFactor->duration) || !empty($husbandFactor->sperm_report)))
                                         <tr>
                                             @if( !empty($husbandFactor->medicine) )
                                                 <th>

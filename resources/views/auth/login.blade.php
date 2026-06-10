@@ -18,7 +18,7 @@
             <div class="card-plain">
                 {{Form::open(['route'=>'login','method'=>'post','class'=>'form','onsubmit'=>'return loginvalidation();'])}}
                 <div class="header">
-                    <img src="{{ url('public/images/' . $logo )}}" alt="{{ !empty($alt) ? $alt : null }}"/>
+                    <img src="{{ url('images/' . $logo )}}" alt="{{ !empty($alt) ? $alt : null }}"/>
                     <h5></h5>
                 </div>
                 <div class="content">

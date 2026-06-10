@@ -171,7 +171,7 @@
                     </td>
                 @endif
                 <td>{{!empty($row->getUsgReason()) ? $row->getUsgReason() : '-'}}</td>
-                <td>{{$row->getAppointmentCharges['netamount']}}</td>
+                <td>{{$row->getAppointmentCharges['netamount'] ?? ''}}</td>
                 <td>{{($row->nextAppointmentDate() && $row->next_appointment == false && ($row->nextAppointmentDate() != \Carbon\Carbon::parse($row->date)->format('d-m-Y'))) ? (($row->nextAppointmentUsg()) ? 'USG - '.$row->nextAppointmentDate() : $row->nextAppointmentDate()) : $row->nextAppointmentDate() }}</td>
                 @if(in_array(Auth::user()->role,[1,2]))
                 <td>

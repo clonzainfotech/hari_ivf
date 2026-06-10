@@ -552,7 +552,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             </div>
                             <div class="{{ 'col-md-1 expert-usg-details ' . $expertUsg }} ">
                                 @if (isset($oe->expert_usg_image) && !empty($oe->expert_usg_image))
-                                    <img src="{{url($oe->expert_usg_image)}}" class="anc-images"/>
+                                    <img src="{{cdnUrl($oe->expert_usg_image, null)}}" class="anc-images"/>
                                 @endif
                             </div>
                         </div>
@@ -601,7 +601,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             {{-- {{ dd($oe)}} --}}
                             <div class="{{ 'col-md-1 blood-report-details ' .  $bloodReport }}">
                                 @if (isset($oe->blood_report_image) && !empty($oe->blood_report_image))
-                                    <img src="{{url($oe->blood_report_image)}}" class="anc-images"/>
+                                    <img src="{{cdnUrl($oe->blood_report_image, null)}}" class="anc-images"/>
                                 @endif
                             </div>
                         </div>
@@ -1043,9 +1043,9 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
         </div>
         <div class="col-md-4">
             <input type="hidden" id="saverecordname" value="{{\Carbon\Carbon::now()->format('d-m-Y').", ".ucwords($ancPatients->name).""}}">
-            <script src="{{url('public/js/record/recorder.js')}}" defer></script>
-            <script src="{{url('public/js/record/Fr.voice.js')}}" defer></script>
-            <script src="{{url('public/js/record/recordapp.js')}}" defer></script>
+            <script src="{{url('js/record/recorder.js')}}" defer></script>
+            <script src="{{url('js/record/Fr.voice.js')}}" defer></script>
+            <script src="{{url('js/record/recordapp.js')}}" defer></script>
             <a class="btn btn-danger btn-sm text-white" id="record" data-action="start">Start Recording</a>
             <input type="hidden" id="saverecurl" value="{{URL::to("saverec")}}">
         </div>
@@ -3470,7 +3470,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             </div>
                             <div class="{{ 'col-md-1 expert-usg-details ' . $expertUsg }} ">
                                 @if (isset($oe->expert_usg_image) && !empty($oe->expert_usg_image))
-                                    <img src="{{url($oe->expert_usg_image)}}" class="anc-images"/>
+                                    <img src="{{cdnUrl($oe->expert_usg_image, null)}}" class="anc-images"/>
                                 @endif
                             </div>
                         </div>
@@ -3518,7 +3518,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             </div>
                             <div class="{{ 'col-md-1 blood-report-details ' .  $bloodReport }}">
                                 @if (isset($oe->blood_report_image) && !empty($oe->blood_report_image))
-                                    <img src="{{url($oe->blood_report_image)}}" class="anc-images"/>
+                                    <img src="{{cdnUrl($oe->blood_report_image, null)}}" class="anc-images"/>
                                 @endif
                             </div>
                         </div>

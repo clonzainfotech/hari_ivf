@@ -65,7 +65,7 @@
             <div class="page-header-image">
             </div>
             @yield('content')
-            <footer class="footer">
+            <!-- <footer class="footer">
                 <div class="container">
                     <div class="">
                         &copy;
@@ -75,7 +75,7 @@
                         <span>{{ !empty($systemSetting->footer_copyright) ? $systemSetting->footer_copyright : null }} Designed by UNIKWORK</span>
                     </div>
                 </div>
-            </footer>
+            </footer> -->
         </div>
         <!-- Scripts -->
         @stack('before-scripts')

@@ -530,7 +530,7 @@
         @endif
         <br>
         <br>
-        <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
+        <script src="{{URL::to('js/image-uploader.js')}}"></script>
     <script type="text/javascript">
         var code = '';
         var patientsId = $('.patients-id').val();

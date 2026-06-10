@@ -31,9 +31,9 @@
 if(!empty($ivfReport)) {
     $ivfReportData = json_decode($ivfReport->description);
 
-    if (!empty($ivfReportData->ovum->erphoto) && file_exists($ivfReportData->ovum->erphoto))
+    if (!empty($ivfReportData->ovum->erphoto))
     {
-        $file = url($ivfReportData->ovum->erphoto);
+        $file = cdnUrl($ivfReportData->ovum->erphoto, null);
     }
 }
 $injectionData = ['1'=>'Only HMG','2'=>'Only FSH','3'=>'FSH + HMG','4'=>'Lupride','5'=>'Letrozole + HMG','6'=>'Letrozole + FSH','7'=>'CC + HMG','8'=>'CC + FSH','9'=>'Antagonist'];

@@ -83,7 +83,7 @@ $water_mark = isset($systemSetting->water_mark) && !empty($systemSetting->water_
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{url('assets/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{url('assets/css/themes.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{URL::to('public/css/bootstrap-notifications.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{URL::to('css/bootstrap-notifications.min.css')}}">
     
 
 </head>
@@ -97,7 +97,7 @@ $menu = "";
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="{{url(config('app.loader'))}}" width="48" height="48" alt="Oreo" ></div>
-    {{--                <div class="m-t-30"><img class="zmdi-hc-spin" src="{{URL::to('assets/images/logo.svg')}}" width="48" height="48" alt="Oreo"></div>--}}
+    {{--                <div class="m-t-30"><img class="zmdi-hc-spin" src="{{URL::to('assets/images/logo.png')}}" width="48" height="48" alt="Oreo"></div>--}}
     <!-- <p>Please wait...</p> -->
     </div>
 </div>
@@ -352,6 +352,23 @@ $menu = "";
                 console.log(error);
             });
         }
+    </script>
+
+    <script>
+        // Graceful fallback for images that fail to load (e.g. a file missing on
+        // the CDN). Swaps the broken image to the local default placeholder once,
+        // so users never see a broken-image icon. Uses the capture phase because
+        // image 'error' events do not bubble.
+        (function () {
+            var fallback = "{{ url('images/default_user.png') }}";
+            document.addEventListener('error', function (e) {
+                var img = e.target;
+                if (img && img.tagName === 'IMG' && !img.dataset.fallbackApplied && img.getAttribute('src') !== fallback) {
+                    img.dataset.fallbackApplied = '1';
+                    img.src = fallback;
+                }
+            }, true);
+        })();
     </script>
 
 </body>

@@ -14,3 +14,4 @@ yarn-error.log
 /storage/backups/*
 .idea/
 /public/assets
+.env.example

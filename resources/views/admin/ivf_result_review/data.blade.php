@@ -23,11 +23,11 @@ $i = 1;
         <tr data-id="{{encrypt($row->id)}}" class="">
             {{-- <td>{{ ((($ivfResultReview->currentPage() - 1 ) * $ivfResultReview->perPage() ) + $loop->iteration) . '.' }}</td> --}}
             <td>{{$i}}</td>
-            <td>{{ ucfirst($row->getPatients->code) }}</td>
-            <td><span class="list-name">{{ ucfirst($row->getPatients->name) }}</span></td>
+            <td>{{ ucfirst($row->getPatients->code ?? '') }}</td>
+            <td><span class="list-name">{{ ucfirst($row->getPatients->name ?? '') }}</span></td>
             <td>{{ $row->cycle_no}}</td>
             <td>{{ isset($planData[$row->plan]) ? $planData[$row->plan] : '-'}}</td>
-            <td>{{ $row->getPatients->mobile_number.', '.$row->getPatients->other_mobile_number}}</td>
+            <td>{{ ($row->getPatients->mobile_number ?? '').', '.($row->getPatients->other_mobile_number ?? '') }}</td>
             <td>{{ $row->transfer_by}}</td>
             <td>{{ $row->transfer_date}}</td>
             <td>{{ $row->result_date}}</td>

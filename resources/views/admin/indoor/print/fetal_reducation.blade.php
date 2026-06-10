@@ -39,7 +39,7 @@
         <tr>
             <td rowspan="3">
                 <div class="print-logo">
-                <img src="{{url('public/images/candor-logo.jpg')}}" class="logo-image">
+                <img src="{{url('images/candor-logo.jpg')}}" class="logo-image">
             </td>
             <td class="font text-center">{{strtoupper(config('app.hospitalname2')) }}</td>
             <td class="doctor">

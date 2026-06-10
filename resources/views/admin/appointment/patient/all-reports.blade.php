@@ -3,7 +3,7 @@
 @section('title', 'Patient All Report')
 @section('page-style')
 <link href="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/css/lightgallery.css" rel="stylesheet">
-<link href="{{URL::to('public/css/light-gallery.css')}}" rel="stylesheet">
+<link href="{{URL::to('css/light-gallery.css')}}" rel="stylesheet">
   
 @stop
 
@@ -113,16 +113,16 @@
 													@php
                                                     
                                                         $imageType = '';
-                                                        if(is_file($image))
+                                                        if(!empty($image))
                                                         {
-														    $imageType = mime_content_type($image);   
+														    $imageType = imageMimeFromExt($image);   
                                                         }
 													@endphp
 													@if($imageType == "application/pdf" && !empty($imageType))     
-													<li data-responsive="{{url($image)}}" data-iframe="true" data-src="{{url($image)}}"
+													<li data-responsive="{{cdnUrl($image, null)}}" data-iframe="true" data-src="{{cdnUrl($image, null)}}"
 													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
-														<a href="{{url($image)}}" class="mb-1" target="_blank">
-															<img class="img-responsive" src="{{url('public/images/default-pdf.png')}}">
+														<a href="{{cdnUrl($image, null)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{url('images/default-pdf.png')}}">
 															<div class="demo-gallery-poster">
 																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 															</div>
@@ -131,10 +131,10 @@
 													</li>
 													@endif
 													@if($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" && !empty($imageType))     
-														<li data-responsive="{{url($image)}}" data-src="{{url($image)}}"
+														<li data-responsive="{{cdnUrl($image, null)}}" data-src="{{cdnUrl($image, null)}}"
 														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
 															<a href="" class="mb-1">
-																<img class="img-responsive" src="{{url($image)}}">
+																<img class="img-responsive" src="{{cdnUrl($image, null)}}">
 																<div class="demo-gallery-poster">
 																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 																</div>
@@ -205,16 +205,16 @@
 													@php
                                                     
                                                         $imageType = '';
-                                                        if(is_file($image))
+                                                        if(!empty($image))
                                                         {
-														    $imageType = mime_content_type($image);   
+														    $imageType = imageMimeFromExt($image);   
                                                         }
 													@endphp
 													@if($imageType == "application/pdf" && !empty($imageType))     
-													<li data-responsive="{{url($image)}}" data-iframe="true" data-src="{{url($image)}}"
+													<li data-responsive="{{cdnUrl($image, null)}}" data-iframe="true" data-src="{{cdnUrl($image, null)}}"
 													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
-														<a href="{{url($image)}}" class="mb-1" target="_blank">
-															<img class="img-responsive" src="{{url('public/images/default-pdf.png')}}">
+														<a href="{{cdnUrl($image, null)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{url('images/default-pdf.png')}}">
 															<div class="demo-gallery-poster">
 																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 															</div>
@@ -223,10 +223,10 @@
 													</li>
 													@endif
 													@if(($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" )&& !empty($imageType))     
-														<li data-responsive="{{url($image)}}" data-src="{{url($image)}}"
+														<li data-responsive="{{cdnUrl($image, null)}}" data-src="{{cdnUrl($image, null)}}"
 														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
 															<a href="" class="mb-1">
-																<img class="img-responsive" src="{{url($image)}}">
+																<img class="img-responsive" src="{{cdnUrl($image, null)}}">
 																<div class="demo-gallery-poster">
 																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 																</div>
@@ -297,16 +297,16 @@
 													@php
                                                     
                                                         $imageType = '';
-                                                        if(is_file($image))
+                                                        if(!empty($image))
                                                         {
-														    $imageType = mime_content_type($image);   
+														    $imageType = imageMimeFromExt($image);   
                                                         }
 													@endphp
 													@if($imageType == "application/pdf" && !empty($imageType))     
-													<li data-responsive="{{url($image)}}" data-iframe="true" data-src="{{url($image)}}"
+													<li data-responsive="{{cdnUrl($image, null)}}" data-iframe="true" data-src="{{cdnUrl($image, null)}}"
 													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
-														<a href="{{url($image)}}" class="mb-1" target="_blank">
-															<img class="img-responsive" src="{{url('public/images/default-pdf.png')}}">
+														<a href="{{cdnUrl($image, null)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{url('images/default-pdf.png')}}">
 															<div class="demo-gallery-poster">
 																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 															</div>
@@ -315,10 +315,10 @@
 													</li>
 													@endif
 													@if(($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" )&& !empty($imageType))     
-														<li data-responsive="{{url($image)}}" data-src="{{url($image)}}"
+														<li data-responsive="{{cdnUrl($image, null)}}" data-src="{{cdnUrl($image, null)}}"
 														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
 															<a href="" class="mb-1">
-																<img class="img-responsive" src="{{url($image)}}">
+																<img class="img-responsive" src="{{cdnUrl($image, null)}}">
 																<div class="demo-gallery-poster">
 																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 																</div>
@@ -374,16 +374,16 @@
 													@php
                                                     
                                                         $imageType = '';
-                                                        if(is_file($image))
+                                                        if(!empty($image))
                                                         {
-														    $imageType = mime_content_type($image);   
+														    $imageType = imageMimeFromExt($image);   
                                                         }
 													@endphp
 													@if($imageType == "application/pdf" && !empty($imageType))     
-													<li data-responsive="{{url($image)}}" data-iframe="true" data-src="{{url($image)}}"
+													<li data-responsive="{{cdnUrl($image, null)}}" data-iframe="true" data-src="{{cdnUrl($image, null)}}"
 													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
-														<a href="{{url($image)}}" class="mb-1" target="_blank">
-															<img class="img-responsive" src="{{url('public/images/default-pdf.png')}}">
+														<a href="{{cdnUrl($image, null)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{url('images/default-pdf.png')}}">
 															<div class="demo-gallery-poster">
 																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 															</div>
@@ -392,10 +392,10 @@
 													</li>
 													@endif
 													@if(($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" )&& !empty($imageType))     
-														<li data-responsive="{{url($image)}}" data-src="{{url($image)}}"
+														<li data-responsive="{{cdnUrl($image, null)}}" data-src="{{cdnUrl($image, null)}}"
 														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
 															<a href="" class="mb-1">
-																<img class="img-responsive" src="{{url($image)}}">
+																<img class="img-responsive" src="{{cdnUrl($image, null)}}">
 																<div class="demo-gallery-poster">
 																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 																</div>
@@ -445,17 +445,17 @@
 													@foreach($value as $image)
 													@php
                                                         $imageType = '';
-                                                        if(is_file($image))
+                                                        if(!empty($image))
                                                         {
-														    $imageType = mime_content_type($image);   
+														    $imageType = imageMimeFromExt($image);   
                                                         }
 
 													@endphp
 													@if($imageType == "application/pdf" && !empty($imageType))     
-													<li data-responsive="{{url($image)}}" data-iframe="true" data-src="{{url($image)}}"
+													<li data-responsive="{{cdnUrl($image, null)}}" data-iframe="true" data-src="{{cdnUrl($image, null)}}"
 													data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
-														<a href="{{url($image)}}" class="mb-1" target="_blank">
-															<img class="img-responsive" src="{{url('public/images/default-pdf.png')}}">
+														<a href="{{cdnUrl($image, null)}}" class="mb-1" target="_blank">
+															<img class="img-responsive" src="{{url('images/default-pdf.png')}}">
 															<div class="demo-gallery-poster">
 																<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 															</div>
@@ -464,10 +464,10 @@
 													</li>
 													@endif
 													@if($imageType == "image/png" || $imageType == "image/jpg" || $imageType == "image/jpeg" && !empty($imageType))     
-														<li data-responsive="{{url($image)}}" data-src="{{url($image)}}"
+														<li data-responsive="{{cdnUrl($image, null)}}" data-src="{{cdnUrl($image, null)}}"
 														data-sub-html="<h4>{{$report_name}}</h4><p>Uploaded On {{$date}}</p>">
 															<a href="" class="mb-1">
-																<img class="img-responsive" src="{{url($image)}}">
+																<img class="img-responsive" src="{{cdnUrl($image, null)}}">
 																<div class="demo-gallery-poster">
 																	<img src="https://sachinchoolur.github.io/lightgallery.js/static/img/zoom.png">
 																</div>

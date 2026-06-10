@@ -19,7 +19,7 @@ class EventController extends ApiController
         if($token) {
             $today = Carbon::now()->format('Y-m-d');
             $eventData = collect($this->Event::select('id','title','discription','event_picture','venue','time','start_date','end_Date')->where('end_date','>=',$today)->where('status',1)->get())->map(function($q){
-                $q->event_picture = $q->event_picture ? url($q->event_picture) : null;
+                $q->event_picture = $q->event_picture ? cdnUrl($q->event_picture, null) : null;
                 return $q;
             });
 
@@ -48,7 +48,7 @@ class EventController extends ApiController
             $today = Carbon::now()->format('Y-m-d');
             $eventData = $this->Event::select('title', 'discription', 'event_picture','venue','time', 'start_date', 'end_Date')->where('id', $eventId)->where('status',1)->first();
             if (!empty($eventData)) {
-                $eventData->event_picture = $eventData->event_picture ? url($eventData->event_picture) : null;
+                $eventData->event_picture = $eventData->event_picture ? cdnUrl($eventData->event_picture, null) : null;
                 return $this->sendResponse('Get Event Details succssfully', $eventData);
             }
             return $this->sendError('Events is not found', 401);
@@ -66,20 +66,20 @@ class EventController extends ApiController
             $today = Carbon::now()->format('Y-m-d');
             //recent
             $eventData = collect($this->Event::select('id','title','discription','event_picture','venue','time','start_date','end_Date')->where('start_date','=',$today)->where('status',1)->get())->map(function($q){
-                $q->event_picture = $q->event_picture ? url($q->event_picture) : null;
+                $q->event_picture = $q->event_picture ? cdnUrl($q->event_picture, null) : null;
                 return $q;
             });
             if($request->event_type == 0)//past event
             {
                 $eventData = collect($this->Event::select('id','title','discription','event_picture','venue','time','start_date','end_Date')->where('end_date','<',$today)->where('status',1)->get())->map(function($q){
-                    $q->event_picture = $q->event_picture ? url($q->event_picture) : null;
+                    $q->event_picture = $q->event_picture ? cdnUrl($q->event_picture, null) : null;
                     return $q;
                 });
             }
             if($request->event_type == 2)//upcoming event
             {
                 $eventData = collect($this->Event::select('id','title','discription','event_picture','venue','time','start_date','end_Date')->where('start_date','>',$today)->where('status',1)->get())->map(function($q){
-                    $q->event_picture = $q->event_picture ? url($q->event_picture) : null;
+                    $q->event_picture = $q->event_picture ? cdnUrl($q->event_picture, null) : null;
                     return $q;
                 });
             }

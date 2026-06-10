@@ -1378,7 +1378,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if($investigation->laproscopy->type == 'yes')
+                                    @if(!empty($investigation->laproscopy) && !empty($investigation->laproscopy->type) && $investigation->laproscopy->type == 'yes')
                                         <tr>
                                             <th  colspan="9">
                                                 <span class="iui-label">Laproscopy:  </span>
@@ -1404,7 +1404,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($investigation->laproscopy->laproscopy_type == 2)
+                                    @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2)
                                         <tr>
                                             <th>
                                                 <span class="iui-label">RT Tube: </span>
@@ -1417,7 +1417,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($investigation->laproscopy->laproscopy_type == 2)
+                                    @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2)
                                         <tr>
                                             <th>
                                                 <span class="iui-label"> Uterus: </span>
@@ -1430,7 +1430,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($investigation->laproscopy->laproscopy_type == 2)
+                                    @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2)
                                         <tr>
                                             <th>
                                                 <span class="iui-label">LT Tube:  </span>
@@ -1443,7 +1443,7 @@
                                             @endif
                                         </tr>
                                     @endif
-                                    @if ($investigation->laproscopy->laproscopy_type == 2 && !empty($investigation->laproscopy->other))
+                                    @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2 && !empty($investigation->laproscopy->other))
                                         <tr>
                                             <th>
                                                 <span class="iui-label"> Other:  </span>
@@ -3663,7 +3663,9 @@
                                                 
                                                 if((!empty($data->hcg->type) && $data->hcg->type == 'yes') || !empty($data->ovalution) && $data->ovalution == 'yes')
                                                 {
-                                                    $hcgDataArray[] = (array)$data->hcg;
+                                                    if(!empty($data->hcg)){
+                                                        $hcgDataArray[] = (array)$data->hcg;
+                                                    }
                                                 }
                                             @endphp
                                             @if($row->visit == 2)

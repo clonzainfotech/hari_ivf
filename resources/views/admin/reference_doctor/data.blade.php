@@ -46,6 +46,5 @@
             @endforelse
         </tbody>
     </table>
-    <ul class="pagination pagination-primary m-b-0 deletebutton">{{$referenceDoctor->links()}}
-</ul>
+    {{$referenceDoctor->links()}}
 

@@ -24,13 +24,13 @@
 @stop
 @section('content')
     {{-- @php
-        $file = url('public/images/default_user.png');
+        $file = url('images/default_user.png');
         if (file_exists($patient->image))
         {
             $file = url($patient->image);
         }
         if(is_null($patient->image)){
-        $file = url('public/images/default_user.png');
+        $file = url('images/default_user.png');
         }
     @endphp --}}
     <div class="row clearfix appointment">

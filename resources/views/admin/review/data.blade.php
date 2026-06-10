@@ -59,5 +59,4 @@
     </tbody>
 </table>
 
-<ul class="pagination pagination-primary m-b-0 deletebutton">{{$reviewData->links()}}
-</ul>
+{{$reviewData->links()}}

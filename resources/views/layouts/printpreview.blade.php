@@ -94,7 +94,7 @@
                 background-position: center;
                 -webkit-print-color-adjust: exact;
                 position: relative;
-            /* background-image:url({{url('public/images/' . $water_mark)}}); */
+            /* background-image:url({{url('images/' . $water_mark)}}); */
             }
             .watermark:before {
             position: absolute;
@@ -109,7 +109,7 @@
             margin: auto;
             z-index: 9;
             opacity: 0.2;
-            background-image: url({{url('public/images/' . $water_mark)}});
+            background-image: url({{url('images/' . $water_mark)}});
         }
         .study-report-table
         {
@@ -152,7 +152,7 @@
                                 <h1 class="title">Radha Hospital</h1>
                                 <h1 class="title" style="text-align: center !important; margin:0px !important;">&</h1>
                                 @if (!empty($header_logo))
-                                    <img src="{{url('public/images/' . $header_logo)}}" class="system-setting-logo"/>
+                                    <img src="{{url('images/' . $header_logo)}}" class="system-setting-logo"/>
                                 @endif
                             </div>
                         </div>
@@ -198,7 +198,7 @@
       <main id="main">
        
         <div class="container">
-             {{-- <div class="watermark"><img src="{{url('public/images/' . $water_mark)}}"></div> --}}
+             {{-- <div class="watermark"><img src="{{url('images/' . $water_mark)}}"></div> --}}
             @yield('content')
         </div>
      </main><!-- End main -->

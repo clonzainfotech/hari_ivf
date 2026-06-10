@@ -19,10 +19,10 @@
 if(!empty($iuireport)) {
     $iuiReportdata = json_decode($iuireport->description);
 
-    if (!empty($iuiReportdata->ovum->erphoto) && file_exists($iuiReportdata->ovum->erphoto))
+    if (!empty($iuiReportdata->ovum->erphoto))
     {
-        $file = url($iuiReportdata->ovum->erphoto);
-    }   
+        $file = cdnUrl($iuiReportdata->ovum->erphoto, null);
+    }
 }
 @endphp
 <div class="row clearfix ivf">

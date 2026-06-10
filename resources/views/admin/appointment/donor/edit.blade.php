@@ -497,7 +497,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3 pr-0">
-                                                <img src="{{url($donor->image)}}" class="image"/>
+                                                <img src="{{cdnUrl($donor->image, null)}}" class="image"/>
                                             </div>
                                         </div>
                                     </div>

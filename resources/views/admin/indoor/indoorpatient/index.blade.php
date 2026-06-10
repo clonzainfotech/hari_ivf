@@ -229,7 +229,7 @@
 @section('page-script')
     <script src="{{url('assets/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
     <script src="{{url('assets/js/pages/ui/notifications.js')}}"></script>
-    <script src="{{url('public/js/indoorprint.js')}}"></script>
+    <script src="{{url('js/indoorprint.js')}}"></script>
     <script type="text/javascript">
 
         var page = '';

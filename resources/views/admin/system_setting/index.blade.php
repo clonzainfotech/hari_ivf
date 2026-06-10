@@ -105,7 +105,7 @@
 										</div>
 										@if (!empty($data->header_logo))
 											<div class="col-md-4">
-												<img src="{{url('public/images/' . $data->header_logo)}}" class="system-setting-logo"/>
+												<img src="{{url('images/' . $data->header_logo)}}" class="system-setting-logo"/>
 											</div>
 										@endif
 										
@@ -456,7 +456,7 @@
 							</div>
 							@if (!empty($data->water_mark))
 							<div class="col-md-4">
-								<img src="{{url('public/images/' . $data->water_mark)}}" class="system-setting-logo"/>
+								<img src="{{url('images/' . $data->water_mark)}}" class="system-setting-logo"/>
 							</div>
 						@endif
 						</div>
@@ -508,5 +508,5 @@
 </div>
 @stop
 @section('page-script')
-	<script src="{{url('public/js/system_setting.js')}}"></script>
+	<script src="{{url('js/system_setting.js')}}"></script>
 @stop

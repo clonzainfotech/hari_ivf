@@ -3,7 +3,7 @@
 @section('title', 'IVF')
 @section('page-style')
     <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
-    <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet">
+    <link href="{{URL::to('css/image-uploader.css')}}" rel="stylesheet">
     <style>
         .payment-form{
             padding: 5px 0px 1px 10px !important;
@@ -816,13 +816,13 @@
                                 <div class="col-md-6 mb-2">
                                     <span class="form-padding">Patient Sign Image: &nbsp;</span>
                                     @if(!empty($ivfPaymentHistory->patient_sign_image))
-                                        <img src="{{url($ivfPaymentHistory->patient_sign_image)}}" style="width: 100px; height:60px;">
+                                        <img src="{{cdnUrl($ivfPaymentHistory->patient_sign_image, null)}}" style="width: 100px; height:60px;">
                                     @endif
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <span class="form-padding">Patient's relative Sign Image: &nbsp;</span>
                                     @if(!empty($ivfPaymentHistory->patient_relative_sign_image))
-                                        <img src="{{url($ivfPaymentHistory->patient_relative_sign_image)}}" style="width: 100px; height:60px;">
+                                        <img src="{{cdnUrl($ivfPaymentHistory->patient_relative_sign_image, null)}}" style="width: 100px; height:60px;">
                                     @endif
                                 </div>
                             </div>
@@ -891,7 +891,7 @@
 @stop
 @section('page-script')
 <script src="{{url('assets/js/pages/ui/notifications.js')}}"></script> 
-<script src="{{URL::to('public/js/image-uploader.js')}}"></script>
+<script src="{{URL::to('js/image-uploader.js')}}"></script>
 
     <script type="text/javascript">
 

@@ -3692,12 +3692,65 @@ class IVFController extends AdminController
                         $ivfResultReview = $ivfResultReview->whereIn('id',$ivfResultReviewIds->pluck('id','id'));
                     }
                 }
-                $ivfResultReview = collect($ivfResultReview->orderBy('created_at','desc')->get())->map(function ($query){
-                    $query->transfer_date = !empty($query->getTransferDate()['transfer_date']) ? $query->getTransferDate()['transfer_date'] : '';
-                    $query->transfer_by = !empty($query->getTransferDate()['transfer_by']) ? $query->getTransferDate()['transfer_by'] : '';
-                    $query->result_date = !empty($query->getResult()) ? Carbon::parse($query->getResult()['follow_up'])->format('d-M-Y') : (!empty($query->getTransferDate()['transfer_date']) ? Carbon::parse($query->getTransferDate()['transfer_date'])->addDays(14)->format('d-M-Y') : null);
-                    // dd(!empty($query->getResultValue()) ? $query->getResultValue()['transfer']['result_type']  : null);
-                    $query->result = !empty($query->getResultValue() && isset($query->getResultValue()['transfer']['result_type'])) ? $query->getResultValue()['transfer']['result_type']  : '';
+                $reviews = $ivfResultReview->with('getPatients')->orderBy('created_at','desc')->get();
+
+                // Previously each row called getTransferDate()/getResult()/getResultValue(),
+                // and each of those ran its own whereJsonContains query against ivf_history
+                // (~3+ queries per row, plus a lazy getSeenBy lookup). Across thousands of
+                // reviews that became thousands of queries and hung the request.
+                // Instead, load every relevant ivf_history row ONCE (with getSeenBy eager
+                // loaded), decode each description once, and resolve the values in memory.
+                // Fetch ONLY the ivf_history rows matching a review's exact
+                // (patients_id, cycle_no, plan). All three are integer columns, so the tuple
+                // list is built from casted ints — no injection risk.
+                $tuples = $reviews->map(function($r){
+                    return '('.(int)$r->patients_id.','.(int)$r->cycle_no.','.(int)$r->plan.')';
+                })->unique()->values()->all();
+                $historiesByKey = [];
+                if(!empty($tuples)){
+                    $histories = $this->IvfHistory->with('getSeenBy')
+                        ->select('id','patients_id','cycle_no','plan','seen_by','description')
+                        ->whereRaw('(patients_id, cycle_no, plan) IN ('.implode(',',$tuples).')')
+                        ->orderBy('id','asc')
+                        ->get();
+                    foreach($histories as $history){
+                        $key = $history->patients_id.'|'.$history->cycle_no.'|'.$history->plan;
+                        $decoded = json_decode($history->description, true);
+                        $historiesByKey[$key][] = ['model' => $history, 'data' => is_array($decoded) ? $decoded : []];
+                    }
+                }
+
+                $ivfResultReview = $reviews->map(function ($query) use ($historiesByKey){
+                    $rows = $historiesByKey[$query->patients_id.'|'.$query->cycle_no.'|'.$query->plan] ?? [];
+
+                    // getTransferDate(): first history whose collection includes 'progesterone'
+                    $transferHistory = null;
+                    foreach($rows as $r){
+                        $collection = $r['data']['collection'] ?? [];
+                        if(is_array($collection) && in_array('progesterone',$collection)){ $transferHistory = $r; break; }
+                    }
+                    $transferDate = !empty($transferHistory['data']['follow_up']) ? Carbon::parse($transferHistory['data']['follow_up'])->format('d-M-Y') : null;
+                    $transferBy = (!empty($transferHistory['model']) && !empty($transferHistory['model']->getSeenBy)) ? $transferHistory['model']->getSeenBy->name : null;
+
+                    // getResult(): first history whose collection includes 'transfer'
+                    $result = null;
+                    foreach($rows as $r){
+                        $collection = $r['data']['collection'] ?? [];
+                        if(is_array($collection) && in_array('transfer',$collection)){ $result = $r['data']; break; }
+                    }
+
+                    // getResultValue(): last (highest id) history with is_transfer == 'yes'
+                    $resultValue = null;
+                    foreach($rows as $r){
+                        if(isset($r['data']['is_transfer']) && $r['data']['is_transfer'] == 'yes'){ $resultValue = $r['data']; }
+                    }
+
+                    $query->transfer_date = $transferDate ?: '';
+                    $query->transfer_by = $transferBy ?: '';
+                    $query->result_date = !empty($result['follow_up'])
+                        ? Carbon::parse($result['follow_up'])->format('d-M-Y')
+                        : ($transferDate ? Carbon::parse($transferDate)->addDays(14)->format('d-M-Y') : null);
+                    $query->result = (!empty($resultValue) && isset($resultValue['transfer']['result_type'])) ? $resultValue['transfer']['result_type'] : '';
                     return $query;
                 });
                 $data['status'] = 1;

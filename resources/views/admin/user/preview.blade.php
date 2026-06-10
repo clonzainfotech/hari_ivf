@@ -94,11 +94,7 @@
             <tbody>
             @forelse($user as $row)
                 @php
-                    $file = url('public/images/default_user.png');
-                    if (!is_null($row->profile_picture) && file_exists($row->profile_picture))
-                    {
-                        $file = url($row->profile_picture);
-                    }
+                    $file = cdnUrl($row->profile_picture, 'public/images/default_user.png');
                 @endphp
                 <tr>
                     <td class="data-font seperator">{{($i++).'.'}}</td>

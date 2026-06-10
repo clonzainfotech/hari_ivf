@@ -30,7 +30,7 @@ $primary = isset($systemSetting->primary) && !empty($systemSetting->primary) ? $
 <div class="container">
     <div class="col-md-12 content-center">
         <div class="header">
-            <img class="reg-logo" src="{{ url('public/images/' . $logo )}}"
+            <img class="reg-logo" src="{{ url('images/' . $logo )}}"
                 alt="{{ !empty($alt) ? $alt : null }}" />
             <h5></h5>
         </div>

@@ -538,7 +538,7 @@ $dose = ["1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"S
         <br>
         <br>
 <!-- <script> -->
-<script src="{{URL::to('public/js/image-uploader.js')}}"></script>
+<script src="{{URL::to('js/image-uploader.js')}}"></script>
     <script type="text/javascript">
         var code = '';
         var patientsId = $('.patients-id').val();

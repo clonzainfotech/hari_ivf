@@ -20,7 +20,7 @@
                 </div>
                 <hr />
                 <div class="member-img">
-                    <img src="{{URL::to('public/images/default_user.png')}}" class="rounded-circle" alt="profile-image">
+                    <img src="{{URL::to('images/default_user.png')}}" class="rounded-circle" alt="profile-image">
                 </div>
                 <div class="body">
                     <strong>Occupation</strong>

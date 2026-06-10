@@ -6,7 +6,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
         $medicine_time = ['1'=>'IV','2'=>'IM','3'=>'SC',"4"=>'Oral',"5"=>'P/V',"6"=>"P/A"];
         $dose = ['' => 'Select Dose',"1"=>"Daily","2"=>"Once a week","3"=>"Twice a week","4"=>"Stat","5"=>"SOS","6"=>"Alternate Day","7"=>"6 hourly","8"=>"8 hourly","9"=>"12 hourly","10"=>"24 hourly"];
 @endphp
-{{-- <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet"/> --}}
+{{-- <link href="{{URL::to('css/image-uploader.css')}}" rel="stylesheet"/> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
         {{Form::open(['class'=>'form iui','files'=>'true','id'=>'iui-form'])}}
@@ -51,9 +51,9 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     </div>
                     {{-- <div class="col-md-4">
                         <input type="hidden" id="saverecordname" value="{{\Carbon\Carbon::now()->format('d-m-Y').", ".ucwords($iui->getPatientsInfo->name).""}}">
-                        <script src="{{url('public/js/record/recorder.js')}}" defer></script>
-                        <script src="{{url('public/js/record/Fr.voice.js')}}" defer></script>
-                        <script src="{{url('public/js/record/recordapp.js')}}" defer></script>
+                        <script src="{{url('js/record/recorder.js')}}" defer></script>
+                        <script src="{{url('js/record/Fr.voice.js')}}" defer></script>
+                        <script src="{{url('js/record/recordapp.js')}}" defer></script>
                         <a class="btn btn-danger btn-sm text-white" id="record" data-action="start">Start Recording</a>
                         <input type="hidden" id="saverecurl" value="{{URL::to("saverec")}}">
                     </div> --}}

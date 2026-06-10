@@ -32,7 +32,7 @@
 <div class="addmission-form">
 <div class="admision-consent-form">
     <div class="pb-2 logo">
-        {{-- <img src="{{url('public/images/candor-logo.jpg')}}" class="logo-image"> --}}
+        {{-- <img src="{{url('images/candor-logo.jpg')}}" class="logo-image"> --}}
         <h5 class="font-weight-bold">{{config('app.hospitalname2')}}</h5>
     </div>
     @php

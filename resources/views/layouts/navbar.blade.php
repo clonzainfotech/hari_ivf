@@ -1,9 +1,5 @@
 @php
-$file = url('public/images/default_user.png');
-if (is_file(Auth::user()->profile_picture))
-{
-$file = url(Auth::user()->profile_picture);
-}
+$file = cdnUrl(Auth::user()->profile_picture, 'public/images/default_user.png');
 $systemSetting = systemSetting();
 $onlineAppointmentCount = getOnlineAppointmentCount();
 @endphp

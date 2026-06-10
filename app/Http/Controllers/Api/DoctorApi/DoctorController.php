@@ -161,7 +161,7 @@ class DoctorController extends ApiController
                 $this->removeImage($image_path);
                 $image = $request->file('profile_picture');
                 $profilePicture = $this->uploadImage($image, 'public/upload/patient');
-                $UserData->profile_picture = url('public/upload/patient/'.$profilePicture);
+                $UserData->profile_picture = cdnUrl('public/upload/patient/'.$profilePicture);
             }
 
             $UserData->save();

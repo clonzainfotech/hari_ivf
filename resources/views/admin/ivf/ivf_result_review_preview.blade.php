@@ -72,7 +72,7 @@
         background-position: center;
         -webkit-print-color-adjust: exact;
         position: relative;
-    /* background-image:url({{url('public/images/' . $water_mark)}}); */
+    /* background-image:url({{url('images/' . $water_mark)}}); */
     }
     .watermark:before 
     {
@@ -88,7 +88,7 @@
         margin: auto;
         z-index: 9;
         opacity: 0.2;
-        background-image: url({{url('public/images/' . $water_mark)}});
+        background-image: url({{url('images/' . $water_mark)}});
     
     }
     </style>

@@ -38,8 +38,8 @@
                 <td>
                     {{ $row->other_mobile_number }}
                 </td>
-                <td>{{$row->main_area.', '.$row->city .', ' . $row->getState['name']}}</td>
-                <td>{{$row->getReferenceDoctor['name']}}</td>
+                <td>{{$row->main_area.', '.$row->city .', ' . ($row->getState['name'] ?? '')}}</td>
+                <td>{{$row->getReferenceDoctor['name'] ?? ''}}</td>
                 <td>
                     <a href="#" class="mr-1 label-link"  data-toggle="modal" data-target="#label-modal" data-name="{{$row->name}}"><i class="fa fa-address-card-o candor-color font-20" title="Name Print"></i>
                     </a>

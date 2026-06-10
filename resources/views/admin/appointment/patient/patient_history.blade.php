@@ -107,8 +107,8 @@
 @section('page-script')
     <script src="{{url('assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
-    <script src="{{url('public/js/ivf.js')}}"></script>
-    <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
+    <script src="{{url('js/ivf.js')}}"></script>
+    <script src="{{URL::to('js/image-uploader.js')}}"></script>
     <script type="text/javascript">
        var page = '';
         var patientId = $('.patients_id').val();

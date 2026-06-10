@@ -23,7 +23,7 @@
         <div class="col-md-12 content-center">
             <div class="card-plain">
                 <div class="header">
-                    <img src="{{ url('public/images/' . $logo )}}" alt="{{ !empty($alt) ? $alt : null }}"/>
+                    <img src="{{ url('images/' . $logo )}}" alt="{{ !empty($alt) ? $alt : null }}"/>
                     <h5></h5>
                 </div>
                 <br>

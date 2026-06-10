@@ -466,7 +466,7 @@
                                                     @if($BookingData->is_final_invoice != 1)
                                                         <a class="btn btn-sm text-white ml-1 deposit-refresh">Refresh</a>
                                                     @endif
-                                                    {{-- <img src="{{URL::to('public/images/icons8-refresh-30.png')}}" width="20px" height="28px" class="col-md-1 mt-1 deposit-refresh"/> --}}
+                                                    {{-- <img src="{{URL::to('images/icons8-refresh-30.png')}}" width="20px" height="28px" class="col-md-1 mt-1 deposit-refresh"/> --}}
                                                 </div>
                                                 <span class="deposit_error_msg d-none">you don't have any deposit.</span>
                                             </div>

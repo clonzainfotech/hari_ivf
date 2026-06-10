@@ -257,7 +257,7 @@
                         @foreach($event as $events)
                             <div class="row clearfix event-list" >
                                 <div class="col-md-2 text-center pr-0 pl-0">
-                                    <img src="{{ $events->event_picture}}" class="rounded-circle" alt="Cinque Terre" width="70" height="70">
+                                    <img src="{{ cdnUrl($events->event_picture, null) }}" class="rounded-circle" alt="Cinque Terre" width="70" height="70">
                                 </div>
                                 <div class="col-md-10">
                                     <div>

@@ -984,10 +984,10 @@
             </div>
             <div class="row p-2">              
                 Patient's signature :- 
-                <img src="{{!empty($ivfPayment->patient_sign_image) ? url($ivfPayment->patient_sign_image) : ''}}" style="width: 100px; height:40px;">
+                <img src="{{cdnUrl($ivfPayment->patient_sign_image, null)}}" style="width: 100px; height:40px;">
             </div>
             <div class="row p-2">
-                Signature of the patient's relative :-<img src="{{!empty($ivfPayment->patient_relative_sign_image) ? url($ivfPayment->patient_relative_sign_image) : ''}}" style="width: 100px; height:40px;">
+                Signature of the patient's relative :-<img src="{{cdnUrl($ivfPayment->patient_relative_sign_image, null)}}" style="width: 100px; height:40px;">
             </div>
      @endif
 

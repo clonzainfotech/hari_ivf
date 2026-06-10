@@ -64,7 +64,7 @@ class PatientController extends ApiController
                 $this->removeImage($image_path);
                 $image = $request->file('profile_picture');
                 $profilePicture = $this->uploadImage($image, 'public/upload/patient');
-                $patientData->profile_picture = url('public/upload/patient/'.$profilePicture);
+                $patientData->profile_picture = cdnUrl('public/upload/patient/'.$profilePicture);
             }
             $patientData->save();
             return $this->sendResponse('Update patient profile successfully',$patientData);
@@ -453,13 +453,13 @@ class PatientController extends ApiController
                 {
                     $image = $request->file('image');
                     $memoryImage = $this->uploadImage($image, 'public/upload/patient/memory/');
-                    $patient_memory->image = url('public/upload/patient/memory/'.$memoryImage);
+                    $patient_memory->image = cdnUrl('public/upload/patient/memory/'.$memoryImage);
                 }
                 if($request->hasFile('file'))
                 {
                     $file_name = $request->file('file');
                     $file = $this->uploadImage($file_name, 'public/upload/patient/memory/');
-                    $patient_memory->file = url('public/upload/patient/memory/'.$file);
+                    $patient_memory->file = cdnUrl('public/upload/patient/memory/'.$file);
                 }
                 $patient_memory->save();
                 return $this->sendResponse('Add Memory Successfully',$patient_memory);
@@ -505,14 +505,14 @@ class PatientController extends ApiController
                     $this->removeImage($patient_memory->image);
                     $image = $request->file('image');
                     $memory_image = $this->uploadImage($image, 'public/upload/patient/memory/');
-                    $patient_memory->image = url('public/upload/patient/memory/'.$memory_image);
+                    $patient_memory->image = cdnUrl('public/upload/patient/memory/'.$memory_image);
                 }
                 if($request->hasFile('file'))
                 {
                     $this->removeImage($patient_memory->file);
                     $file_name = $request->file('file');
                     $file = $this->uploadImage($file_name, 'public/upload/patient/memory/');
-                    $patient_memory->file = url('public/upload/patient/memory/'.$file);
+                    $patient_memory->file = cdnUrl('public/upload/patient/memory/'.$file);
                 }
                 $patient_memory->save();
                 return $this->sendResponse('Update Memory Successfully',$patient_memory);

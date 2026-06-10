@@ -3,7 +3,7 @@
 @section('title', 'Update Infertility Appointment')
 @section('page-style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
-    <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet"/>
+    <link href="{{URL::to('css/image-uploader.css')}}" rel="stylesheet"/>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
         body{
@@ -706,14 +706,14 @@
 </div>
 @stop
 @section('page-script')
-    <script src="{{url('public/js/iui.js')}}"></script>
+    <script src="{{url('js/iui.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="{{url('assets/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
     <script src="{{url('assets/js/pages/ui/notifications.js')}}"></script>
     <script>    $.fn.selectpicker.Constructor.DEFAULTS.iconBase = 'zmdi';
     $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
-    <script src="{{URL::to('public/js/image-uploader.js')}}"></script>
+    <script src="{{URL::to('js/image-uploader.js')}}"></script>
     <script type="text/javascript">
         var code = '';
         var qstring = '';

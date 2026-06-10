@@ -3,7 +3,7 @@
 @section('title', 'ANC Appointment History')
 @section('page-style')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.default.min.css" integrity="sha256-ibvTNlNAB4VMqE5uFlnBME6hlparj5sEr1ovZ3B/bNA=" crossorigin="anonymous" />
-    <link href="{{URL::to('public/css/image-uploader.css')}}" rel="stylesheet">
+    <link href="{{URL::to('css/image-uploader.css')}}" rel="stylesheet">
     <style>
         .fefal-visible {
             display: none;
@@ -219,7 +219,7 @@
     </div>
 @stop
 @section('page-script')
-<script src="{{url('public/js/anc.js')}}"></script>
+<script src="{{url('js/anc.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
 <script>    $.fn.selectpicker.Constructor.DEFAULTS.iconBase = 'zmdi';
 $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
@@ -762,5 +762,5 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
         $('.approx-week-from-lmp').text(week+' Week ' + (days > 0 ? +' '+days+ ' Day' : ''));
     });
 </script>
-<script src="{{URL::to('public/js/image-uploader.js')}}"></script>
+<script src="{{URL::to('js/image-uploader.js')}}"></script>
 @stop

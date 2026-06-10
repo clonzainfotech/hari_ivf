@@ -8,11 +8,7 @@
 
 @section('content')
  @php
-                $file = url('public/images/default_user.png');
-                if (!empty($user->profile_picture) && file_exists($user->profile_picture))
-                {
-                    $file = url($user->profile_picture);
-                }
+                $file = cdnUrl($user->profile_picture, 'public/images/default_user.png');
             @endphp
     <div class="row clearfix">
         <div class="col-md-12">

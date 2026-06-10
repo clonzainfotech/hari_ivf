@@ -88,7 +88,7 @@ class ReviewController extends ApiController
             ->map(function($q){
                 $q->patient_name = ucfirst($q->getPatientsData['name']);
                 // $q->name = $q->getReviewUser['name'];
-                // $q->profile_picture = $q->getReviewUser['profile_picture'] ? url($q->getReviewUser['profile_picture']) : null;
+                // $q->profile_picture = $q->getReviewUser['profile_picture'] ? cdnUrl($q->getReviewUser['profile_picture'], null) : null;
                 unset($q->getReviewUser,$q->getPatientsData);
                 return $q;
             });
@@ -125,7 +125,7 @@ class ReviewController extends ApiController
             ->map(function($q){
                 $q->name = $q->getReviewUser['name'];
                 $q->degree = $q->getReviewUser['degree'];
-                $q->profile_picture = $q->getReviewUser['profile_picture'] ? url($q->getReviewUser['profile_picture']) : null;
+                $q->profile_picture = $q->getReviewUser['profile_picture'] ? cdnUrl($q->getReviewUser['profile_picture'], null) : null;
                 unset($q->getReviewUser);
                 return $q;
             });

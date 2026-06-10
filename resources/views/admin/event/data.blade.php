@@ -12,7 +12,7 @@
                                     </button>
                                 </div>
                                 <div class="image popup">
-                                    <img src="{{ $row->event_picture}}" alt="img" class="img-fluid">
+                                    <img src="{{ cdnUrl($row->event_picture, null) }}" alt="img" class="img-fluid">
                                 </div>
                                 <div class="file-name">
 
@@ -44,5 +44,4 @@
             @endforelse
         </div>
     </div>
-<ul class="pagination pagination-primary m-b-0 deletebutton">{{$event->links()}}
-</ul>
+{{$event->links()}}

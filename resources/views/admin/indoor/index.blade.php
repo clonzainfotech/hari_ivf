@@ -178,31 +178,31 @@
                                                                 <a data-id="{{ encrypt($roomData->patient_id) }}" class="tl-recanalisation">TL Recanalisation</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/1st_lscs_and_2nd_ftnd.pdf' }}" target="_blank">LSCS & FTND</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/1st_lscs_and_2nd_ftnd.pdf', null) }}" target="_blank">LSCS & FTND</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/blood_consent.pdf' }}" target="_blank">Blood Consent</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/blood_consent.pdf', null) }}" target="_blank">Blood Consent</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/delivery_consent_for_room.pdf' }}" target="_blank">Delivery Consent for Room</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/delivery_consent_for_room.pdf', null) }}" target="_blank">Delivery Consent for Room</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/hystrolapro.pdf' }}" target="_blank">Hystrolapro</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/hystrolapro.pdf', null) }}" target="_blank">Hystrolapro</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/induction_of_lab_consent.pdf' }}" target="_blank">Induction of Lab Consent</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/induction_of_lab_consent.pdf', null) }}" target="_blank">Induction of Lab Consent</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/lap_tl_contsent.pdf' }}" target="_blank">Lap TL Contsent</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/lap_tl_contsent.pdf', null) }}" target="_blank">Lap TL Contsent</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/os_tightning.pdf' }}" target="_blank">OS Tightning</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/os_tightning.pdf', null) }}" target="_blank">OS Tightning</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/tlh_consent.pdf' }}" target="_blank">TLH  Consent</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/tlh_consent.pdf', null) }}" target="_blank">TLH  Consent</a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ url('/') . '/public/upload/indoor/vh_consent.pdf' }}" target="_blank">VH Consent</a>
+                                                                <a href="{{ cdnUrl('public/upload/indoor/vh_consent.pdf', null) }}" target="_blank">VH Consent</a>
                                                             </li>
                                                         </ul>
                                                         </div>
@@ -414,7 +414,7 @@
 @stop
 
 @section('page-script')
-    <script src="{{url('public/js/indoorprint.js')}}"></script>
+    <script src="{{url('js/indoorprint.js')}}"></script>
     <script src="{{url('assets/plugins/bootstrap-notify/bootstrap-notify.js')}}"></script>
     <script src="{{url('assets/js/pages/ui/notifications.js')}}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>

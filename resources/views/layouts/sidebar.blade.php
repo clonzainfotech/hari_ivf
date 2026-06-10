@@ -7,8 +7,8 @@
             <div class="user-info">
                <div class="list-icon mt-3">
                     @php
-                        $logo = isset($systemSetting->header_logo) && !empty($systemSetting->header_logo) ? $systemSetting->header_logo : 'logo.svg';
-                        $width = isset($systemSetting->header_logo_width) && !empty($systemSetting->header_logo_width) ? $systemSetting->header_logo_width : 'auto';
+                        $logo = isset($systemSetting->header_logo) && !empty($systemSetting->header_logo) ? $systemSetting->header_logo : 'logo.png';
+                        $width = isset($systemSetting->header_logo_width) && !empty($systemSetting->header_logo_width) ? $systemSetting->header_logo_width : '180';
                         $height = isset($systemSetting->header_logo_height) && !empty($systemSetting->header_logo_height) ? $systemSetting->header_logo_height : 'auto';
                         $alt = isset($systemSetting->alt) && !empty($systemSetting->alt) ? $systemSetting->alt : '';
                         $htmlTitle = isset($systemSetting->html_title) && !empty($systemSetting->html_title) ? $systemSetting->html_title : null;
@@ -20,7 +20,7 @@
                     @endphp
                     <div>
                         <a href="{{URL::to('/dashboard')}}" style="margin-bottom: 15px;">
-                            <img src="{{ url('public/images/' . $logo)}}" alt="{{ $alt }}" width="{{$width}}" height="{{$height}}"/>
+                            <img src="{{ url('images/' . $logo)}}" alt="{{ $alt }}" width="{{$width}}" height="{{$height}}"/>
                         </a>
                     </div>
                     <div class="detail">

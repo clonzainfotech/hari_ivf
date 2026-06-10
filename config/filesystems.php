@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | CDN base URL for uploaded files
+    |--------------------------------------------------------------------------
+    |
+    | Uploaded images are stored as relative paths (e.g. public/upload/...).
+    | The cdnUrl() helper prefixes this base so they resolve to the
+    | DigitalOcean Spaces CDN regardless of the current app host.
+    |
+    */
+
+    'cdn_url' => env('DO_SPACES_URL', 'https://candorbucket.sgp1.cdn.digitaloceanspaces.com'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Cloud Filesystem Disk
     |--------------------------------------------------------------------------
     |

@@ -10,14 +10,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ URL::to('public/js/recordapp.js') }}" defer></script>
+    <script src="{{ URL::to('js/recordapp.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ URL::to('public/css/app.css') }}" rel="stylesheet">
+    <link href="{{ URL::to('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">

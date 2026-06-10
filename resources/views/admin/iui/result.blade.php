@@ -15,7 +15,7 @@
                         </div>
                         @for($i=0; $i<count($row); $i++)
                             <div class="patients-name text-center">
-                                {{ucwords(strtolower($row[$i]['get_patients_info']['name']))}}
+                                {{ucwords(strtolower($row[$i]['get_patients_info']['name'] ?? ''))}}
                             </div>
                         @endfor
                         <br>

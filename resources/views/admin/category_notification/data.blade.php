@@ -29,11 +29,11 @@
                     $status = '';
                     if($row->getPatients['gender'] == 2)
                     {
-                        $image = !empty($row->getPatients['profile_picture']) ? $row->getPatients['profile_picture'] : URL::to('assets/images/female1.png');
+                        $image = !empty($row->getPatients['profile_picture']) ? cdnUrl($row->getPatients['profile_picture'], null) : URL::to('assets/images/female1.png');
                     }
                     if($row->getPatients['gender'] == 1)
                     {
-                        $image = !empty($row->getPatients['profile_picture']) ? $row->getPatients['profile_picture'] : URL::to('assets/images/male1.png');
+                        $image = !empty($row->getPatients['profile_picture']) ? cdnUrl($row->getPatients['profile_picture'], null) : URL::to('assets/images/male1.png');
                     }
                     if(in_array($row->categoryDetails['id'],[1,2]))
                     {
@@ -83,11 +83,11 @@
             @php
                 if($row->getPatientsData['gender'] == 2)
                 {
-                    $image = !empty($row->getPatientsData['profile_picture']) ? $row->getPatientsData['profile_picture'] : URL::to('assets/images/female1.png');
+                    $image = !empty($row->getPatientsData['profile_picture']) ? cdnUrl($row->getPatientsData['profile_picture'], null) : URL::to('assets/images/female1.png');
                 }
                 if($row->getPatientsData['gender'] == 1)
                 {
-                    $image = !empty($row->getPatientsData['profile_picture']) ? $row->getPatientsData['profile_picture'] : URL::to('assets/images/male1.png');
+                    $image = !empty($row->getPatientsData['profile_picture']) ? cdnUrl($row->getPatientsData['profile_picture'], null) : URL::to('assets/images/male1.png');
                 }
                 if($row->category == 'IVF')
                 {

@@ -71,7 +71,7 @@ class HomeController extends ApiController
                 }
                 $today = Carbon::now()->format('Y-m-d');
                 $eventData = collect($this->Event::select('id','title', 'event_picture', 'discription', 'venue','time','start_date', 'end_Date')->where('end_date','>',$today)->where('status',1)->get())->map(function($q){
-                                $q->event_picture = $q->event_picture ? url($q->event_picture) : null;
+                                $q->event_picture = $q->event_picture ? cdnUrl($q->event_picture, null) : null;
                                 return $q;            
                             });
 
@@ -79,7 +79,7 @@ class HomeController extends ApiController
                 $feedbackData = collect($this->UserReview->where('patient_id',$patientId)->where('status',1)->orderBy('id','desc')->get())->map(function($q){
                                     $q->name = $q->getReviewUser['name'];
                                     $q->patient_name = $q->getPatientsData['name'];
-                                    $q->profile_picture = $q->getReviewUser['profile_picture'] ? url($q->getReviewUser['profile_picture']) : null;
+                                    $q->profile_picture = $q->getReviewUser['profile_picture'] ? cdnUrl($q->getReviewUser['profile_picture'], null) : null;
                                     unset($q->getReviewUser,$q->getPatientsData);
                                     return $q;
                                 });

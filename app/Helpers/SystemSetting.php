@@ -165,7 +165,68 @@
     {
         $pId = decrypt($pId);
         $ivfHistory = IvfHistory::where('cycle_no',$cycle_no)->where('plan',$plan)->wherePatientsId($pId)->whereJsonContains('investigation->hystroscopy->type','yes')->first();
-        
+
         return $ivfHistory;
+    }
+
+    /**
+     * Resolve an uploaded-image path to its CDN URL.
+     *
+     * Stored values are relative paths like "public/upload/event/123.jpg"; the
+     * bytes live on the DigitalOcean Spaces CDN, so we prefix the configured
+     * CDN base. Placeholders stay local; already-absolute values pass through.
+     *
+     * @param  string|null $path     Stored path, e.g. "public/upload/event/123.jpg"
+     * @param  string|null $default  Local fallback when $path is empty (null = "")
+     * @return string
+     */
+    function cdnUrl($path, $default = 'public/images/default_user.png')
+    {
+        // Empty -> fall back to the default (resolved the same way; null = "").
+        if (empty($path)) {
+            return is_null($default) ? '' : cdnUrl($default, null);
+        }
+        // Already an absolute URL (http/https/protocol-relative/data:) -> leave as-is.
+        if (preg_match('#^(https?:)?//#i', $path) || \Illuminate\Support\Str::startsWith($path, 'data:')) {
+            return $path;
+        }
+        $base = rtrim(config('filesystems.cdn_url'), '/');
+        // Already points at the CDN host -> don't double-prefix.
+        if (\Illuminate\Support\Str::contains($path, parse_url($base, PHP_URL_HOST))) {
+            return $path;
+        }
+        // Uploaded files (public/upload/...) live on the CDN; everything else
+        // (public/images placeholders, assets) is a LOCAL static file.
+        if (\Illuminate\Support\Str::startsWith(ltrim($path, '/'), 'public/upload/')) {
+            return $base . '/' . ltrim($path, '/');
+        }
+        // Local static asset. The web root is already public/, so a leading
+        // "public/" (e.g. public/images/default_user.png) would 404 — strip it.
+        $local = \Illuminate\Support\Str::startsWith($path, 'public/')
+            ? \Illuminate\Support\Str::after($path, 'public/')
+            : $path;
+        return url($local);
+    }
+
+    /**
+     * Best-effort MIME type from a file path's EXTENSION.
+     *
+     * Replaces mime_content_type()/is_file() detection for files that live on
+     * the CDN (not the local disk), so report galleries can still tell PDFs
+     * from images. Returns '' for unknown/empty.
+     */
+    function imageMimeFromExt($path)
+    {
+        if (empty($path)) {
+            return '';
+        }
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if ($ext === 'pdf') {
+            return 'application/pdf';
+        }
+        if (in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+            return 'image/' . $ext;
+        }
+        return '';
     }
 ?>

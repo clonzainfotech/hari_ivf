@@ -13,11 +13,7 @@
     <tbody>
         @forelse($user as $row)
             @php
-                $file = url('public/images/default_user.png');
-                if (!is_null($row->profile_picture) && file_exists($row->profile_picture))
-                {
-                    $file = url($row->profile_picture);
-                }
+                $file = cdnUrl($row->profile_picture, 'public/images/default_user.png');
             @endphp
             <tr data-id="{{encrypt($row->id)}}">
                 <td>{{(($user->currentPage() - 1 ) * $user->perPage() ) + $loop->iteration}}</td>
@@ -39,5 +35,4 @@
         @endforelse
     </tbody>
 </table>
-<ul class="pagination  m-b-0 deletebutton page">{{$user->links()}}
-                    </ul>
+{{$user->links()}}

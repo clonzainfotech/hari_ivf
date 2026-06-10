@@ -82,7 +82,7 @@ class UserController extends ApiController
                 ->get()
             )->map(function($q){
                 $image = $q->profile_picture;
-                $q->profile_picture = $image ? url($image) : null;
+                $q->profile_picture = $image ? cdnUrl($image, null) : null;
                 return $q;
             });
             return $this->sendResponse('get staff successfully',$user);
@@ -112,7 +112,7 @@ class UserController extends ApiController
             $userId = $request->user_id;
             $user = $this->User->where('id',$userId)->first();
             if ($user) {
-                $user->profile_picture = $user->profile_picture ? url($user->profile_picture) : null;
+                $user->profile_picture = $user->profile_picture ? cdnUrl($user->profile_picture, null) : null;
                 $user->city = 'Surat';
                 $hospitalAddress = $this->HospitalAddress->first();
                 $user->address = $hospitalAddress->address;
@@ -121,7 +121,7 @@ class UserController extends ApiController
                     $achievement = null;
                     if (!empty($achievementData)) {
                         foreach ($achievementData as $key => $value) {
-                            $achievement[]['image'] = url($value);
+                            $achievement[]['image'] = cdnUrl($value, null);
                         }
                     }
                 $user->achievement = $achievement;
@@ -164,12 +164,12 @@ class UserController extends ApiController
                 $achievement = null;
                 if (!empty($achievementData)) {
                     foreach ($achievementData as $key => $value) {
-                        $achievement[]['image'] = url($value);
+                        $achievement[]['image'] = cdnUrl($value, null);
                     }
                 }
                 $q->achievement = $achievement;
                 $name = $q->name;
-                $q->profile_picture = $q->profile_picture ? url($q->profile_picture) : null;
+                $q->profile_picture = $q->profile_picture ? cdnUrl($q->profile_picture, null) : null;
                 return $q;
             });
 

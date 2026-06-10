@@ -47,7 +47,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <img src="{{!empty($event->event_picture) ? URL::to($event->event_picture) : URL::to('public/upload/event/event.jpg')}}"class="mt-2 mb-2 profile_icon"/>
+                                    <img src="{{ cdnUrl($event->event_picture, 'public/upload/event/event.jpg') }}"class="mt-2 mb-2 profile_icon"/>
                                     {{Form::file('event_picture',['class'=>'form-control','placeholder'=>'Select Event Picture'])}}
                                 </div>
                                 <span class="form-error-msg" id="image">
