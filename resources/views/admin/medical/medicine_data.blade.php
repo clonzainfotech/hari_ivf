@@ -34,16 +34,16 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
                                 
-                                <div class="{{'edit-remark-data edit-remark-'.$row->getAppointment()['id']}}">
+                                <div class="{{'edit-remark-data edit-remark-'.optional($row->getAppointment())['id']}}">
                                     <span class="font-weight-bold">Medical Note : </span>
-                                    @if(!empty($row->getAppointment()['medical_note']))
-                                        <span class="text-danger">{{$row->getAppointment()['medical_note']}}</span>
+                                    @if(!empty(optional($row->getAppointment())['medical_note']))
+                                        <span class="text-danger">{{optional($row->getAppointment())['medical_note']}}</span>
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->getAppointment()['medical_note']}}" data-id="{{$row->getAppointment()['id']}}">edit</i>
+                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{optional($row->getAppointment())['medical_note']}}" data-id="{{optional($row->getAppointment())['id']}}">edit</i>
                                         </span>
                                     @else
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{$row->getAppointment()['id']}}">add</i>
+                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{optional($row->getAppointment())['id']}}">add</i>
                                         </span>
                                     @endif
                                 </div>
@@ -180,16 +180,16 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
                                 
-                                <div class="{{'edit-remark-data edit-remark-'.$row->getAppointment()['id']}}">
+                                <div class="{{'edit-remark-data edit-remark-'.optional($row->getAppointment())['id']}}">
                                     <span class="font-weight-bold">Medical Note : </span>
-                                    @if(!empty($row->getAppointment()['medical_note']))
-                                        <span class="text-danger">{{$row->getAppointment()['medical_note']}}</span>
+                                    @if(!empty(optional($row->getAppointment())['medical_note']))
+                                        <span class="text-danger">{{optional($row->getAppointment())['medical_note']}}</span>
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->getAppointment()['medical_note']}}" data-id="{{$row->getAppointment()['id']}}">edit</i>
+                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{optional($row->getAppointment())['medical_note']}}" data-id="{{optional($row->getAppointment())['id']}}">edit</i>
                                         </span>
                                     @else
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{$row->getAppointment()['id']}}">add</i>
+                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{optional($row->getAppointment())['id']}}">add</i>
                                         </span>
                                     @endif
                                 </div>
@@ -339,16 +339,16 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
                                 
-                                <div class="{{'edit-remark-data edit-remark-'.$row->getAppointment()['id']}}">
+                                <div class="{{'edit-remark-data edit-remark-'.optional($row->getAppointment())['id']}}">
                                     <span class="font-weight-bold">Medical Note : </span>
-                                    @if(!empty($row->getAppointment()['medical_note']))
-                                        <span class="text-danger">{{$row->getAppointment()['medical_note']}}</span>
+                                    @if(!empty(optional($row->getAppointment())['medical_note']))
+                                        <span class="text-danger">{{optional($row->getAppointment())['medical_note']}}</span>
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->getAppointment()['medical_note']}}" data-id="{{$row->getAppointment()['id']}}">edit</i>
+                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{optional($row->getAppointment())['medical_note']}}" data-id="{{optional($row->getAppointment())['id']}}">edit</i>
                                         </span>
                                     @else
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{$row->getAppointment()['id']}}">add</i>
+                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{optional($row->getAppointment())['id']}}">add</i>
                                         </span>
                                     @endif
                                 </div>
@@ -477,16 +477,16 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
                                 
-                                <div class="{{'edit-remark-data edit-remark-'.$row->getAppointment()['id']}}">
+                                <div class="{{'edit-remark-data edit-remark-'.optional($row->getAppointment())['id']}}">
                                     <span class="font-weight-bold">Medical Note : </span>
-                                    @if(!empty($row->getAppointment()['medical_note']))
-                                        <span class="text-danger">{{$row->getAppointment()['medical_note']}}</span>
+                                    @if(!empty(optional($row->getAppointment())['medical_note']))
+                                        <span class="text-danger">{{optional($row->getAppointment())['medical_note']}}</span>
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->getAppointment()['medical_note']}}" data-id="{{$row->getAppointment()['id']}}">edit</i>
+                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{optional($row->getAppointment())['medical_note']}}" data-id="{{optional($row->getAppointment())['id']}}">edit</i>
                                         </span>
                                     @else
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{$row->getAppointment()['id']}}">add</i>
+                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{optional($row->getAppointment())['id']}}">add</i>
                                         </span>
                                     @endif
                                 </div>
@@ -625,16 +625,16 @@ $medqty = ['1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5];
                         <div class="row"> 
                             <div class="col-md-12 ml-2">
                                 
-                                <div class="{{'edit-remark-data edit-remark-'.$row->getAppointment()['id']}}">
+                                <div class="{{'edit-remark-data edit-remark-'.optional($row->getAppointment())['id']}}">
                                     <span class="font-weight-bold">Medical Note : </span>
-                                    @if(!empty($row->getAppointment()['medical_note']))
-                                        <span class="text-danger">{{$row->getAppointment()['medical_note']}}</span>
+                                    @if(!empty(optional($row->getAppointment())['medical_note']))
+                                        <span class="text-danger">{{optional($row->getAppointment())['medical_note']}}</span>
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{$row->getAppointment()['medical_note']}}" data-id="{{$row->getAppointment()['id']}}">edit</i>
+                                            <i class="material-icons edit-remark-icon pencil-icon" data-value="{{optional($row->getAppointment())['medical_note']}}" data-id="{{optional($row->getAppointment())['id']}}">edit</i>
                                         </span>
                                     @else
                                         <span class="edit-remark">
-                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{$row->getAppointment()['id']}}">add</i>
+                                            <i class="material-icons edit-remark-icon" data-value="" data-id="{{optional($row->getAppointment())['id']}}">add</i>
                                         </span>
                                     @endif
                                 </div>
