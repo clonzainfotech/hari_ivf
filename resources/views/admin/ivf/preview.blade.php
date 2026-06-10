@@ -1273,7 +1273,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                     </tr>
                                 @endif
-                                @if ($investigation->laproscopy->laproscopy_type == 2)
+                                @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2)
                                     <tr>
                                         <th>
                                             <span class="ivf-label">RT Tube: </span>
@@ -1286,7 +1286,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                     </tr>
                                 @endif
-                                @if ($investigation->laproscopy->laproscopy_type == 2)
+                                @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2)
                                     <tr>
                                         <th>
                                             <span class="ivf-label"> Uterus: </span>
@@ -1299,7 +1299,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                     </tr>
                                 @endif
-                                @if ($investigation->laproscopy->laproscopy_type == 2)
+                                @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2)
                                     <tr>
                                         <th>
                                             <span class="ivf-label">LT Tube:  </span>
@@ -1312,7 +1312,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                     </tr>
                                 @endif
-                                @if ($investigation->laproscopy->laproscopy_type == 2 && !empty($investigation->laproscopy->other))
+                                @if (!empty($investigation->laproscopy->laproscopy_type) && $investigation->laproscopy->laproscopy_type == 2 && !empty($investigation->laproscopy->other))
                                     <tr>
                                         <th>
                                             <span class="ivf-label"> Other:  </span>
@@ -1340,12 +1340,12 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                         @if (!empty($investigation->hcg->type) && $investigation->hcg->type == 'yes')
                                             <td>
-                                                {{ ($investigation->hcg->laproscopy_type == 2) ? 'Abnormal' : 'Normal' }}
+                                                {{ (!empty($investigation->hcg->laproscopy_type) && $investigation->hcg->laproscopy_type == 2) ? 'Abnormal' : 'Normal' }}
                                             </td>
                                         @endif
                                     </tr>
                                 @endif
-                                @if ($investigation->hcg->laproscopy_type == 2)
+                                @if (!empty($investigation->hcg->laproscopy_type) && $investigation->hcg->laproscopy_type == 2)
                                     <tr>
                                         <th>
                                             <span class="ivf-label">RT Tube: </span>
@@ -1358,7 +1358,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                     </tr>
                                 @endif
-                                @if ($investigation->hcg->laproscopy_type == 2 && $investigation->hcg->uterus_type)
+                                @if (!empty($investigation->hcg->laproscopy_type) && $investigation->hcg->laproscopy_type == 2 && $investigation->hcg->uterus_type)
                                     <tr>
                                         <th>
                                             <span class="ivf-label"> Uterus: </span>
@@ -1371,7 +1371,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         @endif
                                     </tr>
                                 @endif
-                                @if ($investigation->hcg->laproscopy_type == 2)
+                                @if (!empty($investigation->hcg->laproscopy_type) && $investigation->hcg->laproscopy_type == 2)
                                     <tr>
                                         <th>
                                             <span class="ivf-label"> LT Tube:  </span>
@@ -1512,8 +1512,11 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 $investigationValueDetails = [];
                                                 $investigationReport = $investigationReport['reportData'];
                                                 $data = $investigation->investigation_data;
-                                                $investigationValueData = (array)$investigation->investigation_details;
+                                                $investigationValueData = (array)($investigation->investigation_details ?? []);
                                                 foreach($data as $key => $value){
+                                                    if(!isset($investigationReport[$value])){
+                                                        continue;
+                                                    }
                                                     if(!empty($investigationValueData[$value])){
                                                         $investigationValueDetails[$investigationReport[$value]] = $investigationValueData[$value];
                                                     }else{
@@ -3028,8 +3031,11 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                         $investigationData = [];
                                                         $investigationValueDetails['wife'] = [];
                                                         $data = (!empty($historyWifeInvestigation->investigation_data)) ? $historyWifeInvestigation->investigation_data : [];
-                                                        $investigationValueData = (array)$historyWifeInvestigation->investigation_details;
+                                                        $investigationValueData = (array)($historyWifeInvestigation->investigation_details ?? []);
                                                         foreach($data as $key => $value){
+                                                            if(!isset($investigationReport[$value])){
+                                                                continue;
+                                                            }
                                                             if(!empty($investigationValueData[$value])){
                                                                 $investigationValueDetails['wife'][$investigationReport[$value]] = $investigationValueData[$value];
                                                             }else{
@@ -3050,8 +3056,11 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                         $investigationData = [];
                                                         $investigationValueDetails['hub'] = [];
                                                         $data = !empty($historyHubInvestigation->investigation_data) ? $historyHubInvestigation->investigation_data : [];
-                                                        $investigationValueData = (array)$historyHubInvestigation->investigation_details;
+                                                        $investigationValueData = (array)($historyHubInvestigation->investigation_details ?? []);
                                                         foreach($data as $key => $value){
+                                                            if(!isset($investigationReport[$value])){
+                                                                continue;
+                                                            }
                                                             if(!empty($investigationValueData[$value])){
                                                                 $investigationValueDetails['hub'][$investigationReport[$value]] = $investigationValueData[$value];
                                                             }else{

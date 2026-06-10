@@ -1676,7 +1676,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 {
                                                     $inducingAgentDataValue = [];
                                                     foreach($valueData->injection as $injectionValue){
-                                                        $inducingAgentDataValue[] = $inducingInjectionData[$injectionValue];
+                                                        $inducingAgentDataValue[] = isset($inducingInjectionData[$injectionValue]) ? $inducingInjectionData[$injectionValue] : $injectionValue;
                                                     }
                                                     $inducing_agent = implode(',',$inducingAgentDataValue);
                                                 }
@@ -1782,7 +1782,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                     { 
                                                         foreach($agentData as $agentData)
                                                         {
-                                                            $InjectionData = !empty($InjectionData) ? $InjectionData.','.$inducingInjectionData[$agentData] : $inducingInjectionData[$agentData];
+                                                            $InjectionData = !empty($InjectionData) ? $InjectionData.','.(isset($inducingInjectionData[$agentData]) ? $inducingInjectionData[$agentData] : $agentData) : (isset($inducingInjectionData[$agentData]) ? $inducingInjectionData[$agentData] : $agentData);
                                                         }
                                                     }
                                                     @endphp
@@ -1843,7 +1843,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                 {
                                                     $inducingAgentDataValue = [];
                                                     foreach($valueData->injection as $injectionValue){
-                                                        $inducingAgentDataValue[] = $inducingInjectionData[$injectionValue];
+                                                        $inducingAgentDataValue[] = isset($inducingInjectionData[$injectionValue]) ? $inducingInjectionData[$injectionValue] : $injectionValue;
                                                     }
                                                     $inducing_agent = implode(',',$inducingAgentDataValue);
                                                 }
@@ -1996,7 +1996,7 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                                                         <td>{{($row->visit == 4 && !empty($iui_decription->result)) ? ($iui_decription->result == 'consive' ? 'Conceived' : 'Fail') : ''}}</td>
                                                     </tr>
                                                     @endif
-                                                    @if(!empty($iui_decription->hcg) && ($iui_decription->hcg->iui->status == 'yes'))
+                                                    @if(!empty($iui_decription->hcg) && !empty($iui_decription->hcg->iui) && ($iui_decription->hcg->iui->status == 'yes'))
                                                         <tr>
                                                             <td>
                                                                

@@ -94,7 +94,7 @@ class MedicalController extends AdminController
             $patients = $this->OpdPatients->find($pId);
             $appointmentData = $this->Appointment->wherePatientsId($pId)->whereIn('category_id',['1','2','3','4','5','6','17','18','22'])->where('is_done',1)->orderBy('id','DESC')->pluck('category_id','category_id')->toArray();
             $appointmentData = array_unique($appointmentData);
-            $lastCatgoryId = array_first($appointmentData);
+            $lastCatgoryId = head($appointmentData);
             $lastType = null;
             if(array_key_exists(1,$appointmentData) || array_key_exists(2,$appointmentData)){
                 $categoryData['1'] = 'IVF'; 

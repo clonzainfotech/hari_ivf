@@ -231,7 +231,7 @@
                             </th>
                             <td colspan="6">
                                 {{ !empty($oe->oe_type) && $oe->oe_type == 'tvs' ? 'TVS' : 'PA'  }}
-                                @if (array_key_exists($oe->oe_no, $oe_number))
+                                @if (!empty($oe->oe_no) && array_key_exists($oe->oe_no, $oe_number))
                                     {{ ' | ' . $oe_number[$oe->oe_no] }}
                                 @endif
                             </td>
@@ -1745,7 +1745,7 @@
                                             <tr>
                                                 <th colspan="2">
                                                     <span class="anc-label ">P/A : </span>
-                                                    @if(in_array($oe->oe_no,$utsizearray1))
+                                                    @if(!empty($oe->oe_no) && in_array($oe->oe_no,$utsizearray1))
                                                         <?=$oe->oe_no?>
                                                     @else
                                                         Soft
@@ -1836,7 +1836,7 @@
                                         <tr>
                                             <th colspan="2">
                                                 <span class="anc-label">
-                                                    @if(in_array($oe->oe_no,$oe_number))
+                                                    @if(!empty($oe->oe_no) && array_key_exists($oe->oe_no,$oe_number))
                                                         <?="Uterus ".$oe->oe_no?>
                                                     @endif
 

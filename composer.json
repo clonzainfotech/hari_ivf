@@ -9,35 +9,40 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "barryvdh/laravel-dompdf": "^0.8.7",
+        "barryvdh/laravel-dompdf": "^2.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "google/apiclient": "^2.10",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
-        "laravel/tinker": "^1.0",
-        "laravelcollective/html": "^5.8",
+        "laravel/helpers": "*",
+        "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.0",
+        "laravelcollective/html": "^6.2",
         "nao-pon/flysystem-google-drive": "^1.1",
         "pusher/pusher-php-server": "^6.1",
-        "simplesoftwareio/simple-qrcode": "^2.0"
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
-        "fzaninotto/faker": "^1.4",
-        "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^3.0",
+        "fzaninotto/faker": "^1.9.1",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"
     },
     "config": {
-        "optimize-autoloader": true,
+        "optimize-autoloader": false,
         "preferred-install": "dist",
         "sort-packages": true
     },
     "extra": {
         "laravel": {
             "dont-discover": []
-        }
+        },
+        "google/apiclient-services": [
+            "Drive"
+        ]
     },
     "autoload": {
         "psr-4": {

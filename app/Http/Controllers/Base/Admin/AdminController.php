@@ -632,7 +632,7 @@ class AdminController extends BaseController
                         $read_by = !empty($query->read_by) ? explode(',',$query->read_by) : [];
                         if(empty($query->read_by) || !in_array($auth_id,$read_by))
                         {
-                            $query->patient_name = ucWords($query->getPatients['name']);
+                            $query->patient_name = !empty($query->getPatients) ? ucWords($query->getPatients['name']) : '';
                             $query->date = Carbon::parse($query->date)->format('d M Y h:i a');
                             return $query;
                         }
@@ -643,7 +643,7 @@ class AdminController extends BaseController
             $payment = collect($payment->get())
                         ->map(function ($query)
                         {
-                                $query->patient_name = ucWords($query->getPatientsData['name']);
+                                $query->patient_name = !empty($query->getPatientsData) ? ucWords($query->getPatientsData['name']) : '';
                                 $query->date = Carbon::parse($query->date)->format('d M Y');
                                 return $query;
                         });
@@ -656,7 +656,7 @@ class AdminController extends BaseController
                 if((empty($description->loop_1) && empty($description->loop_2) && empty($description->loop_3) && empty($description->loop_4)) && Carbon::parse($query->created_at)->format('Y-m-d') > '2021-11-10' && Carbon::parse($query->created_at)->diffInDays($now) >= 5)
                 {
                     // dd($query->patients_id);
-                    $query->patient_name = ucWords($query->getPatients['name']);
+                    $query->patient_name = !empty($query->getPatients) ? ucWords($query->getPatients['name']) : '';
                     $query->date = Carbon::parse($query->created_at)->format('d M Y');
                     return $query;
                 }

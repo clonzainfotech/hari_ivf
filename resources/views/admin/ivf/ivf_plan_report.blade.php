@@ -504,12 +504,11 @@ foreach($ivf as $ivf)
                 </div>
                 @php
                     $erImageArray = ['good','medium','poor','gv','m1'];
-                    $baseUrl = url('assets/images');
                 @endphp
                 <div class="row mb-2">
                     @foreach($erImageArray as $erImage)
-                    
-                        @if(getimagesize($baseUrl.'/'.$erImage.'.jpg'))
+
+                        @if(file_exists(public_path('assets/images/'.$erImage.'.jpg')))
                             <div class="col-md-2 text-center">
                                 {{-- <div class="input-group"> --}}
                                     <img src="{{url('assets/images/'.$erImage.'.jpg')}}" class="er_image mb-1">

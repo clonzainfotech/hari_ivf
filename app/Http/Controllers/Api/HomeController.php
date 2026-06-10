@@ -16,7 +16,7 @@ class HomeController extends ApiController
     {
         // Unique Token
         parent::__construct();
-        $this->apiToken = uniqid(base64_encode(str_random(100)));
+        $this->apiToken = uniqid(base64_encode(\Illuminate\Support\Str::random(100)));
     }
 
     // user can login

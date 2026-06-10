@@ -20,7 +20,7 @@ class ConfigureDatabase
     public function handle($request, Closure $next)
     {
         $domain = 'mysql';
-        $subdomain = array_first(explode('.', request()->getHost()));
+        $subdomain = explode('.', request()->getHost())[0];
         if(isset($subdomain) && !empty($subdomain) && $subdomain=='parvatpatiya'){
             $domain = 'parvatpatiya';
             config()->set('app.url', 'https://parvatpatiya.candorivf.com/');

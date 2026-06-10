@@ -941,7 +941,7 @@ class IUIController extends AdminController
                                         $protocol[$protocol_key]['s_day'] = $third_visit_Skey;
                                         $protocol[$protocol_key]['date'] = \Carbon\Carbon::parse($iuiHistory->created_at)->format('D d M Y');
                                         $injection = '';
-                                        $inducingInjection = $inducingInjectionData[$agentData];
+                                        $inducingInjection = isset($inducingInjectionData[$agentData]) ? $inducingInjectionData[$agentData] : $agentData;
                                         $inducing_agent = trim($inducingInjection);
                                         preg_match_all('!\d+!', $inducing_agent, $dose);
                                         $brand_name = $this->string_between_two_string($inducingInjection,'(',')');
@@ -1875,7 +1875,7 @@ class IUIController extends AdminController
 
         $finalInjection = [];
         $finalInjection = array_map(function (array $array) use ($inducingInjectionData) {
-            $array['name'] = $inducingInjectionData[$array['name']];
+            $array['name'] = isset($inducingInjectionData[$array['name']]) ? $inducingInjectionData[$array['name']] : $array['name'];
             return $array;
         }, $injectionArray);
         if(!empty($secondVisitInjection)) {

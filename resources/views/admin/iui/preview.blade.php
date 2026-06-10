@@ -3607,7 +3607,7 @@
                                         {
                                             $inducingAgentDataValue = [];
                                             foreach($valueData->injection as $injectionValue){
-                                                $inducingAgentDataValue[] = $inducingInjectionData[$injectionValue];
+                                                $inducingAgentDataValue[] = isset($inducingInjectionData[$injectionValue]) ? $inducingInjectionData[$injectionValue] : $injectionValue;
                                             }
                                             $inducing_agent = implode(',',$inducingAgentDataValue);
                                         }
@@ -3724,7 +3724,7 @@
                                         {
                                             foreach($agentData as $agentData)
                                             {
-                                                $InjectionData = !empty($InjectionData) ? $InjectionData.','.$inducingInjectionData[$agentData] : $inducingInjectionData[$agentData];
+                                                $InjectionData = !empty($InjectionData) ? $InjectionData.','.(isset($inducingInjectionData[$agentData]) ? $inducingInjectionData[$agentData] : $agentData) : (isset($inducingInjectionData[$agentData]) ? $inducingInjectionData[$agentData] : $agentData);
                                             }
                                         }
                                         if(isset($patient_view) && $patient_view == 1)
@@ -3776,7 +3776,7 @@
                                         {
                                             $inducingAgentDataValue = [];
                                             foreach($valueData->injection as $injectionValue){
-                                                $inducingAgentDataValue[] = $inducingInjectionData[$injectionValue];
+                                                $inducingAgentDataValue[] = isset($inducingInjectionData[$injectionValue]) ? $inducingInjectionData[$injectionValue] : $injectionValue;
                                             }
                                             $inducing_agent = implode(',',$inducingAgentDataValue);
                                             
@@ -3867,7 +3867,7 @@
                                 </tr>
                                 @endif
                                 {{-- for IUI --}}
-                                @if(!empty($iui_decription->hcg) && ($iui_decription->hcg->iui->status == 'yes'))
+                                @if(!empty($iui_decription->hcg) && !empty($iui_decription->hcg->iui) && ($iui_decription->hcg->iui->status == 'yes'))
                                     <tr>
                                         <td>
                                         
@@ -3938,7 +3938,7 @@
                                         $historyTreatmentView = !empty($data->treatment) ? $data->treatment : $data->old_treatment;
                                     }
                                 @endphp
-                                @if(!empty($historyTreatmentView) && (!empty($historyTreatmentView->medicinedata[0])))
+                                @if(!empty($historyTreatmentView) && !empty((array)($historyTreatmentView->medicinedata ?? [])))
                                 <tr>
                                     <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
                                     <td class="text-justify">

@@ -444,6 +444,7 @@
 												@if(!empty($value))
 													@foreach($value as $image)
 													@php
+                                                        $imageType = '';
                                                         if(is_file($image))
                                                         {
 														    $imageType = mime_content_type($image);   

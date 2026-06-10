@@ -36,13 +36,6 @@ class BackupDatabase extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->process = new Process(sprintf(
-            'mysqldump -u%s -p%s %s > %s',
-            ('cronadmin'),
-            ('RIs2C8yn3_YnSEE4Rn'),
-            ('unikwork_healthcare'),
-            $this->getfile()
-        ));
     }
 
     /**
@@ -51,8 +44,15 @@ class BackupDatabase extends Command
      */
     public function handle()
     {
-        //
         try {
+            $this->process = new Process(sprintf(
+                'mysqldump -u%s -p%s %s > %s',
+                ('cronadmin'),
+                ('RIs2C8yn3_YnSEE4Rn'),
+                ('unikwork_healthcare'),
+                $this->getfile()
+            ));
+
             $this->process->mustRun();
 
             $this->info('The backup has been proceed successfully.');
