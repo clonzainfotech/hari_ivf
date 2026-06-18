@@ -79,7 +79,7 @@ class ShiftDates extends Command
         }
 
         // 2. Idempotency / no-op guard.
-        if ($n <= 0) {
+        if ($this->option('days') === null && $n <= 0) {
             $this->error("Computed offset is {$n} day(s) — nothing to do.");
             $this->line("The newest clinical activity is already at (or after) today" .
                 ($this->anchorDate ? " (anchor: {$this->anchorDate})" : '') . ".");
