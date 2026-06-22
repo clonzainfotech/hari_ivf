@@ -963,7 +963,7 @@ class ANCController extends AdminController
             $patients = decrypt($patientsId);
             $isGsac = false;
             $ancCurrent = $this->ANC->where('patients_id',$patients)->orderBy('created_at','desc')->first();
-            $ancData = $this->AncHistory->where('patients_id',$patients)->where('anc_id',$ancCurrent->id)->orderBy('id','DESC')->first();
+            $ancData = $this->AncHistory->where('patients_id',$patients)->where('anc_id',optional($ancCurrent)->id)->orderBy('id','DESC')->first();
             $personalData = $this->AncHoHistory->where('type',1)->pluck('name','name')->toArray();
             $pastData = $this->AncHoHistory->where('type',2)->pluck('name','name')->toArray();
             $familyData = $this->AncHoHistory->where('type',3)->pluck('name','name')->toArray();
@@ -976,7 +976,7 @@ class ANCController extends AdminController
             $leftOvaryData = $this->OvaryDetail->where('type',1)->pluck('name','name');
             $rightOvaryData = $this->OvaryDetail->where('type',2)->pluck('name','name');
             if($ancData){
-                $mhData = json_decode($ancData->getAncs->m_h);
+                $mhData = json_decode(optional($ancData->getAncs)->m_h);
                 // $mhData = json_decode($ancData->getAncs->m_h);
                 $ancFirstVisitData = $this->ANC->where('patients_id',$patients)->orderBy('created_at','desc')->first();
                 $upt = json_decode($ancFirstVisitData->patients_obstratics, true);
@@ -1001,8 +1001,8 @@ class ANCController extends AdminController
                 // $mhData = json_decode($ancData->m_h);
             }
             $hoDate = null;
-            $hoData = json_decode($ancData->h_o);
-            $lmdDate = $mhData->last_menstrual_date;
+            $hoData = json_decode(optional($ancData)->h_o);
+            $lmdDate = $mhData->last_menstrual_date ?? null;
             if(!empty($hoData) && !empty($lmdDate)){
                 // $hoDetails = $hoData->ho_details;
                 // // dd($hoDetails);
@@ -1087,7 +1087,7 @@ class ANCController extends AdminController
                     ->where([
                         ['patients_id', '=', $patients]
                     ])
-                    ->where('anc_id','=',$ancCurrent->id)
+                    ->where('anc_id','=',optional($ancCurrent)->id)
                     ->orderBy('created_at', 'DESC')
                     ->first();
                 if($previousAnc == null){
@@ -1120,7 +1120,7 @@ class ANCController extends AdminController
             $treatment = json_decode($ancData->treatment);
             $usg = json_decode($ancData->usg);
             $date = [];
-            $ancHistoryDate = $this->AncHistory->where('patients_id',$patients)->where('anc_id',$ancCurrent->id)->orderBy('created_at','DESC')->pluck('created_at','created_at')->toArray();
+            $ancHistoryDate = $this->AncHistory->where('patients_id',$patients)->where('anc_id',optional($ancCurrent)->id)->orderBy('created_at','DESC')->pluck('created_at','created_at')->toArray();
             // $ancHistoryDate = collect($this->AncHistory->select('created_at','o_e->follow_up as follow_up')->where('patients_id',$patients)->get())->map(function ($q){
             //     $q->follow_up = Carbon::parse($q->follow_up)->format('d-m-Y').' '.Carbon::parse($q->created_at)->format('H:i:s');
             //     return $q;
@@ -1206,7 +1206,7 @@ class ANCController extends AdminController
             }
             $weekData = [1=>'Normal Size',2=>'Just Bulky',3=>'6 Weeks',4=>'6 - 8 Weeks',5=>'8 Weeks',6=>'8 - 10 Weeks',7=>'10 - 12 Weeks',8=>'12 Weeks',9=>'Uterus Just Palpable',10=>'14 Weeks',11=>'16 Weeks',12=>'18 Weeks',13=>'20 Weeks',14=>'22 Weeks',15=>'24 Weeks',16=>'26 Weeks',17=>'28 Weeks',18=>'30 Weeks',19=>'32 Weeks',20=>'34 Weeks',21=>'36 Weeks',22=>'Full Term'];
             // $firstANCData = $this->ANC->where('patients_id',$patients)->where('created_at','<',$ancCurrent->created_at)->first();
-            $getTotalAncNumber = $this->getTotalAncNumber($patients,$ancCurrent->id);
+            $getTotalAncNumber = $this->getTotalAncNumber($patients,optional($ancCurrent)->id);
             // $isConceivedIUI = false;
             // $isConceivedIVF = false;
             // $ancTranferDate = Carbon::parse($ancDateData->created_at)->format('Y-m-d H:i:s');
@@ -1291,14 +1291,14 @@ class ANCController extends AdminController
                 $data['rmoDoctor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
                 $data['leftOvaryData'] = $leftOvaryData;
                 $data['rightOvaryData'] = $rightOvaryData;
-                $data['ancAutoRemark'] = $this->getAutoRemark($patients,$ancCurrent->id);
+                $data['ancAutoRemark'] = $this->getAutoRemark($patients,optional($ancCurrent)->id);
                 $data['editAnc'] = View::make('admin.anc.edit',$data)->render();
                 return $data;
             }
 
             return view('admin.anc.history',compact('todayAncVisit','ancData','patientsId','date','hospitalTime','weekData','medicines','ancPatients','referenceDoctor','getTotalAncNumber','ancCurrent'));
         }catch(Exception $e){
-            log::debug($e);
+            \Log::error('ancHistory failed: '.$e->getMessage().' @ '.$e->getFile().':'.$e->getLine());
             abort(500);
         }
     }
