@@ -2275,11 +2275,11 @@
                                             </div>
                                             <div class="{{'col-md-3 hystroscopy-type '.$hystroscopyClassName}}">
                                                 <div class="form-group">
-                                                    {{Form::select("investigation[hystroscopy][finding_type]",['1'=>'Normal','2'=>"Abnormal"],!empty($investigation->hystroscopy) ? $investigation->hystroscopy->finding_type : null,['class'=>'form-control select-padding-0 abnormal','data-type'=>'finding-type'])}}
+                                                    {{Form::select("investigation[hystroscopy][finding_type]",['1'=>'Normal','2'=>"Abnormal"],$investigation->hystroscopy->finding_type ?? null,['class'=>'form-control select-padding-0 abnormal','data-type'=>'finding-type'])}}
                                                 </div>
                                             </div>
                                             @php
-                                                $fType = !empty($investigation->hystroscopy) && $investigation->hystroscopy->finding_type == '1' ? 'd-none' : '';
+                                                $fType = ($investigation->hystroscopy->finding_type ?? null) == '1' ? 'd-none' : '';
                                             @endphp
                                             <div class="{{'col-sm-3 finding-type hystroscopy-type-abnormal '.$fType.' '.$hystroscopyClassName}}">
                                                 <div class="form-group">
