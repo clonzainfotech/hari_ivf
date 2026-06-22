@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('db:backup')->dailyAt('20:00');
         // $schedule->command('db:backup')->dailyAt('21:00');
         $schedule->command('db:uploadbackup')->dailyAt('01:00');
+        $schedule->command('data:shift-dates --force')->daily();
     }
 
     /**
