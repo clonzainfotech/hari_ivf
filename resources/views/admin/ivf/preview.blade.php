@@ -1546,7 +1546,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     </div>
 
                     <div class="display">
-                        @if($oe  && ($oe->tvs->type == 'yes' || $oe->p_s->type == 'yes' || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse) || (isset($oe->adnexa) && $oe->adnexa->type == 'yes')))
+                        @if($oe  && (($oe->tvs->type ?? null) == 'yes' || ($oe->p_s->type ?? null) == 'yes' || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse) || (isset($oe->adnexa) && ($oe->adnexa->type ?? null) == 'yes')))
                             <table cellspacing="0" cellpadding="0" class="table m-b-0  module-report-table">
                                 <tbody>
                                     <tr>
@@ -1576,13 +1576,13 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             </th>
                                         @endif
                                     </tr>
-                                    @if($oe->p_s->type == 'yes')
+                                    @if(($oe->p_s->type ?? null) == 'yes')
                                     <br>
                                         <tr>
                                             <th>
                                                 <span class="ivf-label">P / S:</span>
-                                                {{ !empty($oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
-                                                @if ($oe->p_s->type == 'yes')
+                                                {{ !empty(($oe->p_s->type ?? null) == 'yes') ? 'Yes' : 'No' }}
+                                                @if (($oe->p_s->type ?? null) == 'yes')
                                                     {{!empty($oe->p_s->details) ? '| '.$oe->p_s->details : '-' }}
                                                 @endif
                                             </th>
@@ -1597,22 +1597,22 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             </th>
                                         </tr>
                                     @endif
-                                    @if($oe->tvs->type == 'yes')
+                                    @if(($oe->tvs->type ?? null) == 'yes')
                                         <tr>
                                             <th>
                                                 <span class="ivf-label">Transvaginal Ultrasonography:</span>
                                             </th>
                                         </tr>
                                     @endif
-                                    @if ($oe->tvs->type == 'yes')
+                                    @if (($oe->tvs->type ?? null) == 'yes')
                                         <tr>
                                             <th>
                                                 <span class="ivf-label">Uterus:  </span>
-                                                {{ !empty($oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
+                                                {{ !empty(($oe->uterus->type ?? null) == '2') ? 'Abnormal' : 'Normal' }}
                                             </th>
                                         </tr>
                                         <tr>
-                                            @if ($oe->uterus->type == '2')
+                                            @if (($oe->uterus->type ?? null) == '2')
                                                 <th>
                                                     <span class="ivf-label">Abnormal Details:  </span>
                                                     {{ !empty($oe->uterus->details) ? $oe->uterus->details : '-' }}
@@ -1628,7 +1628,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 </th>
                                             </tr>
                                         @endif
-                                    @if ($oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
+                                    @if (($oe->tvs->type ?? null) == 'yes' && !empty($oe->endometrial_thickness))
                                         <tr>
                                             <th>
                                                 <span class="ivf-label">Endometrial Thickness:  </span>
@@ -1696,7 +1696,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         </th>
                                     </tr>
                                     @endif
-                                    @if(!empty($oe->adnexa->type) && $oe->adnexa->type == 'yes' && !empty($oe->adnexa->details))
+                                    @if(!empty($oe->adnexa->type) && ($oe->adnexa->type ?? null) == 'yes' && !empty($oe->adnexa->details))
                                         <tr>
                                             <th colspan="2">
                                                 <span class="ivf-label">Adnexa: </span>
@@ -2398,7 +2398,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         <tr>
                                             <?php
                                                 $medicine_status = '';
-                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                                 $firstCharacter = strtoupper(substr($mId, 0, 3));
                                                 if($firstCharacter == "INJ"){
                                                     if(!empty($row->medicine_time))
@@ -2444,7 +2444,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                         $mData[3] = $row->quantity_4;
                                                     }
                                                     $mData = implode('-',$mData);
-                                                    switch($row->medicine_status){
+                                                    switch($row->medicine_status ?? ''){
                                                         case '1':
                                                             $medicine_status = 'જમ્યા પછી';
                                                             break;
@@ -2457,7 +2457,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                     }
                                                 }
                                             ?>
-                                            <td>{{$row->medicine}}</td>
+                                            <td>{{$row->medicine ?? ''}}</td>
                                             <td>{{$mData}}</td>
                                             <td>{{$medicine_status}}</td>
                                             <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
@@ -2588,10 +2588,10 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 <span class="ivf-label"> O / E :</span>
                                                 {{-- {{strtoupper($oe->oe_type->type)}} --}}
                                                 @php
-                                                    if($oe->oe_type->type == 'tvs'){
+                                                    if(($oe->oe_type->type ?? null) == 'tvs'){
                                                         echo "Transvaginal sonography";
                                                     }
-                                                    if($oe->oe_type->type == 'pa')
+                                                    if(($oe->oe_type->type ?? null) == 'pa')
                                                     {
                                                         echo "Transabdominal sonography";
                                                     }
@@ -2599,7 +2599,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             </th>
                                         @endif
                                     </tr>
-                                    @if(!empty($oe->adnexa->type) && $oe->adnexa->type == 'yes' && !empty($oe->adnexa->details))
+                                    @if(!empty($oe->adnexa->type) && ($oe->adnexa->type ?? null) == 'yes' && !empty($oe->adnexa->details))
                                         <tr>
                                             <th colspan="2">
                                                 <span class="ivf-label">Adnexa: </span>
@@ -3192,7 +3192,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                     <tr>
                                         <?php
                                             $medicine_status = '';
-                                            $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                            $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                             $firstCharacter = strtoupper(substr($mId, 0, 3));
                                             if($firstCharacter == "INJ"){
                                                 if(!empty($row->medicine_time))
@@ -3238,7 +3238,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                     $mData[3] = $row->quantity_4;
                                                 }
                                                 $mData = implode('-',$mData);
-                                                switch($row->medicine_status){
+                                                switch($row->medicine_status ?? ''){
                                                     case '1':
                                                         $medicine_status = 'જમ્યા પછી';
                                                         break;
@@ -3251,7 +3251,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 }
                                             }
                                         ?>
-                                        <td>{{$row->medicine}}</td>
+                                        <td>{{$row->medicine ?? ''}}</td>
                                         <td>{{$mData}}</td>
                                         <td>{{$medicine_status}}</td>
                                         <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
@@ -3365,7 +3365,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                             <tr>
                                         <?php
                                             $medicine_status = '';
-                                            $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                            $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                             $firstCharacter = strtoupper(substr($mId, 0, 3));
                                             if($firstCharacter == "INJ"){
                                                 if(!empty($row->medicine_time))
@@ -3411,7 +3411,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                     $mData[3] = $row->quantity_4;
                                                 }
                                                 $mData = implode('-',$mData);
-                                                switch($row->medicine_status){
+                                                switch($row->medicine_status ?? ''){
                                                     case '1':
                                                         $medicine_status = 'જમ્યા પછી';
                                                         break;
@@ -3424,7 +3424,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                 }
                                             }
                                         ?>
-                                        <td>{{$row->medicine}}</td>
+                                        <td>{{$row->medicine ?? ''}}</td>
                                         <td>{{$mData}}</td>
                                         <td>{{$medicine_status}}</td>
                                         <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>
@@ -4078,7 +4078,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             @foreach($historyTreatmentView as $key=>$row)
                                             @php
                                             
-                                                $firstCharacter = substr($row->medicine, 0, 3);
+                                                $firstCharacter = substr($row->medicine ?? '', 0, 3);
                                                 $notinject = "";
                                                 if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                                     $notinject = "is-inj";
@@ -4086,9 +4086,9 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             @endphp
                                             <div class="mb-1">
                                                 <span class="visit-lable"> Medicine : &nbsp</span>
-                                                    {{ $row->medicine }}
+                                                    {{ $row->medicine ?? '' }}
                                                     @if($notinject != "is-inj")
-                                                        | @switch($row->medicine_status)
+                                                        | @switch($row->medicine_status ?? '')
                                                                 @case('1')
                                                                     જમ્યા પછી
                                                                     @break
@@ -4432,7 +4432,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             @foreach($historyTreatmentView as $key=>$row)
                                             @php
                                             
-                                                $firstCharacter = substr($row->medicine, 0, 3);
+                                                $firstCharacter = substr($row->medicine ?? '', 0, 3);
                                                 $notinject = "";
                                                 if($firstCharacter=="inj" || $firstCharacter=="INJ") {
                                                     $notinject = "is-inj";
@@ -4440,9 +4440,9 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                             @endphp
                                             <div class="mb-1">
                                                 <span class="visit-lable"> Medicine : &nbsp</span>
-                                                    {{ $row->medicine }}
+                                                    {{ $row->medicine ?? '' }}
                                                     @if($notinject != "is-inj")
-                                                        | @switch($row->medicine_status)
+                                                        | @switch($row->medicine_status ?? '')
                                                                 @case('1')
                                                                     જમ્યા પછી
                                                                     @break
@@ -4555,7 +4555,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                     @endif
                 </tbody>
             </table>
-            @if($oe  && ($oe->tvs->type == 'yes' || $oe->p_s->type == 'yes' || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse) || (isset($oe->adnexa) && $oe->adnexa->type == 'yes')))
+            @if($oe  && (($oe->tvs->type ?? null) == 'yes' || ($oe->p_s->type ?? null) == 'yes' || !empty($oe->cervix->details) || !empty($oe->le->bp) || !empty($oe->le->temp) || !empty($oe->le->pulse) || (isset($oe->adnexa) && ($oe->adnexa->type ?? null) == 'yes')))
               
                 <table cellspacing="0" cellpadding="0" class="table m-b-0  module-report-table">
                     <tbody>
@@ -4587,18 +4587,18 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 </th>
                             @endif
                         </tr>
-                        @if($oe->p_s->type == 'yes')
+                        @if(($oe->p_s->type ?? null) == 'yes')
                             <tr>
                                 <th>
                                     <span class="ivf-label">P / S:</span>
-                                    {{ !empty($oe->p_s->type == 'yes') ? 'Yes' : 'No' }}
-                                    @if ($oe->p_s->type == 'yes')
+                                    {{ !empty(($oe->p_s->type ?? null) == 'yes') ? 'Yes' : 'No' }}
+                                    @if (($oe->p_s->type ?? null) == 'yes')
                                         {{!empty($oe->p_s->details) ? '| '.$oe->p_s->details : '-' }}
                                     @endif
                                 </th>
                             </tr>
                         @endif
-                        @if(!empty($oe->adnexa->type) && $oe->adnexa->type == 'yes' && !empty($oe->adnexa->details))
+                        @if(!empty($oe->adnexa->type) && ($oe->adnexa->type ?? null) == 'yes' && !empty($oe->adnexa->details))
                             <tr>
                                 <th colspan="2">
                                     <span class="ivf-label">Adnexa: </span>
@@ -4614,20 +4614,20 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 </th>
                             </tr>
                         @endif
-                        @if($oe->tvs->type == 'yes')
+                        @if(($oe->tvs->type ?? null) == 'yes')
                             <tr>
                                 <th>
                                     <span class="ivf-label">Transvaginal Ultrasonography:</span>
                                 </th>
                             </tr>
                         @endif
-                        @if ($oe->tvs->type == 'yes')
+                        @if (($oe->tvs->type ?? null) == 'yes')
                             <tr>
                                 <th>
                                     <span class="ivf-label">Uterus:  </span>
-                                    {{ !empty($oe->uterus->type == '2') ? 'Abnormal' : 'Normal' }}
+                                    {{ !empty(($oe->uterus->type ?? null) == '2') ? 'Abnormal' : 'Normal' }}
                                 </th>
-                                @if ($oe->uterus->type == '2')
+                                @if (($oe->uterus->type ?? null) == '2')
                                     <th>
                                         <span class="ivf-label">Abnormal Details:  </span>
                                         {{ !empty($oe->uterus->details) ? $oe->uterus->details : '-' }}
@@ -4635,7 +4635,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                 @endif
                             </tr>
                         @endif
-                        @if ($oe->tvs->type == 'yes' && !empty($oe->endometrial_thickness))
+                        @if (($oe->tvs->type ?? null) == 'yes' && !empty($oe->endometrial_thickness))
                             <tr>
                                 <th>
                                     <span class="ivf-label">Endometrial Thickness:  </span>
@@ -4714,7 +4714,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                         <tr>
                                             <?php
                                                 $medicine_status = '';
-                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine);
+                                                $mId = preg_replace('/[^a-zA-Z0-9]+/', '_', $row->medicine ?? '');
                                                 $firstCharacter = strtoupper(substr($mId, 0, 3));
                                                 if($firstCharacter == "INJ"){
                                                     if(!empty($row->medicine_time))
@@ -4760,7 +4760,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                         $mData[3] = $row->quantity_4;
                                                     }
                                                     $mData = implode('-',$mData);
-                                                    switch($row->medicine_status){
+                                                    switch($row->medicine_status ?? ''){
                                                         case '1':
                                                             $medicine_status = 'જમ્યા પછી';
                                                             break;
@@ -4773,7 +4773,7 @@ if(!isset($isExtraVisit) || $isExtraVisit == 0)
                                                     }
                                                 }
                                             ?>
-                                            <td>{{$row->medicine}}</td>
+                                            <td>{{$row->medicine ?? ''}}</td>
                                             <td>{{$mData}}</td>
                                             <td>{{$medicine_status}}</td>
                                             <td>{{isset($dose[$row->dose]) ? $dose[$row->dose] : ''}}</td>

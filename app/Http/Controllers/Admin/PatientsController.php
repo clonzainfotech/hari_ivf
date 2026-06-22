@@ -644,6 +644,16 @@ class PatientsController extends AdminController
         $ancRecords        = $keyByDate($this->ANC->where('patients_id',$pId)->get());
         $gynecRecords      = $keyByDate($this->Gynec->where('patients_id',$pId)->get());
         $stichRecords      = $keyByDate($this->Stich->where('patients_id',$pId)->get());
+        // Safety net: a single visit with malformed/legacy JSON must not 500 the whole history page.
+        // Render each visit defensively; on failure log it and show a placeholder for that visit only.
+        $safeVisit = function (callable $render) {
+            try {
+                return $render();
+            } catch (\Throwable $e) {
+                \Log::warning('patient-history visit render failed: '.$e->getMessage());
+                return '<div class="alert alert-warning m-2">This visit could not be displayed due to incomplete data.</div>';
+            }
+        };
         // $preview = 0;
         foreach($allVisit as $date => $category_id)
         {
@@ -665,11 +675,11 @@ class PatientsController extends AdminController
                     if (in_array('transfer',$collectionData))
                     {
                         // $preview = 0;
-                        $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
+                        $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = $safeVisit(fn() => $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview));
                     }
                     else
                     {
-                        $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
+                        $history[$created_at]['IVF'][$ivf->cycle_no.'/'.$planData[$ivf->plan]] = $safeVisit(fn() => $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview));
                     }
                 }
                 $ivfExtra = $ivfExtraRecords->get($date);
@@ -679,7 +689,7 @@ class PatientsController extends AdminController
                     $plan = encrypt($ivfExtra->plan);
                     $preview = 0;
                     $created_at = Carbon::parse($ivfExtra->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IVF'][$ivfExtra->cycle_no.'/'.(isset($planData[$ivfExtra->plan]) ? $planData[$ivfExtra->plan] : '')] = $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
+                    $history[$created_at]['IVF'][$ivfExtra->cycle_no.'/'.(isset($planData[$ivfExtra->plan]) ? $planData[$ivfExtra->plan] : '')] = $safeVisit(fn() => $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview));
                 }
                 $ivf = $ivfRecords->get($date);
                 if($ivf && $category_id == 1)
@@ -688,7 +698,7 @@ class PatientsController extends AdminController
                     $created_at = Carbon::parse($ivf->created_at)->format('Y-m-d H:i');
                     $cycle_no = 0;
                     $plan = 0;
-                    $history[$created_at]['IVF'][''] = $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview);
+                    $history[$created_at]['IVF'][''] = $safeVisit(fn() => $ivfController->getIvfAppointmentWiseVisit($date,$patient_id,$cycle_no,$plan,$preview));
                 }
             }
             // //iui
@@ -700,7 +710,7 @@ class PatientsController extends AdminController
                     $cycle_no = encrypt($iui->cycle_no);
                     $preview = $iui->visit - 1;
                     $created_at = Carbon::parse($iui->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IUI'][$iui->cycle_no] = $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id);
+                    $history[$created_at]['IUI'][$iui->cycle_no] = $safeVisit(fn() => $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id));
                 }
                 $iuiExtra = $iuiExtraRecords->get($date);
                 if($iuiExtra)
@@ -708,7 +718,7 @@ class PatientsController extends AdminController
                     $cycle_no = encrypt($iuiExtra->cycle_no);
                     $preview = 0;
                     $created_at = Carbon::parse($iuiExtra->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IUI'][$iuiExtra->cycle_no] = $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id);
+                    $history[$created_at]['IUI'][$iuiExtra->cycle_no] = $safeVisit(fn() => $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id));
                 }
                 $iui = $iuiRecords->get($date);
                 if($iui && $category_id == 3)
@@ -716,7 +726,7 @@ class PatientsController extends AdminController
                     $cycle_no = encrypt($iui->cycle_no);
                     $preview = 0;
                     $created_at = Carbon::parse($iui->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IUI'][''] = $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id);
+                    $history[$created_at]['IUI'][''] = $safeVisit(fn() => $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id));
                 }
                 $iuiReport = $iuiReportRecords->get($date);
                 if($iuiReport)
@@ -724,7 +734,7 @@ class PatientsController extends AdminController
                     $cycle_no = encrypt($iuiReport->cycle_no);
                     $preview = 0;
                     $created_at = Carbon::parse($iuiReport->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['IUI'][''] = $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id);
+                    $history[$created_at]['IUI'][''] = $safeVisit(fn() => $iuiController->getIuiAppointmentWiseVisit($date,$patient_id,$cycle_no,$preview,$category_id));
                 }
 
             }
@@ -736,13 +746,13 @@ class PatientsController extends AdminController
                 if($anc)
                 {
                     $created_at = Carbon::parse($anc->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['ANC'][''] = $ancController->getAncAppointmentWiseVisit($date,$patient_id,$anc->anc_id);
+                    $history[$created_at]['ANC'][''] = $safeVisit(fn() => $ancController->getAncAppointmentWiseVisit($date,$patient_id,$anc->anc_id));
                 }
                 $anc = $ancRecords->get($date);
                 if($anc && $category_id == 5)
                 {
                     $created_at = Carbon::parse($anc->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['ANC'][''] = $ancController->getAncAppointmentWiseVisit($date,$patient_id,$anc->id);
+                    $history[$created_at]['ANC'][''] = $safeVisit(fn() => $ancController->getAncAppointmentWiseVisit($date,$patient_id,$anc->id));
                 }
             }
             if($category_id == 18)
@@ -752,7 +762,7 @@ class PatientsController extends AdminController
                 if($gynec)
                 {
                     $created_at = Carbon::parse($gynec->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['GYNEC'][''] = $gynecController->getGynecAppointmentWiseVisit($date,$patient_id);
+                    $history[$created_at]['GYNEC'][''] = $safeVisit(fn() => $gynecController->getGynecAppointmentWiseVisit($date,$patient_id));
                 }
             }
             if($category_id == 22)
@@ -762,7 +772,7 @@ class PatientsController extends AdminController
                 if($stich)
                 {
                     $created_at = Carbon::parse($stich->created_at)->format('Y-m-d H:i');
-                    $history[$created_at]['STICH'][''] = $stichController->getStichAppointmentWiseVisit($date,$patient_id);
+                    $history[$created_at]['STICH'][''] = $safeVisit(fn() => $stichController->getStichAppointmentWiseVisit($date,$patient_id));
                 }
             }
         }
