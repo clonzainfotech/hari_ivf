@@ -276,7 +276,7 @@ class IVFController extends AdminController
             // Stale/old link encrypted with a different APP_KEY — show a friendly message instead of a 500.
             return redirect('/')->with('error','Invalid or expired link. Please reopen this page from the patient list.');
         }catch(Exception $e){
-            log::debug($e);
+            \Log::error('ivfEdit failed: '.$e->getMessage().' @ '.$e->getFile().':'.$e->getLine());
             abort(500);
             return back();
         }
