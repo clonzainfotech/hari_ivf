@@ -272,6 +272,9 @@ class IVFController extends AdminController
             $data['hospitalDoctor'] = $this->User->whereRole('3')->whereStatus('1')->pluck('name','id')->toArray();
             $data['rmoDoctor'] = $this->User->whereRole('3')->where('is_rmo_doctor',1)->whereStatus('1')->pluck('name','id')->toArray();
             return view('admin.ivf.edit',$data);
+        }catch(\Illuminate\Contracts\Encryption\DecryptException $e){
+            // Stale/old link encrypted with a different APP_KEY — show a friendly message instead of a 500.
+            return redirect('/')->with('error','Invalid or expired link. Please reopen this page from the patient list.');
         }catch(Exception $e){
             log::debug($e);
             abort(500);
