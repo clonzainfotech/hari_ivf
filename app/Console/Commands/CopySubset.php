@@ -64,7 +64,8 @@ class CopySubset extends Command
         $dryRun = (bool) $this->option('dry-run');
 
         $this->line("Source : <info>{$this->source}</info> (read-only)");
-        $this->line("Target : <info>{$this->target}</info>" . ($dryRun ? ' (dry-run, untouched)' : ' (will be DROPPED & recreated)'));
+        $targetNote = $dryRun ? ' (dry-run, untouched)' : ($this->option('no-create') ? ' (existing DB; tables reset & filled)' : ' (will be DROPPED & recreated)');
+        $this->line("Target : <info>{$this->target}</info>" . $targetNote);
         $this->newLine();
 
         // 1. Introspect the live schema once.
@@ -295,9 +296,16 @@ class CopySubset extends Command
         $dump->setTimeout(600);
         $dump->mustRun();
 
+        // Strip DEFINER clauses so VIEWS import without needing SUPER/SET_USER_ID
+        // (mysqldump records the original definer; a restricted user can't recreate it).
+        $sql = $dump->getOutput();
+        $sql = preg_replace('/DEFINER=`[^`]*`@`[^`]*`/', '', $sql);
+        $sql = preg_replace('/DEFINER=[^ ]+@[^ ]+ /', '', $sql);
+        $sql = str_replace('SQL SECURITY DEFINER', 'SQL SECURITY INVOKER', $sql);
+
         $import = new Process(array_merge(['mysql'], $base, [$this->target]), null, $env);
         $import->setTimeout(600);
-        $import->setInput($dump->getOutput());
+        $import->setInput($sql);
         $import->mustRun();
 
         $this->info('Schema cloned.');
