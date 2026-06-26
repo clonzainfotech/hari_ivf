@@ -55,7 +55,7 @@ class AuthApiController extends ApiController
         //     if($patient)
         //     {
         //         $user_data = $patient;
-        //         // return $this->sendNotApproved('Please contact to Radha Candor IVF Hospital of Approve your Request');
+        //         // return $this->sendNotApproved('Please contact to Civora IVF Hospital of Approve your Request');
         //     }
  
         // }
@@ -81,7 +81,7 @@ class AuthApiController extends ApiController
             return $this->sendResponse('Send otp for verification.',$success);
         }
         else{
-            return $this->sendError('Please contact to Radha Candor IVF Hospital');
+            return $this->sendError('Please contact to Civora IVF Hospital');
         }
        return $this->sendError(__('auth.failed'), 401);
     }
@@ -248,7 +248,7 @@ class AuthApiController extends ApiController
         }
         else
         {
-            return $this->sendError('Please contact to Radha Candor IVF Hospital for Approve your Request');
+            return $this->sendError('Please contact to Civora IVF Hospital for Approve your Request');
         }
     }
      /**

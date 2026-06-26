@@ -18,9 +18,9 @@
                         $appointmentCount = getAppointmentCount(4)['appointmentCount'];
                         $selfBookingCount = getSelfBookingCount();
                     @endphp
-                    <div>
-                        <a href="{{URL::to('/dashboard')}}" style="margin-bottom: 15px;">
-                            <img src="{{ url('images/' . $logo)}}" alt="{{ $alt }}" width="{{$width}}" height="{{$height}}"/>
+                    <div style="text-align: center; margin-top: 5px; margin-bottom: 20px;">
+                        <a href="{{URL::to('/dashboard')}}" style="text-decoration: none; display: inline-block; padding: 5px 0;">
+                            <h2 style="color: #444; font-weight: 400; font-size: 45px; letter-spacing: 1px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Civora</h2>
                         </a>
                     </div>
                     <div class="detail">

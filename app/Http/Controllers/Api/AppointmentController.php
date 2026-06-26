@@ -708,7 +708,7 @@ class AppointmentController extends ApiController
                                     'appointment_date' => \Carbon\Carbon::parse($request->date)->format('Y-m-d'),
                                     'appointment_time' => $request->time
                                 ]);
-                            $msg = $patient->is_approval == 1 ? "Approval for appointment is pending, Sorry for inconvenience. We will reply soon." : "Your appointment is pending. Please contact to Radha Candor IVF Hospital for Approve your Request";
+                            $msg = $patient->is_approval == 1 ? "Approval for appointment is pending, Sorry for inconvenience. We will reply soon." : "Your appointment is pending. Please contact to Civora IVF Hospital for Approve your Request";
                         }
                         if($lastAppointment->is_book == 1) {
                             $appointment = $this->Appointment->where('date', $lastAppointment->appointment_date)->orderBy('id','DESC')->first();
@@ -740,7 +740,7 @@ class AppointmentController extends ApiController
                                 $appointmentRequest->appointment_time = $request->time;
                                 $appointmentRequest->seen_by = $request->doctor_id;
                                 $appointmentRequest->save();
-                                return $this->sendResponse($patient->is_approval == 1 ? "Approval for appointment is pending, Sorry for inconvenience. We will reply soon." : "Your appointment is pending. Please contact to Radha Candor IVF Hospital for Approve your Request");
+                                return $this->sendResponse($patient->is_approval == 1 ? "Approval for appointment is pending, Sorry for inconvenience. We will reply soon." : "Your appointment is pending. Please contact to Civora IVF Hospital for Approve your Request");
                             // }
                         }
                         return $this->sendResponse($msg);
@@ -751,7 +751,7 @@ class AppointmentController extends ApiController
                         $appointmentRequest->appointment_time = $request->time;
                         $appointmentRequest->seen_by = $request->doctor_id;
                         $appointmentRequest->save();
-                        return $this->sendResponse($patient->is_approval == 1 ? 'Your requested appointment is now in pending. we will inform you after approve it' : "Your appointment is pending. Please contact to Radha Candor IVF Hospital for Approve your Request");
+                        return $this->sendResponse($patient->is_approval == 1 ? 'Your requested appointment is now in pending. we will inform you after approve it' : "Your appointment is pending. Please contact to Civora IVF Hospital for Approve your Request");
                     }
                 } else {
                     return $this->sendError('Please enter valid date and time');

@@ -249,8 +249,8 @@ return [
     'sendReferenceDoctor'=>'Dear {{reff_drname}}, Thank you for reffering patient {{patient_fullname}} for {{advise}} Today, Seen by {{dr_name}} Next Followup Date {{followUp}} {{app_name}}',
 
     'loader' => 'assets/images/Spin.gif',
-    'hospitalname1'=>'Candor Hospital & Candor IVF Center',
-    'hospitalname2'=>'Candor Hospital & Maternity Home',
+    'hospitalname1'=>'Civora Hospital & Civora IVF Center',
+    'hospitalname2'=>'Civora Hospital & Maternity Home',
     'doctor'=>'Dr. Jaydev Dhameliya',
     'stopNotification' => ['anc','ivf','iui'],
     'embroyologist_doctor' => "BHAVNA BORKHATARIA",

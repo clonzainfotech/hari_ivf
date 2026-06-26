@@ -520,7 +520,7 @@
     @elseif($language== "3")
             <div class="row mt-5 p-2">
                 <div class="col-md-12 p-name-text">
-                    I <b>{{$ivfPayment->patient_name}}</b>  And my husband<b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> Treatment of IVF test tube baby has been started at Radha Hospital.
+                    I <b>{{$ivfPayment->patient_name}}</b>  And my husband<b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> Treatment of IVF test tube baby has been started at Civora Hospital.
                 </div>
             </div>
             <div class="row">

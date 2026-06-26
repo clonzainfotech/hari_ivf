@@ -13,5 +13,15 @@ yarn-error.log
 /storage/logs
 /storage/backups/*
 .idea/
+.vscode/
 /public/assets
-.env.example
+
+# Database dumps and archives
+*.sql
+*.zip
+*.tar.gz
+*.rar
+
+# Tauri build artifacts (just in case)
+*.exe
+*.msi

@@ -8,9 +8,9 @@
     </head>
     <body>
     <strong>Privacy Policy</strong> <p>
-                  Candor IVF Center built the Candor IVF app as
+                  Civora IVF Center built the Civora IVF app as
                   a Free app. This SERVICE is provided by
-                  Candor IVF Center at no cost and is intended for use as
+                  Civora IVF Center at no cost and is intended for use as
                   is.
                 </p> <p>
                   This page is used to inform visitors regarding our
@@ -25,7 +25,7 @@
                 </p> <p>
                   The terms used in this Privacy Policy have the same meanings
                   as in our Terms and Conditions, which is accessible at
-                  Candor IVF unless otherwise defined in this Privacy Policy.
+                  Civora IVF unless otherwise defined in this Privacy Policy.
                 </p> <p><strong>Information Collection and Use</strong></p> <p>
                   For a better experience, while using our Service, we
                   may require you to provide us with certain personally

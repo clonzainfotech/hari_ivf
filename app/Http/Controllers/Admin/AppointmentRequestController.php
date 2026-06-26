@@ -100,7 +100,7 @@ class AppointmentRequestController extends AdminController
                         $body = 'Dear ,'.ucwords($patient->name). ' . '.$appRequestData->remark;
                         if(empty($appRequestData->remark))
                         {
-                            $body = 'Dear ,'.ucwords($patient->name).' . This is Inform you that you have booked appointment on '.\Carbon\Carbon::parse($appRequestData->appointment_date)->format('d M Y').' is Rejected due to some reason. For more information contact to Radha IVF center. Thank You.';
+                            $body = 'Dear ,'.ucwords($patient->name).' . This is Inform you that you have booked appointment on '.\Carbon\Carbon::parse($appRequestData->appointment_date)->format('d M Y').' is Rejected due to some reason. For more information contact to Civora IVF center. Thank You.';
                         }
                         $this->sendNotification($appRequestData->patients_id,$patient->device_token,$body,null);
                     }

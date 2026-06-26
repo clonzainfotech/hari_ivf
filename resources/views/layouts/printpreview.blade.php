@@ -149,7 +149,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center">         
                             <div>       
-                                <h1 class="title">Radha Hospital</h1>
+                                <h1 class="title">Civora Hospital</h1>
                                 <h1 class="title" style="text-align: center !important; margin:0px !important;">&</h1>
                                 @if (!empty($header_logo))
                                     <img src="{{url('images/' . $header_logo)}}" class="system-setting-logo"/>

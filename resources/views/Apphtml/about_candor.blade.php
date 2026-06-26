@@ -1,13 +1,13 @@
 
  @extends('Apphtml.main')
-@section('title', 'About Candor')
+@section('title', 'About Civora')
 @section('content')
 
   <div class="container">
-      <ul><li><h4>WELCOME TO CANDOR IVF CENTER</h4></li></ul>
+      <ul><li><h4>WELCOME TO CIVora IVF CENTER</h4></li></ul>
       <img src="public/AppImage/images.jpg" width="100%" height="231" alt="">
       <!-- <iframe width="100%" height="231" src="https://www.youtube.com/embed/tgbNymZ7vqY" frameborder="0" allowfullscreen></iframe> -->
-      <p>Candor Hospital & Maternity Home is organized since 2009 as a multi specialty center and maternity home, offering the best possible facilities and services to the patients at an affordable cost. We are dedicated in providing our services since more than 10 years and are growing from strength to strength.</p>
+      <p>Civora Hospital & Maternity Home is organized since 2009 as a multi specialty center and maternity home, offering the best possible facilities and services to the patients at an affordable cost. We are dedicated in providing our services since more than 10 years and are growing from strength to strength.</p>
       <p>Our hospital having 6000 sq. ft of area has carefully allotted OPD Section, IPD Section, Medical & Surgical departments and well designed IVF department making it a centre with a feel of comfort and elegance to our patients. Our hospital is situated in Surat, one of the fastest growing cities situated at the heart of Gujarat state with easy of accessibility through all routes of transport. And in Surat, the hospital location is very close to railway and bus station in quite ambient atmosphere.</p>    
       <p>Our hospital is managed by a dedicated team of doctors available round the clock and has wide experience, expertise and compassion to guide patients through the treatment process and also support the patients through emotional and financial stress. Our team has experience of consulting and counseling 4000 infertility patients in a year.</p>  
       <p>Our staff is well trained to act promptly during emergency situations. We work on the belief that for proper management of patients, thorough diagnosis is the first step and there are no short-cut solutions to any treatment. Also our staff being computer literate enables us to deliver results at a faster pace.</p>

@@ -680,7 +680,7 @@
 
             <div class="row mt-5 p-2">
                 <div class="col-md-9 p-name-text">
-                    I <b>{{$ivfPayment->patient_name}}</b>  Andddd my husband<b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> Treatment of IVF test tube baby has been started at Radha Hospital.
+                    I <b>{{$ivfPayment->patient_name}}</b>  Andddd my husband<b>{{$ivfPayment->husband_name ? $ivfPayment->husband_name : '-'}}</b> Treatment of IVF test tube baby has been started at Civora Hospital.
                 </div>
                 <div class="col-md-3 p-name-text">
                     Date : <b>{{cdate($ivfPayment->date)->format('d-m-Y')}}</b>  
