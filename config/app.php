@@ -51,10 +51,9 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
+    'url' => env('APP_URL', ''),
 
-    'url' => env('APP_URL', 'http://hari_ivf.test/'),
-
-    'asset_url' => env('ASSET_URL', 'http://hari_ivf.test/'),
+    'asset_url' => env('ASSET_URL', ''),
 
 
     'collection_password' => env('COLLECTION_PASSWORD', 'Jaydev@4838'),
