@@ -34,23 +34,8 @@ class UserController extends AdminController
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $patientsStatus = Auth::User()->status;
             if ($patientsStatus == '1') {
-                if (Auth::User()->email === 'admin@gmail.com') {
-                    $user = $this->User::find(Auth::User()->id);
-                    $user->mobile_verified_at = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-                    $user->save();
-                    Session::flash('msg', 'Success');
-                    return redirect('/');
-                }
-
-                // $otp = rand(000000,999999);
-                // $user = $this->User::find(Auth::User()->id);
-                // $user->verification_code = $otp;
-                // $user->save();
-                // $data = $this->SmsManager::sendOtpToPatients(Auth::User()->id,Auth::User()->mobile_number,'user');
-                // return view('auth.otpverify');
-
-                // Session::flash('msg','Success');
-                // return redirect('/');
+                Session::flash('msg', 'Success');
+                return redirect('/');
             } else {
                 $user = $this->User::find(Auth::User()->id);
                 $user->verification_code = null;
@@ -498,47 +483,4 @@ class UserController extends AdminController
      * retrun on Mobile verification screen
      * 
      */
-    public function mobileVerification()
-    {
-        // Auth::logout();
-        return view('auth.otpverify');
-    }
-
-    /**
-     * 
-     */
-    public function getOtpVerify(Request $request)
-    {
-        $rule = [
-            'otp' => 'required|exists:users,verification_code,id,' . Auth::User()->id,
-        ];
-
-        $validator = Validator::make($request->all(), $rule);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator->errors());
-        }
-        $user = $this->User::find(Auth::User()->id);
-        $user->mobile_verified_at = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-        $user->save();
-        Session::flash('msg', 'Success');
-        return redirect('/');
-    }
-    /**
-     * 
-     */
-    public function resendOtp()
-    {
-        $otp = Auth::User()->email === 'admin@gmail.com' ? 123456 : rand(000000, 999999);
-        $user = $this->User::find(Auth::User()->id);
-        $user->verification_code = $otp;
-        $user->save();
-        if (Auth::User()->email !== 'admin@gmail.com') {
-            $data = $this->SmsManager::sendOtpToPatients(Auth::User()->id, Auth::User()->mobile_number, 'user');
-        }
-        return redirect()->back();
-    }
 }

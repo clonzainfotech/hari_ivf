@@ -48,9 +48,6 @@ Route::group(['middleware'=>'checkDB'],function(){
     Route::get('get-anc-report','Admin\ANCController@getAncDetails');
     Route::get('get-gynec-details','Admin\GynecController@getGynecDetails');
     Route::post('login','Admin\UserController@login')->name('login');
-    Route::get('mobile-verification','Admin\UserController@mobileVerification')->name('mobile-verify');
-    Route::post('admin-otp-verify','Admin\UserController@getOtpVerify')->name('admin-otp-verify');
-    Route::get('resend-otp','Admin\UserController@resendOtp');
 
     Route::post('register','Admin\UserController@register')->name('register');
     Route::get('update-lmp/{type}','Base\Admin\AdminController@updateLmp');
