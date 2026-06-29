@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "identifier": "com.candor.desktop",
   "build": {
-    "frontendDist": "http://YOUR_SERVER_IP",
-    "devUrl": "http://YOUR_SERVER_IP"
+    "frontendDist": "http://168.144.125.117/",
+    "devUrl": "http://168.144.125.117/"
   },
   "app": {
     "windows": [

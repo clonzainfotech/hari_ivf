@@ -18,7 +18,7 @@
             <!-- footer -->
             <div class="modal-footer justify-content-center">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary waves-effect check-collection-report">SUBMIT</button>&nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary waves-effect check-collection-report">SUBMIT</button>
                     <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">CLOSE</button>
                 </div>
             </div>

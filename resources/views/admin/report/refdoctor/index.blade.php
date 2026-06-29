@@ -6,7 +6,7 @@
 <style>
     .box-border
     {
-        border: 2px solid #1e5f63 !important;
+        border: 2px solid #9ca683 !important;
     }
 </style>
 

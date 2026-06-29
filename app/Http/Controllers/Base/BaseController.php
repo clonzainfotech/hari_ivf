@@ -96,7 +96,8 @@ use App\Models\MonthlyBillExpense;
 
 class BaseController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->User = new User;
         $this->Appointment = new Appointment;
         $this->Hormon = new Hormon;
@@ -189,14 +190,16 @@ class BaseController extends Controller
     }
 
     // remove image form our server
-    public function removeImage($image){
-        if(File::exists($image)) {
+    public function removeImage($image)
+    {
+        if (File::exists($image)) {
             File::delete($image);
         }
     }
 
     // upload image function
-    public function uploadImage($imageData, $path){
+    public function uploadImage($imageData, $path)
+    {
         $name = \Carbon\Carbon::now()->format('YmdHisu') . '.' . $imageData->getClientOriginalExtension();
         $destinationPath = $path;
         $imageData->move($destinationPath, $name);
@@ -204,14 +207,17 @@ class BaseController extends Controller
     }
 
     // set notification msg
-    public function notificationMsg(){
+    public function notificationMsg()
+    {
         $data['appointmentApprovalMsg'] = 'Your appointment has been approved';
         $data['appointmentRejectMsg'] = 'Your appointment has been rejected';
         return $data;
     }
 
     // store appointment notification in notification module
-    public function storeAppointmentNotification($userId,$msg){
+    public function storeAppointmentNotification($userId, $msg)
+    {
+        return;
         $notification = $this->Notification;
         $notification->user_type = 1;
         $notification->module = 1;
@@ -227,8 +233,10 @@ class BaseController extends Controller
     }
 
     //send push notification when approve or reject appointment
-    public function sendNotification($patients_id,$device_tokens,$body,$vibrate)
+    public function sendNotification($patients_id, $device_tokens, $body, $vibrate)
     {
+        return;
+
         $SERVER_API_KEY = config('app.FCM_SERVER_KEY');
 
         $message = array(
@@ -259,7 +267,7 @@ class BaseController extends Controller
 
         $response = curl_exec($ch);
         curl_close($ch);
-        $this->storeAppointmentNotification($patients_id,$body);
+        $this->storeAppointmentNotification($patients_id, $body);
         // dd($response);
         return $response;
     }

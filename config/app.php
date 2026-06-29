@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://app.candorivf.com/'),
+    'url' => env('APP_URL', 'http://hari_ivf.test/'),
 
-    'asset_url' => env('ASSET_URL', 'https://app.candorivf.com/'),
+    'asset_url' => env('ASSET_URL', 'http://hari_ivf.test/'),
 
 
     'collection_password' => env('COLLECTION_PASSWORD', 'Jaydev@4838'),
@@ -73,9 +73,9 @@ return [
     'timezone' => 'Asia/Kolkata',
 
     // twilio
-    'TWILIO_ACCOUNT_SID'=>"ACb9ed21c22eeac6dbde553b98680fa9e3",
-    'TWILIO_AUTH_TOKEN'=>"e38c7727d15e3535179475562fe17dd3",
-    'WASSENGER_TOKEN'=>"63308ad48c244bea4864f4ec2ded350ffbcb4f5d8bd6648ca63dd1ecb2173ba7c741b12b3dcc4869",
+    'TWILIO_ACCOUNT_SID' => "ACb9ed21c22eeac6dbde553b98680fa9e3",
+    'TWILIO_AUTH_TOKEN' => "e38c7727d15e3535179475562fe17dd3",
+    'WASSENGER_TOKEN' => "63308ad48c244bea4864f4ec2ded350ffbcb4f5d8bd6648ca63dd1ecb2173ba7c741b12b3dcc4869",
 
     /*
     |--------------------------------------------------------------------------
@@ -240,42 +240,48 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
-    'sendAptToPatient'=>'Dear {{patient_name}}, You have appointment on {{apt_date}}',
-    'sendAptToRefDoctor'=>'Dear {{reff_drname}}, Thank you for reffering patient {{patient_name}} for {{ot_name}} today',
-    'sendDischargeCardToRefDoctor'=>'Dear {{reff_drname}}, Your reffer {{patient_fullname}} has addmited our hospital {{msg}} {{gender}} child on {{date}} at {{time}} with {{weight}} Thank You for reference and expecting your favourable supprt future. {{app_name}}',
-    'sendOtpToPatients'=>'Dear Patient, {{otp}} is the your OTP for the login in to the RadhIVF system. Thank you, {{app_name}}',
-    'sendAlrtOpdToDoctor'=>'Dear {{reff_drname}},Thank you for reffering patient {{patient_fullname}}, {{app_name}}',
-    'sendRoomRegistrationDoctor'=>'Dear {{reff_drname}}, Thank you for reffering patient {{patient_fullname}} for {{procedure}} Today, {{app_name}}',
-    'sendReferenceDoctor'=>'Dear {{reff_drname}}, Thank you for reffering patient {{patient_fullname}} for {{advise}} Today, Seen by {{dr_name}} Next Followup Date {{followUp}} {{app_name}}',
+    'sendAptToPatient' => 'Dear {{patient_name}}, You have appointment on {{apt_date}}',
+    'sendAptToRefDoctor' => 'Dear {{reff_drname}}, Thank you for reffering patient {{patient_name}} for {{ot_name}} today',
+    'sendDischargeCardToRefDoctor' => 'Dear {{reff_drname}}, Your reffer {{patient_fullname}} has addmited our hospital {{msg}} {{gender}} child on {{date}} at {{time}} with {{weight}} Thank You for reference and expecting your favourable supprt future. {{app_name}}',
+    'sendOtpToPatients' => 'Dear Patient, {{otp}} is the your OTP for the login in to the RadhIVF system. Thank you, {{app_name}}',
+    'sendAlrtOpdToDoctor' => 'Dear {{reff_drname}},Thank you for reffering patient {{patient_fullname}}, {{app_name}}',
+    'sendRoomRegistrationDoctor' => 'Dear {{reff_drname}}, Thank you for reffering patient {{patient_fullname}} for {{procedure}} Today, {{app_name}}',
+    'sendReferenceDoctor' => 'Dear {{reff_drname}}, Thank you for reffering patient {{patient_fullname}} for {{advise}} Today, Seen by {{dr_name}} Next Followup Date {{followUp}} {{app_name}}',
 
     'loader' => 'assets/images/Spin.gif',
-    'hospitalname1'=>'Civora Hospital & Civora IVF Center',
-    'hospitalname2'=>'Civora Hospital & Maternity Home',
-    'doctor'=>'Dr. Jaydev Dhameliya',
-    'stopNotification' => ['anc','ivf','iui'],
+    'hospitalname1' => 'Civora Hospital & Civora IVF Center',
+    'hospitalname2' => 'Civora Hospital & Maternity Home',
+    'doctor' => 'Dr. Jaydev Dhameliya',
+    'stopNotification' => ['anc', 'ivf', 'iui'],
     'embroyologist_doctor' => "BHAVNA BORKHATARIA",
-    'embroyologist_degree' => "M.SC., PH.D." ,
+    'embroyologist_degree' => "M.SC., PH.D.",
 
     'GOOGLE_CLIENT_ID' => '984779626869-fjht6mtsrqfla3ug8rmdvpn1n55gn509.apps.googleusercontent.com',
     'GOOGLE_CLIENT_SECRET' => 'eSold9YPOYmRmF_j13M1WVZo',
     'GOOGLE_REFRESH_TOKEN' => '1//04lMN1kpE8NfeCgYIARAAGAQSNwF-L9Ir_MfDBdhubB1CXFkX6moKG-x9Rcjm9AqWLU1baEFUUzPvjzW0xy67wI6-IXDLzGHO8yE',
     'GOOGLE_FOLDER_ID' => '1uK79a2YTAOW4CALT0eWgoDHtnkzkHnaX',
-    'social_reference' => ['benner','camp','youtube','insta','facebook','pamplets','call'],
+    'social_reference' => ['benner', 'camp', 'youtube', 'insta', 'facebook', 'pamplets', 'call'],
 
-    'reject_apt_reason_en' => ["0"=>"We can't book right now as tomorrow OPD schedule is not planned yet. We contact you as soon as it planned or you can contact us on phone.",
-                                "1"=>"Thank you for your booking an appointment with us. We Will assure you to take in consultation room with Dr no booked time if you come on time. Sorry for inconvenience in advance if we can't for that if any unavoidable circumstance will be there.",
-                                "2"=>"Sorry, Your Appointment is already booked on this time",
-                                "other"=>"Other"],
-    'reject_apt_reason_gu' => ["0"=>"અમે હમણાં બુકિંગ કરી શકતા નથી કારણ કે આવતીકાલે ઓપીડીનું સમયપત્રક હજુ આયોજન નથી. અમે તમારી યોજના પ્રમાણે જ તમારો સંપર્ક કરીએ છીએ અથવા તમે ફોન પર અમારો સંપર્ક કરી શકો છો.",
-                    "1"=>"અમારી સાથે એપોઇન્ટમેન્ટ બુક કરવા બદલ આભાર. જો તમે સમયસર આવો તો અમે તમને ડો.ની સાથે કન્સલ્ટેશન રૂમમાં લઈ જવાની ખાતરી આપીશું. જો કોઈ અનિવાર્ય સંજોગો હશે તો તે માટે અમે અગાઉથી અસુવિધા માટે માફ કરશો.",
-                    "2"=>"માફ કરશો, તમારી નિમણૂક આ સમયે પહેલેથી જ બુક થઈ ગઈ છે.",
-                    "other"=>"Other"],
-    'reject_apt_reason_hn' =>   ["0"=>"हम अभी बुकिंग नहीं कर सकते क्योंकि कल ओपीडी कार्यक्रम अभी तक योजनाबद्ध नहीं है। जैसे ही इसकी योजना होगी हम आपसे संपर्क करेंगे या आप हमसे फोन पर संपर्क कर सकते हैं।",
-                        "1"=>"हमारे साथ अपॉइंटमेंट बुक करने के लिए धन्यवाद। यदि आप समय पर आते हैं तो हम आपको डॉ के साथ परामर्श कक्ष में कोई बुक समय नहीं लेने का आश्वासन देंगे। असुविधा के लिए अग्रिम खेद है यदि हम उसके लिए नहीं कर सकते हैं यदि कोई अपरिहार्य परिस्थिति होगी।",
-                        "2"=>"क्षमा करें, इस समय आपका अपॉइंटमेंट पहले से ही बुक है",
-                        "other"=>"Other"],             
+    'reject_apt_reason_en' => [
+        "0" => "We can't book right now as tomorrow OPD schedule is not planned yet. We contact you as soon as it planned or you can contact us on phone.",
+        "1" => "Thank you for your booking an appointment with us. We Will assure you to take in consultation room with Dr no booked time if you come on time. Sorry for inconvenience in advance if we can't for that if any unavoidable circumstance will be there.",
+        "2" => "Sorry, Your Appointment is already booked on this time",
+        "other" => "Other"
+    ],
+    'reject_apt_reason_gu' => [
+        "0" => "અમે હમણાં બુકિંગ કરી શકતા નથી કારણ કે આવતીકાલે ઓપીડીનું સમયપત્રક હજુ આયોજન નથી. અમે તમારી યોજના પ્રમાણે જ તમારો સંપર્ક કરીએ છીએ અથવા તમે ફોન પર અમારો સંપર્ક કરી શકો છો.",
+        "1" => "અમારી સાથે એપોઇન્ટમેન્ટ બુક કરવા બદલ આભાર. જો તમે સમયસર આવો તો અમે તમને ડો.ની સાથે કન્સલ્ટેશન રૂમમાં લઈ જવાની ખાતરી આપીશું. જો કોઈ અનિવાર્ય સંજોગો હશે તો તે માટે અમે અગાઉથી અસુવિધા માટે માફ કરશો.",
+        "2" => "માફ કરશો, તમારી નિમણૂક આ સમયે પહેલેથી જ બુક થઈ ગઈ છે.",
+        "other" => "Other"
+    ],
+    'reject_apt_reason_hn' => [
+        "0" => "हम अभी बुकिंग नहीं कर सकते क्योंकि कल ओपीडी कार्यक्रम अभी तक योजनाबद्ध नहीं है। जैसे ही इसकी योजना होगी हम आपसे संपर्क करेंगे या आप हमसे फोन पर संपर्क कर सकते हैं।",
+        "1" => "हमारे साथ अपॉइंटमेंट बुक करने के लिए धन्यवाद। यदि आप समय पर आते हैं तो हम आपको डॉ के साथ परामर्श कक्ष में कोई बुक समय नहीं लेने का आश्वासन देंगे। असुविधा के लिए अग्रिम खेद है यदि हम उसके लिए नहीं कर सकते हैं यदि कोई अपरिहार्य परिस्थिति होगी।",
+        "2" => "क्षमा करें, इस समय आपका अपॉइंटमेंट पहले से ही बुक है",
+        "other" => "Other"
+    ],
     'expense_sheet_name' => 'ExpenseSheet',
     'expense_sheet_id' => '1--KyhVNaT60VIALVRC8tIeIZ_EweqYR6P1ESy3NSVEQ',
     'FCM_SERVER_KEY' => 'AAAA7gHmuq4:APA91bF73hf1KA64acF3hPEuHSY7CBEfMPrSO0yXLKRhSXmSfTm3d8vb_dWHf7ZC1EKIGfO0jiXOOxpRZMmOoZkk2O6D13giWMnrau0okUnzpFy-2inINq4c8RS1Xl3Q905ZK5B4y1Y7'
-    
+
 ];

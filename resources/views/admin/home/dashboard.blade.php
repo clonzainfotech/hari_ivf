@@ -92,7 +92,7 @@
 </div>
 @if(Auth::user()->role == 1)
     <div class="row clearfix">
-        <div class="col-lg-8 col-md-12">
+        <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="header">
                     <h2><strong>Revenue Survey</strong></h2>
@@ -131,8 +131,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-12 stretch-card user-note">
-        </div>
+        {{-- <div class="col-lg-4 col-md-12 stretch-card user-note">
+        </div> --}}
     </div>
 @endif
 <div class="row clearfix">
@@ -327,7 +327,7 @@
     </div>
 </div>
 
-<div class="row dashboard">
+{{-- <div class="row dashboard">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card position-relative report-details category-height">
             <div class="header">
@@ -448,9 +448,9 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="row dashboard">
-    <div class="col-md-4 grid-margin stretch-card">
+    {{-- <div class="col-md-4 grid-margin stretch-card">
 
         <div class="card position-relative report-details">
             <div class="header">
@@ -470,7 +470,7 @@
                 @endforeach
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="col-md-8">
     <div class="card visitors-map dash-patient-location">
         <div class="header">

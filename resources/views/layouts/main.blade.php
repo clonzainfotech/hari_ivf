@@ -45,7 +45,6 @@ $water_mark = isset($systemSetting->water_mark) && !empty($systemSetting->water_
             background:{{$secondary}} !important;
         }
         .theme-cyan .sidebar .menu .list a:hover,a:hover.nav-menu-font .active, .theme-cyan .sidebar .menu .list li.sub.active > a,.theme-cyan .sidebar .menu .list li.sub.active > a span, .nav-menu-font a:hover, .nav-menu-font a.active.open{
-            color: #fff !important;
             background: {{$primary}} !important;
         }
         .loader p{

@@ -1787,7 +1787,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .report-table .progress-bar {
-    background-color: #1e5e62 ;
+    background-color: #9ca683 ;
 }
 
 .report-table .text-muted {
@@ -1995,7 +1995,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .dashboard-sms {
-    background: #1e5f63;
+    background: #9ca683;
 
 }
 .dashboard-sms p{
@@ -2104,7 +2104,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 30px;
     width: 30px;
     padding: 6px;
-    background: #1e5e62;
+    background: #9ca683;
     border-radius: 50%;
     color: #fff;
     box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.2);
@@ -2113,7 +2113,7 @@ input[type=number]::-webkit-outer-spin-button {
 .l-amber,
 .w_calender span+span,
 .w_calender em{
-    background: #1e5e62;
+    background: #9ca683;
 }
 .zmdi-search{
     color: black;
@@ -2181,7 +2181,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 125px !important;
 }
 .l-green.custom-progress{
-    background: linear-gradient(45deg, #1e5f63, #45bfb8) !important;
+    background: linear-gradient(45deg, #9ca683, #45bfb8) !important;
 }
 .theme-cyan .card .header h2 strong,
 .candor-color,.search-border:focus,
@@ -2553,7 +2553,7 @@ input[type=number]::-webkit-outer-spin-button {
     border: none !important;
 }
 .selected-overy-td{
-    background-color: #1e5f63 !important;
+    background-color: #9ca683 !important;
     border-color: #c1b00a !important;
     color: #fff !important;
     /* padding: 5px; */
@@ -2570,7 +2570,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .ovary-pre-selected-value.selected-overy-td{
-    background-color: #1e5f63 !important;
+    background-color: #9ca683 !important;
 }
 
 .medicines-checkbox{
@@ -2777,7 +2777,7 @@ line-height: 6px !important;
 }
 li.category-notification
 {
-    border-left: 3px solid #1e5f63;
+    border-left: 3px solid #9ca683;
     padding: 1px 10px !important;
     margin-bottom: 2px !important;
     margin: 7px;
@@ -2801,8 +2801,8 @@ li.category-notification
     position: absolute;
     top: -20px;
     right: 12px;
-    border:10px solid #1e5f63;
-    border-color: transparent transparent #1e5f63 transparent;
+    border:10px solid #9ca683;
+    border-color: transparent transparent #9ca683 transparent;
 }
 .notification-head
 {
@@ -2818,7 +2818,7 @@ li.category-notification
     background-color: #f4f4f4;
 }
 .notification-footer a{
-    /* border-top: 1px solid #1e5f63 !important; */
+    /* border-top: 1px solid #9ca683 !important; */
     padding-top: 5px !important;
 }
 .notification-box
@@ -2848,7 +2848,7 @@ font-size: 22px !important;
 }
 .notification-tabs
 {
-    border-bottom: 1px solid #1e5f63 !important;
+    border-bottom: 1px solid #9ca683 !important;
 }
 @media (max-width: 640px)
 {
@@ -2861,7 +2861,7 @@ font-size: 22px !important;
 }
 .theme-cyan .nav-tabs .nav-link.active {
     border: none !important;
-    background: #1e5f63;
+    background: #9ca683;
     color: #fff;
 }
 .nav-tabs .nav-link, .nav-tabs .nav-link:hover{
@@ -2900,22 +2900,22 @@ font-size: 22px !important;
     background: white !important;
 }
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
-    border: 1px solid #1e5f63 !important;
-    background: #1e5f63 !important;
+    border: 1px solid #9ca683 !important;
+    background: #9ca683 !important;
     color: white !important;
 }
 .ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
-    background: #1e5f63 !important;
+    background: #9ca683 !important;
 }
 a.ui-state-default:hover, a.ui-datepicker-prev.ui-corner-all:hover ,a.ui-datepicker-next.ui-corner-all:hover {
-    background: #1e5f63 !important;
+    background: #9ca683 !important;
 }
 .pt-history.card .body .table th,
 .pt-history.card .header h2 strong{
     font-weight: 700 !important;
 }
 .report-notification{
-    border-left: 3px solid #1e5f63 !important;
+    border-left: 3px solid #9ca683 !important;
 }
 .anc-iui-ivf-data.table-responsive {
     overflow-x: unset;

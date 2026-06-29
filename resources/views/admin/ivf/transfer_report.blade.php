@@ -48,7 +48,7 @@
                 border: none !important;
             }
             h3{
-                color: #1e5f63;
+                color: #9ca683;
                 -webkit-print-color-adjust: exact;
             }
             .ivf-transfer-report .module-report-table

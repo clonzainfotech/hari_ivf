@@ -48,7 +48,7 @@
         border: none !important;
     }
     .iuireport h3{
-        color: #1e5f63;
+        color: #9ca683;
         -webkit-print-color-adjust: exact;
     }
     .iuireport .module-report-table

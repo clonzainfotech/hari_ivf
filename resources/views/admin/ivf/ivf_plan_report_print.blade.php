@@ -52,7 +52,7 @@ h6 {
 }
 .candor-color
 {
- color: #1e5f63;
+ color: #9ca683;
 }
 .er_image
     {

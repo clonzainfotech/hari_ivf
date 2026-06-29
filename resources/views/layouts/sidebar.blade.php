@@ -18,9 +18,9 @@
                         $appointmentCount = getAppointmentCount(4)['appointmentCount'];
                         $selfBookingCount = getSelfBookingCount();
                     @endphp
-                    <div style="text-align: center; margin-top: 5px; margin-bottom: 20px;">
-                        <a href="{{URL::to('/dashboard')}}" style="text-decoration: none; display: inline-block; padding: 5px 0;">
-                            <h2 style="color: #444; font-weight: 400; font-size: 45px; letter-spacing: 1px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Civora</h2>
+                    <div style="text-align: center; margin-top: 5px;">
+                        <a href="{{URL::to('/dashboard')}}" style="text-decoration: none; display: inline-block; padding: 0;">
+                            <h2  style="color: #444; font-weight: 400; font-size: 45px; letter-spacing: 1px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><img width="180" src="{{asset("assets/images/civora_logo.svg")}}" alt=""></h2>
                         </a>
                     </div>
                     <div class="detail">
@@ -46,18 +46,18 @@
                             <li class="{{(Request::segment(1) === 'appointment' && Request::segment(2) == '') || Request::segment(1) === 'appointment-create' ? 'sub active open' : null }}">
                                 <a href="{{URL::to('appointment')}}"><span>APPOINTMENTS ({{$appointmentCount}})</span>&nbsp;</a>
                             </li>
-                            <li class="{{ Request::segment(1) === 'appointment' && Request::segment(2) != '' ? 'sub active open' : null }}">
+                            {{-- <li class="{{ Request::segment(1) === 'appointment' && Request::segment(2) != '' ? 'sub active open' : null }}">
                                 <a href="{{URL::to('appointment/'.encrypt('usg'))}}"><span>USG APPOINTMENTS</span></a>
                             </li>
                             <li class="{{ Request::segment(1) === 'appointment-request' ? 'sub active open' : null }}">
                                 <a href="{{URL::to('appointment-request')}}"><span>Online APT REQUESTS</span></a>
-                            </li>
+                            </li> --}}
                             <li class="{{ Request::segment(1) === 'hormon' ? 'sub active open' : null }}">
                                 <a href="{{URL::to('hormon')}}"><span>OPD Collection</span></a>
                             </li>
-                            <li class="{{ Request::segment(1) === 'self-booking' ? 'sub active open' : null }}">
+                            {{-- <li class="{{ Request::segment(1) === 'self-booking' ? 'sub active open' : null }}">
                                 <a href="{{URL::to('self-booking')}}"><span>Self Booking ({{$selfBookingCount}})</span></a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     @endif
@@ -82,12 +82,12 @@
                                     <span>INFERTILITY ({{$iuiCount}})</span>&nbsp;</a></li>
                             <li class="{{ Request::segment(1) === 'ivf-result-review' ? 'sub active open' : null }}"><a href="{{URL::to('ivf-result-review')}}">
                                 <span>IVF Result Review </span></a></li>
-                            <li class="{{ Request::segment(1) === 'call-reminder' ? 'sub active open' : null }}"><a href="{{URL::to('call-reminder')}}"><span>IUI Call Reminder</span></a></li>
-                            <li class="{{ Request::segment(1) === 'iui-result' ? 'sub active open' : null }}"><a href="{{URL::to('iui-result')}}"><span>IUI Result</span></a></li>
+                            {{-- <li class="{{ Request::segment(1) === 'call-reminder' ? 'sub active open' : null }}"><a href="{{URL::to('call-reminder')}}"><span>IUI Call Reminder</span></a></li>
+                            <li class="{{ Request::segment(1) === 'iui-result' ? 'sub active open' : null }}"><a href="{{URL::to('iui-result')}}"><span>IUI Result</span></a></li> --}}
                             @endif
-                            @if(in_array(Auth::user()->role,[1,3,6,7,8,10]))
+                            {{-- @if(in_array(Auth::user()->role,[1,3,6,7,8,10]))
                                 <li class="{{ Request::segment(1) === 'advice-report-list' ? 'sub active open' : null }}"><a href="{{URL::to('advice-report-list')}}"><span>Advice Report List</span></a></li>
-                            @endif
+                            @endif --}}
                         </ul>
                     </li>
                     @endif
@@ -127,7 +127,7 @@
                             <li class="{{ Request::segment(1) === 'medicare-report' ? 'sub active open' : null }}"><a href="{{URL::to('medicare-report')}}" class="waves-effect waves-block"><span>Medicare Collection</span></a></li>
                             <li class="{{ Request::segment(1) === 'hormon-inj-report' ? 'sub active open' : null }}"><a href="{{URL::to('hormon-inj-report')}}" class="waves-effect waves-block"><span>Hormon Injection</span></a></li>
                             <li class="{{ Request::segment(1) === 'patient-report' ? 'sub active open' : null }}"><a href="{{URL::to('patient-report')}}" class=" waves-effect waves-block"><span>patient</span></a></li>
-                            <li class="{{ Request::segment(1) === 'sms-manager' ? 'sub active open' : null }}"><a href="{{URL::to('sms-manager')}}"><span>SMS </span></a></li>
+                            {{-- <li class="{{ Request::segment(1) === 'sms-manager' ? 'sub active open' : null }}"><a href="{{URL::to('sms-manager')}}"><span>SMS </span></a></li> --}}
                             <li class="{{ Request::segment(1) === 'ivf-payment-report' ? 'sub active open' : null }}"><a href="{{URL::to('ivf-payment-report')}}" class=" waves-effect waves-block"><span>IVF Payment</span></a></li>
                             <li class="{{ Request::segment(1) === 'edd-patient' ? 'sub active open' : null }}"><a href="{{URL::to('edd-patient')}}" class=" waves-effect waves-block"><span>EDD Patients</span></a></li>
                             <li class="{{ Request::segment(1) === 'infertility-report' ? 'sub active open' : null }}"><a href="{{URL::to('infertility-report')}}" class=" waves-effect waves-block"><span>Infertility Report</span></a></li>
@@ -170,7 +170,7 @@
                             <li class="{{ Request::segment(1) === 'injection'|| Request::segment(1) === 'plan' || Request::segment(1) === 'injection/*' ? 'sub active open' : null }}"><a href="{{URL::to('injection')}}"><span>Injection</span></a></li>
                             <li class="{{ Request::segment(1) === 'charge' || Request::segment(1) === 'charge/*' ? 'sub active open' : null }}"><a href="{{URL::to('charge')}}"><span>Hospital Charges</span></a></li>
                             <li class="{{ Request::segment(1) === 'inj-charge' || Request::segment(1) === 'inj-charge/*' ? 'sub active open' : null }}"><a href="{{URL::to('inj-charge')}}"><span>Hormon Injection</span></a></li>
-                            <li class="{{ Request::segment(1) === 'html-page' || Request::segment(1) === 'html-page/*' ? 'sub active open' : null }}"><a href="{{URL::to('html-page')}}"><span>Html Page</span></a></li>
+                            {{-- <li class="{{ Request::segment(1) === 'html-page' || Request::segment(1) === 'html-page/*' ? 'sub active open' : null }}"><a href="{{URL::to('html-page')}}"><span>Html Page</span></a></li> --}}
                         </ul>
                     </li>
                     @endif

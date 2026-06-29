@@ -14,7 +14,7 @@ yarn-error.log
 /storage/backups/*
 .idea/
 .vscode/
-/public/assets
+
 
 # Database dumps and archives
 *.sql

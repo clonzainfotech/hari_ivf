@@ -11,15 +11,15 @@
             background: white !important;
         }
         .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
-            border: 1px solid #1e5f63 !important;
-            background: #1e5f63 !important;
+            border: 1px solid #9ca683 !important;
+            background: #9ca683 !important;
             color: white !important;
         }
         .ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
-            background: #1e5f63 !important;
+            background: #9ca683 !important;
         }
         a.ui-state-default:hover, a.ui-datepicker-prev.ui-corner-all:hover ,a.ui-datepicker-next.ui-corner-all:hover {
-            background: #1e5f63 !important;
+            background: #9ca683 !important;
         }
         
     </style>
@@ -553,7 +553,7 @@
                                                 <span class="input-group-addon unik-lbl-spn ">Birth Date : &nbsp;</span>
                                                 {{Form::text('dob','',[
                                                     'id'=>'birthdate',
-                                                    'class'=>'dob border-color border-1',
+                                                    'class'=>'dob border-color border-1 form-control',
                                                     'autocomplete'=>'off'
                                                 ])}}
                                                 {{-- <input name="dob" id="birthdate" class="form-control" placeholder='BirthDate'> --}}
