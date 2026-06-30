@@ -1055,7 +1055,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .patient_list.card .header.custom-dropdown .header-dropdown li .dropdown-menu li a:hover {
-    color: #4bcfd1;
+    color: #9ca683;
     background: #fff;
 }
 
@@ -1081,7 +1081,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .card .header.custom-dropdown .header-dropdown li .dropdown-menu li a:hover {
-    color: #4bcfd1;
+    color: #9ca683;
     background: #fff;
 }
 
@@ -2475,7 +2475,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .is_arrival{
-    background-color: #E9FFFE ;
+    background-color: #bcc6a7 ;
 }
 
 /* select2 css */

@@ -1289,7 +1289,7 @@
         function getConsultingCharges(id) {
             $('input[type="number"][name="consulting_charges"]').val(id);
             $('.amount').css({'border-color': '',
-                'background-color': '#00cfd1',
+                'background-color': '#bcc6a7',
             });
             $('#' + id).css({'border-color': '#000000',
                 'background-color': '#01aeaf',
