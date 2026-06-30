@@ -891,42 +891,15 @@
                     data: {appointment_id:appointmentId,isprint:isprint},
                     dataType: 'json',
                 }).done(function(data) {
-                    var pFrame = document.createElement('iframe');
-                    pFrame.style.position = 'absolute';
-                    pFrame.style.width = '1px';
-                    pFrame.style.height = '1px';
-                    pFrame.style.left = '-10000px';
-                    document.body.appendChild(pFrame);
-                    pFrame.contentDocument.open();
-                    pFrame.contentDocument.write(data);
-                    pFrame.contentDocument.close();
+                    var originalData = document.body.innerHTML;
+                    document.body.innerHTML = data;
                     setTimeout(function() {
-                        pFrame.contentWindow.focus();
-                        pFrame.contentWindow.print();
-                        setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                        window.print();
+                        document.body.innerHTML = originalData;
                     }, 500);
                 });
             }
         });
-        // $(document).on('click','.send-opd', function(){
-
-        //     var appointmentId = $(this).attr('id');
-        //     if(typeof(appointmentId) !== 'undefined'){
-        //         $('#appointment-table tbody tr').removeClass('selected-tr');
-        //         $(this).addClass('selected-tr');
-        //         $.ajax({
-        //             url: "{{URL::to('send-opd')}}",
-        //             data: {appointment_id:appointmentId},
-        //             dataType: 'json',
-        //         }).done(function(data) {
-        //             // w = window.open(window.location.href,"_blank");
-        //             // w.document.open();
-        //             // w.document.write(data);
-        //             // w.document.close();
-        //             // w.window.print();
-        //         });
-        //     }
-        // });
 
         $(document).on('click', '#appointment-table tbody tr', function(event){
             $('#appointment-table tbody tr').removeClass('appointment-selected-tr');
@@ -1003,19 +976,11 @@
                 data:{appointmentId},
                 dataType: 'json',
             }).done(function(data) {
-                var pFrame = document.createElement('iframe');
-                pFrame.style.position = 'absolute';
-                pFrame.style.width = '1px';
-                pFrame.style.height = '1px';
-                pFrame.style.left = '-10000px';
-                document.body.appendChild(pFrame);
-                pFrame.contentDocument.open();
-                pFrame.contentDocument.write(data);
-                pFrame.contentDocument.close();
+                var originalData = document.body.innerHTML;
+                document.body.innerHTML = data;
                 setTimeout(function() {
-                    pFrame.contentWindow.focus();
-                    pFrame.contentWindow.print();
-                    setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                    window.print();
+                    document.body.innerHTML = originalData;
                 }, 500);
             });
         });
@@ -1027,19 +992,11 @@
                 data:{appointmentId},
                 dataType: 'json',
             }).done(function(data) {
-                var pFrame = document.createElement('iframe');
-                pFrame.style.position = 'absolute';
-                pFrame.style.width = '1px';
-                pFrame.style.height = '1px';
-                pFrame.style.left = '-10000px';
-                document.body.appendChild(pFrame);
-                pFrame.contentDocument.open();
-                pFrame.contentDocument.write(data);
-                pFrame.contentDocument.close();
+                var originalData = document.body.innerHTML;
+                document.body.innerHTML = data;
                 setTimeout(function() {
-                    pFrame.contentWindow.focus();
-                    pFrame.contentWindow.print();
-                    setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                    window.print();
+                    document.body.innerHTML = originalData;
                 }, 500);
             });
         });
@@ -1197,19 +1154,11 @@
                     $('.patient-id').selectpicker('refresh');
                 }
                 if(data.status == 2){
-                    var pFrame = document.createElement('iframe');
-                    pFrame.style.position = 'absolute';
-                    pFrame.style.width = '1px';
-                    pFrame.style.height = '1px';
-                    pFrame.style.left = '-10000px';
-                    document.body.appendChild(pFrame);
-                    pFrame.contentDocument.open();
-                    pFrame.contentDocument.write(data.appointmentData);
-                    pFrame.contentDocument.close();
+                    var originalData = document.body.innerHTML;
+                    document.body.innerHTML = data.appointmentData;
                     setTimeout(function() {
-                        pFrame.contentWindow.focus();
-                        pFrame.contentWindow.print();
-                        setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                        window.print();
+                        document.body.innerHTML = originalData;
                     }, 500);
                 }
             }).fail(function() {
@@ -1509,19 +1458,11 @@
                         }
                     }
                     if(data.anc_type == 2){
-                        var pFrame = document.createElement('iframe');
-                        pFrame.style.position = 'absolute';
-                        pFrame.style.width = '1px';
-                        pFrame.style.height = '1px';
-                        pFrame.style.left = '-10000px';
-                        document.body.appendChild(pFrame);
-                        pFrame.contentDocument.open();
-                        pFrame.contentDocument.write(data.data);
-                        pFrame.contentDocument.close();
+                        var originalData = document.body.innerHTML;
+                        document.body.innerHTML = data.data;
                         setTimeout(function() {
-                            pFrame.contentWindow.focus();
-                            pFrame.contentWindow.print();
-                            setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                            window.print();
+                            document.body.innerHTML = originalData;
                         }, 500);
                     }
                 }).fail(function(error){
