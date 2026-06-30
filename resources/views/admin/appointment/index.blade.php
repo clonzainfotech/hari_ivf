@@ -909,11 +909,10 @@
                     data: {appointment_id:appointmentId,isprint:isprint},
                     dataType: 'json',
                 }).done(function(data) {
-                    w = window.open(window.location.href,"_blank");
-                    w.document.open();
-                    w.document.write(data);
-                    w.document.close();
-                    w.window.print();
+                    var originalData = document.body.innerHTML;
+                    document.body.innerHTML = data;
+                    window.print();
+                    document.body.innerHTML = originalData;
                 });
             }
         });
@@ -1012,11 +1011,10 @@
                 data:{appointmentId},
                 dataType: 'json',
             }).done(function(data) {
-                w = window.open(window.location.href,"_blank");
-                w.document.open();
-                w.document.write(data);
-                w.document.close();
-                w.window.print();
+                var originalData = document.body.innerHTML;
+                document.body.innerHTML = data;
+                window.print();
+                document.body.innerHTML = originalData;
             });
         });
 
@@ -1027,11 +1025,6 @@
                 data:{appointmentId},
                 dataType: 'json',
             }).done(function(data) {
-                // w = window.open(window.location.href,"_blank");
-                // w.document.open();
-                // w.document.write(data);
-                // w.document.close();
-                // w.window.print();
                 var originalData = document.body.innerHTML;
                 document.body.innerHTML = data;
                 window.print();
@@ -1192,10 +1185,10 @@
                     $('.patient-id').selectpicker('refresh');
                 }
                 if(data.status == 2){
-                    w = window.open(window.location.href, "_blank");
-                    w.document.write(data.appointmentData);
-                    w.document.close();
-                    w.window.print();
+                    var originalData = document.body.innerHTML;
+                    document.body.innerHTML = data.appointmentData;
+                    window.print();
+                    document.body.innerHTML = originalData;
                 }
             }).fail(function() {
 
@@ -1494,11 +1487,10 @@
                         }
                     }
                     if(data.anc_type == 2){
-                        w = window.open(window.location.href, "_blank");
-                        w.document.open();
-                        w.document.write(data.data);
-                        w.document.close();
-                        w.window.print();
+                        var originalData = document.body.innerHTML;
+                        document.body.innerHTML = data.data;
+                        window.print();
+                        document.body.innerHTML = originalData;
                     }
                 }).fail(function(error){
 
