@@ -5,7 +5,7 @@
     <ul class="nav nav-tabs">
         <li class="user-log-name">
             <div class="user-info">
-               <div class="list-icon mt-3">
+               <div class="list-icon">
                     @php
                         $logo = isset($systemSetting->header_logo) && !empty($systemSetting->header_logo) ? $systemSetting->header_logo : 'logo.png';
                         $width = isset($systemSetting->header_logo_width) && !empty($systemSetting->header_logo_width) ? $systemSetting->header_logo_width : '180';
@@ -20,7 +20,7 @@
                     @endphp
                     <div style="text-align: center; margin-top: 5px;">
                         <a href="{{URL::to('/dashboard')}}" style="text-decoration: none; display: inline-block; padding: 0;">
-                            <h2  style="color: #444; font-weight: 400; font-size: 45px; letter-spacing: 1px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><img width="180" src="{{asset("assets/images/civora_logo.svg")}}" alt=""></h2>
+                            <h2  style="color: #444; font-weight: 400; font-size: 45px; letter-spacing: 1px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><img width="120" src="{{asset("assets/images/civora_logo.svg")}}" alt=""></h2>
                         </a>
                     </div>
                     <div class="detail">
