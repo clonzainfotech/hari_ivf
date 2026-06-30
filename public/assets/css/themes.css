@@ -1168,6 +1168,7 @@ input[type=number]::-webkit-outer-spin-button {
 .bootstrap-select.btn-group .dropdown-menu li a,
 .daterangepicker .drp-buttons .btn  {
     font-weight: 500 !important;
+        border-radius: 35px;
 }
 .daterangepicker .calendar-table th,
 .daterangepicker .calendar-table td,
