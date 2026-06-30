@@ -891,10 +891,20 @@
                     data: {appointment_id:appointmentId,isprint:isprint},
                     dataType: 'json',
                 }).done(function(data) {
-                    var originalData = document.body.innerHTML;
-                    document.body.innerHTML = data;
-                    window.print();
-                    document.body.innerHTML = originalData;
+                    var pFrame = document.createElement('iframe');
+                    pFrame.style.position = 'absolute';
+                    pFrame.style.width = '1px';
+                    pFrame.style.height = '1px';
+                    pFrame.style.left = '-10000px';
+                    document.body.appendChild(pFrame);
+                    pFrame.contentDocument.open();
+                    pFrame.contentDocument.write(data);
+                    pFrame.contentDocument.close();
+                    setTimeout(function() {
+                        pFrame.contentWindow.focus();
+                        pFrame.contentWindow.print();
+                        setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                    }, 500);
                 });
             }
         });
@@ -993,10 +1003,20 @@
                 data:{appointmentId},
                 dataType: 'json',
             }).done(function(data) {
-                var originalData = document.body.innerHTML;
-                document.body.innerHTML = data;
-                window.print();
-                document.body.innerHTML = originalData;
+                var pFrame = document.createElement('iframe');
+                pFrame.style.position = 'absolute';
+                pFrame.style.width = '1px';
+                pFrame.style.height = '1px';
+                pFrame.style.left = '-10000px';
+                document.body.appendChild(pFrame);
+                pFrame.contentDocument.open();
+                pFrame.contentDocument.write(data);
+                pFrame.contentDocument.close();
+                setTimeout(function() {
+                    pFrame.contentWindow.focus();
+                    pFrame.contentWindow.print();
+                    setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                }, 500);
             });
         });
 
@@ -1007,10 +1027,20 @@
                 data:{appointmentId},
                 dataType: 'json',
             }).done(function(data) {
-                var originalData = document.body.innerHTML;
-                document.body.innerHTML = data;
-                window.print();
-                document.body.innerHTML = originalData;
+                var pFrame = document.createElement('iframe');
+                pFrame.style.position = 'absolute';
+                pFrame.style.width = '1px';
+                pFrame.style.height = '1px';
+                pFrame.style.left = '-10000px';
+                document.body.appendChild(pFrame);
+                pFrame.contentDocument.open();
+                pFrame.contentDocument.write(data);
+                pFrame.contentDocument.close();
+                setTimeout(function() {
+                    pFrame.contentWindow.focus();
+                    pFrame.contentWindow.print();
+                    setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                }, 500);
             });
         });
 
@@ -1167,10 +1197,20 @@
                     $('.patient-id').selectpicker('refresh');
                 }
                 if(data.status == 2){
-                    var originalData = document.body.innerHTML;
-                    document.body.innerHTML = data.appointmentData;
-                    window.print();
-                    document.body.innerHTML = originalData;
+                    var pFrame = document.createElement('iframe');
+                    pFrame.style.position = 'absolute';
+                    pFrame.style.width = '1px';
+                    pFrame.style.height = '1px';
+                    pFrame.style.left = '-10000px';
+                    document.body.appendChild(pFrame);
+                    pFrame.contentDocument.open();
+                    pFrame.contentDocument.write(data.appointmentData);
+                    pFrame.contentDocument.close();
+                    setTimeout(function() {
+                        pFrame.contentWindow.focus();
+                        pFrame.contentWindow.print();
+                        setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                    }, 500);
                 }
             }).fail(function() {
 
@@ -1469,10 +1509,20 @@
                         }
                     }
                     if(data.anc_type == 2){
-                        var originalData = document.body.innerHTML;
-                        document.body.innerHTML = data.data;
-                        window.print();
-                        document.body.innerHTML = originalData;
+                        var pFrame = document.createElement('iframe');
+                        pFrame.style.position = 'absolute';
+                        pFrame.style.width = '1px';
+                        pFrame.style.height = '1px';
+                        pFrame.style.left = '-10000px';
+                        document.body.appendChild(pFrame);
+                        pFrame.contentDocument.open();
+                        pFrame.contentDocument.write(data.data);
+                        pFrame.contentDocument.close();
+                        setTimeout(function() {
+                            pFrame.contentWindow.focus();
+                            pFrame.contentWindow.print();
+                            setTimeout(function() { document.body.removeChild(pFrame); }, 2000);
+                        }, 500);
                     }
                 }).fail(function(error){
 
