@@ -29,7 +29,7 @@ class SmsTemplateSeeder extends Seeder
                                     Your Reff. Pt. {{patient_fullname}} has admitted our hospital {{msg}} {{gender}} child wt {{weight}} kg at {{time}} on {{date}}.
                                     Thank you for Reference and expecting your favorable support in future.
                             From :- Civora Hospital & Maternity Home
-                            0261-2548096',
+                            9558981800',
                 'module' => 'sendDischargeCardToRefDoctor',
                 'status' => 1,
             ],

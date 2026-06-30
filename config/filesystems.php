@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'cdn_url' => env('DO_SPACES_URL', 'https://candorbucket.sgp1.cdn.digitaloceanspaces.com'),
+    'cdn_url' => env('DO_SPACES_URL', ' '),
 
     /*
     |--------------------------------------------------------------------------

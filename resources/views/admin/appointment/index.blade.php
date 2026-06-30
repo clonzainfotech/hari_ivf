@@ -64,11 +64,11 @@
                                 </button>
                             </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="#">
                                 <button class="btn btn-primary print-appointmentprint">Print</button>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
 
@@ -196,29 +196,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-5">
-                                        {{Form::text('extra_field1[]','',['class'=>'form-control extra-field-1','placeholder'=>'Extra Field'])}}
-                                    </label>
-                                    <div class="col-md-6">
-                                        {{Form::text('extra_field1[]','',['class'=>'form-control charges-changes extra-field-value-1','placeholder'=>'Extra Field Value'])}}
-                                        <span class="form-error-msg extra_field"></span>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-5">
-                                        {{Form::text('extra_field2[]','',['class'=>'form-control extra-field-2','placeholder'=>'Extra Field','min'=>0])}}
-                                    </label>
-                                    <div class="col-md-6">
-                                        {{Form::text('extra_field2[]','',['class'=>'form-control charges-changes extra-field-value-2','placeholder'=>'Extra Field Value','min'=>0])}}
-                                        <span class="form-error-msg extra_field"></span>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <div class="col-md-5">
@@ -284,7 +262,12 @@
                                     <div class="col-md-5">
                                         Payment Mode
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 payment-mode-container">
+                                        <style>
+                                            .payment-mode-container .bootstrap-select .dropdown-toggle {
+                                                height: 36px !important;
+                                            }
+                                        </style>
                                         {{Form::select('payment_mode',['2'=>'Cash','1'=>'Swipe','3'=>'Cheque','4'=>'UPI','5'=>'NEFT'],'',[
                                             'class'=>'form-control payment-mode select-padding-0 col-md-11'
                                         ])}}
@@ -339,13 +322,13 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12 charge">
-                                    <div class="col-md-2">
+                                    <!-- <div class="col-md-2">
                                         {!! Form::button('0', [
                                             'class' => 'btn btn-primary btn-sm amount button button',
                                             'id' => '0',
                                             'onclick' => 'getConsultingCharges(this.id)'
                                         ]) !!}
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-2">
                                         {!! Form::button('100', [
                                             'class' => 'btn btn-primary btn-sm amount button button',
@@ -381,11 +364,6 @@
                                             'onclick' => 'getConsultingCharges(this.id)'
                                         ]) !!}
                                     </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-12 charge">
                                     <div class="col-md-2">
                                         {!! Form::button('400', [
                                             'class' => 'btn btn-primary btn-sm amount button',
@@ -393,6 +371,10 @@
                                             'onclick' => 'getConsultingCharges(this.id)'
                                         ]) !!}
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12 charge">
                                     <div class="col-md-2">
                                         {!! Form::button('500', [
                                             'class' => 'btn btn-primary btn-sm amount button',
