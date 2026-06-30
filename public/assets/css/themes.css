@@ -240,9 +240,7 @@ background-color: transparent !important;
 }
 
 textarea.form-control:focus {
-    border-top: none !important;
-    border-right: none !important;
-    border-left: none !important;
+
 }
 
 .text-wrraping {

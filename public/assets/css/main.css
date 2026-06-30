@@ -2569,9 +2569,9 @@ fieldset[disabled] .form-control {
 
 textarea.form-control {
 	max-width: 100%;
-	padding: 10px 10px 0 0;
+
 	resize: none;
-	border: none;
+	/* border: none; */
 	border-bottom: 1px solid #E3E3E3;
 	border-radius: 0;
 	line-height: 2
@@ -2579,9 +2579,9 @@ textarea.form-control {
 
 textarea.form-control:focus,
 textarea.form-control:active {
-	border-left: none;
+	/* border-left: none;
 	border-top: none;
-	border-right: none
+	border-right: none */
 }
 
 .has-success.form-group .form-control,
@@ -16530,12 +16530,23 @@ img {
 }
 
 .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle) {
-	font-weight: 600
+	font-weight: 600;
+	/* color:#fff!important; */
 }
 
 .sidebar .menu .progress-container {
 	margin: 12px
 }
+
+.sidebar .menu .list .ml-menu li.active {
+	background: #bcc6a7!important;
+	
+}
+.sidebar .menu .list .ml-menu li.active a span{
+	color: #000!important;
+	
+}
+
 
 .right-sidebar {
 	width: 280px;
@@ -17782,7 +17793,8 @@ img {
 .sidebar .menu .list,
 .sidebar .menu .list .ml-menu,
 .invoice .nav-tabs {
-	padding-left: 0px
+	padding-left: 0px;
+	padding-top: 5px
 }
 
 .p-t-0 {

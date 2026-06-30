@@ -237,6 +237,12 @@
         border-color: var(--c-primary);
         box-shadow: 0 0 0 3px rgba(26,60,94,0.1);
     }
+    
+    /* Hide native Edge/IE password reveal button */
+    input::-ms-reveal,
+    input::-ms-clear {
+        display: none;
+    }
 
     /* Password eye */
     .pw-field{ 

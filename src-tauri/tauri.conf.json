@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "Civora Desktop",
+  "productName": "Civora",
   "version": "0.1.0",
   "identifier": "com.candor.desktop",
   "build": {
@@ -8,9 +8,10 @@
     "devUrl": "http://168.144.125.117/"
   },
   "app": {
+    "macOSPrivateApi": true,
     "windows": [
       {
-        "title": "Civora Desktop",
+        "title": "Civora",
         "width": 800,
         "height": 600,
         "resizable": true,
