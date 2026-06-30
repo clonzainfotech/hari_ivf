@@ -693,7 +693,7 @@ class AppointmentController extends ApiController
                 $appointmentTime = \Carbon\Carbon::parse($request->time)->format('H:i:s');
                 $nextAppointmentTime = \Carbon\Carbon::parse($request->time)->addMinute(15)->format('H:i:s');
                 $checkTotalAppointment = $this->AppointmentRequest->where('appointment_date',\Carbon\Carbon::parse($request->date)->format('Y-m-d'))->where('is_book',0)->whereBetween('appointment_time',[$appointmentTime,$nextAppointmentTime])->get();
-                $totalappointment = $request->doctor_id == 11 ? 3 : 2; // for jaydev sir, set 3 appointment in 15 min and for shivani ma'am ,set 2 appointmment
+                $totalappointment = $request->doctor_id == 11 ? 3 : 2;
                 if(count($checkTotalAppointment) == $totalappointment) 
                 {
                     return $this->sendResponse('Appointmnet already booked on this time. Please Choose other sloat or change Doctor' );
@@ -807,10 +807,9 @@ class AppointmentController extends ApiController
         }
         if($doctor)
         {
-            //for shivani shah
             $totalSloat = 2; // check 2 patients within pre 15 min
             $sloats = ['10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00','12:15','12:30','12:45','16:00','16:15','16:30','16:45','17:00','17:15','17:30','17:45','18:00','18:15','18:30','18:45'];
-            if($request->doctor_id == 11)//for jaydev sir
+            if($request->doctor_id == 11)
             {
                 $sloats = ['10:00','10:15','10:30','10:45','11:00','11:15','11:30','11:45','12:00','12:15','12:30','12:45'];
                 $totalSloat = 3;// check 3 patients within pre 15 min

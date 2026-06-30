@@ -56,7 +56,7 @@ return [
     'asset_url' => env('ASSET_URL', ''),
 
 
-    'collection_password' => env('COLLECTION_PASSWORD', 'Jaydev@4838'),
+    'collection_password' => env('COLLECTION_PASSWORD', 'Clonza@2026!'),
 
     /*
     |--------------------------------------------------------------------------
@@ -250,9 +250,9 @@ return [
     'loader' => 'assets/images/Spin.gif',
     'hospitalname1' => 'Civora Hospital & Civora IVF Center',
     'hospitalname2' => 'Civora Hospital & Maternity Home',
-    'doctor' => 'Dr. Jaydev Dhameliya',
+    'doctor' => 'Dr. Yogesh Patel',
     'stopNotification' => ['anc', 'ivf', 'iui'],
-    'embroyologist_doctor' => "BHAVNA BORKHATARIA",
+    'embroyologist_doctor' => "Yogesh Patel",
     'embroyologist_degree' => "M.SC., PH.D.",
 
     'GOOGLE_CLIENT_ID' => '984779626869-fjht6mtsrqfla3ug8rmdvpn1n55gn509.apps.googleusercontent.com',

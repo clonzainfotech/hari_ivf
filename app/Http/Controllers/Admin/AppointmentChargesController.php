@@ -49,12 +49,14 @@ class AppointmentChargesController extends AdminController
                 }else{
                     $appointmentCharges = $this->AppointmentCharges;
                 }
-                $extraField1 = $request->extra_field1;
-                $extraField2 = $request->extra_field2;
+                $extraField1 = is_array($request->extra_field1) ? $request->extra_field1 : [];
+                $extraField2 = is_array($request->extra_field2) ? $request->extra_field2 : [];
                 $extra = [$extraField1,$extraField2];
-                if(count(array_filter($extraField1)) || count(array_filter($extraField2))){
+                if(count(array_filter($extraField1)) > 0 || count(array_filter($extraField2)) > 0){
                     $serialize = serialize($extra);
                     $appointmentCharges->extra_field = $serialize;
+                } else {
+                    $appointmentCharges->extra_field = null;
                 }
                 $appointmentCharges->appointment_id = $appointmentId;
                 $appointmentCharges->refdoctor_id = $refDoctorId;

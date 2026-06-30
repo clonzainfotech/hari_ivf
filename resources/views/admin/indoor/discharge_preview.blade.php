@@ -351,7 +351,7 @@
       </div>
    </div>
 </div>
-<div class="divFooter">For any emergency, you can call on <b>0261-2548096</b> or you can visit the hospital.</div>
+<div class="divFooter">For any emergency, you can call on <b>9558981800</b> or you can visit the hospital.</div>
 {{-- <table id="print-discharge-table" class="print-discharge-table">
     <tbody>
         <tr>

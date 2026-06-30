@@ -165,12 +165,18 @@
         $(document).ready(function(){
 
             $(".daterange").daterangepicker({
+                autoUpdateInput: false,
                 locale: {
                     direction: 'drop-down-date-range',
                     cancelLabel: 'Clear',
                     format: 'D/M/Y',
                 }
             });
+
+            $('.daterange').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('D/M/Y') + ' - ' + picker.endDate.format('D/M/Y'));
+            });
+
             getPatientData(qstring);
 
             $(document).on('dblclick', '#patient-table tbody tr', function(event) {
@@ -185,6 +191,14 @@
                 event.preventDefault();
                 date = $('.daterange').val();
                 qstring = 'page=' + page + '&patient_id=' + patientId + '&reference_doctor_id=' + referenceDoctorId+'&search='+search+'&date='+date;
+                getPatientData(qstring);
+            });
+
+            $(document).on('click','.cancelBtn',function(e){
+                e.preventDefault();
+                date = '';
+                $('.daterange').val('');
+                qstring = 'page=' + page + '&patient_id=' + patientId + '&reference_doctor_id=' + referenceDoctorId+'&search='+search;
                 getPatientData(qstring);
             });
 
