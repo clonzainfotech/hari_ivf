@@ -890,13 +890,12 @@
                     type: "POST",
                     data: {appointment_id:appointmentId,isprint:isprint},
                     dataType: 'json',
+                    async: false
                 }).done(function(data) {
                     var originalData = document.body.innerHTML;
                     document.body.innerHTML = data;
-                    setTimeout(function() {
-                        window.print();
-                        document.body.innerHTML = originalData;
-                    }, 500);
+                    window.print();
+                    document.body.innerHTML = originalData;
                 });
             }
         });
@@ -975,13 +974,12 @@
                 url: "{{URL::to('appointment-sticker')}}",
                 data:{appointmentId},
                 dataType: 'json',
+                async: false
             }).done(function(data) {
                 var originalData = document.body.innerHTML;
                 document.body.innerHTML = data;
-                setTimeout(function() {
-                    window.print();
-                    document.body.innerHTML = originalData;
-                }, 500);
+                window.print();
+                document.body.innerHTML = originalData;
             });
         });
 
@@ -991,13 +989,12 @@
                 url: "{{URL::to('appointment-printview')}}",
                 data:{appointmentId},
                 dataType: 'json',
+                async: false
             }).done(function(data) {
                 var originalData = document.body.innerHTML;
                 document.body.innerHTML = data;
-                setTimeout(function() {
-                    window.print();
-                    document.body.innerHTML = originalData;
-                }, 500);
+                window.print();
+                document.body.innerHTML = originalData;
             });
         });
 
@@ -1136,6 +1133,7 @@
             $.ajax({
                 url: "{{URL::to('appointment')}}?"+qstring,
                 dataType: 'json',
+                async: false
             }).done(function(data) {
                 if(data.status == 1){
                     var opd = data.totalOpd;
@@ -1156,10 +1154,8 @@
                 if(data.status == 2){
                     var originalData = document.body.innerHTML;
                     document.body.innerHTML = data.appointmentData;
-                    setTimeout(function() {
-                        window.print();
-                        document.body.innerHTML = originalData;
-                    }, 500);
+                    window.print();
+                    document.body.innerHTML = originalData;
                 }
             }).fail(function() {
 
@@ -1439,7 +1435,8 @@
                 $.ajax({
                     url:'{{URL::to("get-anc-details")}}?'+ancQstring,
                     type:'GET',
-                    dataType:'json'
+                    dataType: 'json',
+                    async: false
                 }).done(function(data){
                     if(data.anc_type == 1){
                         var ancPreview = $('.visit-details-data').html();
@@ -1460,10 +1457,8 @@
                     if(data.anc_type == 2){
                         var originalData = document.body.innerHTML;
                         document.body.innerHTML = data.data;
-                        setTimeout(function() {
-                            window.print();
-                            document.body.innerHTML = originalData;
-                        }, 500);
+                        window.print();
+                        document.body.innerHTML = originalData;
                     }
                 }).fail(function(error){
 
