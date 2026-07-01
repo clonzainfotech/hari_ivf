@@ -17,12 +17,9 @@
                     <h2><strong>Category Report</strong></h2>
                     <ul class="header-dropdown">
                         <li>
-                            <a href="javascript:void(0);">
-                                <button class="btn btn-primary print-category-report">
+                            {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-category-report">
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
                 <div class="body">

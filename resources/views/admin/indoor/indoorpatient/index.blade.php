@@ -14,9 +14,9 @@
                     <h2><strong>Indoor Patient List</strong></h2>
                     <ul class="header-dropdown">
                         <li>
-                            <button class="btn btn-primary print">
+                            {{-- <button class="btn btn-primary print">
                                 Print
-                            </button>
+                            </button> --}}
                         </li>
                     </ul>
                 </div>
@@ -171,7 +171,7 @@
                 <!-- footer -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary waves-effect submit-button submit">Save</button>
-                    <button type="submit" class="btn btn-primary waves-effect deposit-print submit" value="1">Save & Preview</button>
+                    {{-- <button type="submit" class="btn btn-primary waves-effect deposit-print submit" value="1">Save & Preview</button> --}}
                 </div>
 
                 {{Form::close()}}
@@ -217,8 +217,7 @@
                         <!-- footer -->
                         <div class="modal-footer mt-3 sticker-modal-footer">
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary waves-effect sticker sticker-print">Print</button>
-                        </div>
+                            {{-- <button type="button" class="btn btn-primary waves-effect sticker sticker-print">Print</button> --}}</div>
                     </div>
                 {{Form::close()}}
             </div>
@@ -419,7 +418,7 @@
                                 paymenttype = "NEFT";
                             }
                             $('.patient-dposit-data').val('');
-                            $('.patient-dposit-data').append('<tr><td>'+ depositDate +'</td><td>'+ (value.case_type == 'Credit' ? '+&nbsp;&nbsp;&nbsp;&nbsp;' : '-&nbsp;&nbsp;&nbsp;&nbsp;') + value.amount +'</td><td>'+paymenttype+'</td><td>'+ value.total +'</td><td><i class="material-icons print-deposit" data-id="'+ value.id +'">print</i></td></tr>');
+                            $('.patient-dposit-data').append('<tr><td>'+ depositDate +'</td><td>'+ (value.case_type == 'Credit' ? '+&nbsp;&nbsp;&nbsp;&nbsp;' : '-&nbsp;&nbsp;&nbsp;&nbsp;') + value.amount +'</td><td>'+paymenttype+'</td><td>'+ value.total +'</td><td>{{-- <i class="material-icons print-deposit" data-id="'+ value.id +'">print</i> --}}</td></tr>');
                         });
                     } else {
                         $('.patient-dposit-data').append('<tr><td colspan="10" class="text-center">No records available</td></tr>');

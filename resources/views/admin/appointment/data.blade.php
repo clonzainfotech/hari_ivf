@@ -140,11 +140,11 @@
                                         <li>
                                             <a class="sticker-appointment" id="{{encrypt($row->id)}}">Sticker</a>
                                         </li> |
-                                        <li>
+                                        {{-- <li>
                                             <a class="print-appointment" id="{{encrypt($row->id)}}">Print</a>
-                                        </li>
+                                        </li> --}}
                                         |<li><a class="imp-Note" data-toggle="modal" data-target="#imp-remark-modal" id="" data-pid={{$row->patients_id}}>Important Note</a></li>
-                                        {!! !empty($row->getAppointmentCharges) ? '| <li><a class="print-opd-charge" id="'.encrypt($row->id).'">Print OPD</a></li>' : null !!}
+                                        {!! !empty($row->getAppointmentCharges) ? '| {{-- <li><a class="print-opd-charge" id="'.encrypt($row->id).'">Print OPD</a></li> --}}' : null !!}
                                         {!! (!$row->nextAppointmentDate() && $row->next_appointment == true && $row->date >= \Carbon\Carbon::now()->format('Y-m-d')) ? '| <li><a class="next-appointment" data-toggle="modal" data-target="#next-appointment-modal" id="'.encrypt($row->id).'">Next Appointment</a></li>' : null !!}
                                         @if(strtotime(\Carbon\Carbon::now()->format('Y-m-d')) <= strtotime($row->date))
                                             |

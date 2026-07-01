@@ -189,7 +189,7 @@
 
                 <!-- footer -->
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary waves-effect submit submit-button submit-transfer-print" value="4">submit</button>
+                        {{-- <button type="submit" class="btn btn-primary waves-effect submit submit-button submit-transfer-print" value="4">submit</button> --}}
                     </div>
 
                     {{Form::close()}}

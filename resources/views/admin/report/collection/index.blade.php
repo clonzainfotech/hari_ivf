@@ -20,12 +20,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0);">
-                                <button class="btn btn-primary print-collection-report">
+                            {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-collection-report">
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
                 <div class="body">

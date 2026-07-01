@@ -1950,10 +1950,9 @@
                         {{Form::hidden('ivf_transfer_report_id', '' , ['id' => 'ivf_transfer_report_id'])}}
                         <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
                         <button type="submit" class="btn btn-primary submit transfer-report d-none" value="5">Transfer Report Preview</button>
-                        <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a>
-                        <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button>
-                        <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button>
-                        <button type="submit" class="btn btn-primary admission-print submit d-none" value="7">Admission Print</button>
+                        {{-- <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a> --}}{{-- <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button> --}}
+                        {{-- <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button> --}}
+                        {{-- <button type="submit" class="btn btn-primary admission-print submit d-none" value="7">Admission Print</button> --}}
                         <a href="{{URL::previous()}}" class="btn btn-default">Cancel</a>
                         {{Form::close()}}
                     @endif
@@ -3151,10 +3150,9 @@
                                 {{Form::hidden('ivf_transfer_report_id', '' , ['id' => 'ivf_transfer_report_id'])}}
                                 <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
                                 <button type="submit" class="btn btn-primary submit transfer-report d-none" value="5">Transfer Report Preview</button>
-                                <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a>
-                                <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button>
-                                <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button>
-                                <button type="submit" class="btn btn-primary admission-print submit d-none" value="7">Admission Print</button>
+                                {{-- <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a> --}}{{-- <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button> --}}
+                                {{-- <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button> --}}
+                                {{-- <button type="submit" class="btn btn-primary admission-print submit d-none" value="7">Admission Print</button> --}}
 
                                 <a href="{{URL::previous()}}" class="btn btn-default">Cancel</a>
                             @endif
@@ -5263,10 +5261,9 @@
                             {{Form::hidden('ivf_transfer_report_id', '' , ['id' => 'ivf_transfer_report_id'])}}
                             <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
                             <button type="submit" class="btn btn-primary submit transfer-report d-none" value="5">Transfer Report Preview</button>
-                            <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a>
-                            <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button>
-                            <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button>
-                            <button type="submit" class="btn btn-primary admission-print submit d-none" value="7">Admission Print</button>
+                            {{-- <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a> --}}{{-- <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button> --}}
+                            {{-- <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button> --}}
+                            {{-- <button type="submit" class="btn btn-primary admission-print submit d-none" value="7">Admission Print</button> --}}
                             <a href="{{URL::previous()}}" class="btn btn-default">Cancel</a>
                         {{Form::close()}}
                     </div>
@@ -5292,7 +5289,7 @@
                     {{Form::hidden('ivf-history-id','',['class'=>'ivf-history-id'])}}
                 <!-- footer -->
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary waves-effect submit submit-button submit-transfer-print" value="2">Submit</button>
+                        {{-- <button type="submit" class="btn btn-primary waves-effect submit submit-button submit-transfer-print" value="2">Submit</button> --}}
                     </div>
                     {{Form::close()}}
                 </div>
@@ -6866,26 +6863,26 @@
                         }
                         if(data.extraVisit[i] == 1)
                         {
-                            buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extravisit="1" data-ivfreport="">Print</a></div></div>';
+                            buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right">{{-- <a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extravisit="1" data-ivfreport="">Print</a> --}}</div></div>';
                         }
                         if(data.isIvfReport[i] == 1)
                         {
                             buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-3 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div>'+
                             '<div class="col-md-3"><h5 class="modal-title rm-btn" id="myModalLabel">Plan:- <span class="ivf-appointment-plan">'+data.planArray[i]+'</span></h5></div>'+
                             '<div class="col-md-3"><h5 class="modal-title rm-btn" id="myModalLabel">CycleNo:- <span class="ivf-appointment-plan">'+data.cycleArray[i]+'</span></h5></div>'+
-                            '<div class="col-md-3 text-right"><a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="" data-ivfreport="1" data-ivfreport="">Print</a></div></div>';
+                            '<div class="col-md-3 text-right">{{-- <a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="" data-ivfreport="1" data-ivfreport="">Print</a> --}}</div></div>';
                         }
                         if(data.visitNumber[i] == 1)
                         {
                             buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div>'+
-                            '<div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-visit="'+data.visitNumber[i]+'" data-id="'+data.enc_ivf_id[i]+'" data-date="'+linkDate+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="" data-ivfreport="">Print</a></div></div>';
+                            '<div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-visit="'+data.visitNumber[i]+'" data-id="'+data.enc_ivf_id[i]+'" data-date="'+linkDate+'">Edit</a>{{-- <a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="" data-ivfreport="">Print</a> --}}</div></div>';
                         }
                         if(data.visitNumber[i] != 1 && data.isIvfReport[i] != 1)
                         {
                         buttonHtml = ivfPreview + '<div class="row mb-1"><div class="col-md-3 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div>'+
                         '<div class="col-md-3"><h5 class="modal-title rm-btn" id="myModalLabel">Plan:- <span class="ivf-appointment-plan">'+data.planArray[i]+'</span></h5></div>'+
                         '<div class="col-md-3"><h5 class="modal-title rm-btn" id="myModalLabel">CycleNo:- <span class="ivf-appointment-plan">'+data.cycleArray[i]+'</span></h5></div>'+
-                        '<div class="col-md-3 text-right"><a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="" data-ivfreport="">Print</a></div></div>';
+                        '<div class="col-md-3 text-right">{{-- <a class="btn print-btn btn-sm btn-primary" data-plan="'+data.plan+'" data-cycleno="'+data.cycle+'" data-date="'+linkDate+'" data-extraVisit="" data-ivfreport="">Print</a> --}}</div></div>';
 
                         }
 

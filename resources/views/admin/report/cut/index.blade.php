@@ -12,12 +12,9 @@
                     <h2><strong>Cut Report</strong></h2>
                     <ul class="header-dropdown">
                         <li>
-                            <a href="javascript:void(0);">
-                                <button class="btn btn-primary print-cut-report">
+                            {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-cut-report">
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
                 <div class="body">

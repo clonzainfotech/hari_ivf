@@ -19,10 +19,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <button class="btn btn-primary print-donar">Print</button>
-                            </a>
-                        </li>
+                            {{-- <a href="#"> <button class="btn btn-primary print-donar">Print</button> </a> --}}</li>
                     </ul>
                 </div>
 

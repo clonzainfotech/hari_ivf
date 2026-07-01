@@ -2632,10 +2632,10 @@ $medqty = ['0'=>'0','1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'];
                     @endif
                     @if($visitNo == 3)
                         <button type="submit" class="btn btn-primary final-iui submit" value="6">Follicular Study Report</button>
-                        <button type="button" class="btn btn-primary follicular-print d-none" value="7">Follicular Study Print</button>
+                        {{-- <button type="button" class="btn btn-primary follicular-print d-none" value="7">Follicular Study Print</button> --}}
                     @endif
-                    <button type="submit" class="btn btn-primary iui-print submit d-none" value="2">IUI Print</button>
-                    <button type="button" class="btn btn-primary iui-deposit-print d-none" value="3">IUI Bill</button>
+                    {{-- <button type="submit" class="btn btn-primary iui-print submit d-none" value="2">IUI Print</button> --}}
+                    {{-- <button type="button" class="btn btn-primary iui-deposit-print d-none" value="3">IUI Bill</button> --}}
                     <a href="{{URL::to('iui')}}" class="btn btn-default">Cancel</a>
                 </div>
             @endif

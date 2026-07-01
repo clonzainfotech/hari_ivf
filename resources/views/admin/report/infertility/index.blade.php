@@ -56,12 +56,9 @@
                                     ])}}
                                 </div>
                                 <div class="col-md-1">
-                                    <a href="javascript:void(0);">
-                                        <button class="btn btn-primary print-infertility m-0" type="button">
+                                    {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-infertility m-0" type="button">
                                             Print
-                                        </button>
-                                    </a>
-                                </div>
+                                        </button> </a> --}}</div>
                             </div>
                         </form>
                     </div>

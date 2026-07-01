@@ -61,12 +61,9 @@
                                     </form>
                                 </div>
                                 <div class="col-md-1">
-                                    <a href="javascript:void(0);">
-                                        <button class="btn btn-primary print-ivf m-0">
+                                    {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-ivf m-0">
                                             Print
-                                        </button>
-                                    </a>
-                                </div>
+                                        </button> </a> --}}</div>
                                 {{-- <div class="col-md-4">{{Form::select('usg',['1'=>'Early Scan','2'=>'NT Scan','3'=>'Anomalies Miles','4'=>'Growth Scan'],'',['class'=>'usg select-padding-0 w-100','placeholder'=>'Select USG Type'])}}</div> --}}
                             </div>
                         </div>

@@ -16,11 +16,11 @@
                                 <button class="btn btn-primary add-hormon" data-toggle="modal" data-target="#add-charge">Add</button>
                             </li>
                         </a>
-                        <a href="#">
+                        {{-- <a href="#">
                             <li>
                                 <button class="btn btn-primary print-hormon">Print</button>
                             </li>
-                        </a>
+                        </a> --}}
                     </ul>
                 </div>
 

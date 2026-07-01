@@ -27,12 +27,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <button class="btn btn-primary print-testimonial m-0">
+                            {{-- <a href="#"> <button class="btn btn-primary print-testimonial m-0">
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
 

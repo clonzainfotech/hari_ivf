@@ -45,12 +45,9 @@
                             </div>
 
                             <div class="col-md-1">
-                                <a href="javascript:void(0);">
-                                    <button class="btn btn-primary print-all m-0">
+                                {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-all m-0">
                                         Print
-                                    </button>
-                                </a>
-                            </div>
+                                    </button> </a> --}}</div>
                             <div class="col-md-2 checkbox">
                                 {{Form::checkbox('advanced_search','',false,[
                                     'id'=>'cash_box',

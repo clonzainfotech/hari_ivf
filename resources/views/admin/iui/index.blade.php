@@ -44,12 +44,9 @@
                                     </form>
                                 </div>
                                 <div class="col-md-1">
-                                    <a href="javascript:void(0);">
-                                        <button class="btn btn-primary print-iui m-0">
+                                    {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-iui m-0">
                                             Print
-                                        </button>
-                                    </a>
-                                </div>
+                                        </button> </a> --}}</div>
                             </div>
                         </div>
                     <!-- Tab panes -->

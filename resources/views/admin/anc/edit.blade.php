@@ -2697,7 +2697,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
     <!-- OE  -->
     <div class="panel panel-primary o-e">
         <div class="panel-heading" role="tab" id="headingThree_1">
-            <h4 class="panel-title tab-highlight-green"> <a class="collapsed" role="button" data-toggle="collapse" data-parent="#oe" href="#oe" aria-expanded="true"
+            <h4 class="panel-title tab-highlight-green"> {{-- <a class="collapsed" role="button" data-toggle="collapse" data-parent="#oe" href="#oe" aria-expanded="true"
                                                             aria-controls="oe">{{$oeNo}}. O/E
                     @php
                         $msgClass = 'd-none';
@@ -2727,7 +2727,7 @@ $wnlArray = ['1'=>"WNL",'2'=>"Abnormal"];
                             &nbsp&nbsp<span class="lmd-text">{{'(Approx Uters Week: ' .$utersWeek . ' week) ' }}</span>
                         @endif
                     @endif
-                </a></h4>
+                </a> --}}</h4>
         </div>
         <div id="oe" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingThree_1">
             <div class="panel-body">

@@ -20,12 +20,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <button class="btn btn-primary patients-print">
+                            {{-- <a href="#"> <button class="btn btn-primary patients-print">
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
 
@@ -141,8 +138,7 @@
                         <!-- footer -->
                         <div class="modal-footer mt-3 procedure-modal-footer">
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary waves-effect procedure procedure-print">Print</button>
-                        </div>
+                            {{-- <button type="button" class="btn btn-primary waves-effect procedure procedure-print">Print</button> --}}</div>
                     </div>
                 {{Form::close()}}
             </div>

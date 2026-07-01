@@ -33,13 +33,9 @@
                 <h2><strong>IVF Payment</strong></h2>
                 {{-- <ul class="header-dropdown">
                     <li>
-                        <a href="javascript:void(0);">
-                            <button class="btn btn-primary print-sms-report">
+                        {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-sms-report">
                                 Print
-                            </button>
-
-                        </a>
-                    </li>
+                            </button> </a> --}}</li>
                 </ul> --}}
             </div>
             <div class="body">
@@ -65,12 +61,9 @@
                                     Remaining Payment
                                 </button>
                             </a> --}}
-                             <a href="javascript:void(0);">
-                                <button class="btn btn-primary print-ivf-payment-report">
+                             {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-ivf-payment-report">
                                     Print
-                                </button>
-                            </a>
-                        </div>
+                                </button> </a> --}}</div>
                     </div>
                 </div>
                 <div class="tab-content m-t-10">

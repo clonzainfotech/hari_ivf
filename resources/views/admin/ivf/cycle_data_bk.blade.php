@@ -2633,9 +2633,8 @@
                             {{Form::hidden('ivf_transfer_report_id', '' , ['id' => 'ivf_transfer_report_id'])}}
                             <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
                             <button type="submit" class="btn btn-primary submit transfer-report d-none" value="5">Transfer Report Preview</button>
-                            <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a>
-                            <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button>
-                            <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button>
+                            {{-- <a class="btn btn-primary t-print transfer-print d-none" data-id="">Transfer Print</a> --}}{{-- <button type="submit" class="btn btn-primary submit d-none" value="3" id="ivf_print"> Print IVF</button> --}}
+                            {{-- <button type="submit" class="btn btn-primary submit d-none" value="4" id="ivf_report_print"> Save & Print IVF Report</button> --}}
                             <a href="{{URL::previous()}}" class="btn btn-default">Cancel</a>
                         {{Form::close()}}
                     </div>
@@ -2661,7 +2660,7 @@
                     {{Form::hidden('ivf-history-id','',['class'=>'ivf-history-id'])}}
                 <!-- footer -->
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary waves-effect submit submit-button submit-transfer-print" value="2">Submit</button>
+                        {{-- <button type="submit" class="btn btn-primary waves-effect submit submit-button submit-transfer-print" value="2">Submit</button> --}}
                     </div>
                     {{Form::close()}}
                 </div>
@@ -3116,9 +3115,7 @@
                 <div class="row">
                     <div class="col-md-12 mr-5">
                         <a class="btn edit-btn rm-btn btn-sm btn-primary">Edit</a>
-                        <a class="btn print-btn btn-sm btn-primary">Print</a>
-                        <a class="btn print-fet-report btn-sm btn-primary">Print</a>
-                    </div>
+                        {{-- <a class="btn print-btn btn-sm btn-primary">Print</a> --}}{{-- <a class="btn print-fet-report btn-sm btn-primary">Print</a> --}}</div>
                 </div>
             </div>
             <div class="modal-body">

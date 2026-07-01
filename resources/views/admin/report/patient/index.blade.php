@@ -26,12 +26,9 @@
                     <h2><strong>Patient Report</strong></h2>
                     <ul class="header-dropdown">
                         <li>
-                            <a href="javascript:void(0);">
-                                <button class="btn btn-primary print-report is-print" disabled>
+                            {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-report is-print" disabled>
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
 

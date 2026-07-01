@@ -34,12 +34,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <button class="btn btn-primary print-injection">
+                            {{-- <a href="#"> <button class="btn btn-primary print-injection">
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
 

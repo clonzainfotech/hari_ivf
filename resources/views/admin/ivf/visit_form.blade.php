@@ -2201,11 +2201,10 @@
     {{Form::hidden('ivf_transfer_report_id', '' , ['id' => 'ivf_transfer_report_id'])}}
     <button type="submit" class="btn btn-primary submit" value="1">Save & Preview</button>
     <button type="submit" class="btn btn-primary submit transfer-report d-none" value="5">Transfer Report Preview</button>
-    <a class="{{'btn btn-primary t-print transfer-print '.$checkPrint}}" data-id="">Transfer Print</a>
-    @if($ivf->visit != 2 && $ivf->plan == 1)
-        <button type="submit" class="{{'btn btn-primary submit '.$triggerStatus}}" value="3" id="ivf_print">Print IVF</button>
+    {{-- <a class="{{'btn btn-primary t-print transfer-print '.$checkPrint}}" data-id="">Transfer Print</a> --}}@if($ivf->visit != 2 && $ivf->plan == 1)
+        {{-- <button type="submit" class="{{'btn btn-primary submit '.$triggerStatus}}" value="3" id="ivf_print">Print IVF</button> --}}
     @endif
-    <button type="submit" class="{{'btn btn-primary submit embroy-button '.$simonReportType}}" value="4" id="ivf_report_print"> Save & Print IVF Report</button>
+    {{-- <button type="submit" class="{{'btn btn-primary submit embroy-button '.$simonReportType}}" value="4" id="ivf_report_print"> Save & Print IVF Report</button> --}}
     <a href="{{URL::previous()}}" class="btn btn-default">Cancel</a>
     {{Form::close()}}
     <script type="text/javascript">

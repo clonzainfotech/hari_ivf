@@ -22,12 +22,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);">
-                            <button class="btn btn-primary print-reference-doctor">
+                        {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-reference-doctor">
                                 Print
-                            </button>
-                        </a>
-                    </li>
+                            </button> </a> --}}</li>
                 </ul>
             </div>
             <div class="body">

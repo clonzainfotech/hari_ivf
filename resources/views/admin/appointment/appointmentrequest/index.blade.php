@@ -13,10 +13,7 @@
                     <h2><strong>Appointment Request List</strong></h2>
                     <ul class="header-dropdown">
                         <li>
-                            <a href="#">
-                                <button class="btn btn-primary print-appointmentrequest">Print</button>
-                            </a>
-                        </li>
+                            {{-- <a href="#"> <button class="btn btn-primary print-appointmentrequest">Print</button> </a> --}}</li>
                     </ul>
                 </div>
 

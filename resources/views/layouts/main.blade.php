@@ -216,11 +216,7 @@ $menu = "";
             });
         }
         function showConfirmNotify(data){
-            if ('speechSynthesis' in window) {
-                var msg = new SpeechSynthesisUtterance();
-                msg.text = data.name;
-                window.speechSynthesis.speak(msg);
-            }
+
             swal({
                     title: "<span class='callpatient-name'>"+data.name+"<span>",
                     text: "<h6 class = 'callpatient-category'>"+data.user+" CALLING FOR "+data.category + "</h6><br><h6>Area : "+data.opd_area+"</h6>",

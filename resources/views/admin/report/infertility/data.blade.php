@@ -9,7 +9,7 @@
             {{-- <th>Category</th> --}}
             <th>Reference Doctor</th>
             <th>Package</th>
-            <th>Print</th>
+            {{-- <th>Print</th> --}}
         </tr>
     </thead>
     <tbody>

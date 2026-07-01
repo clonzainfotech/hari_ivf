@@ -58,12 +58,9 @@
                                 </form>
                             </div>
                             <div class="col-md-2 mb-2">
-                                <a href="javascript:void(0);">
-                                    <button class="btn btn-primary print-review m-0">
+                                {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-review m-0">
                                         Print
-                                    </button>
-                                </a>
-                            </div>
+                                    </button> </a> --}}</div>
                         </div>
                         <div class="review-data table-responsive active">
                         </div>

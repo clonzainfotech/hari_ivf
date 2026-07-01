@@ -27,12 +27,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0);">
-                                <button class="btn btn-primary print-category">
+                            {{-- <a href="javascript:void(0);"> <button class="btn btn-primary print-category">
                                     Print
-                                </button>
-                            </a>
-                        </li>
+                                </button> </a> --}}</li>
                     </ul>
                 </div>
 

@@ -52,12 +52,9 @@
                             </a>
                         </div>
                         {{-- <div class="col-md-2">
-                            <a href="{{URL::to('medicines-setting?is_old='.encrypt(1))}}">
-                                <button class="btn btn-primary print-sms-report">
+                            {{-- <a href="{{URL::to('medicines-setting?is_old='.encrypt(1))}}"> <button class="btn btn-primary print-sms-report">
                                     Old Medicine
-                                </button>
-                            </a>
-                        </div> --}}
+                                </button> </a> --}}</div> --}}
                     </div>
                 </div>
             </div>
@@ -68,12 +65,9 @@
                 <h2><strong>Medicine</strong></h2>
                 <ul class="header-dropdown">
                     <li>
-                        <a href="{{URL::to('medicines-setting/create')}}">
-                            <button class="btn btn-primary print-sms-report">
+                        {{-- <a href="{{URL::to('medicines-setting/create')}}"> <button class="btn btn-primary print-sms-report">
                                 Add
-                            </button>
-                        </a>
-                    </li>
+                            </button> </a> --}}</li>
                 </ul>
             </div>
             <div class="body">

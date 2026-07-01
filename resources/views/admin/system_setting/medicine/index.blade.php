@@ -26,17 +26,11 @@
                         </div>
 
                         <div class="col-md-7 text-right">
-                            <a href="{{URL::to('medicines-mapping/'.encrypt(1))}}">
-                                <button class="btn btn-primary print-sms-report">
+                            {{-- <a href="{{URL::to('medicines-mapping/'.encrypt(1))}}"> <button class="btn btn-primary print-sms-report">
                                     CO
-                                </button>
-                            </a>
-                            <a href="{{URL::to('medicines-mapping/'.encrypt(2))}}">
-                                <button class="btn btn-primary print-sms-report">
+                                </button> </a> --}}{{-- <a href="{{URL::to('medicines-mapping/'.encrypt(2))}}"> <button class="btn btn-primary print-sms-report">
                                     HO
-                                </button>
-                            </a>
-                            <a href="#" class="btn btn-primary add-medicine" data-toggle="modal" data-target="#medicine-modal">Add Medicine</a>
+                                </button> </a> --}}<a href="#" class="btn btn-primary add-medicine" data-toggle="modal" data-target="#medicine-modal">Add Medicine</a>
                             <button class="btn btn-primary delete_all">Delete Medicins</button>
                         </div>
                     </div>

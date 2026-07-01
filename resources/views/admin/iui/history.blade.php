@@ -591,8 +591,7 @@
             <!-- <div class="row">
                 <div class="col-md-12 mr-5">
                     <a class="btn edit-btn btn-sm btn-primary">Edit</a>
-                    <a class="btn print-btn btn-sm btn-primary">Print</a>
-                </div>
+                    {{-- <a class="btn print-btn btn-sm btn-primary">Print</a> --}}</div>
             </div> -->
             <div class="row">
                 @foreach ($cycleData as $item)
@@ -1655,11 +1654,11 @@
                             var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
                         }
                         var class_name = (data.extraVisit[i] == 1) ? 'extra-visit' : '';
-                        buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a></div></div>';
+                        buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Edit</a>{{-- <a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a> --}}</div></div>';
                         
                         if(data.table_view[i] == true || data.extraVisit[i] == 1)//table view end Extra Visit
                         {
-                            buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"></div><div class="col-md-6 text-right"><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a></div></div>';
+                            buttonHtml = iuiPreview + '<div class="row mb-1"><div class="col-md-6 text-left"></div><div class="col-md-6 text-right">{{-- <a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'" data-type="'+class_name+'">Print</a> --}}</div></div>';
                         }
                         iuiPreview = buttonHtml + data.data[i];
                         $('.anc-details-data').html(iuiPreview);

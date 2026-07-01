@@ -65,10 +65,7 @@
                             </a>
                         </li>
                         <!-- <li>
-                            <a href="#">
-                                <button class="btn btn-primary print-appointmentprint">Print</button>
-                            </a>
-                        </li> -->
+                            {{-- <a href="#"> <button class="btn btn-primary print-appointmentprint">Print</button> </a> --}}</li> -->
                     </ul>
                 </div>
 

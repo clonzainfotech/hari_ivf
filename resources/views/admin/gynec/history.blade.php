@@ -85,7 +85,7 @@
                                     {{Form::submit('submit',['class'=>'btn btn-primary submit'])}}
                                     {{-- <a class="btn btn-primary next-appointment text-white">Save & Next Appointment</a> --}}
                                     <button type="submit" class="btn btn-primary submit" value="1">Save & Preivew</button>
-                                    <button type="submit" class="btn btn-primary submit admission-print d-none" value="2">Admission Print</button>
+                                    {{-- <button type="submit" class="btn btn-primary submit admission-print d-none" value="2">Admission Print</button> --}}
                                     <a href="{{URL::to('anc-iui-ivf')}}" class="btn btn-default">Cancel</a>
                                 </div>
                             {{Form::close()}}
@@ -220,7 +220,7 @@ $.fn.selectpicker.Constructor.DEFAULTS.tickIcon = 'zmdi-check';</script>
                         var date = moment(new Date(data.date[i])).format('DD MMMM YYYY');
                     }
                    
-                        buttonHtml = ancPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'">Edit</a><a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a></div></div>';
+                        buttonHtml = ancPreview + '<div class="row mb-1"><div class="col-md-6 text-left"><h5 class="modal-title" id="myModalLabel">Date:- <span class="anc-appointment-date">'+date+'</span></h5></div><div class="col-md-6 text-right"><a class="btn edit-btn btn-sm btn-primary" data-date="'+linkDate+'">Edit</a>{{-- <a class="btn print-btn btn-sm btn-primary" data-date="'+linkDate+'">Print</a> --}}</div></div>';
                         ancPreview = buttonHtml + data.data[i];
                     $('.gynec-details-data').html(ancPreview);
                     ancPreview = ancPreview + '<div class="row sepreator"></div>';
